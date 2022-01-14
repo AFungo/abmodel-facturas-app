@@ -5,6 +5,9 @@
  */
 package facturas.app;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 /**
  *
  * @author Agustin
@@ -15,7 +18,24 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("facturas-appPU");
+        FacturaJpaController jpa = new FacturaJpaController(emf);
+        Factura factura = new Factura();
+        try {
+            jpa.create(factura);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        for(Factura f : jpa.findFacturaEntities()) {
+            System.out.println(f);
+            /*try {
+                jpa.destroy(f.getId());
+            } catch (Exception e) {
+                System.out.println(e);
+            }*/
+        }
+        
     }
     
 }
