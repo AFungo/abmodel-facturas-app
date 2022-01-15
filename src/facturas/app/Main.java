@@ -36,6 +36,9 @@ public class Main {
             }*/
         }
         
+        MainWindow mw = new MainWindow();
+        mw.setVisible(true);
+        
     }
     
 }
