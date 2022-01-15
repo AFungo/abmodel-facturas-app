@@ -12,8 +12,7 @@ import java.sql.Date;
  *
  * @author ABMODEL
  */
-public class Ticket {
-    
+public class Ticket {   
     private Provider provider; 
     private int id;
     private int noTicket;
@@ -58,7 +57,6 @@ public class Ticket {
         return ticketType;
     }
     
-    //@override
     public String toString(){
         return "Razon Social" +  provider + "\n" + "Num Fact" + id + "\n" + "Fecha" + date + "\n" + "Tipo" + ticketType + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
     }
