@@ -20,7 +20,7 @@ public class DBManager {
     private static final String JDBC_URL = "jdbc:derby:db;create=true";
     private static Connection connection = null;
     
-    public static void generateConnection() {
+    public static void createConnection() {
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(JDBC_URL);
