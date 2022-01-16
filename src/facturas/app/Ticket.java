@@ -57,6 +57,7 @@ public class Ticket {
         return ticketType;
     }
     
+    @Override
     public String toString(){
         return "Razon Social" +  provider + "\n" + "Num Fact" + id + "\n" + "Fecha" + date + "\n" + "Tipo" + ticketType + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
     }
