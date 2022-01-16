@@ -37,6 +37,14 @@ public class DBManager {
         }
         return connection;
     }
+    
+    public static void closeConnection() {
+        try {
+            DriverManager.getConnection("jdbc:derby:;shutdown=true");
+        }catch (SQLException e) {
+            System.out.println("Connection was closed");
+        }
+    }
 
     public static void initializeDB() {
         boolean providerTableCreated = createProviderTable();
