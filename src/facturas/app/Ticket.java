@@ -20,13 +20,13 @@ public class Ticket {
     private float exchangeValue;
     private String ticketType;
     private String exchangeMoney;
-    private int netAmountWI;//whit iva
-    private int netAmountWOI;//whit out iva
+    private int netAmountWI;//with iva
+    private int netAmountWOI;//with out iva
     private int amountImpEx;//imp. op. Exentas ver que es
     private int numberTo;
-    private int autCode;
+    private int authCode;
 
-    public Ticket(Provider provider, int noTicket, Date date, float iva,float totalAmount, float exchangeValue, String ticketType, String documentType, String exchangeMoney, int netAmountWI, int netAmountWOI, int amountImpEx, int numberTo, int autCode){
+    public Ticket(Provider provider, int noTicket, Date date, float iva, float totalAmount, float exchangeValue, String ticketType, String documentType, String exchangeMoney, int netAmountWI, int netAmountWOI, int amountImpEx, int numberTo, int authCode){
         provider = provider;
         this.noTicket = noTicket;
         this.date = date;
@@ -39,7 +39,7 @@ public class Ticket {
         this.netAmountWOI = netAmountWOI;//whit out iva
         this.amountImpEx = amountImpEx;//imp. op. Exentas ver que es
         this.numberTo = numberTo;
-        this.autCode = autCode;
+        this.authCode = authCode;
         }
     
     public Ticket(Object[] data){
@@ -47,7 +47,7 @@ public class Ticket {
         this.ticketType = (String)data[1];        
         this.noTicket = Integer.parseInt((String)data[2]+data[3]);               
         this.numberTo = Integer.parseInt((String)data[4]);        
-        this.autCode = Integer.parseInt((String) data[5]);
+        this.authCode = Integer.parseInt((String) data[5]);
         this.provider = new Provider((String)data[6], Integer.parseInt((String)data[7]), (String)data[8]);
         this.exchangeValue = Integer.parseInt((String) data[9]);
         this.exchangeMoney = (String)data[10];
@@ -65,43 +65,56 @@ public class Ticket {
     public int getNoTicket(){
         return noTicket;
     }
+    
     public Date getDate(){
         return date;
     }
+    
     public float getIva(){
         return iva;
     }
+    
     public float getTotalAmount(){
         return totalAmount;
     }
+    
     public float getExchangeValue(){
         return exchangeValue;
     }
+    
     public String getTicketType(){
         return ticketType;
     }
+    
     public String getExchangeMoney(){
         return exchangeMoney;
     }
+    
     public int getNetAmountWI(){
         return netAmountWI;
     }
+    
     public int getNetAmountWOI(){
         return netAmountWOI;
     }
+    
     public int getAmountImpEx(){
         return amountImpEx;
     }
+    
     public int getNumberTo(){
         return numberTo;
     }
-    public int getAutCode(){
-        return autCode;
+    
+    public int getAuthCode(){
+        return authCode;
     }
+    
     @Override
     public String toString(){
         return "Razon Social" +  provider + "\n" + "Num Fact" + noTicket + "\n" + "Fecha" + date + "\n" + "Tipo" + ticketType + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
     }
+    
     //this method take a object and returns a Date.
     private Date dateGen(Object o){
         String str = (String)o;
