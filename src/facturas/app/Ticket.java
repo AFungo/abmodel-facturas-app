@@ -102,6 +102,7 @@ public class Ticket {
     public String toString(){
         return "Razon Social" +  provider + "\n" + "Num Fact" + noTicket + "\n" + "Fecha" + date + "\n" + "Tipo" + ticketType + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
     }
+    //this method take a object and returns a Date.
     private Date dateGen(Object o){
         String str = (String)o;
         String [] fields = str.split("/");
