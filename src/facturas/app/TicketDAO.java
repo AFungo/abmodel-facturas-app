@@ -28,8 +28,9 @@ public class TicketDAO {
     }
     
     public static void createTicket(Ticket ticket) {
-        String query = "INSERT INTO Ticket (noTicket, iva, totalAmount, date, exchangeType, ticketType, providerCuit) "
-            + "VALUES (" + ticket.getSQLValues() + ")";
+        String [ ] sqlValues = ticket.getSQLValues();
+        String query = "INSERT INTO Ticket (" + sqlValues[0] + ") "
+            + "VALUES (" + sqlValues[1] + ")";
         executeQuery(query, true);
     }
         
