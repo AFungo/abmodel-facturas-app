@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -49,25 +47,12 @@ public class Controller {
     }
     
     public List<Ticket> getTickets(Date initialDate, Date finalDate) {
-        ResultSet result = TicketDAO.ticketsBetween(initialDate, finalDate);
-        
-        List<Ticket> ticketsList = new ArrayList<>();
-        try {
-            while(result.next()) {
-                int len = result.getMetaData().getColumnCount();
-                String [ ] ticketAttributes = new String [len];
-                for(int i = 1; i <= len; i++)
-                    ticketAttributes[i-1] = result.getString(i);
-                
-                ticketsList.add(new Ticket(ticketAttributes));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        List<Ticket> ticketsList = TicketDAO.ticketsBetween(initialDate, finalDate);
         return ticketsList;
     }
 
     public List<Ticket> getTickets() {
-        throw new UnsupportedOperationException("TODO");
+        List<Ticket> ticketsList = TicketDAO.getTickets();
+        return ticketsList;
     }
 }
