@@ -97,7 +97,7 @@ public class DBManager {
                     + "ticketType VARCHAR(50) NOT NULL," //
                     + "exchangeMoney VARCHAR(5) NOT NULL," //
                     + "netAmountWI REAL," //
-                    + "netAmountWIO REAL," //
+                    + "netAmountWOI REAL," //
                     + "numberTo INTEGER," //
                     + "authCode VARCHAR(30) NOT NULL," //
                     + "amountImpEx REAL,"
