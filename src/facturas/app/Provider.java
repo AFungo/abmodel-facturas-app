@@ -13,8 +13,10 @@ package facturas.app;
 public class Provider {
     private int cuit;
     private String name;
+    private String documentType;
 
-    public Provider(int cuit, String name){
+    public Provider(String documentType, int cuit, String name){
+        this.documentType = documentType;
         this.cuit = cuit;
         this.name = name;
     }
