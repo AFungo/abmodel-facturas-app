@@ -60,4 +60,29 @@ public class TicketDAO {
         }
     }
         
+    public static List<Ticket> getTickets() {
+        try {
+            Connection connection = DBManager.getConnection();
+            Statement stm = connection.createStatement();
+
+            ResultSet result = stm.executeQuery("SELECT * FROM Ticket");
+
+            List<Ticket> ticketsList = new ArrayList<>();
+            while(result.next()) {
+                int len = result.getMetaData().getColumnCount();
+                String str = "";
+                for(int i = 1; i <= len; i++) {
+                    str += " \" " + result.getString(i) + " \" ,";  //turning it into a csv format
+                }
+                str = str.substring(0, str.length() - 1); //removing the last comma
+                ticketsList.add(new Ticket(str));
+
+            }
+            return ticketsList;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 }
