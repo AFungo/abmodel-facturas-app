@@ -21,25 +21,13 @@ import java.util.logging.Logger;
  */
 public class TicketDAO {
     
-    public static List<Ticket> ticketsBetween(Date initialDate, Date finalDate) {
+    public static ResultSet ticketsBetween(Date initialDate, Date finalDate) {
         try {
             Connection connection = DBManager.getConnection();
             Statement stm = connection.createStatement();
 
             ResultSet result = stm.executeQuery("SELECT * FROM Ticket WHERE date >= " + initialDate + " AND date <= " + finalDate);
-
-            List<Ticket> ticketsList = new ArrayList<>();
-            while(result.next()) {
-                int len = result.getMetaData().getColumnCount();
-                String str = "";
-                for(int i = 1; i <= len; i++) {
-                    str += " \" " + result.getString(i) + " \" ,";  //turning it into a csv format
-                }
-                str = str.substring(0, str.length() - 1); //removing the last comma
-                ticketsList.add(new Ticket(str));
-
-            }
-            return ticketsList;
+            return result;
 
         } catch (SQLException ex) {
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,25 +48,13 @@ public class TicketDAO {
         }
     }
         
-    public static List<Ticket> getTickets() {
+    public static ResultSet getTickets() {
         try {
             Connection connection = DBManager.getConnection();
             Statement stm = connection.createStatement();
 
             ResultSet result = stm.executeQuery("SELECT * FROM Ticket");
-
-            List<Ticket> ticketsList = new ArrayList<>();
-            while(result.next()) {
-                int len = result.getMetaData().getColumnCount();
-                String str = "";
-                for(int i = 1; i <= len; i++) {
-                    str += " \" " + result.getString(i) + " \" ,";  //turning it into a csv format
-                }
-                str = str.substring(0, str.length() - 1); //removing the last comma
-                ticketsList.add(new Ticket(str));
-
-            }
-            return ticketsList;
+            return result;
 
         } catch (SQLException ex) {
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
