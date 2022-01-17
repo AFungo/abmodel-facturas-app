@@ -11,16 +11,16 @@ package facturas.app;
  * @author Lenovo
  */
 public class Provider {
-    private int cuit;
+    private String cuit;
     private String name;
     private String documentType;
 
-    public Provider(String documentType, int cuit, String name){
+    public Provider(String documentType, String cuit, String name){
         this.documentType = documentType;
         this.cuit = cuit;
         this.name = name;
     }
-    public int getCuit(){
+    public String getCuit(){
         return cuit;
     }
     public String getName(){
