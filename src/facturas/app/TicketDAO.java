@@ -10,8 +10,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,8 +38,8 @@ public class TicketDAO {
             Connection connection = DBManager.getConnection();
             Statement stm = connection.createStatement();
 
-            String query = "INSERT INTO Ticket (provider_cuit, noTicket, iva, date, totalAmount, exchangeType, ticketType) "
-                + "VALUES (" + Ticket.getSQLValues() + ")";
+            String query = "INSERT INTO Ticket (noTicket, iva, totalAmount, date, exchangeType, ticketType, providerCuit) "
+                + "VALUES (" + ticket.getSQLValues() + ")";
             stm.executeUpdate(query);
         } catch (SQLException ex) {
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
