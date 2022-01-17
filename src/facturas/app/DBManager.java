@@ -24,6 +24,7 @@ public class DBManager {
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(JDBC_URL);
+            System.out.println("Connection was established");
         } catch (ClassNotFoundException e) {
             System.out.println(e);
         } catch (SQLException e) {
@@ -67,7 +68,7 @@ public class DBManager {
             Statement stm = connection.createStatement();
 
             String tableProvider = "CREATE TABLE Provider ("
-                    + "cuit INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,"
+                    + "cuit VARCHAR(30) PRIMARY KEY,"
                     + "name VARCHAR(50)"
                     + ")";
 
@@ -85,17 +86,23 @@ public class DBManager {
         try {
             connection = getConnection();
             Statement stm = connection.createStatement();
-
+            
             String tableTicket = "CREATE TABLE Ticket ("
                     + "id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,"
-                    + "noTicket INTEGER NOT NULL,"
-                    + "iva REAL NOT NULL,"
-                    + "totalAmount REAL NOT NULL,"
-                    + "date DATE NOT NULL"
-                    + "exchangeType REAL NOT NULL,"
-                    + "ticketType VARCHAR(50) NOT NULL,"
-                    + "providerCiut INTEGER NOT NULL,"
-                    + "CONSTRAINT fk_Provider FOREIGN KEY (providerCiut) REFERENCES Provider(cuit)"
+                    + "noTicket INTEGER NOT NULL," //
+                    + "iva REAL," //
+                    + "totalAmount REAL NOT NULL," //
+                    + "date DATE NOT NULL," //
+                    + "exchangeType REAL NOT NULL," //
+                    + "ticketType VARCHAR(50) NOT NULL," //
+                    + "exchangeMoney VARCHAR(5) NOT NULL," //
+                    + "netAmountWI REAL," //
+                    + "netAmountWIO REAL," //
+                    + "numberTo INTEGER," //
+                    + "authCode VARCHAR(30) NOT NULL," //
+                    + "amountImpEx REAL,"
+                    + "providerCuit VARCHAR(30) NOT NULL," //
+                    + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
                     + ")";
 
             stm.executeUpdate(tableTicket);
