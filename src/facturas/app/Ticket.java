@@ -17,7 +17,7 @@ public class Ticket {
     private Date date;
     private float iva;
     private float totalAmount;
-    private float exchangeValue;
+    private float exchangeType;
     private String ticketType;
     private String exchangeMoney;
     private int netAmountWI;//with iva
@@ -26,13 +26,13 @@ public class Ticket {
     private int numberTo;
     private int authCode;
 
-    public Ticket(Provider provider, int noTicket, Date date, float iva, float totalAmount, float exchangeValue, String ticketType, String documentType, String exchangeMoney, int netAmountWI, int netAmountWOI, int amountImpEx, int numberTo, int authCode){
+    public Ticket(Provider provider, int noTicket, Date date, float iva, float totalAmount, float exchangeType, String ticketType, String documentType, String exchangeMoney, int netAmountWI, int netAmountWOI, int amountImpEx, int numberTo, int authCode){
         provider = provider;
         this.noTicket = noTicket;
         this.date = date;
         this.iva = iva;
         this.totalAmount = totalAmount;
-        this.exchangeValue = exchangeValue;
+        this.exchangeType = exchangeType;
         this.ticketType = ticketType;
         this.exchangeMoney = exchangeMoney;
         this.netAmountWI = netAmountWI;//whit iva 
@@ -49,7 +49,7 @@ public class Ticket {
         this.numberTo = Integer.parseInt((String)data[4]);        
         this.authCode = Integer.parseInt((String) data[5]);
         this.provider = new Provider((String)data[6], Integer.parseInt((String)data[7]), (String)data[8]);
-        this.exchangeValue = Integer.parseInt((String) data[9]);
+        this.exchangeType = Integer.parseInt((String) data[9]);
         this.exchangeMoney = (String)data[10];
         this.netAmountWI = Integer.parseInt((String)data[11]);//whit iva
         this.netAmountWOI = Integer.parseInt((String)data[12]);//whit out iva
@@ -58,6 +58,14 @@ public class Ticket {
         this.totalAmount = Integer.parseInt((String)data[15]);
         }
 
+        public String getSQLValues() {
+            String values = "";
+            values += noTicket + iva + totalAmount + date.toString() ;
+            values += exchangeType + ticketType + provider.getCuit();
+            return values;
+        }
+    
+    
     public Provider getProvider(){
         return provider;
     }
@@ -78,8 +86,8 @@ public class Ticket {
         return totalAmount;
     }
     
-    public float getExchangeValue(){
-        return exchangeValue;
+    public float getexchangeType(){
+        return exchangeType;
     }
     
     public String getTicketType(){
