@@ -61,17 +61,26 @@ public class Ticket {
         String ivaVar = (String)data[14];
         this.iva = ivaVar.isEmpty() ? null : Float.parseFloat(ivaVar);
         this.totalAmount = Float.parseFloat((String)data[15]);
-        }
+    }
 
-        public String getSQLValues() {
-            String values = "";
-            values += noTicket + iva + totalAmount + date.toString() ;
-            values += exchangeType + ticketType + provider.getCuit();
-            return values;
-        }
+    public String [ ] getSQLValues() {
+        String attributes = "", values = "";
+        attributes += "noTicket, totalAmount, date, exchangeType, ticketType, exchangeMoney, authCode, providerCuit";
+        values += noTicket + ", " + totalAmount + ", '" + date.toString() + "', " + exchangeType + ", '" + ticketType + "', '"
+                + exchangeMoney + "', '" + authCode + "', '" + provider.getCuit() + "'";
+
+        if (iva != null) { attributes += ", iva"; values += ", " + iva;}
+        if (netAmountWI != null) { attributes += ", netAmountWI"; values += ", " + netAmountWI;}
+        if (netAmountWOI != null) { attributes += ", netAmountWOI"; values += ", " + netAmountWOI;}
+        if (numberTo != null) { attributes += ", numberTo"; values += ", " + numberTo;}
+        if (amountImpEx != null) { attributes += ", amountImpEx"; values += ", " + amountImpEx;}
+
+        String [ ] result = {attributes, values};
+        return result;
+    }
     
     
-    public Provider getProvider(){
+    public Provider getProvider() {
         return provider;
     }
     
@@ -131,7 +140,8 @@ public class Ticket {
     //this method take a object and returns a Date.
     private Date dateGen(Object o){
         String str = (String)o;
-        String [] fields = str.split("/");
-        return new Date(Integer.parseInt((String)fields[2]), Integer.parseInt((String)fields[1]), Integer.parseInt((String)fields[0]));
+        String [] fields = str.split("/"); //d-m-y
+        String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
+        return Date.valueOf(formatedDate);
     }
 }
