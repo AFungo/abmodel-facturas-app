@@ -5,7 +5,8 @@
  */
 package facturas.app;
 
-import java.sql.DriverManager;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  *
@@ -17,16 +18,15 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MainWindow mw = new MainWindow();
-        mw.setVisible(true);
-        mw.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                try {
-                    DriverManager.getConnection("jdbc:derby:;shutdown=true");
-                }catch (Exception e) {
-                    System.out.println(e.toString());
-                }
+        DBManager.createConnection();
+        DBManager.initializeDB();
+        
+        View view = new View(new Controller());
+        view.setVisible(true);
+        
+        view.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent windowEvent) {
+                DBManager.closeConnection();
             }
         });
     }
