@@ -66,4 +66,8 @@ public class Controller {
         }
         return ticketsList;
     }
+
+    public List<Ticket> getTickets() {
+        throw new UnsupportedOperationException("TODO");
+    }
 }
