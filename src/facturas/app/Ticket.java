@@ -15,19 +15,19 @@ public class Ticket {
     private Provider provider; 
     private int noTicket;
     private Date date;
-    private float iva;
+    private Float iva;
     private float totalAmount;
     private float exchangeType;
     private String ticketType;
     private String exchangeMoney;
-    private int netAmountWI;//with iva
-    private int netAmountWOI;//with out iva
-    private int amountImpEx;//imp. op. Exentas ver que es
-    private int numberTo;
-    private int authCode;
+    private Float netAmountWI;//with iva
+    private Float netAmountWOI;//without iva
+    private Float amountImpEx;//imp. op. Exentas ver que es
+    private Integer numberTo;
+    private String authCode;
 
-    public Ticket(Provider provider, int noTicket, Date date, float iva, float totalAmount, float exchangeType, String ticketType, String documentType, String exchangeMoney, int netAmountWI, int netAmountWOI, int amountImpEx, int numberTo, int authCode){
-        provider = provider;
+    public Ticket(Provider provider, int noTicket, Date date, Float iva, float totalAmount, float exchangeType, String ticketType, String documentType, String exchangeMoney, Float netAmountWI, Float netAmountWOI, Float amountImpEx, int numberTo, String authCode){
+        this.provider = provider;
         this.noTicket = noTicket;
         this.date = date;
         this.iva = iva;
@@ -40,22 +40,27 @@ public class Ticket {
         this.amountImpEx = amountImpEx;//imp. op. Exentas ver que es
         this.numberTo = numberTo;
         this.authCode = authCode;
-        }
+    }
     
     public Ticket(Object[] data){
         this.date = dateGen(data[0]);  
         this.ticketType = (String)data[1];        
-        this.noTicket = Integer.parseInt((String)data[2]+data[3]);               
-        this.numberTo = Integer.parseInt((String)data[4]);        
-        this.authCode = Integer.parseInt((String) data[5]);
-        this.provider = new Provider((String)data[6], Integer.parseInt((String)data[7]), (String)data[8]);
-        this.exchangeType = Integer.parseInt((String) data[9]);
+        this.noTicket = Integer.parseInt((String)data[2]+data[3]);
+        String numberToVar = (String)data[4];
+        this.numberTo = numberToVar.isEmpty() ? null : Integer.parseInt(numberToVar);
+        this.authCode = (String) data[5];
+        this.provider = new Provider((String)data[6], (String)data[7], (String)data[8]);
+        this.exchangeType = Float.parseFloat((String) data[9]);
         this.exchangeMoney = (String)data[10];
-        this.netAmountWI = Integer.parseInt((String)data[11]);//whit iva
-        this.netAmountWOI = Integer.parseInt((String)data[12]);//whit out iva
-        this.amountImpEx = Integer.parseInt((String)data[13]);//imp. op. Exentas ver que es
-        this.iva = Integer.parseInt((String)data[14]);
-        this.totalAmount = Integer.parseInt((String)data[15]);
+        String netAmountWIVar = (String)data[11];
+        this.netAmountWI = netAmountWIVar.isEmpty() ? null : Float.parseFloat(netAmountWIVar);//with iva
+        String netAmountWIOVar = (String)data[12];
+        this.netAmountWOI = netAmountWIOVar.isEmpty() ? null : Float.parseFloat(netAmountWIOVar);//without iva
+        String amountImpExVar = (String)data[13];
+        this.amountImpEx = amountImpExVar.isEmpty() ? null : Float.parseFloat(amountImpExVar);//imp. op. Exentas ver que es
+        String ivaVar = (String)data[14];
+        this.iva = ivaVar.isEmpty() ? null : Float.parseFloat(ivaVar);
+        this.totalAmount = Float.parseFloat((String)data[15]);
         }
 
         public String getSQLValues() {
@@ -98,15 +103,15 @@ public class Ticket {
         return exchangeMoney;
     }
     
-    public int getNetAmountWI(){
+    public float getNetAmountWI(){
         return netAmountWI;
     }
     
-    public int getNetAmountWOI(){
+    public float getNetAmountWOI(){
         return netAmountWOI;
     }
     
-    public int getAmountImpEx(){
+    public float getAmountImpEx(){
         return amountImpEx;
     }
     
@@ -114,7 +119,7 @@ public class Ticket {
         return numberTo;
     }
     
-    public int getAuthCode(){
+    public String getAuthCode(){
         return authCode;
     }
     
