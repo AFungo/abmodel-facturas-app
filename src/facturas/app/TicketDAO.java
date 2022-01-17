@@ -10,6 +10,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,44 +21,56 @@ import java.util.logging.Logger;
  */
 public class TicketDAO {
     
-    public static ResultSet ticketsBetween(Date initialDate, Date finalDate) {
+    public static List<Ticket> ticketsBetween(Date initialDate, Date finalDate) {
+        ResultSet result = executeQuery("SELECT * FROM Ticket WHERE date >= " + initialDate + " AND date <= " + finalDate, false);
+        List<Ticket> ticketsList = getTicketsList(result);
+        return ticketsList;
+    }
+    
+    public static void createTicket(Ticket ticket) {
+        String query = "INSERT INTO Ticket (noTicket, iva, totalAmount, date, exchangeType, ticketType, providerCuit) "
+            + "VALUES (" + ticket.getSQLValues() + ")";
+        executeQuery(query, true);
+    }
+        
+    public static List<Ticket> getTickets() {
+        ResultSet result = executeQuery("SELECT * FROM Ticket", false);
+        List<Ticket> ticketsList = getTicketsList(result);
+        return ticketsList;
+    }
+    
+    private static ResultSet executeQuery(String query, bool update) {
         try {
             Connection connection = DBManager.getConnection();
             Statement stm = connection.createStatement();
-
-            ResultSet result = stm.executeQuery("SELECT * FROM Ticket WHERE date >= " + initialDate + " AND date <= " + finalDate);
-            return result;
-
+            
+            if (update){
+                stm.executeUpdate(query);
+                return null;
+            } else {
+                ResultSet result = stm.executeQuery(query);
+                return result;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
     
-    public static void createTicket(Ticket ticket) {
+    private static List<Ticket> getTicketsList(ResultSet result) {
+        List<Ticket> ticketsList = new ArrayList<>();
         try {
-            Connection connection = DBManager.getConnection();
-            Statement stm = connection.createStatement();
-
-            String query = "INSERT INTO Ticket (noTicket, iva, totalAmount, date, exchangeType, ticketType, providerCuit) "
-                + "VALUES (" + ticket.getSQLValues() + ")";
-            stm.executeUpdate(query);
+            while(result.next()) {
+                int len = result.getMetaData().getColumnCount();
+                String [ ] ticketAttributes = new String [len];
+                for(int i = 1; i <= len; i++)
+                    ticketAttributes[i-1] = result.getString(i);
+                
+                ticketsList.add(new Ticket(ticketAttributes));
+            }
         } catch (SQLException ex) {
-            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-        
-    public static ResultSet getTickets() {
-        try {
-            Connection connection = DBManager.getConnection();
-            Statement stm = connection.createStatement();
-
-            ResultSet result = stm.executeQuery("SELECT * FROM Ticket");
-            return result;
-
-        } catch (SQLException ex) {
-            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
+        return ticketsList;
     }
 }
