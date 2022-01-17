@@ -39,7 +39,7 @@ public class TicketDAO {
         return ticketsList;
     }
     
-    private static ResultSet executeQuery(String query, bool update) {
+    private static ResultSet executeQuery(String query, boolean update) {
         try {
             Connection connection = DBManager.getConnection();
             Statement stm = connection.createStatement();
