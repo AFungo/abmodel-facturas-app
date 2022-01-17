@@ -91,6 +91,7 @@ public class DBManager {
                     + "noTicket INTEGER NOT NULL,"
                     + "iva REAL NOT NULL,"
                     + "totalAmount REAL NOT NULL,"
+                    + "date DATE NOT NULL"
                     + "exchangeType REAL NOT NULL,"
                     + "ticketType VARCHAR(50) NOT NULL,"
                     + "providerCiut INTEGER NOT NULL,"
