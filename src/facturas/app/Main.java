@@ -19,12 +19,14 @@ public class Main {
      */
     public static void main(String[] args) {
         DBManager.createConnection();
+        DBManager.deleteDB();
         DBManager.initializeDB();
         
         View view = new View(new Controller());
         view.setVisible(true);
         
         view.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent windowEvent) {
                 DBManager.closeConnection();
             }
