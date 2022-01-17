@@ -7,7 +7,6 @@ package facturas.app;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.Date;
@@ -38,8 +37,9 @@ public class Controller {
             tickets.add(new Ticket(ticketAttributes));
         }
         
-        for (Ticket ticket : tickets)
+        tickets.forEach((ticket) -> {
             TicketDAO.createTicket(ticket);
+        });
     }
     
     public void createTicket (String ticketData) {
@@ -55,7 +55,7 @@ public class Controller {
         try {
             while(result.next()) {
                 int len = result.getMetaData().getColumnCount();
-                String [ ] ticketAttributes;
+                String [ ] ticketAttributes = new String [len];
                 for(int i = 1; i <= len; i++)
                     ticketAttributes[i-1] = result.getString(i);
                 
