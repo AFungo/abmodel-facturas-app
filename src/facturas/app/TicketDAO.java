@@ -29,6 +29,10 @@ public class TicketDAO {
     
     public static void createTicket(Ticket ticket) {
         String [ ] sqlValues = ticket.getSQLValues();
+        Provider provider = ticket.getProvider();
+        if (!ProviderDAO.providerExist(provider.getCuit())) {
+            ProviderDAO.createProvider(provider);
+        }
         String query = "INSERT INTO Ticket (" + sqlValues[0] + ") "
             + "VALUES (" + sqlValues[1] + ")";
         executeQuery(query, true);
@@ -63,9 +67,11 @@ public class TicketDAO {
         try {
             while(result.next()) {
                 int len = result.getMetaData().getColumnCount();
-                String [ ] ticketAttributes = new String [len];
-                for(int i = 1; i <= len; i++)
+                String [ ] ticketAttributes = new String [len-1];
+                for(int i = 2; i <= len; i++) { // i=2 because the id is not stored in ticket objects
+                    System.out.println(result.getString(i));
                     ticketAttributes[i-1] = result.getString(i);
+                }
                 
                 ticketsList.add(new Ticket(ticketAttributes));
             }
