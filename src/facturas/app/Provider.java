@@ -29,5 +29,14 @@ public class Provider {
     
     public String toString(){
         return "Nombre" + name + "    " + "Cuit" + cuit; 
+    }          
+    
+    public String [ ] getSQLValues() {
+        String attributes = "", values = "";
+        attributes += "cuit, name, documentType";
+        values += "'" + cuit + "', '" + name + "', '" + documentType + "'";
+
+        String [ ] result = {attributes, values};
+        return result;
     }
 }
