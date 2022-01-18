@@ -141,6 +141,12 @@ public class Ticket {
     private Date dateGen(Object o){
         String str = (String)o;
         String [] fields = str.split("/"); //d-m-y
+        if (fields.length != 3) {
+            str = fields[0];
+            fields = str.split("-");
+            String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
+            return Date.valueOf(formatedDate);
+        }
         String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
         return Date.valueOf(formatedDate);
     }
