@@ -67,10 +67,18 @@ public class TicketDAO {
         try {
             while(result.next()) {
                 int len = result.getMetaData().getColumnCount();
-                String [ ] ticketAttributes = new String [len-1];
-                for(int i = 2; i <= len; i++) { // i=2 because the id is not stored in ticket objects
-                    System.out.println(result.getString(i));
-                    ticketAttributes[i-1] = result.getString(i);
+                String [ ] ticketAttributes = new String [16]; //15 is the amount of attributes in Ticket class
+                for(int i = 2, j = 0; i <= len; i++, j++) { // i=2 because the id is not stored in ticket objects
+                    if (i == 7) { //loading provider data
+                        Provider prov = ProviderDAO.getProvider(result.getString(i));
+                        ticketAttributes[j++] = prov.getDocType();
+                        ticketAttributes[j++] = prov.getCuit();
+                        ticketAttributes[j] = prov.getName();
+                    } else if (i == 4) { //loading sale point and number from
+                        ticketAttributes[j++] = result.getString(i);    //sale point which is already noTicket
+                        ticketAttributes[j] = "";   //number from will be empty since we already have the noTicket
+                    } else //normal loading
+                        ticketAttributes[j] = result.getString(i);
                 }
                 
                 ticketsList.add(new Ticket(ticketAttributes));
