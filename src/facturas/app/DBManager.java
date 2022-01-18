@@ -69,7 +69,8 @@ public class DBManager {
 
             String tableProvider = "CREATE TABLE Provider ("
                     + "cuit VARCHAR(30) PRIMARY KEY,"
-                    + "name VARCHAR(50)"
+                    + "name VARCHAR(100),"
+                    + "documentType VARCHAR(20)"
                     + ")";
 
             stm.executeUpdate(tableProvider);
@@ -89,21 +90,22 @@ public class DBManager {
             
             String tableTicket = "CREATE TABLE Ticket ("
                     + "id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,"
-                    + "noTicket INTEGER NOT NULL," //
-                    + "iva REAL," //
-                    + "totalAmount REAL NOT NULL," //
                     + "date DATE NOT NULL," //
-                    + "exchangeType REAL NOT NULL," //
                     + "ticketType VARCHAR(50) NOT NULL," //
+                    + "noTicket INTEGER NOT NULL," //
+                    + "numberTo INTEGER," //
+                    + "authCode VARCHAR(30) NOT NULL," //
+                    + "providerCuit VARCHAR(30) NOT NULL," //
+                    + "exchangeType REAL NOT NULL," //
                     + "exchangeMoney VARCHAR(5) NOT NULL," //
                     + "netAmountWI REAL," //
                     + "netAmountWOI REAL," //
-                    + "numberTo INTEGER," //
-                    + "authCode VARCHAR(30) NOT NULL," //
                     + "amountImpEx REAL,"
-                    + "providerCuit VARCHAR(30) NOT NULL," //
+                    + "iva REAL," //
+                    + "totalAmount REAL NOT NULL," //
                     + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
-                    + ")";
+                    + ")";    
+
 
             stm.executeUpdate(tableTicket);
             return true;
