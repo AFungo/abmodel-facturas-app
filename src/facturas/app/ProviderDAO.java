@@ -34,6 +34,23 @@ public class ProviderDAO {
         }
     }
      
+    public static Provider getProvider(String cuit) {
+        ResultSet result = executeQuery("SELECT * FROM Provider WHERE cuit='" + cuit + "'", false);
+        try {
+            if (result.next()) {
+                int len = result.getMetaData().getColumnCount();
+                String [ ] providerAttributes = new String [len];
+                for(int i = 1; i <= len; i++)
+                    providerAttributes[i-1] = result.getString(i);
+                return new Provider(providerAttributes[2], providerAttributes[0], providerAttributes[1]);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null; //in case of exception or provider not found
+    }
+    
     private static ResultSet executeQuery(String query, boolean update) {
         try {
             Connection connection = DBManager.getConnection();
