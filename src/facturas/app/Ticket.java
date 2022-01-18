@@ -47,19 +47,19 @@ public class Ticket {
         this.ticketType = (String)data[1];        
         this.noTicket = Integer.parseInt((String)data[2]+data[3]);
         String numberToVar = (String)data[4];
-        this.numberTo = numberToVar.isEmpty() ? null : Integer.parseInt(numberToVar);
+        this.numberTo = numberToVar == null || numberToVar.isEmpty() ? null : Integer.parseInt(numberToVar);
         this.authCode = (String) data[5];
         this.provider = new Provider((String)data[6], (String)data[7], (String)data[8]);
         this.exchangeType = Float.parseFloat((String) data[9]);
         this.exchangeMoney = (String)data[10];
         String netAmountWIVar = (String)data[11];
-        this.netAmountWI = netAmountWIVar.isEmpty() ? null : Float.parseFloat(netAmountWIVar);//with iva
+        this.netAmountWI = netAmountWIVar == null || netAmountWIVar.isEmpty() ? null : Float.parseFloat(netAmountWIVar);//with iva
         String netAmountWIOVar = (String)data[12];
-        this.netAmountWOI = netAmountWIOVar.isEmpty() ? null : Float.parseFloat(netAmountWIOVar);//without iva
+        this.netAmountWOI = netAmountWIOVar == null || netAmountWIOVar.isEmpty() ? null : Float.parseFloat(netAmountWIOVar);//without iva
         String amountImpExVar = (String)data[13];
-        this.amountImpEx = amountImpExVar.isEmpty() ? null : Float.parseFloat(amountImpExVar);//imp. op. Exentas ver que es
+        this.amountImpEx = amountImpExVar == null || amountImpExVar.isEmpty() ? null : Float.parseFloat(amountImpExVar);//imp. op. Exentas ver que es
         String ivaVar = (String)data[14];
-        this.iva = ivaVar.isEmpty() ? null : Float.parseFloat(ivaVar);
+        this.iva = ivaVar == null || ivaVar.isEmpty() ? null : Float.parseFloat(ivaVar);
         this.totalAmount = Float.parseFloat((String)data[15]);
     }
 
