@@ -42,7 +42,7 @@ public class View extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable(new DefaultTableModel(new Object[]{"noTicket"}, 0));
         jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,8 +56,6 @@ public class View extends javax.swing.JFrame {
         });
 
         DefaultTableModel model = new DefaultTableModel();
-        jTable1.setModel(new DefaultTableModel());
-        model.addColumn("noTicket");
         jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane2.setViewportView(jTable1);
 
