@@ -20,6 +20,11 @@ public class Provider {
         this.cuit = cuit;
         this.name = name;
     }
+    
+    public String getDocType(){
+        return documentType;
+    }
+    
     public String getCuit(){
         return cuit;
     }
