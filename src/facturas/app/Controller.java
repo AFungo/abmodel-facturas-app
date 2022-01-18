@@ -32,7 +32,6 @@ public class Controller {
         stringTickets.remove(0); //Remove the first row of the file
         List<Ticket> tickets = new ArrayList<>();
         for (String strTicket : stringTickets) {
-            System.out.println(strTicket);
             String[ ] ticketAttributes = strTicket.replace("\"", "").split(",");
             tickets.add(new Ticket(ticketAttributes));
         }
