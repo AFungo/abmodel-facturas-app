@@ -79,6 +79,10 @@ public class Ticket {
         return result;
     }
     
+    public Object [ ] getFormValues() {
+        Object [ ] values = {date, ticketType, noTicket, numberTo, authCode, provider.getCuit(), provider.getName(), exchangeType, netAmountWI, netAmountWOI, amountImpEx, iva, totalAmount};
+        return values;
+    }
     
     public Provider getProvider() {
         return provider;
