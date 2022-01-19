@@ -30,11 +30,11 @@ public class TicketDAO {
         return ticketsList;
     }
     
-    public static void createTicket(Ticket ticket) {
+    public static void addTicket(Ticket ticket) {
         String [ ] sqlValues = ticket.getSQLValues();
         Provider provider = ticket.getProvider();
         if (!ProviderDAO.providerExist(provider.getCuit())) {
-            ProviderDAO.createProvider(provider);
+            ProviderDAO.addProvider(provider);
         }
         String query = "INSERT INTO Ticket (" + sqlValues[0] + ") "
             + "VALUES (" + sqlValues[1] + ")";

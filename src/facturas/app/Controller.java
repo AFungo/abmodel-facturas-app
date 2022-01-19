@@ -39,14 +39,14 @@ public class Controller {
         }
         
         tickets.forEach((ticket) -> {
-            TicketDAO.createTicket(ticket);
+            TicketDAO.addTicket(ticket);
         });
     }
     
     public void createTicket (String ticketData) {
         String[ ] ticketAttributes = ticketData.replace("\"", "").split(",");
         Ticket ticket = new Ticket(ticketAttributes);
-        TicketDAO.createTicket(ticket);
+        TicketDAO.addTicket(ticket);
     }
     
     public List<Ticket> getTickets(Date initialDate, Date finalDate) {

@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class ProviderDAO {
     
-    public static void createProvider(Provider provider) {
+    public static void addProvider(Provider provider) {
         String [ ] sqlValues = provider.getSQLValues();
         String query = "INSERT INTO Provider (" + sqlValues[0] + ") "
             + "VALUES (" + sqlValues[1] + ")";
