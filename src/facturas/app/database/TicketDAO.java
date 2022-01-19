@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package facturas.app.db;
+package facturas.app.database;
 
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.models.Provider;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -22,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author nacho
  */
-public class TicketDAO {
+public class TicketDAO extends DAO {
     
     public static List<Ticket> ticketsBetween(Date initialDate, Date finalDate) {
         ResultSet result = executeQuery("SELECT * FROM Ticket WHERE date >= " + initialDate + " AND date <= " + finalDate, false);
@@ -46,25 +44,7 @@ public class TicketDAO {
         List<Ticket> ticketsList = getTicketsList(result);
         return ticketsList;
     }
-    
-    private static ResultSet executeQuery(String query, boolean update) {
-        try {
-            Connection connection = DBManager.getConnection();
-            Statement stm = connection.createStatement();
-            
-            if (update){
-                stm.executeUpdate(query);
-                return null;
-            } else {
-                ResultSet result = stm.executeQuery(query);
-                return result;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-    
+
     private static List<Ticket> getTicketsList(ResultSet result) {
         List<Ticket> ticketsList = new ArrayList<>();
         try {

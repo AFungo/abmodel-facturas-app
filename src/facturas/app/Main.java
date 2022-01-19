@@ -6,7 +6,7 @@
 package facturas.app;
 
 import facturas.app.views.View;
-import facturas.app.db.DBManager;
+import facturas.app.database.DBManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
