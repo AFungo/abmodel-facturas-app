@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package facturas.app;
+package facturas.app.models;
 
 /**
  *

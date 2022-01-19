@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package facturas.app;
+package facturas.app.utils;
+
+import facturas.app.models.Ticket;
 
 /**
  *

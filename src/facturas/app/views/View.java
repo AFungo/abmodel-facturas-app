@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package facturas.app;
+package facturas.app.views;
 
+import facturas.app.Controller;
+import facturas.app.models.Ticket;
 import javax.swing.table.DefaultTableModel;
 
 /**

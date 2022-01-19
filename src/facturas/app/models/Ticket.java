@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package facturas.app;
+package facturas.app.models;
 
+import facturas.app.models.Provider;
 import java.sql.Date;
 
 /**
