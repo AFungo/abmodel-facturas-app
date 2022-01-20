@@ -46,6 +46,15 @@ public class TicketDAO extends DAO {
         List<Ticket> ticketsList = getTicketsList(result);
         return ticketsList;
     }
+    
+    public static List<Ticket> getTickets(SQLFilter filters) {
+        if (filters == null) {
+            throw new IllegalArgumentException("The parameter filters can not be null");
+        }
+        ResultSet result = executeQuery("SELECT * FROM Ticket" + filters.get(), false);
+        List<Ticket> ticketsList = getTicketsList(result);
+        return ticketsList;
+    }
 
     private static List<Ticket> getTicketsList(ResultSet result) {
         List<Ticket> ticketsList = new ArrayList<>();

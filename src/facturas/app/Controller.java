@@ -5,6 +5,7 @@
  */
 package facturas.app;
 
+import facturas.app.database.SQLFilter;
 import facturas.app.database.TicketDAO;
 import facturas.app.models.Ticket;
 import facturas.app.utils.TicketFormater;
@@ -56,7 +57,11 @@ public class Controller {
     }
 
     public List<Ticket> getTickets() {
-        List<Ticket> ticketsList = TicketDAO.getTickets();
-        return ticketsList;
+        return TicketDAO.getTickets();
     }
+    
+    public List<Ticket> getTickets(SQLFilter filters) {
+        return TicketDAO.getTickets(filters);
+    }
+    
 }
