@@ -13,8 +13,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,7 +61,7 @@ public class TicketDAO extends DAO {
         List<Ticket> ticketsList = new ArrayList<>();
         try {
             while(result.next()) {
-                Hashtable<String, String> ticketAttributes = new Hashtable<>();
+                Map<String, String> ticketAttributes = new HashMap<>();
                 ticketAttributes.put("date", result.getString(2));
                 ticketAttributes.put("ticketType", result.getString(3));
                 ticketAttributes.put("noTicket", result.getString(4));
