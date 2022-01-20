@@ -7,6 +7,7 @@ package facturas.app;
 
 import facturas.app.database.TicketDAO;
 import facturas.app.models.Ticket;
+import facturas.app.utils.TicketFormater;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -35,7 +36,7 @@ public class Controller {
         List<Ticket> tickets = new ArrayList<>();
         for (String strTicket : stringTickets) {
             String[ ] ticketAttributes = strTicket.replace("\"", "").split(",");
-            tickets.add(new Ticket(ticketAttributes));
+            tickets.add(new Ticket(TicketFormater.csvToDict(ticketAttributes)));
         }
         
         tickets.forEach((ticket) -> {
@@ -45,7 +46,7 @@ public class Controller {
     
     public void createTicket (String ticketData) {
         String[ ] ticketAttributes = ticketData.replace("\"", "").split(",");
-        Ticket ticket = new Ticket(ticketAttributes);
+        Ticket ticket = new Ticket(TicketFormater.csvToDict(ticketAttributes));
         TicketDAO.addTicket(ticket);
     }
     

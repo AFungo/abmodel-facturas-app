@@ -8,10 +8,12 @@ package facturas.app.database;
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.models.Provider;
+import facturas.app.utils.TicketFormater;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +31,7 @@ public class TicketDAO extends DAO {
     }
     
     public static void addTicket(Ticket ticket) {
-        String [ ] sqlValues = ticket.getSQLValues();
+        String [ ] sqlValues = TicketFormater.ticketToSQL(ticket);
         Provider provider = ticket.getProvider();
         if (!ProviderDAO.providerExist(provider.getCuit())) {
             ProviderDAO.addProvider(provider);
@@ -49,20 +51,23 @@ public class TicketDAO extends DAO {
         List<Ticket> ticketsList = new ArrayList<>();
         try {
             while(result.next()) {
-                int len = result.getMetaData().getColumnCount();
-                String [ ] ticketAttributes = new String [16]; //15 is the amount of attributes in Ticket class
-                for(int i = 2, j = 0; i <= len; i++, j++) { // i=2 because the id is not stored in ticket objects
-                    if (i == 7) { //loading provider data
-                        Provider prov = ProviderDAO.getProvider(result.getString(i));
-                        ticketAttributes[j++] = prov.getDocType();
-                        ticketAttributes[j++] = prov.getCuit();
-                        ticketAttributes[j] = prov.getName();
-                    } else if (i == 4) { //loading sale point and number from
-                        ticketAttributes[j++] = result.getString(i);    //sale point which is already noTicket
-                        ticketAttributes[j] = "";   //number from will be empty since we already have the noTicket
-                    } else //normal loading
-                        ticketAttributes[j] = result.getString(i);
-                }
+                Hashtable<String, String> ticketAttributes = new Hashtable<>();
+                ticketAttributes.put("date", result.getString(2));
+                ticketAttributes.put("ticketType", result.getString(3));
+                ticketAttributes.put("noTicket", result.getString(4));
+                if (result.getString(5) != null) ticketAttributes.put("numberTo", result.getString(5));
+                ticketAttributes.put("authCode", result.getString(6));
+                Provider prov = ProviderDAO.getProvider(result.getString(7));
+                ticketAttributes.put("providerDocType", prov.getDocType());
+                ticketAttributes.put("providerCuit", prov.getCuit());
+                ticketAttributes.put("providerName", prov.getName());
+                ticketAttributes.put("exchangeType", result.getString(8));
+                ticketAttributes.put("exchangeMoney", result.getString(9));
+                if (result.getString(10) != null) ticketAttributes.put("netAmountWI", result.getString(10));
+                if (result.getString(11) != null) ticketAttributes.put("netAmountWOI", result.getString(11));
+                if (result.getString(12) != null) ticketAttributes.put("amountImpEx", result.getString(12));
+                if (result.getString(13) != null) ticketAttributes.put("iva", result.getString(13));
+                ticketAttributes.put("totalAmount", result.getString(14));
                 
                 ticketsList.add(new Ticket(ticketAttributes));
             }

@@ -7,6 +7,7 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
+import facturas.app.utils.TicketFormater;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -126,7 +127,7 @@ public class View extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         
         for (Ticket t : controller.getTickets()) {
-            model.addRow(t.getFormValues());
+            model.addRow(TicketFormater.ticketToForm(t));
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
