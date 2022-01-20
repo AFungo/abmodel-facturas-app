@@ -133,6 +133,9 @@ public class View extends javax.swing.JFrame {
         Pair<String, String> fieldOperator = new Pair<>("exchangeType", "=");
         Pair<Object, Class<?>> values = new Pair<>(102.54, Double.class);
         filter.add(fieldOperator, values);
+        fieldOperator = new Pair<>("iva","=");
+        values = new Pair<>(652.1, Double.class);
+        filter.add(fieldOperator, values);
         for (Ticket t : controller.getTickets(filter)) {
             model.addRow(TicketFormater.ticketToForm(t));
         }

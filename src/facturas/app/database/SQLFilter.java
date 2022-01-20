@@ -30,10 +30,15 @@ public class SQLFilter {
      * @return the string corresponding to "CONDITION" of WHERE clause of SQL
      */
     public String get() {
-        String sqlCode = "";
+        String sqlCode = " WHERE";
+        boolean firstOne = true; // The first iteration should not add the AND connector
         for (Pair<String,String> k : filters.keySet()) {
+            if (!firstOne) {
+                sqlCode += " AND";
+            }
+            
             Pair<Object, Class<?>> value = filters.get(k);
-            sqlCode += " WHERE " + k.getFst() + " " + k.getSnd() + " ";
+            sqlCode += " " + k.getFst() + " " + k.getSnd() + " ";
             
             Class<?> valueClass = value.getSnd();
             if (valueClass == String.class) {
@@ -41,6 +46,7 @@ public class SQLFilter {
             } else {
                 sqlCode += valueClass.cast(value.getFst());
             } // FIXME: We should add a special case for dates?
+            firstOne = false;
         }
         return sqlCode;
     }
