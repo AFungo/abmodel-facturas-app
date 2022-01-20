@@ -19,7 +19,7 @@ public class Transaction {
         this.iva = iva;
     }
     
-    public void addTransaction(Float amount, Float Tiva) {
+    public void addTransaction(Float amount, Float iva) {
         this.totalAmount += amount;
         this.iva += iva;
     }
