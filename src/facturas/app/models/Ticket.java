@@ -5,7 +5,7 @@
  */
 package facturas.app.models;
 
-import facturas.app.models.Provider;
+import java.util.Hashtable;
 import java.sql.Date;
 
 /**
@@ -27,128 +27,55 @@ public class Ticket {
     private Integer numberTo;
     private String authCode;
 
-    public Ticket(Provider provider, int noTicket, Date date, Float iva, float totalAmount, float exchangeType, String ticketType, String documentType, String exchangeMoney, Float netAmountWI, Float netAmountWOI, Float amountImpEx, int numberTo, String authCode){
-        this.provider = provider;
-        this.noTicket = noTicket;
-        this.date = date;
-        this.iva = iva;
-        this.totalAmount = totalAmount;
-        this.exchangeType = exchangeType;
-        this.ticketType = ticketType;
-        this.exchangeMoney = exchangeMoney;
-        this.netAmountWI = netAmountWI;//whit iva 
-        this.netAmountWOI = netAmountWOI;//whit out iva
-        this.amountImpEx = amountImpEx;//imp. op. Exentas ver que es
-        this.numberTo = numberTo;
-        this.authCode = authCode;
-    }
-    
-    public Ticket(Object[] data){
-        this.date = dateGen(data[0]);  
-        this.ticketType = (String)data[1];        
-        this.noTicket = Integer.parseInt((String)data[2]+data[3]);
-        String numberToVar = (String)data[4];
-        this.numberTo = numberToVar == null || numberToVar.isEmpty() ? null : Integer.parseInt(numberToVar);
-        this.authCode = (String) data[5];
-        this.provider = new Provider((String)data[6], (String)data[7], (String)data[8]);
-        this.exchangeType = Float.parseFloat((String) data[9]);
-        this.exchangeMoney = (String)data[10];
-        String netAmountWIVar = (String)data[11];
-        this.netAmountWI = netAmountWIVar == null || netAmountWIVar.isEmpty() ? null : Float.parseFloat(netAmountWIVar);//with iva
-        String netAmountWIOVar = (String)data[12];
-        this.netAmountWOI = netAmountWIOVar == null || netAmountWIOVar.isEmpty() ? null : Float.parseFloat(netAmountWIOVar);//without iva
-        String amountImpExVar = (String)data[13];
-        this.amountImpEx = amountImpExVar == null || amountImpExVar.isEmpty() ? null : Float.parseFloat(amountImpExVar);//imp. op. Exentas ver que es
-        String ivaVar = (String)data[14];
-        this.iva = ivaVar == null || ivaVar.isEmpty() ? null : Float.parseFloat(ivaVar);
-        this.totalAmount = Float.parseFloat((String)data[15]);
+   public Ticket(Hashtable<String, String> data){
+        this.date = dateGen(data.get("date"));
+        this.ticketType = data.get("ticketType");
+        this.noTicket = Integer.parseInt(data.get("noTicket"));
+        this.numberTo = data.get("numberTo") != null ? Integer.parseInt(data.get("numberTo")) : null ;
+        this.authCode =  data.get("authCode");
+        this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));
+        this.exchangeType = Float.parseFloat(data.get("exchangeType"));
+        this.exchangeMoney = data.get("exchangeMoney");
+        this.netAmountWI = data.get("netAmountWI") != null ? Float.parseFloat(data.get("netAmountWI")) : null ;
+        this.netAmountWOI = data.get("netAmountWOI") != null ? Float.parseFloat(data.get("netAmountWOI")) : null ;
+        this.amountImpEx = data.get("amountImpEx") != null ? Float.parseFloat(data.get("amountImpEx")) : null ;
+        this.iva = data.get("iva") != null ? Float.parseFloat(data.get("iva")) : null ;
+        this.totalAmount = Float.parseFloat(data.get("totalAmount"));
     }
 
-    public String [ ] getSQLValues() {
-        String attributes = "", values = "";
-        attributes += "noTicket, totalAmount, date, exchangeType, ticketType, exchangeMoney, authCode, providerCuit";
-        values += noTicket + ", " + totalAmount + ", '" + date.toString() + "', " + exchangeType + ", '" + ticketType + "', '"
-                + exchangeMoney + "', '" + authCode + "', '" + provider.getCuit() + "'";
-
-        if (iva != null) { attributes += ", iva"; values += ", " + iva;}
-        if (netAmountWI != null) { attributes += ", netAmountWI"; values += ", " + netAmountWI;}
-        if (netAmountWOI != null) { attributes += ", netAmountWOI"; values += ", " + netAmountWOI;}
-        if (numberTo != null) { attributes += ", numberTo"; values += ", " + numberTo;}
-        if (amountImpEx != null) { attributes += ", amountImpEx"; values += ", " + amountImpEx;}
-
-        String [ ] result = {attributes, values};
-        return result;
-    }
-    
-    public Object [ ] getFormValues() {
-        Object [ ] values = {date, ticketType, noTicket, numberTo, authCode, provider.getCuit(), provider.getName(), exchangeType, netAmountWI, netAmountWOI, amountImpEx, iva, totalAmount};
-        return values;
-    }
-    
     public Provider getProvider() {
         return provider;
     }
     
-    public int getNoTicket(){
-        return noTicket;
-    }
-    
-    public Date getDate(){
-        return date;
-    }
-    
-    public float getIva(){
-        return iva;
-    }
-    
-    public float getTotalAmount(){
-        return totalAmount;
-    }
-    
-    public float getexchangeType(){
-        return exchangeType;
-    }
-    
-    public String getTicketType(){
-        return ticketType;
-    }
-    
-    public String getExchangeMoney(){
-        return exchangeMoney;
-    }
-    
-    public float getNetAmountWI(){
-        return netAmountWI;
-    }
-    
-    public float getNetAmountWOI(){
-        return netAmountWOI;
-    }
-    
-    public float getAmountImpEx(){
-        return amountImpEx;
-    }
-    
-    public int getNumberTo(){
-        return numberTo;
-    }
-    
-    public String getAuthCode(){
-        return authCode;
+    public Hashtable<String, Object> getValues() {
+        Hashtable<String, Object> dict = new Hashtable<>();
+        dict.put("date", date);
+        dict.put("ticketType", ticketType);
+        dict.put("noTicket", noTicket);
+        if (numberTo != null) dict.put("numberTo", numberTo);
+        dict.put("authCode", authCode);
+        dict.put("provider", provider);
+        dict.put("exchangeType", exchangeType);
+        dict.put("exchangeMoney", exchangeMoney);
+        if (netAmountWI != null) dict.put("netAmountWI", netAmountWI);
+        if (netAmountWOI != null) dict.put("netAmountWOI", netAmountWOI);
+        if (amountImpEx != null) dict.put("amountImpEx", amountImpEx);
+        if (iva != null) dict.put("iva", iva);
+        dict.put("totalAmount", totalAmount);
+        return dict;
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         return "Razon Social" +  provider + "\n" + "Num Fact" + noTicket + "\n" + "Fecha" + date + "\n" + "Tipo" + ticketType + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
     }
     
-    //this method take a object and returns a Date.
-    private Date dateGen(Object o){
-        String str = (String)o;
-        String [] fields = str.split("/"); //d-m-y
+    //this method takes a String and returns a Date.
+    private Date dateGen(String dateStr){
+        String[] fields = dateStr.split("/"); //d-m-y
         if (fields.length != 3) {
-            str = fields[0];
-            fields = str.split("-");
+            dateStr = fields[0];
+            fields = dateStr.split("-");
             String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
             return Date.valueOf(formatedDate);
         }
