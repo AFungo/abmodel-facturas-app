@@ -17,8 +17,8 @@ public class ProfitCalculator {
     private Transaction sales;
     
     public ProfitCalculator() {
-        purchases = new Transaction(0, 0);
-        sales = new Transaction(0, 0);
+        purchases = new Transaction(0.0, 0.0);
+        sales = new Transaction(0.0, 0.0);
     }
     
     public void addTicket(Ticket t) {
