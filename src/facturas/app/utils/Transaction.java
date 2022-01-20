@@ -9,23 +9,23 @@ package facturas.app.utils;
  *
  * @author nacho
  */
-public class Purchase {
+public class Transaction {
     
     private float totalAmount;
     private float iva;
     
-    public Purchase(float totalAmount, float iva) {
+    public Transaction(float totalAmount, float iva) {
         this.totalAmount = totalAmount;
         this.iva = iva;
     }
     
-    public void addPurchase(float amount, float iva) {
+    public void addTransaction(float amount, float iva) {
         this.totalAmount += amount;
         this.iva += iva;
     }
     
-    public float [ ] getPurchases() {
-        float [ ] purchases = {totalAmount, iva};
-        return purchases;
+    public float [ ] getTransactions() {
+        float [ ] transactions = {totalAmount, iva};
+        return transactions;
     }
 }
