@@ -71,4 +71,16 @@ public class TicketFormater {
         return dict;
     }
     
+    //this method takes a String and returns a Date.
+    public static Date dateGen(String dateStr) {
+        String[] fields = dateStr.split("/"); //d-m-y
+        if (fields.length != 3) {
+            dateStr = fields[0];
+            fields = dateStr.split("-");
+            String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
+            return Date.valueOf(formatedDate);
+        }
+        String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
+        return Date.valueOf(formatedDate);
+    }
 }

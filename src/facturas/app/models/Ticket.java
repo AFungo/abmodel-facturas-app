@@ -5,6 +5,7 @@
  */
 package facturas.app.models;
 
+import facturas.app.utils.TicketFormater;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class Ticket {
     private String authCode;
 
    public Ticket(Map<String, String> data){
-        this.date = dateGen(data.get("date"));
+        this.date = TicketFormater.dateGen(data.get("date"));
         this.ticketType = data.get("ticketType");
         this.noTicket = Integer.parseInt(data.get("noTicket"));
         this.numberTo = data.get("numberTo") != null ? Integer.parseInt(data.get("numberTo")) : null ;
@@ -69,18 +70,5 @@ public class Ticket {
     @Override
     public String toString() {
         return "Razon Social" +  provider + "\n" + "Num Fact" + noTicket + "\n" + "Fecha" + date + "\n" + "Tipo" + ticketType + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
-    }
-    
-    //this method takes a String and returns a Date.
-    private Date dateGen(String dateStr){
-        String[] fields = dateStr.split("/"); //d-m-y
-        if (fields.length != 3) {
-            dateStr = fields[0];
-            fields = dateStr.split("-");
-            String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
-            return Date.valueOf(formatedDate);
-        }
-        String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
-        return Date.valueOf(formatedDate);
     }
 }
