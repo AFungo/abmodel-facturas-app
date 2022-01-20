@@ -22,7 +22,17 @@ public class ProfitCalculator {
     }
     
     public void addTicket(Ticket t) {
-        throw new UnsupportedOperationException("to do");
+        Double ta = (Double) t.getValues().get("totalAmount");
+        Double i = (Double) t.getValues().get("iva");
+        if(t.isIncome()) sales.addTransaction(ta, i);
+        else purchases.addTransaction(ta, i);
     }
     
+    public Double getProfit(){
+        return (sales.getTransactions().getFst() - purchases.getTransactions().getFst());
+    }
+    
+    public Double getIva(){
+        return (sales.getTransactions().getSnd() - purchases.getTransactions().getSnd());
+    }
 }
