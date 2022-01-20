@@ -8,7 +8,8 @@ package facturas.app.utils;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import java.sql.Date;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -17,7 +18,7 @@ import java.util.Hashtable;
 public class TicketFormater {
     
      public static String[] ticketToSQL(Ticket t) {
-         Hashtable<String, Object> dict = t.getValues();
+        Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
         attributes += "noTicket, totalAmount, date, exchangeType, ticketType, exchangeMoney, authCode, providerCuit";
         values += dict.get("noTicket") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
@@ -35,7 +36,7 @@ public class TicketFormater {
     }
     
     public static Object[] ticketToForm(Ticket t) {
-        Hashtable<String, Object> dict = t.getValues();
+        Map<String, Object> dict = t.getValues();
         Object[] values = {dict.get("date"), dict.get("ticketType"), dict.get("noTicket"), dict.get("numberTo"), dict.get("authCode"), 
             ((Provider)dict.get("provider")).getCuit(), ((Provider)dict.get("provider")).getName(), dict.get("exchangeType"), 
             dict.get("netAmountWI"), dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount")};
@@ -43,8 +44,8 @@ public class TicketFormater {
         return values;
     }
     
-    public static Hashtable<String, String> csvToDict(String[] data) {
-        Hashtable<String, String> dict = new Hashtable<>();
+    public static Map<String, String> csvToDict(String[] data) {
+        Map<String, String> dict = new HashMap<>();
         
         dict.put("date", data[0]);
         dict.put("ticketType", data[1]);

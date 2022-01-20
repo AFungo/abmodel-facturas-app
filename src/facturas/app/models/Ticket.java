@@ -5,8 +5,9 @@
  */
 package facturas.app.models;
 
-import java.util.Hashtable;
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -27,7 +28,7 @@ public class Ticket {
     private Integer numberTo;
     private String authCode;
 
-   public Ticket(Hashtable<String, String> data){
+   public Ticket(Map<String, String> data){
         this.date = dateGen(data.get("date"));
         this.ticketType = data.get("ticketType");
         this.noTicket = Integer.parseInt(data.get("noTicket"));
@@ -47,8 +48,8 @@ public class Ticket {
         return provider;
     }
     
-    public Hashtable<String, Object> getValues() {
-        Hashtable<String, Object> dict = new Hashtable<>();
+    public Map<String, Object> getValues() {
+        Map<String, Object> dict = new HashMap<>();
         dict.put("date", date);
         dict.put("ticketType", ticketType);
         dict.put("noTicket", noTicket);
