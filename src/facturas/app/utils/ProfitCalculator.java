@@ -17,22 +17,22 @@ public class ProfitCalculator {
     private Transaction sales;
     
     public ProfitCalculator() {
-        purchases = new Transaction(0.0, 0.0);
-        sales = new Transaction(0.0, 0.0);
+        purchases = new Transaction(0.0f, 0.0f);
+        sales = new Transaction(0.0f, 0.0f);
     }
     
     public void addTicket(Ticket t) {
-        Double ta = (Double) t.getValues().get("totalAmount");
-        Double i = (Double) t.getValues().get("iva");
+        Float ta = (Float) t.getValues().get("totalAmount");
+        Float i = (Float) t.getValues().get("iva");
         if(t.isIncome()) sales.addTransaction(ta, i);
         else purchases.addTransaction(ta, i);
     }
     
-    public Double getProfit(){
+    public Float getProfit(){
         return (sales.getTransactions().getFst() - purchases.getTransactions().getFst());
     }
     
-    public Double getIva(){
+    public Float getIva(){
         return (sales.getTransactions().getSnd() - purchases.getTransactions().getSnd());
     }
 }
