@@ -67,6 +67,10 @@ public class Ticket {
         return dict;
     }
     
+    public boolean isIncome(){
+        return !(this.ticketType.contains("Factura") || this.ticketType.equals("Débito"));
+    }
+
     @Override
     public String toString() {
         return "Razon Social" +  provider + "\n" + "Num Fact" + noTicket + "\n" + "Fecha" + date + "\n" + "Tipo" + ticketType + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
