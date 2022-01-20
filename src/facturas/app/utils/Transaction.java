@@ -11,21 +11,21 @@ package facturas.app.utils;
  */
 public class Transaction {
     
-    private Double totalAmount;
-    private Double iva;
+    private Float totalAmount;
+    private Float iva;
     
-    public Transaction(Double totalAmount, Double iva) {
+    public Transaction(Float totalAmount, Float iva) {
         this.totalAmount = totalAmount;
         this.iva = iva;
     }
     
-    public void addTransaction(Double amount, Double iva) {
+    public void addTransaction(Float amount, Float Tiva) {
         this.totalAmount += amount;
         this.iva += iva;
     }
     
-    public Pair<Double, Double> getTransactions() {
-        Pair<Double, Double> transactions = new Pair<> (totalAmount, iva);
+    public Pair<Float, Float> getTransactions() {
+        Pair<Float, Float> transactions = new Pair<> (totalAmount, iva);
         return transactions;
     }
 }
