@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 
 /**
  *
@@ -29,6 +30,9 @@ public abstract class DAO {
                 ResultSet result = stm.executeQuery(query);
                 return result;
             }
+        } catch (DerbySQLIntegrityConstraintViolationException e) {
+            System.out.println("Item was rejected from database for being repeated");
+            return null;
         } catch (SQLException e) {
             throw new IllegalStateException(e.toString());
         }
