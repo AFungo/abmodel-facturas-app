@@ -56,7 +56,7 @@ public class View extends javax.swing.JFrame {
         jButton1.setPreferredSize(new java.awt.Dimension(150, 50));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadTickets(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -105,7 +105,7 @@ public class View extends javax.swing.JFrame {
         jButton2.setText("CALCULAR");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                calculateProfit(evt);
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -148,7 +148,7 @@ public class View extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadTickets(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTickets
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
@@ -178,13 +178,13 @@ public class View extends javax.swing.JFrame {
         for (Ticket t : controller.getTickets(filter)) {
             model.addRow(TicketFormater.ticketToForm(t));
         }
-    }//GEN-LAST:event_loadTickets
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void calculateProfit(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateProfit
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ProfitCalculator profit = new ProfitCalculator();
 
         for(Ticket t : controller.getTickets()){
@@ -193,7 +193,7 @@ public class View extends javax.swing.JFrame {
 
         jTextField3.setText(profit.getProfit().toString());
         jTextField2.setText(profit.getIva().toString());
-    }//GEN-LAST:event_calculateProfit
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void refreshTable(DefaultTableModel model) {
         int len = model.getRowCount();
