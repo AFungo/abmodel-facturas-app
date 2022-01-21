@@ -60,7 +60,6 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        DefaultTableModel model = new DefaultTableModel();
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -175,6 +174,8 @@ public class View extends javax.swing.JFrame {
         fieldOperator = new Pair<>("iva","=");
         values = new Pair<>(652.1, Double.class);
         filter.add(fieldOperator, values);
+        
+        refreshTable(model);
         for (Ticket t : controller.getTickets(filter)) {
             model.addRow(TicketFormater.ticketToForm(t));
         }
@@ -195,6 +196,12 @@ public class View extends javax.swing.JFrame {
         jTextField2.setText(profit.getIva().toString());
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void refreshTable(DefaultTableModel model) {
+        int len = model.getRowCount();
+        for (int i = 0; i < len; i++)
+            model.removeRow(i);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
