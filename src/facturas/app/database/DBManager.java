@@ -89,7 +89,7 @@ public class DBManager {
             Statement stm = connection.createStatement();
             
             String tableTicket = "CREATE TABLE Ticket ("
-                    + "id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,"
+                    + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
                     + "date DATE NOT NULL," //
                     + "ticketType VARCHAR(50) NOT NULL," //
                     + "noTicket INTEGER NOT NULL," //
@@ -103,6 +103,7 @@ public class DBManager {
                     + "amountImpEx REAL,"
                     + "iva REAL," //
                     + "totalAmount REAL NOT NULL," //
+                    + "PRIMARY KEY (date, noTicket, providerCuit),"
                     + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
                     + ")";    
 
