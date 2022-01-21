@@ -25,15 +25,9 @@ import java.util.logging.Logger;
  */
 public class TicketDAO extends DAO {
     
-    public static List<Ticket> ticketsBetween(Date initialDate, Date finalDate) {
-        ResultSet result = executeQuery("SELECT * FROM Ticket WHERE date >= " + initialDate + " AND date <= " + finalDate, false);
-        List<Ticket> ticketsList = getTicketsList(result);
-        return ticketsList;
-    }
-    
     public static void addTicket(Ticket ticket) {
         String [ ] sqlValues = TicketFormater.ticketToSQL(ticket);
-        Provider provider = ticket.getProvider();
+        Provider provider = (Provider)ticket.getValues().get("provider");
         if (!ProviderDAO.providerExist(provider.getCuit())) {
             ProviderDAO.addProvider(provider);
         }

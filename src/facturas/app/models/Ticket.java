@@ -45,10 +45,6 @@ public class Ticket {
         this.totalAmount = Float.parseFloat(data.get("totalAmount"));
     }
 
-    public Provider getProvider() {
-        return provider;
-    }
-    
     public Map<String, Object> getValues() {
         Map<String, Object> dict = new HashMap<>();
         dict.put("date", date);
