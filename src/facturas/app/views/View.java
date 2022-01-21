@@ -11,6 +11,9 @@ import facturas.app.models.Ticket;
 import facturas.app.utils.Pair;
 import facturas.app.utils.TicketFormater;
 import facturas.app.utils.ProfitCalculator;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -43,7 +46,6 @@ public class View extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable(new DefaultTableModel(new Object[]{"Fecha","Tipo","Nro factura","Número Hasta","Cód. Autorización","Nro. Doc. Emisor","Denominación Emisor","Tipo Cambio","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"}, 0));
-        jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
@@ -90,12 +92,6 @@ public class View extends javax.swing.JFrame {
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(3);
         }
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         jTextField2.setEditable(false);
         jTextField2.setText("Iva: ");
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
@@ -125,10 +121,8 @@ public class View extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1287, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(67, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(514, 514, 514)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(566, 566, 566)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)
                         .addGap(18, 18, 18)
@@ -144,7 +138,6 @@ public class View extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
@@ -158,7 +151,19 @@ public class View extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        controller.loadTickets(jTextField1.getText());
+        
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
+        chooser.setFileFilter(fileTypes);
+        chooser.showOpenDialog(this);
+        File f = chooser.getSelectedFile();
+        if (f == null) { //if no file selected then the action ends here
+            return;
+        }
+        
+        //FIXME: The file is already generated here, maybe we could pass a file
+        // in the method loadTicket instead of file path
+        controller.loadTickets(f.getPath());
         
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         
@@ -175,10 +180,6 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
@@ -188,7 +189,6 @@ public class View extends javax.swing.JFrame {
 
         for(Ticket t : controller.getTickets()){
             if(t.getValues().get("iva") !=  null && t.getValues().get("totalAmount") != null) profit.addTicket(t);
-       
         }
 
         jTextField3.setText(profit.getProfit().toString());
@@ -200,8 +200,8 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
 }
