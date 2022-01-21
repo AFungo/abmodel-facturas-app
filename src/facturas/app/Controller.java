@@ -51,11 +51,6 @@ public class Controller {
         TicketDAO.addTicket(ticket);
     }
     
-    public List<Ticket> getTickets(Date initialDate, Date finalDate) {
-        List<Ticket> ticketsList = TicketDAO.ticketsBetween(initialDate, finalDate);
-        return ticketsList;
-    }
-
     public List<Ticket> getTickets() {
         return TicketDAO.getTickets();
     }
