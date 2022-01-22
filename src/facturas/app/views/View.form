@@ -24,115 +24,138 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jScrollPane2" min="-2" pref="1287" max="-2" attributes="0"/>
-                      <EmptySpace pref="67" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jTextField2" min="-2" pref="128" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="198" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="fechaInicial" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="labelFecha" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="fechaFinal" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="fechaInicial5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="labelFecha5" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="fechaFinal5" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="fechaInicial6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="labelFecha7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="fechaFinal6" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                      <Component id="labelTicketType" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jTextField3" min="-2" pref="128" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-          </Group>
-          <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="jButton4" min="-2" pref="139" max="-2" attributes="0"/>
-                      <EmptySpace min="40" pref="40" max="-2" attributes="0"/>
-                      <Component id="fechaInicial" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButton1" min="-2" pref="154" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="labelFecha" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Component id="fechaFinal" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jTextField5" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jTextField7" max="32767" attributes="0"/>
+                              <Component id="jTextField6" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jTextField1" min="-2" pref="128" max="-2" attributes="0"/>
+                          <Component id="jTextField3" min="-2" pref="128" max="-2" attributes="0"/>
+                          <Component id="jTextField2" min="-2" pref="128" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="199" pref="199" max="-2" attributes="0"/>
-                      <Component id="fechaInicial5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="labelFecha5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Component id="fechaFinal5" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fechaInicial6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="labelFecha7" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Component id="fechaFinal6" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="1287" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="37" pref="37" max="-2" attributes="0"/>
-              <Component id="labelTicketType" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" pref="154" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace pref="67" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="17" max="32767" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="375" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
+                      <EmptySpace pref="7" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="371" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                      <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="jTextField3" alignment="1" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jTextField6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jTextField7" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jTextField2" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="fechaInicial" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="fechaFinal" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="labelFecha" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="fechaInicial5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="fechaFinal5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="labelFecha5" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="fechaInicial6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="fechaFinal6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="labelFecha7" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="labelTicketType" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                      <Component id="jButton4" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fechaInicial" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechaFinal" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelFecha" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fechaInicial5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechaFinal5" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelFecha5" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fechaInicial6" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechaFinal6" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelFecha7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelTicketType" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jScrollPane1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="269" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -260,8 +283,11 @@
     <Component class="javax.swing.JTextField" name="jTextField2">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="&quot;Iva: &quot;" type="code"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="12" style="1"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
         </Property>
       </Properties>
       <Events>
@@ -274,8 +300,11 @@
     <Component class="javax.swing.JTextField" name="jTextField3">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="&quot;Monto total: &quot;" type="code"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="12" style="1"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
         </Property>
       </Properties>
     </Component>
@@ -367,5 +396,58 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JTextField" name="jTextField1">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="12" style="1"/>
+        </Property>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextField5">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="12" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Iva:"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField5ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextField6">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="12" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Ganancias:"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextField7">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="12" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Total:"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="null"/>
+        </Property>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>
