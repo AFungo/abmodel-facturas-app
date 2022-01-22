@@ -35,5 +35,4 @@ public class Transaction {
         transactions.put("netAmountWOI", netAmountWOI);
         return transactions;
     }
-
 }
