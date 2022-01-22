@@ -7,12 +7,14 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.database.SQLFilter;
+import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Pair;
 import facturas.app.utils.TicketFormater;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -49,6 +51,8 @@ public class View extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -109,6 +113,20 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setText("Mostrar proveedores");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Mostrar facturas");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -120,7 +138,11 @@ public class View extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1287, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(67, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(566, 566, 566)
+                        .addGap(245, 245, 245)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(248, 248, 248)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)
@@ -141,8 +163,13 @@ public class View extends javax.swing.JFrame {
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
                 .addGap(25, 25, 25)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4)))
+                .addGap(37, 37, 37))
         );
 
         pack();
@@ -166,6 +193,7 @@ public class View extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         
         //Example of use of filter
+        /*
         SQLFilter filter = new SQLFilter();
         Pair<String, String> fieldOperator = new Pair<>("exchangeType", "=");
         Pair<Object, Class<?>> values = new Pair<>(102.54, Double.class);
@@ -173,9 +201,9 @@ public class View extends javax.swing.JFrame {
         fieldOperator = new Pair<>("iva","=");
         values = new Pair<>(652.1, Double.class);
         filter.add(fieldOperator, values);
-        
+        */
         refreshTable(model);
-        for (Ticket t : controller.getTickets(filter)) {
+        for (Ticket t : controller.getTickets()) {
             model.addRow(TicketFormater.ticketToForm(t));
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -195,15 +223,68 @@ public class View extends javax.swing.JFrame {
         jTextField2.setText(profit.getIva().toString());
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        providersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "CUIT", "Nombre", "Tipo de Documento"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        providersTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        providersTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(providersTable);
+        if (providersTable.getColumnModel().getColumnCount() > 0) {
+            providersTable.getColumnModel().getColumn(0).setPreferredWidth(2);
+            providersTable.getColumnModel().getColumn(1).setPreferredWidth(3);
+        }
+        
+        DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
+        for (Provider p : controller.getProviders()) {
+            model.addRow(new Object[] {p.getCuit(), p.getName(), p.getDocType()});
+        }
+        providersTable.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO: Improve this, and refactor the View class
+        // creating another class with method that execute the expected
+        // behaviour for each event
+        
+        // This does not work :(
+        providersTable.setVisible(false);
+        jTable1.setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void refreshTable(DefaultTableModel model) {
         int len = model.getRowCount();
         for (int i = 0; i < len; i++)
             model.removeRow(i);
     }
     
+    JTable providersTable = new JTable();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField2;

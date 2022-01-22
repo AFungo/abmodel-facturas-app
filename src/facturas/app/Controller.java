@@ -5,8 +5,10 @@
  */
 package facturas.app;
 
+import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.TicketDAO;
+import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.TicketFormater;
 import java.io.File;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,6 +64,10 @@ public class Controller {
     
     public List<Ticket> getTickets(SQLFilter filters) {
         return TicketDAO.getTickets(filters);
+    }
+    
+    public List<Provider> getProviders() {
+        return ProviderDAO.getProviders();
     }
     
     private boolean validFormat(String initialLine) {
