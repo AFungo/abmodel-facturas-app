@@ -5,27 +5,35 @@
  */
 package facturas.app.utils;
 
+import java.util.Map;
+import java.util.HashMap;
 /**
  *
  * @author nacho
  */
 public class Transaction {
     
+    private Float netAmountWOI;
     private Float totalAmount;
     private Float iva;
     
-    public Transaction(Float totalAmount, Float iva) {
+    public Transaction(Float totalAmount, Float iva, Float netAmountWOI) {
         this.totalAmount = totalAmount;
         this.iva = iva;
+        this.netAmountWOI = netAmountWOI;
     }
-    
-    public void addTransaction(Float amount, Float iva) {
+    public void addTransaction(Float amount, Float iva, Float netAmountWOI) {
         this.totalAmount += amount;
         this.iva += iva;
+        this.netAmountWOI += netAmountWOI;    
     }
     
-    public Pair<Float, Float> getTransactions() {
-        Pair<Float, Float> transactions = new Pair<> (totalAmount, iva);
+    public Map<String, Object> getTransactions() {
+        Map<String, Object> transactions = new HashMap<>();
+        transactions.put("totalAmount", totalAmount);
+        transactions.put("iva", iva);
+        transactions.put("netAmountWOI", netAmountWOI);
         return transactions;
     }
+
 }
