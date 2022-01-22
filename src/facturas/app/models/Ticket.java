@@ -14,14 +14,9 @@ import java.util.Map;
  *
  * @author ABMODEL
  */
-public class Ticket {   
-    private Provider provider; 
-    private int noTicket;
-    private Date date;
+public class Ticket extends Retenciones{   
     private Float iva;
-    private float totalAmount;
     private float exchangeType;
-    private String ticketType;
     private String exchangeMoney;
     private Float netAmountWI;//with iva
     private Float netAmountWOI;//without iva
@@ -30,26 +25,20 @@ public class Ticket {
     private String authCode;
 
    public Ticket(Map<String, String> data){
-        this.date = TicketFormater.dateGen(data.get("date"));
-        this.ticketType = data.get("ticketType");
-        this.noTicket = Integer.parseInt(data.get("noTicket"));
+        super(data);
         this.numberTo = data.get("numberTo") != null ? Integer.parseInt(data.get("numberTo")) : null ;
         this.authCode =  data.get("authCode");
-        this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));
         this.exchangeType = Float.parseFloat(data.get("exchangeType"));
         this.exchangeMoney = data.get("exchangeMoney");
         this.netAmountWI = data.get("netAmountWI") != null ? Float.parseFloat(data.get("netAmountWI")) : null ;
         this.netAmountWOI = data.get("netAmountWOI") != null ? Float.parseFloat(data.get("netAmountWOI")) : null ;
         this.amountImpEx = data.get("amountImpEx") != null ? Float.parseFloat(data.get("amountImpEx")) : null ;
         this.iva = data.get("iva") != null ? Float.parseFloat(data.get("iva")) : null ;
-        this.totalAmount = Float.parseFloat(data.get("totalAmount"));
     }
 
     public Map<String, Object> getValues() {
         Map<String, Object> dict = new HashMap<>();
-        dict.put("date", date);
-        dict.put("ticketType", ticketType);
-        dict.put("noTicket", noTicket);
+        dict = super.getValues();
         if (numberTo != null) dict.put("numberTo", numberTo);
         dict.put("authCode", authCode);
         dict.put("provider", provider);
@@ -59,16 +48,15 @@ public class Ticket {
         if (netAmountWOI != null) dict.put("netAmountWOI", netAmountWOI);
         if (amountImpEx != null) dict.put("amountImpEx", amountImpEx);
         if (iva != null) dict.put("iva", iva);
-        dict.put("totalAmount", totalAmount);
         return dict;
     }
     
     public boolean isIncome(){
-        return !(this.ticketType.contains("Factura") || this.ticketType.equals("Débito"));
+        return !(this.type.contains("Factura") || this.type.equals("Débito"));
     }
 
     @Override
     public String toString() {
-        return "Razon Social" +  provider + "\n" + "Num Fact" + noTicket + "\n" + "Fecha" + date + "\n" + "Tipo" + ticketType + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
+        return "Razon Social" + provider + "\n" + "Num Fact" + number + "\n" + "Fecha" + date + "\n" + "Tipo" + type + "\n" + "Iva" + iva + "\n" + "Total" + totalAmount + "\n"; 
     }
 }
