@@ -175,6 +175,7 @@ public class View extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //load tickets
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
         JFileChooser chooser = new JFileChooser();
@@ -211,7 +212,8 @@ public class View extends javax.swing.JFrame {
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-
+    
+    //calculates profit of tickets
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ProfitCalculator profit = new ProfitCalculator();
 
@@ -223,6 +225,7 @@ public class View extends javax.swing.JFrame {
         jTextField2.setText(profit.getIva().toString());
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    //show providers if any
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         providersTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -263,14 +266,13 @@ public class View extends javax.swing.JFrame {
         providersTable.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    //show tickets
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO: Improve this, and refactor the View class
         // creating another class with method that execute the expected
         // behaviour for each event
         
-        // This does not work :(
-        providersTable.setVisible(false);
-        jTable1.setVisible(true);
+        jScrollPane2.setViewportView(jTable1);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void refreshTable(DefaultTableModel model) {
