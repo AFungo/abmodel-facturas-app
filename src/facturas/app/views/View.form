@@ -29,25 +29,32 @@
                       <EmptySpace min="-2" pref="198" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="fechaInicial" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="fechaInicial" min="-2" pref="70" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="labelFecha" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="fechaFinal" min="-2" max="-2" attributes="0"/>
+                              <Component id="fechaFinal" min="-2" pref="76" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="fechaInicial5" min="-2" max="-2" attributes="0"/>
+                              <Component id="impTotalMinimo" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="labelFecha5" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelImpTotal" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="fechaFinal5" min="-2" max="-2" attributes="0"/>
+                              <Component id="impTotalMaximo" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="fechaInicial6" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="labelFecha7" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="fechaFinal6" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Component id="labelProveedor" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  <Component id="cuitProveedor" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="ivaMinimo" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Component id="labelIva" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                  <Component id="ivaMaximo" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
@@ -82,7 +89,7 @@
                       <Component id="jScrollPane2" min="-2" pref="1287" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="67" max="32767" attributes="0"/>
+              <EmptySpace pref="47" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -138,18 +145,23 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="fechaInicial5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="fechaFinal5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="labelFecha5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="fechaInicial6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="fechaFinal6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="labelFecha7" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="impTotalMinimo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="impTotalMaximo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="labelImpTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Component id="labelTicketType" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="ivaMinimo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ivaMaximo" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelIva" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="cuitProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -346,27 +358,27 @@
         <Property name="text" type="java.lang.String" value="&lt; Fecha &lt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fechaFinal5">
+    <Component class="javax.swing.JTextField" name="impTotalMaximo">
     </Component>
-    <Component class="javax.swing.JLabel" name="labelFecha5">
+    <Component class="javax.swing.JLabel" name="labelImpTotal">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&lt; Fecha &lt;"/>
+        <Property name="text" type="java.lang.String" value="&lt; imp. total &lt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fechaInicial5">
+    <Component class="javax.swing.JTextField" name="impTotalMinimo">
     </Component>
-    <Component class="javax.swing.JTextField" name="fechaFinal6">
+    <Component class="javax.swing.JTextField" name="ivaMaximo">
     </Component>
     <Component class="javax.swing.JLabel" name="labelTicketType">
       <Properties>
         <Property name="text" type="java.lang.String" value="Tipo comprobante:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fechaInicial6">
+    <Component class="javax.swing.JTextField" name="ivaMinimo">
     </Component>
-    <Component class="javax.swing.JLabel" name="labelFecha7">
+    <Component class="javax.swing.JLabel" name="labelIva">
       <Properties>
-        <Property name="text" type="java.lang.String" value="&lt; Fecha &lt;"/>
+        <Property name="text" type="java.lang.String" value="&lt; iva &lt;"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -448,6 +460,13 @@
           <Border info="null"/>
         </Property>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelProveedor">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="cuit provedor ="/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="cuitProveedor">
     </Component>
   </SubComponents>
 </Form>

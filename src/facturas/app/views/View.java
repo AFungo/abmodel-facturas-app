@@ -13,6 +13,8 @@ import facturas.app.utils.Pair;
 import facturas.app.utils.TicketFormater;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
+import java.sql.Date;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -57,19 +59,21 @@ public class View extends javax.swing.JFrame {
         fechaInicial = new javax.swing.JTextField();
         fechaFinal = new javax.swing.JTextField();
         labelFecha = new javax.swing.JLabel();
-        fechaFinal5 = new javax.swing.JTextField();
-        labelFecha5 = new javax.swing.JLabel();
-        fechaInicial5 = new javax.swing.JTextField();
-        fechaFinal6 = new javax.swing.JTextField();
+        impTotalMaximo = new javax.swing.JTextField();
+        labelImpTotal = new javax.swing.JLabel();
+        impTotalMinimo = new javax.swing.JTextField();
+        ivaMaximo = new javax.swing.JTextField();
         labelTicketType = new javax.swing.JLabel();
-        fechaInicial6 = new javax.swing.JTextField();
-        labelFecha7 = new javax.swing.JLabel();
+        ivaMinimo = new javax.swing.JTextField();
+        labelIva = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ticketTypesList = new javax.swing.JList<>();
         jTextField1 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jTextField7 = new javax.swing.JTextField();
+        labelProveedor = new javax.swing.JLabel();
+        cuitProveedor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -154,11 +158,11 @@ public class View extends javax.swing.JFrame {
 
         labelFecha.setText("< Fecha <");
 
-        labelFecha5.setText("< Fecha <");
+        labelImpTotal.setText("< imp. total <");
 
         labelTicketType.setText("Tipo comprobante:");
 
-        labelFecha7.setText("< Fecha <");
+        labelIva.setText("< iva <");
 
         ticketTypesList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "6 - Factura B", "1 - Factura A", "11 - Factura C", "3 - Nota de Crédito A", "2 - Nota de Débito A", "13 - Nota de Crédito C" };
@@ -197,6 +201,8 @@ public class View extends javax.swing.JFrame {
         jTextField7.setText("Total:");
         jTextField7.setBorder(null);
 
+        labelProveedor.setText("cuit provedor =");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -207,23 +213,28 @@ public class View extends javax.swing.JFrame {
                         .addGap(198, 198, 198)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(labelFecha)
                                 .addGap(12, 12, 12)
-                                .addComponent(fechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(fechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(fechaInicial5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(impTotalMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(labelFecha5)
+                                .addComponent(labelImpTotal)
                                 .addGap(12, 12, 12)
-                                .addComponent(fechaFinal5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(fechaInicial6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(labelFecha7)
-                                .addGap(12, 12, 12)
-                                .addComponent(fechaFinal6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(impTotalMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(labelProveedor)
+                                    .addGap(12, 12, 12)
+                                    .addComponent(cuitProveedor))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(ivaMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(labelIva)
+                                    .addGap(12, 12, 12)
+                                    .addComponent(ivaMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(38, 38, 38)
                         .addComponent(labelTicketType)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -250,7 +261,7 @@ public class View extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1287, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,15 +306,19 @@ public class View extends javax.swing.JFrame {
                                             .addComponent(labelFecha))
                                         .addGap(6, 6, 6)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(fechaInicial5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fechaFinal5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(labelFecha5))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(fechaInicial6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(fechaFinal6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(labelFecha7)))
-                                    .addComponent(labelTicketType))))
+                                            .addComponent(impTotalMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(impTotalMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(labelImpTotal)))
+                                    .addComponent(labelTicketType))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(ivaMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ivaMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelIva))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cuitProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(labelProveedor))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -339,9 +354,8 @@ public class View extends javax.swing.JFrame {
         filter.add(fieldOperator, values);
         */
         refreshTable(model);
-        for (Ticket t : controller.getTickets()) {
+        for (Ticket t : controller.getTickets())
             model.addRow(TicketFormater.ticketToForm(t));
-        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -409,6 +423,34 @@ public class View extends javax.swing.JFrame {
         // behaviour for each event
         
         jScrollPane2.setViewportView(jTable1);
+        SQLFilter filter = new SQLFilter();
+        String text = fechaInicial.getText();
+        if (!text.isEmpty()) filter.add(new Pair<> ("date", ">"), new Pair(TicketFormater.dateGen(text), Date.class));
+        text = fechaFinal.getText();
+        if (!text.isEmpty()) filter.add(new Pair<> ("date", "<"), new Pair(TicketFormater.dateGen(text), Date.class));
+        
+        text = impTotalMinimo.getText();
+        if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class));
+        text = impTotalMaximo.getText();
+        if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", "<"), new Pair(Float.parseFloat(text), Float.class));
+        
+        text = ivaMinimo.getText();
+        if (!text.isEmpty()) filter.add(new Pair<> ("iva", ">"), new Pair(Float.parseFloat(text), Float.class));
+        text = ivaMaximo.getText();
+        if (!text.isEmpty()) filter.add(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class));
+        
+        text = cuitProveedor.getText();
+        if (!text.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(text, String.class));
+        
+        List<String> typesList = ticketTypesList.getSelectedValuesList();
+        if (!typesList.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(typesList.get(0), String.class));
+        
+        List<Ticket> tickets = controller.getTickets(filter);
+        
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        refreshTable(model);
+        for (Ticket t : tickets)
+            model.addRow(TicketFormater.ticketToForm(t));
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void fechaInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaInicialActionPerformed
@@ -424,19 +466,19 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void refreshTable(DefaultTableModel model) {
-        int len = model.getRowCount();
-        for (int i = 0; i < len; i++)
+        for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
     }
     
     JTable providersTable = new JTable();
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField cuitProveedor;
     private javax.swing.JTextField fechaFinal;
-    private javax.swing.JTextField fechaFinal5;
-    private javax.swing.JTextField fechaFinal6;
     private javax.swing.JTextField fechaInicial;
-    private javax.swing.JTextField fechaInicial5;
-    private javax.swing.JTextField fechaInicial6;
+    private javax.swing.JTextField impTotalMaximo;
+    private javax.swing.JTextField impTotalMinimo;
+    private javax.swing.JTextField ivaMaximo;
+    private javax.swing.JTextField ivaMinimo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -451,8 +493,9 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel labelFecha;
-    private javax.swing.JLabel labelFecha5;
-    private javax.swing.JLabel labelFecha7;
+    private javax.swing.JLabel labelImpTotal;
+    private javax.swing.JLabel labelIva;
+    private javax.swing.JLabel labelProveedor;
     private javax.swing.JLabel labelTicketType;
     private javax.swing.JList<String> ticketTypesList;
     // End of variables declaration//GEN-END:variables
