@@ -91,8 +91,8 @@ public class DBManager {
             String tableTicket = "CREATE TABLE Ticket ("
                     + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
                     + "date DATE NOT NULL," //
-                    + "ticketType VARCHAR(50) NOT NULL," //
-                    + "noTicket INTEGER NOT NULL," //
+                    + "type VARCHAR(50) NOT NULL," //
+                    + "number INTEGER NOT NULL," //
                     + "numberTo INTEGER," //
                     + "authCode VARCHAR(30) NOT NULL," //
                     + "providerCuit VARCHAR(30) NOT NULL," //
@@ -103,7 +103,7 @@ public class DBManager {
                     + "amountImpEx REAL,"
                     + "iva REAL," //
                     + "totalAmount REAL NOT NULL," //
-                    + "PRIMARY KEY (date, noTicket, providerCuit),"
+                    + "PRIMARY KEY (date, number, providerCuit),"
                     + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
                     + ")";    
 

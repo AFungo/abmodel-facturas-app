@@ -37,8 +37,7 @@ public class Ticket extends Retenciones{
     }
 
     public Map<String, Object> getValues() {
-        Map<String, Object> dict = new HashMap<>();
-        dict = super.getValues();
+        Map<String, Object> dict = super.getValues();
         if (numberTo != null) dict.put("numberTo", numberTo);
         dict.put("authCode", authCode);
         dict.put("provider", provider);

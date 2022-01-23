@@ -24,7 +24,7 @@ public class Retenciones {
    public Retenciones(Map<String, String> data){
         this.date = TicketFormater.dateGen(data.get("date"));
         this.type = data.get("type");
-        this.number= Integer.parseInt(data.get("number"));
+        this.number = Integer.parseInt(data.get("number"));
         this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));
         this.totalAmount = Float.parseFloat(data.get("totalAmount"));
    }    
@@ -36,12 +36,12 @@ public class Retenciones {
        this.totalAmount = totalAmount;
    }
    public Map<String, Object> getValues(){
-       Map<String, Object> dic = new HashMap<>();
-       dic.put("date", date);
-       dic.put("type", type);
-       dic.put("totalAmount", totalAmount);
-       dic.put("provider", provider);
-       dic.put("number", number);
-       return dic;
+       Map<String, Object> dict = new HashMap<>();
+       dict.put("date", date);
+       dict.put("type", type);
+       dict.put("totalAmount", totalAmount);
+       dict.put("provider", provider);
+       dict.put("number", number);
+       return dict;
    }                  
  }

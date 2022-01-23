@@ -20,8 +20,8 @@ public class TicketFormater {
      public static String[] ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
-        attributes += "noTicket, totalAmount, date, exchangeType, ticketType, exchangeMoney, authCode, providerCuit";
-        values += dict.get("noTicket") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
+        attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerCuit";
+        values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
                 + dict.get("exchangeType") + ", '" + dict.get("ticketType") + "', '" + dict.get("exchangeMoney") + "', '" 
                 + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getCuit() + "'";
 
@@ -37,7 +37,7 @@ public class TicketFormater {
     
     public static Object[] ticketToForm(Ticket t) {
         Map<String, Object> dict = t.getValues();
-        Object[] values = {dict.get("date"), dict.get("ticketType"), dict.get("noTicket"), dict.get("numberTo"), dict.get("authCode"), 
+        Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
             ((Provider)dict.get("provider")).getCuit(), ((Provider)dict.get("provider")).getName(), dict.get("exchangeType"), 
             dict.get("netAmountWI"), dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount")};
 
@@ -49,7 +49,7 @@ public class TicketFormater {
         
         dict.put("date", data[0]);
         dict.put("ticketType", data[1]);
-        dict.put("noTicket", data[2]+data[3]);
+        dict.put("number", data[2]+data[3]);
         String numberToVar = data[4];
         if (!numberToVar.isEmpty()) dict.put("numberTo", numberToVar);
         dict.put("authCode", data[5]);

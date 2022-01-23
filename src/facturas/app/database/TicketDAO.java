@@ -57,8 +57,8 @@ public class TicketDAO extends DAO {
             while(result.next()) {
                 Map<String, String> ticketAttributes = new HashMap<>();
                 ticketAttributes.put("date", result.getString(2));
-                ticketAttributes.put("ticketType", result.getString(3));
-                ticketAttributes.put("noTicket", result.getString(4));
+                ticketAttributes.put("type", result.getString(3));
+                ticketAttributes.put("number", result.getString(4));
                 if (result.getString(5) != null) ticketAttributes.put("numberTo", result.getString(5));
                 ticketAttributes.put("authCode", result.getString(6));
                 Provider prov = ProviderDAO.getProvider(result.getString(7));
