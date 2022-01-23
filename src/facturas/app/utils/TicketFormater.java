@@ -22,7 +22,7 @@ public class TicketFormater {
         String attributes = "", values = "";
         attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerCuit";
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
-                + dict.get("exchangeType") + ", '" + dict.get("ticketType") + "', '" + dict.get("exchangeMoney") + "', '" 
+                + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
                 + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getCuit() + "'";
 
         if (dict.get("iva") != null) { attributes += ", iva"; values += ", " + dict.get("iva");}
@@ -48,7 +48,7 @@ public class TicketFormater {
         Map<String, String> dict = new HashMap<>();
         
         dict.put("date", data[0]);
-        dict.put("ticketType", data[1]);
+        dict.put("type", data[1]);
         dict.put("number", data[2]+data[3]);
         String numberToVar = data[4];
         if (!numberToVar.isEmpty()) dict.put("numberTo", numberToVar);
