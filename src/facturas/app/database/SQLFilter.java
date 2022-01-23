@@ -6,6 +6,7 @@
 package facturas.app.database;
 
 import facturas.app.utils.Pair;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,12 +44,17 @@ public class SQLFilter {
             Class<?> valueClass = value.getSnd();
             if (valueClass == String.class) {
                 sqlCode += "'" + valueClass.cast(value.getFst()) + "'" ;
+            } else if (valueClass == Date.class) {
+                sqlCode += "'" + (Date)value.getFst() + "'";
             } else {
                 sqlCode += valueClass.cast(value.getFst());
-            } // FIXME: We should add a special case for dates?
+            }
             firstOne = false;
         }
         return sqlCode;
     }
     
+    public boolean isEmpty() {
+        return filters.isEmpty();
+    }
 }
