@@ -446,7 +446,7 @@ public class View extends javax.swing.JFrame {
         if (!text.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(text, String.class));
         
         List<String> typesList = ticketTypesList.getSelectedValuesList();
-        if (!typesList.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(typesList.get(0), String.class));
+        if (!typesList.isEmpty()) filter.add(new Pair<> ("type", "="), new Pair(typesList.get(0), String.class));
         
         List<Ticket> tickets = controller.getTickets(filter);
         
