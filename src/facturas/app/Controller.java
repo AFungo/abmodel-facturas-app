@@ -63,7 +63,10 @@ public class Controller {
     }
     
     public List<Ticket> getTickets(SQLFilter filters) {
-        return TicketDAO.getTickets(filters);
+        if (filters.isEmpty())
+            return getTickets();
+        else
+            return TicketDAO.getTickets(filters);
     }
     
     public List<Provider> getProviders() {
