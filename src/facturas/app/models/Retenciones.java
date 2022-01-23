@@ -21,27 +21,29 @@ public class Retenciones {
     protected Float totalAmount;
     protected String type;
     
-   public Retenciones(Map<String, String> data){
+    public Retenciones(Map<String, String> data) {
         this.date = TicketFormater.dateGen(data.get("date"));
         this.type = data.get("type");
         this.number = Integer.parseInt(data.get("number"));
         this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));
         this.totalAmount = Float.parseFloat(data.get("totalAmount"));
-   }    
-   public Retenciones(Provider provider, int noRetencion, Date date, Float totalAmount, String retType){
-       this.provider = provider;
-       this.number = number;
-       this.date = date;
-       this.type = type;
-       this.totalAmount = totalAmount;
-   }
-   public Map<String, Object> getValues(){
-       Map<String, Object> dict = new HashMap<>();
-       dict.put("date", date);
-       dict.put("type", type);
-       dict.put("totalAmount", totalAmount);
-       dict.put("provider", provider);
-       dict.put("number", number);
-       return dict;
-   }                  
+    }
+
+    public Retenciones(Provider provider, int noRetencion, Date date, Float totalAmount, String retType) {
+        this.provider = provider;
+        this.number = number;
+        this.date = date;
+        this.type = type;
+        this.totalAmount = totalAmount;
+    }
+
+    public Map<String, Object> getValues() {
+        Map<String, Object> dict = new HashMap<>();
+        dict.put("date", date);
+        dict.put("type", type);
+        dict.put("totalAmount", totalAmount);
+        dict.put("provider", provider);
+        dict.put("number", number);
+        return dict;
+    }                  
  }
