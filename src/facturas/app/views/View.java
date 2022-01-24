@@ -12,7 +12,6 @@ import facturas.app.models.Ticket;
 import facturas.app.utils.Pair;
 import facturas.app.utils.Formater;
 import facturas.app.utils.ProfitCalculator;
-import java.io.File;
 import java.sql.Date;
 import java.util.List;
 import javax.swing.JFileChooser;
@@ -48,44 +47,44 @@ public class View extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable(new DefaultTableModel(new Object[]{"Fecha","Tipo","Nro factura","Número Hasta","Cód. Autorización","Nro. Doc. Emisor","Denominación Emisor","Tipo Cambio","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"}, 0));
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        fechaInicial = new javax.swing.JTextField();
-        fechaFinal = new javax.swing.JTextField();
-        labelFecha = new javax.swing.JLabel();
-        impTotalMaximo = new javax.swing.JTextField();
+        addVouchers = new javax.swing.JButton();
+        vouchersTableScroll = new javax.swing.JScrollPane();
+        vouchersTable = new javax.swing.JTable(new DefaultTableModel(new Object[]{"Fecha","Tipo","Nro factura","Número Hasta","Cód. Autorización","Nro. Doc. Emisor","Denominación Emisor","Tipo Cambio","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"}, 0));
+        total = new javax.swing.JTextField();
+        ivaTaxTextField = new javax.swing.JTextField();
+        calculateButton = new javax.swing.JButton();
+        showCompanies = new javax.swing.JButton();
+        showVouchers = new javax.swing.JButton();
+        startDate = new javax.swing.JTextField();
+        finishDate = new javax.swing.JTextField();
+        labelDate = new javax.swing.JLabel();
+        maxTotal = new javax.swing.JTextField();
         labelImpTotal = new javax.swing.JLabel();
-        impTotalMinimo = new javax.swing.JTextField();
-        ivaMaximo = new javax.swing.JTextField();
+        minTotal = new javax.swing.JTextField();
+        maxIva = new javax.swing.JTextField();
         labelTicketType = new javax.swing.JLabel();
-        ivaMinimo = new javax.swing.JTextField();
+        minIva = new javax.swing.JTextField();
         labelIva = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        ticketTypesListScroll = new javax.swing.JScrollPane();
         ticketTypesList = new javax.swing.JList<>();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        labelProveedor = new javax.swing.JLabel();
-        cuitProveedor = new javax.swing.JTextField();
+        profitTax = new javax.swing.JTextField();
+        ivaTaxLabel = new javax.swing.JTextField();
+        profitTaxLabel = new javax.swing.JTextField();
+        totalLabel = new javax.swing.JTextField();
+        labelCompanyCuit = new javax.swing.JLabel();
+        companyCuit = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Agregar Comprobantes");
-        jButton1.setPreferredSize(new java.awt.Dimension(150, 50));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addVouchers.setText("Agregar Comprobantes");
+        addVouchers.setPreferredSize(new java.awt.Dimension(150, 50));
+        addVouchers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addVouchersActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        vouchersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -108,55 +107,55 @@ public class View extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(2);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(3);
+        vouchersTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        vouchersTable.getTableHeader().setReorderingAllowed(false);
+        vouchersTableScroll.setViewportView(vouchersTable);
+        if (vouchersTable.getColumnModel().getColumnCount() > 0) {
+            vouchersTable.getColumnModel().getColumn(0).setPreferredWidth(2);
+            vouchersTable.getColumnModel().getColumn(1).setPreferredWidth(3);
         }
 
-        jTextField2.setEditable(false);
-        jTextField2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jTextField2.setBorder(null);
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        total.setEditable(false);
+        total.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        total.setBorder(null);
+        total.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                totalActionPerformed(evt);
             }
         });
 
-        jTextField3.setEditable(false);
-        jTextField3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jTextField3.setBorder(null);
+        ivaTaxTextField.setEditable(false);
+        ivaTaxTextField.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        ivaTaxTextField.setBorder(null);
 
-        jButton2.setText("CALCULAR");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        calculateButton.setText("Calcular");
+        calculateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                calculateButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Mostrar proveedores");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        showCompanies.setText("Mostrar proveedores");
+        showCompanies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                showCompaniesActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Mostrar facturas");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        showVouchers.setText("Mostrar comprobantes");
+        showVouchers.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                showVouchersActionPerformed(evt);
             }
         });
 
-        fechaInicial.addActionListener(new java.awt.event.ActionListener() {
+        startDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fechaInicialActionPerformed(evt);
+                startDateActionPerformed(evt);
             }
         });
 
-        labelFecha.setText("< Fecha <");
+        labelDate.setText("< Fecha <");
 
         labelImpTotal.setText("< imp. total <");
 
@@ -170,38 +169,38 @@ public class View extends javax.swing.JFrame {
             public String getElementAt(int i) { return strings[i]; }
         });
         ticketTypesList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        jScrollPane1.setViewportView(ticketTypesList);
+        ticketTypesListScroll.setViewportView(ticketTypesList);
 
-        jTextField1.setEditable(false);
-        jTextField1.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jTextField1.setBorder(null);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        profitTax.setEditable(false);
+        profitTax.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        profitTax.setBorder(null);
+        profitTax.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                profitTaxActionPerformed(evt);
             }
         });
 
-        jTextField5.setEditable(false);
-        jTextField5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jTextField5.setText("Iva:");
-        jTextField5.setBorder(null);
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        ivaTaxLabel.setEditable(false);
+        ivaTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        ivaTaxLabel.setText("Iva:");
+        ivaTaxLabel.setBorder(null);
+        ivaTaxLabel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                ivaTaxLabelActionPerformed(evt);
             }
         });
 
-        jTextField6.setEditable(false);
-        jTextField6.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jTextField6.setText("Ganancias:");
-        jTextField6.setBorder(null);
+        profitTaxLabel.setEditable(false);
+        profitTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        profitTaxLabel.setText("Ganancias:");
+        profitTaxLabel.setBorder(null);
 
-        jTextField7.setEditable(false);
-        jTextField7.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        jTextField7.setText("Total:");
-        jTextField7.setBorder(null);
+        totalLabel.setEditable(false);
+        totalLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        totalLabel.setText("Total:");
+        totalLabel.setBorder(null);
 
-        labelProveedor.setText("cuit provedor =");
+        labelCompanyCuit.setText("cuit provedor =");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -212,65 +211,65 @@ public class View extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(impTotalMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(minTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelFecha)
+                                .addComponent(labelDate)
                                 .addGap(12, 12, 12)
-                                .addComponent(fechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(finishDate, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(labelImpTotal)
                                 .addGap(12, 12, 12)
-                                .addComponent(impTotalMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(maxTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(ivaMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(minIva, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(12, 12, 12)
                             .addComponent(labelIva)
                             .addGap(12, 12, 12)
-                            .addComponent(ivaMaximo))
+                            .addComponent(maxIva))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(labelProveedor)
+                            .addComponent(labelCompanyCuit)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(cuitProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(companyCuit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(6, 6, 6))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labelTicketType)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ticketTypesListScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3)
+                    .addComponent(showCompanies)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showVouchers, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(addVouchers, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(80, 80, 80)
-                                .addComponent(jButton2)))
+                                .addComponent(calculateButton)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ivaTaxLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextField7)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(totalLabel)
+                                .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(vouchersTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 1286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 233, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(vouchersTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -278,47 +277,47 @@ public class View extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton2))
+                                    .addComponent(addVouchers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(calculateButton))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton4))
+                                .addComponent(showVouchers))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(5, 5, 5))
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(ivaTaxTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(5, 5, 5)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
+                        .addComponent(showCompanies))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fechaInicial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelFecha))
+                            .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(finishDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelDate))
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(impTotalMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(impTotalMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(minTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(maxTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelImpTotal))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ivaMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ivaMaximo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(minIva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(maxIva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelIva))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cuitProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelProveedor)))
+                            .addComponent(companyCuit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelCompanyCuit)))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ticketTypesListScroll, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addComponent(labelTicketType)
                             .addGap(84, 84, 84))))
@@ -329,7 +328,7 @@ public class View extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     //load tickets
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void addVouchersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVouchersActionPerformed
         
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
@@ -337,28 +336,24 @@ public class View extends javax.swing.JFrame {
         chooser.showOpenDialog(this);
 
         controller.loadTickets(chooser.getSelectedFile());
-        jButton4ActionPerformed(evt);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        showVouchersActionPerformed(evt);
+    }//GEN-LAST:event_addVouchersActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_totalActionPerformed
     
     //calculates profit of tickets
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ProfitCalculator profit = new ProfitCalculator();
-
-        for(Ticket t : controller.getTickets()){
-            if(t.getValues().get("iva") !=  null && t.getValues().get("totalAmount") != null) profit.addTicket(t);
-        }
+    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        ProfitCalculator profit = controller.getProfit();
         
-        jTextField1.setText(profit.getGanancia().toString());
-        jTextField3.setText(profit.getProfit().toString());
-        jTextField2.setText(profit.getIva().toString());
-    }//GEN-LAST:event_jButton2ActionPerformed
+        profitTax.setText(profit.getGanancia().toString());
+        ivaTaxTextField.setText(profit.getProfit().toString());
+        total.setText(profit.getIva().toString());
+    }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void showCompaniesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCompaniesActionPerformed
         // TODO add your handling code here:
         providersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -385,7 +380,7 @@ public class View extends javax.swing.JFrame {
         });
         providersTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         providersTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(providersTable);
+        vouchersTableScroll.setViewportView(providersTable);
         if (providersTable.getColumnModel().getColumnCount() > 0) {
             providersTable.getColumnModel().getColumn(0).setPreferredWidth(2);
             providersTable.getColumnModel().getColumn(1).setPreferredWidth(3);
@@ -396,32 +391,31 @@ public class View extends javax.swing.JFrame {
             model.addRow(new Object[] {p.getCuit(), p.getName(), p.getDocType()});
         }
         providersTable.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_showCompaniesActionPerformed
 
     //show tickets
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void showVouchersActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO: Improve this, and refactor the View class
         // creating another class with method that execute the expected
         // behaviour for each event
         
-        jScrollPane2.setViewportView(jTable1);
+        vouchersTableScroll.setViewportView(vouchersTable);
         SQLFilter filter = new SQLFilter();
-        String text = fechaInicial.getText();
+        String text = startDate.getText();
         if (!text.isEmpty()) filter.add(new Pair<> ("date", ">"), new Pair(Formater.dateGen(text), Date.class));
-        text = fechaFinal.getText();
+        text = finishDate.getText();
         if (!text.isEmpty()) filter.add(new Pair<> ("date", "<"), new Pair(Formater.dateGen(text), Date.class));
-        
-        text = impTotalMinimo.getText();
+        text = minTotal.getText();
         if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class));
-        text = impTotalMaximo.getText();
+        text = maxTotal.getText();
         if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", "<"), new Pair(Float.parseFloat(text), Float.class));
         
-        text = ivaMinimo.getText();
+        text = minIva.getText();
         if (!text.isEmpty()) filter.add(new Pair<> ("iva", ">"), new Pair(Float.parseFloat(text), Float.class));
-        text = ivaMaximo.getText();
+        text = maxIva.getText();
         if (!text.isEmpty()) filter.add(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class));
         
-        text = cuitProveedor.getText();
+        text = companyCuit.getText();
         if (!text.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(text, String.class));
         
         List<String> typesList = ticketTypesList.getSelectedValuesList();
@@ -429,23 +423,23 @@ public class View extends javax.swing.JFrame {
         
         List<Ticket> tickets = controller.getTickets(filter);
         
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel)vouchersTable.getModel();
         refreshTable(model);
         for (Ticket t : tickets)
             model.addRow(Formater.ticketToForm(t));
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }                                            
 
-    private void fechaInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaInicialActionPerformed
+    private void startDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startDateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fechaInicialActionPerformed
+    }//GEN-LAST:event_startDateActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void profitTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profitTaxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_profitTaxActionPerformed
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void ivaTaxLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ivaTaxLabelActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_ivaTaxLabelActionPerformed
 
     private void refreshTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
@@ -454,32 +448,32 @@ public class View extends javax.swing.JFrame {
     
     JTable providersTable = new JTable();
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField cuitProveedor;
-    private javax.swing.JTextField fechaFinal;
-    private javax.swing.JTextField fechaInicial;
-    private javax.swing.JTextField impTotalMaximo;
-    private javax.swing.JTextField impTotalMinimo;
-    private javax.swing.JTextField ivaMaximo;
-    private javax.swing.JTextField ivaMinimo;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JLabel labelFecha;
+    private javax.swing.JButton addVouchers;
+    private javax.swing.JButton calculateButton;
+    private javax.swing.JTextField companyCuit;
+    private javax.swing.JTextField finishDate;
+    private javax.swing.JTextField ivaTaxLabel;
+    private javax.swing.JTextField ivaTaxTextField;
+    private javax.swing.JLabel labelCompanyCuit;
+    private javax.swing.JLabel labelDate;
     private javax.swing.JLabel labelImpTotal;
     private javax.swing.JLabel labelIva;
-    private javax.swing.JLabel labelProveedor;
     private javax.swing.JLabel labelTicketType;
+    private javax.swing.JTextField maxIva;
+    private javax.swing.JTextField maxTotal;
+    private javax.swing.JTextField minIva;
+    private javax.swing.JTextField minTotal;
+    private javax.swing.JTextField profitTax;
+    private javax.swing.JTextField profitTaxLabel;
+    private javax.swing.JButton showCompanies;
+    private javax.swing.JButton showVouchers;
+    private javax.swing.JTextField startDate;
     private javax.swing.JList<String> ticketTypesList;
+    private javax.swing.JScrollPane ticketTypesListScroll;
+    private javax.swing.JTextField total;
+    private javax.swing.JTextField totalLabel;
+    private javax.swing.JTable vouchersTable;
+    private javax.swing.JScrollPane vouchersTableScroll;
     // End of variables declaration//GEN-END:variables
 
 }
