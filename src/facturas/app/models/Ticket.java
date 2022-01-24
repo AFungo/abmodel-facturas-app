@@ -5,16 +5,13 @@
  */
 package facturas.app.models;
 
-import facturas.app.utils.TicketFormater;
-import java.sql.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  *
  * @author ABMODEL
  */
-public class Ticket extends Retenciones{   
+public class Ticket extends Withholding{   
     private Float iva;
     private float exchangeType;
     private String exchangeMoney;
@@ -36,6 +33,7 @@ public class Ticket extends Retenciones{
         this.iva = data.get("iva") != null ? Float.parseFloat(data.get("iva")) : null ;
     }
 
+    @Override
     public Map<String, Object> getValues() {
         Map<String, Object> dict = super.getValues();
         if (numberTo != null) dict.put("numberTo", numberTo);

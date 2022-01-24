@@ -27,9 +27,7 @@ public class DBManager {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(JDBC_URL);
             System.out.println("Connection was established");
-        } catch (ClassNotFoundException e) {
-            System.out.println(e);
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e);
         }
     }

@@ -6,6 +6,10 @@
 
 package facturas.app.models;
 
+import facturas.app.utils.Pair;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Lenovo
@@ -32,16 +36,16 @@ public class Provider {
         return name;
     }
     
+    @Override
     public String toString(){
         return "Nombre" + name + "    " + "Cuit" + cuit; 
     }          
     
-    public String [ ] getSQLValues() {
-        String attributes = "", values = "";
-        attributes += "cuit, name, documentType";
-        values += "'" + cuit + "', '" + name + "', '" + documentType + "'";
-
-        String [ ] result = {attributes, values};
-        return result;
+    public Map<String, Object> getValues() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("cuit", cuit);
+        values.put("name", name);
+        values.put("documentType", documentType);
+        return values;
     }
 }

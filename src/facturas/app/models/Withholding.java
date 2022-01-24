@@ -5,7 +5,7 @@
  */
 package facturas.app.models;
 
-import facturas.app.utils.TicketFormater;
+import facturas.app.utils.Formater;
 import java.util.Map;
 import java.util.HashMap;
 import java.sql.Date;
@@ -14,22 +14,22 @@ import java.sql.Date;
  *
  * @author Fungo
  */
-public class Retenciones {
+public class Withholding {
     protected Provider provider; 
     protected int number;
     protected Date date;
     protected Float totalAmount;
     protected String type;
     
-    public Retenciones(Map<String, String> data) {
-        this.date = TicketFormater.dateGen(data.get("date"));
+    public Withholding(Map<String, String> data) {
+        this.date = Formater.dateGen(data.get("date"));
         this.type = data.get("type");
         this.number = Integer.parseInt(data.get("number"));
         this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));
         this.totalAmount = Float.parseFloat(data.get("totalAmount"));
     }
 
-    public Retenciones(Provider provider, int noRetencion, Date date, Float totalAmount, String retType) {
+    public Withholding(Provider provider, int number, Date date, Float totalAmount, String type) {
         this.provider = provider;
         this.number = number;
         this.date = date;

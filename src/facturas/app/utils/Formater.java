@@ -15,9 +15,9 @@ import java.util.Map;
  *
  * @author nacho
  */
-public class TicketFormater {
+public class Formater {
     
-     public static String[] ticketToSQL(Ticket t) {
+     public static Pair<String, String> ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
         attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerCuit";
@@ -31,8 +31,7 @@ public class TicketFormater {
         if (dict.get("numberTo") != null) { attributes += ", numberTo"; values += ", " + dict.get("numberTo");}
         if (dict.get("amountImpEx") != null) { attributes += ", amountImpEx"; values += ", " + dict.get("amountImpEx");}
 
-        String[] result = {attributes, values};
-        return result;
+        return new Pair<>(attributes, values);
     }
     
     public static Object[] ticketToForm(Ticket t) {
@@ -44,7 +43,7 @@ public class TicketFormater {
         return values;
     }
     
-    public static Map<String, String> csvToDict(String[] data) {
+    public static Map<String, String> ticketCsvToDict(String[] data) {
         Map<String, String> dict = new HashMap<>();
         
         dict.put("date", data[0]);
@@ -69,6 +68,15 @@ public class TicketFormater {
         dict.put("totalAmount", data[15]);
         
         return dict;
+    }
+    
+    public static Pair<String, String> providerToSQL(Provider p) {
+        Map<String, Object> dict = p.getValues();
+        String attributes = "", values = "";
+        attributes += "cuit, name, documentType";
+        values += "'" + dict.get("cuit") + "', '" + dict.get("name") + "', '" + dict.get("documentType") + "'";
+
+        return new Pair<>(attributes, values);
     }
     
     //this method takes a String and returns a Date.

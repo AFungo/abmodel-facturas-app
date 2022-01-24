@@ -8,8 +8,8 @@ package facturas.app.database;
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.models.Provider;
-import facturas.app.utils.TicketFormater;
-import java.sql.Date;
+import facturas.app.utils.Pair;
+import facturas.app.utils.Formater;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,13 +26,13 @@ import java.util.logging.Logger;
 public class TicketDAO extends DAO {
     
     public static void addTicket(Ticket ticket) {
-        String [ ] sqlValues = TicketFormater.ticketToSQL(ticket);
+        Pair<String, String> sqlValues = Formater.ticketToSQL(ticket);
         Provider provider = (Provider)ticket.getValues().get("provider");
         if (!ProviderDAO.providerExist(provider.getCuit())) {
             ProviderDAO.addProvider(provider);
         }
-        String query = "INSERT INTO Ticket (" + sqlValues[0] + ") "
-            + "VALUES (" + sqlValues[1] + ")";
+        String query = "INSERT INTO Ticket (" + sqlValues.getFst() + ") "
+            + "VALUES (" + sqlValues.getSnd() + ")";
         executeQuery(query, true);
     }
         

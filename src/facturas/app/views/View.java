@@ -10,7 +10,7 @@ import facturas.app.database.SQLFilter;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Pair;
-import facturas.app.utils.TicketFormater;
+import facturas.app.utils.Formater;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
 import java.sql.Date;
@@ -407,9 +407,9 @@ public class View extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable1);
         SQLFilter filter = new SQLFilter();
         String text = fechaInicial.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("date", ">"), new Pair(TicketFormater.dateGen(text), Date.class));
+        if (!text.isEmpty()) filter.add(new Pair<> ("date", ">"), new Pair(Formater.dateGen(text), Date.class));
         text = fechaFinal.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("date", "<"), new Pair(TicketFormater.dateGen(text), Date.class));
+        if (!text.isEmpty()) filter.add(new Pair<> ("date", "<"), new Pair(Formater.dateGen(text), Date.class));
         
         text = impTotalMinimo.getText();
         if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class));
@@ -432,7 +432,7 @@ public class View extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         refreshTable(model);
         for (Ticket t : tickets)
-            model.addRow(TicketFormater.ticketToForm(t));
+            model.addRow(Formater.ticketToForm(t));
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void fechaInicialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fechaInicialActionPerformed

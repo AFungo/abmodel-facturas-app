@@ -6,10 +6,11 @@
 package facturas.app.database;
 
 import facturas.app.models.Provider;
+import facturas.app.utils.Formater;
+import facturas.app.utils.Pair;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,9 +22,9 @@ import java.util.logging.Logger;
 public class ProviderDAO extends DAO {
     
     public static void addProvider(Provider provider) {
-        String [ ] sqlValues = provider.getSQLValues();
-        String query = "INSERT INTO Provider (" + sqlValues[0] + ") "
-            + "VALUES (" + sqlValues[1] + ")";
+        Pair<String, String> sqlValues = Formater.providerToSQL(provider);
+        String query = "INSERT INTO Provider (" + sqlValues.getFst() + ") "
+            + "VALUES (" + sqlValues.getSnd() + ")";
         executeQuery(query, true);
     }
     

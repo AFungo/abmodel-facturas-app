@@ -6,7 +6,7 @@
 package facturas.app.utils;
 
 import facturas.app.models.Ticket;
-import facturas.app.models.Retenciones;
+import facturas.app.models.Withholding;
 /**
  *
  * @author nacho
@@ -32,7 +32,7 @@ public class ProfitCalculator {
         if(t.isIncome()) sales.addTransaction(ta, i, nw);
         else purchases.addTransaction(ta, i, nw);
     }
-    public void addRetention(Retenciones r){
+    public void addRetention(Withholding r){
         Float ta = (Float) r.getValues().get("totalAmount");
         if(r.getValues().get("type").equals("retIva")) retentionIva.addTransaction(ta, 0.0f, 0.0f);
         if(r.getValues().get("type").equals("retGan")) retentionGan.addTransaction(ta, 0.0f, 0.0f);
