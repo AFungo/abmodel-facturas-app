@@ -7,6 +7,7 @@ package facturas.app.utils;
 
 import facturas.app.models.Ticket;
 import facturas.app.models.Retenciones;
+import java.util.Map;
 /**
  *
  * @author nacho
@@ -26,12 +27,16 @@ public class ProfitCalculator {
     }
     
     public void addTicket(Ticket t) {
-        Float ta = (Float) t.getValues().get("totalAmount");
-        Float i = (Float) t.getValues().get("iva");
-        Float nw = (Float) t.getValues().get("netAmountWOI");
-        if(t.isIncome()) sales.addTransaction(ta, i, nw);
-        else purchases.addTransaction(ta, i, nw);
+        Map<String, Object> values = t.getValues();
+        Float totalAmount = (Float) values.get("totalAmount");
+        Float iva = values.get("iva") != null ? (Float) values.get("iva") : 0.0f;
+        Float netAmountWOI = values.get("netAmountWOI") != null ? (Float) values.get("netAmountWOI") : 0.0f;
+        if (t.isIncome())
+            sales.addTransaction(totalAmount, iva, netAmountWOI);
+        else
+            purchases.addTransaction(totalAmount, iva, netAmountWOI);
     }
+    
     public void addRetention(Retenciones r){
         Float ta = (Float) r.getValues().get("totalAmount");
         if(r.getValues().get("type").equals("retIva")) retentionIva.addTransaction(ta, 0.0f, 0.0f);
@@ -50,22 +55,3 @@ public class ProfitCalculator {
     }
    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
