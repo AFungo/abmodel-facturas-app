@@ -335,30 +335,9 @@ public class View extends javax.swing.JFrame {
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
-        File f = chooser.getSelectedFile();
-        if (f == null) { //if no file selected then the action ends here
-            return;
-        }
-        
-        //FIXME: The file is already generated here, maybe we could pass a file
-        // in the method loadTicket instead of file path
-        controller.loadTickets(f.getPath());
-        
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-        
-        //Example of use of filter
-        /*
-        SQLFilter filter = new SQLFilter();
-        Pair<String, String> fieldOperator = new Pair<>("exchangeType", "=");
-        Pair<Object, Class<?>> values = new Pair<>(102.54, Double.class);
-        filter.add(fieldOperator, values);
-        fieldOperator = new Pair<>("iva","=");
-        values = new Pair<>(652.1, Double.class);
-        filter.add(fieldOperator, values);
-        */
-        refreshTable(model);
-        for (Ticket t : controller.getTickets())
-            model.addRow(TicketFormater.ticketToForm(t));
+
+        controller.loadTickets(chooser.getSelectedFile());
+        jButton4ActionPerformed(evt);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed

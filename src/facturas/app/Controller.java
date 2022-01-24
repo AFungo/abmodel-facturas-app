@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,17 +26,22 @@ import java.util.logging.Logger;
  */
 public class Controller {
     
-    public void loadTickets(String fileName) {
+    public void loadTickets(File f) {
+        if (f == null) {
+            System.out.println("File at " + f.getPath() + " doesn't exists");
+            return ;
+        }
+        
         List<String> stringTickets = new ArrayList<>();
         try {
-            stringTickets = Files.readAllLines(new File(fileName).toPath(), Charset.defaultCharset());
+            stringTickets = Files.readAllLines(f.toPath(), Charset.defaultCharset());
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         String initialLine = stringTickets.remove(0); //Remove the first row of the file for checking
         if (!validFormat(initialLine)) {
-            System.out.println("File does not have a valid format to be loaded\nFile: " + fileName);
+            System.out.println("File does not have a valid format to be loaded\nFile: " + f.getPath());
             return;
         }
             
