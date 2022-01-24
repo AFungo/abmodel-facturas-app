@@ -29,9 +29,10 @@ public class ProfitCalculator {
     
     public void addTicket(Ticket t) {
         Map<String, Object> values = t.getValues();
-        Float totalAmount = (Float) values.get("totalAmount");
-        Float iva = values.get("iva") != null ? (Float) values.get("iva") : 0.0f;
-        Float netAmountWOI = values.get("netAmountWOI") != null ? (Float) values.get("netAmountWOI") : 0.0f;
+        Float exchangeType = (Float) t.getValues().get("exchangeType");
+        Float totalAmount = (Float) values.get("totalAmount") * exchangeType;
+        Float iva = (values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType;
+        Float netAmountWOI = (values.get("netAmountWOI") != null ? (Float) values.get("netAmountWOI") : 0.0f) * exchangeType;
         if (t.isIncome())
             sales.addTransaction(totalAmount, iva, netAmountWOI);
         else
