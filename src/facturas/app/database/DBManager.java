@@ -6,7 +6,9 @@
 package facturas.app.database;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -51,22 +53,25 @@ public class DBManager {
         boolean providerTableCreated = createProviderTable();
         boolean ticketTableCreated = createTicketTable();
         
-        if (providerTableCreated && ticketTableCreated) {
+        if (providerTableCreated && ticketTableCreated)
             System.out.println("Tables were created");
-        } else if (providerTableCreated && !ticketTableCreated) {
-            System.out.println("providerTable was created and ticketTable already exists");
-        } else if (!providerTableCreated && ticketTableCreated) {
+        else if (!providerTableCreated && ticketTableCreated)
             System.out.println("ticketTable was created and providerTable already exists");
-        } else {
+        else 
             System.out.println("Tables already exist");
-        }
     }
     
     private static boolean createProviderTable() {
         try {
             connection = getConnection();
+            if (tableAlreadyExists("PROVIDER")) {
+                System.out.println("la tabla ya existe");
+                return false;
+            }
+            System.out.println("pase de largo xq la tabla no existia");
             Statement stm = connection.createStatement();
-
+            
+            System.out.println("fua alta tabla");
             String tableProvider = "CREATE TABLE Provider ("
                     + "cuit VARCHAR(30) PRIMARY KEY,"
                     + "name VARCHAR(100),"
@@ -76,9 +81,6 @@ public class DBManager {
             stm.executeUpdate(tableProvider);
             return true;
         } catch (SQLException e) {
-            if (tableAlreadyExists(e)) {
-                return false;
-            }
             throw new IllegalStateException(e.toString());
         }
     }
@@ -86,6 +88,8 @@ public class DBManager {
     private static boolean createTicketTable() {
         try {
             connection = getConnection();
+            if (tableAlreadyExists("TICKET"))
+                return false;
             Statement stm = connection.createStatement();
             
             String tableTicket = "CREATE TABLE Ticket ("
@@ -111,9 +115,6 @@ public class DBManager {
             stm.executeUpdate(tableTicket);
             return true;
         } catch (SQLException e) {
-            if (tableAlreadyExists(e)) {
-                return false;
-            }
             throw new IllegalStateException(e.toString());
         }
     }
@@ -136,15 +137,14 @@ public class DBManager {
     private static boolean dropTicketTable() {
         try {
             connection = getConnection();
+            if (!tableAlreadyExists("TICKET"))
+                return false;
             Statement stm = connection.createStatement();
 
             String tableTicket = "DROP TABLE Ticket";
             stm.executeUpdate(tableTicket);
             return true;
         } catch (SQLException e) {
-            if (!tableAlreadyExists(e)) {
-                return false;
-            }
             throw new IllegalStateException(e.toString());
         }
     }
@@ -152,27 +152,22 @@ public class DBManager {
     private static boolean dropProviderTable() {
         try {
             connection = getConnection();
+            if (!tableAlreadyExists("PROVIDER"))
+                return false;
             Statement stm = connection.createStatement();
             
             String tableProvider = "DROP TABLE Provider";
             stm.executeUpdate(tableProvider);
             return true;
         } catch (SQLException e) {
-            if (!tableAlreadyExists(e)) {
-                return false;
-            }
             throw new IllegalStateException(e.toString());
         }
     }
     
-    private static boolean tableAlreadyExists(SQLException e) {
-        boolean exists;
-        if(e.getSQLState().equals("X0Y32")) {
-            exists = true;
-        } else {
-            exists = false;
-        }
-        return exists;
-    }
+    private static boolean tableAlreadyExists(String tableName) throws SQLException {
+        DatabaseMetaData meta = connection.getMetaData();
+        ResultSet resultSet = meta.getTables(null, null, tableName, new String[] {"TABLE"});
 
+        return resultSet.next();
+    }
 }
