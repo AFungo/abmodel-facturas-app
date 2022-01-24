@@ -6,14 +6,13 @@
 package facturas.app.views;
 
 import facturas.app.Controller;
-import facturas.app.database.SQLFilter;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
-import facturas.app.utils.Pair;
 import facturas.app.utils.Formater;
 import facturas.app.utils.ProfitCalculator;
-import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -395,33 +394,9 @@ public class View extends javax.swing.JFrame {
 
     //show tickets
     private void showVouchersActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO: Improve this, and refactor the View class
-        // creating another class with method that execute the expected
-        // behaviour for each event
-        
         vouchersTableScroll.setViewportView(vouchersTable);
-        SQLFilter filter = new SQLFilter();
-        String text = startDate.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("date", ">"), new Pair(Formater.dateGen(text), Date.class));
-        text = finishDate.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("date", "<"), new Pair(Formater.dateGen(text), Date.class));
-        text = minTotal.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class));
-        text = maxTotal.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", "<"), new Pair(Float.parseFloat(text), Float.class));
-        
-        text = minIva.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("iva", ">"), new Pair(Float.parseFloat(text), Float.class));
-        text = maxIva.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class));
-        
-        text = companyCuit.getText();
-        if (!text.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(text, String.class));
-        
-        List<String> typesList = ticketTypesList.getSelectedValuesList();
-        if (!typesList.isEmpty()) filter.add(new Pair<> ("type", "="), new Pair(typesList.get(0), String.class));
-        
-        List<Ticket> tickets = controller.getTickets(filter);
+        Map<String, Object> selectedFilters = getFilters();
+        List<Ticket> tickets = controller.getTickets(selectedFilters);
         
         DefaultTableModel model = (DefaultTableModel)vouchersTable.getModel();
         refreshTable(model);
@@ -441,6 +416,21 @@ public class View extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ivaTaxLabelActionPerformed
 
+    private Map<String, Object> getFilters() {
+        Map<String, Object> selectedFilters = new HashMap<> ();
+        
+        selectedFilters.put("startDate", startDate.getText());
+        selectedFilters.put("finishDate", finishDate.getText());
+        selectedFilters.put("minTotal", minTotal.getText());
+        selectedFilters.put("maxTotal", maxTotal.getText());
+        selectedFilters.put("minIva", minIva.getText());
+        selectedFilters.put("maxIva", maxIva.getText());
+        selectedFilters.put("companyCuit", companyCuit.getText());
+        selectedFilters.put("ticketTypesList", ticketTypesList.getSelectedValuesList());
+        
+        return selectedFilters;
+    }
+    
     private void refreshTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
