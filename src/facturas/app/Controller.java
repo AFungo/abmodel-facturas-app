@@ -10,6 +10,7 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.TicketDAO;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
+import facturas.app.utils.ProfitCalculator;
 import facturas.app.utils.TicketFormater;
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +57,15 @@ public class Controller {
         });
     }
     
-    public void createTicket (String ticketData) {
+    public ProfitCalculator getProfit() {
+        ProfitCalculator profit = new ProfitCalculator();
+        for(Ticket t : getTickets())
+            profit.addTicket(t);
+        
+        return profit;
+    }
+    
+    public void createTicket(String ticketData) {
         String[ ] ticketAttributes = ticketData.replace("\"", "").split(",");
         Ticket ticket = new Ticket(TicketFormater.csvToDict(ticketAttributes));
         TicketDAO.addTicket(ticket);

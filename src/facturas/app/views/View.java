@@ -346,11 +346,7 @@ public class View extends javax.swing.JFrame {
     
     //calculates profit of tickets
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ProfitCalculator profit = new ProfitCalculator();
-
-        for(Ticket t : controller.getTickets()){
-            if(t.getValues().get("iva") !=  null && t.getValues().get("totalAmount") != null) profit.addTicket(t);
-        }
+        ProfitCalculator profit = controller.getProfit();
         
         jTextField1.setText(profit.getGanancia().toString());
         jTextField3.setText(profit.getProfit().toString());
