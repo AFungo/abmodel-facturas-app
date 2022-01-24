@@ -28,35 +28,35 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="fechaInicial" min="-2" pref="70" max="-2" attributes="0"/>
-                          <Component id="impTotalMinimo" min="-2" pref="64" max="-2" attributes="0"/>
+                          <Component id="startDate" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Component id="minTotal" min="-2" pref="64" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="labelFecha" min="-2" max="-2" attributes="0"/>
+                              <Component id="labelDate" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="fechaFinal" min="-2" pref="76" max="-2" attributes="0"/>
+                              <Component id="finishDate" min="-2" pref="76" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="labelImpTotal" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                              <Component id="impTotalMaximo" min="-2" pref="79" max="-2" attributes="0"/>
+                              <Component id="maxTotal" min="-2" pref="79" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="ivaMinimo" min="-2" pref="64" max="-2" attributes="0"/>
+                          <Component id="minIva" min="-2" pref="64" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                           <Component id="labelIva" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                          <Component id="ivaMaximo" max="32767" attributes="0"/>
+                          <Component id="maxIva" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Component id="labelProveedor" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelCompanyCuit" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="cuitProveedor" min="-2" pref="95" max="-2" attributes="0"/>
+                          <Component id="companyCuit" min="-2" pref="95" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -67,29 +67,29 @@
               <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButton3" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="showCompanies" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButton4" alignment="0" min="-2" pref="139" max="-2" attributes="0"/>
+                          <Component id="showVouchers" alignment="0" min="-2" pref="139" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jButton1" min="-2" pref="154" max="-2" attributes="0"/>
+                              <Component id="addVouchers" min="-2" pref="154" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                              <Component id="calculateButton" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextField5" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
+                          <Component id="ivaTaxLabel" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jTextField7" max="32767" attributes="0"/>
-                              <Component id="jTextField6" min="-2" max="-2" attributes="0"/>
+                              <Component id="totalLabel" max="32767" attributes="0"/>
+                              <Component id="profitTaxLabel" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextField1" min="-2" pref="128" max="-2" attributes="0"/>
-                          <Component id="jTextField3" min="-2" pref="128" max="-2" attributes="0"/>
-                          <Component id="jTextField2" min="-2" pref="128" max="-2" attributes="0"/>
+                          <Component id="profitTax" min="-2" pref="128" max="-2" attributes="0"/>
+                          <Component id="ivaTaxTextField" min="-2" pref="128" max="-2" attributes="0"/>
+                          <Component id="total" min="-2" pref="128" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -113,57 +113,57 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="addVouchers" min="-2" max="-2" attributes="0"/>
+                                  <Component id="calculateButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                              <Component id="showVouchers" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jTextField5" min="-2" max="-2" attributes="0"/>
+                                      <Component id="ivaTaxLabel" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jTextField3" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ivaTaxTextField" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField6" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="profitTax" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="profitTaxLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jTextField7" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField2" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                                  <Component id="totalLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="total" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                      <Component id="showCompanies" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fechaInicial" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fechaFinal" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelFecha" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="startDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="finishDate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelDate" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="impTotalMinimo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="impTotalMaximo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="minTotal" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="maxTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="labelImpTotal" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="ivaMinimo" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="ivaMaximo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="minIva" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="maxIva" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="labelIva" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cuitProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelProveedor" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="companyCuit" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelCompanyCuit" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -180,7 +180,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="addVouchers">
       <Properties>
         <Property name="text" type="java.lang.String" value="Agregar Comprobantes"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -188,7 +188,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addVouchersActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
@@ -198,7 +198,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="javax.swing.JTable" name="vouchersTable">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="13" rowCount="0">
@@ -299,7 +299,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="jTextField2">
+    <Component class="javax.swing.JTextField" name="total">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -310,13 +310,13 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="totalActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTextField()"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField3">
+    <Component class="javax.swing.JTextField" name="ivaTaxTextField">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -327,61 +327,59 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="calculateButton">
       <Properties>
-        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="&quot;CALCULAR&quot;" type="code"/>
-        </Property>
+        <Property name="text" type="java.lang.String" value="Calcular"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="calculateButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton3">
+    <Component class="javax.swing.JButton" name="showCompanies">
       <Properties>
         <Property name="text" type="java.lang.String" value="Mostrar proveedores"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showCompaniesActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton4">
+    <Component class="javax.swing.JButton" name="showVouchers">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Mostrar facturas"/>
+        <Property name="text" type="java.lang.String" value="Mostrar comprobantes"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showVouchersActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="fechaInicial">
+    <Component class="javax.swing.JTextField" name="startDate">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fechaInicialActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startDateActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="fechaFinal">
+    <Component class="javax.swing.JTextField" name="finishDate">
     </Component>
-    <Component class="javax.swing.JLabel" name="labelFecha">
+    <Component class="javax.swing.JLabel" name="labelDate">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt; Fecha &lt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="impTotalMaximo">
+    <Component class="javax.swing.JTextField" name="maxTotal">
     </Component>
     <Component class="javax.swing.JLabel" name="labelImpTotal">
       <Properties>
         <Property name="text" type="java.lang.String" value="&lt; imp. total &lt;"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="impTotalMinimo">
+    <Component class="javax.swing.JTextField" name="minTotal">
     </Component>
-    <Component class="javax.swing.JTextField" name="ivaMaximo">
+    <Component class="javax.swing.JTextField" name="maxIva">
     </Component>
     <Component class="javax.swing.JLabel" name="labelTicketType">
       <Properties>
         <Property name="text" type="java.lang.String" value="Tipo comprobante:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="ivaMinimo">
+    <Component class="javax.swing.JTextField" name="minIva">
     </Component>
     <Component class="javax.swing.JLabel" name="labelIva">
       <Properties>
@@ -415,7 +413,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="jTextField1">
+    <Component class="javax.swing.JTextField" name="profitTax">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -426,10 +424,10 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="profitTaxActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField5">
+    <Component class="javax.swing.JTextField" name="ivaTaxLabel">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -441,10 +439,10 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField5ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ivaTaxLabelActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField6">
+    <Component class="javax.swing.JTextField" name="profitTaxLabel">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -456,7 +454,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField7">
+    <Component class="javax.swing.JTextField" name="totalLabel">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -468,12 +466,12 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="labelProveedor">
+    <Component class="javax.swing.JLabel" name="labelCompanyCuit">
       <Properties>
         <Property name="text" type="java.lang.String" value="cuit provedor ="/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="cuitProveedor">
+    <Component class="javax.swing.JTextField" name="companyCuit">
     </Component>
   </SubComponents>
 </Form>
