@@ -11,13 +11,16 @@ import facturas.app.database.TicketDAO;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Formater;
+import facturas.app.utils.Pair;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -75,7 +78,8 @@ public class Controller {
         return TicketDAO.getTickets();
     }
     
-    public List<Ticket> getTickets(SQLFilter filters) {
+    public List<Ticket> getTickets(Map<String, Object> selectedFilters) {
+        SQLFilter filters = createFilter(selectedFilters);
         if (filters.isEmpty())
             return getTickets();
         else
@@ -84,6 +88,31 @@ public class Controller {
     
     public List<Provider> getProviders() {
         return ProviderDAO.getProviders();
+    }
+    
+    private SQLFilter createFilter(Map<String, Object> selectedFilters) {
+        SQLFilter filter = new SQLFilter();
+        String text = (String)selectedFilters.get("startDate");
+        if (!text.isEmpty()) filter.add(new Pair<> ("date", ">"), new Pair(Formater.dateGen(text), Date.class));
+        text = (String)selectedFilters.get("finishDate");
+        if (!text.isEmpty()) filter.add(new Pair<> ("date", "<"), new Pair(Formater.dateGen(text), Date.class));
+        text = (String)selectedFilters.get("minTotal");
+        if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class));
+        text = (String)selectedFilters.get("maxTotal");
+        if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", "<"), new Pair(Float.parseFloat(text), Float.class));
+        
+        text = (String)selectedFilters.get("minIva");
+        if (!text.isEmpty()) filter.add(new Pair<> ("iva", ">"), new Pair(Float.parseFloat(text), Float.class));
+        text = (String)selectedFilters.get("maxIva");
+        if (!text.isEmpty()) filter.add(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class));
+        
+        text = (String)selectedFilters.get("companyCuit");
+        if (!text.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(text, String.class));
+        
+        List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
+        if (!typesList.isEmpty()) filter.add(new Pair<> ("type", "="), new Pair(typesList.get(0), String.class)); //for now we just took the first one
+        
+        return filter;
     }
     
     private boolean validFormat(String initialLine) {
