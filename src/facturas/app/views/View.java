@@ -354,42 +354,10 @@ public class View extends javax.swing.JFrame {
     //show providers if any
     private void showCompaniesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCompaniesActionPerformed
         // TODO add your handling code here:
-        providersTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "CUIT", "Nombre", "Tipo de Documento"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        providersTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        providersTable.getTableHeader().setReorderingAllowed(false);
-        vouchersTableScroll.setViewportView(providersTable);
-        if (providersTable.getColumnModel().getColumnCount() > 0) {
-            providersTable.getColumnModel().getColumn(0).setPreferredWidth(2);
-            providersTable.getColumnModel().getColumn(1).setPreferredWidth(3);
-        }
+        ProvidersView pv = new ProvidersView();
         
-        DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
-        for (Provider p : controller.getProviders()) {
-            model.addRow(new Object[] {p.getCuit(), p.getName(), p.getDocType()});
-        }
-        providersTable.setVisible(true);
+        pv.setVisible(true);
+        
     }//GEN-LAST:event_showCompaniesActionPerformed
 
     //show tickets
