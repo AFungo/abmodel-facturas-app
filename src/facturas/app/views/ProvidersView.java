@@ -18,7 +18,8 @@ public class ProvidersView extends javax.swing.JFrame {
     /**
      * Creates new form ProvidersView
      */
-    public ProvidersView() {
+    public ProvidersView(Controller controller) {
+        this.controller = controller;
         initComponents();
     }
 
@@ -96,7 +97,7 @@ public class ProvidersView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    private Controller controller = new Controller();
+    private Controller controller;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

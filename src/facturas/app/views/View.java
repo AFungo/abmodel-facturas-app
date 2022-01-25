@@ -26,6 +26,8 @@ import javax.swing.table.DefaultTableModel;
 public class View extends javax.swing.JFrame {
 
     public Controller controller;
+    ProvidersView pv;
+    JTable providersTable = new JTable();
 
     /**
      * Creates new form MainWindow
@@ -34,6 +36,7 @@ public class View extends javax.swing.JFrame {
      */
     public View(Controller controller) {
         this.controller = controller;
+        pv = new ProvidersView(controller);
         initComponents();
     }
 
@@ -401,8 +404,6 @@ public class View extends javax.swing.JFrame {
             model.removeRow(i);
     }
     
-    ProvidersView pv = new ProvidersView();
-    JTable providersTable = new JTable();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addVouchers;
     private javax.swing.JButton calculateButton;
