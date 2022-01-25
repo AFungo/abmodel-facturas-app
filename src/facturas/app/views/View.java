@@ -354,10 +354,7 @@ public class View extends javax.swing.JFrame {
     //show providers if any
     private void showCompaniesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCompaniesActionPerformed
         // TODO add your handling code here:
-        ProvidersView pv = new ProvidersView();
-        
         pv.setVisible(true);
-        
     }//GEN-LAST:event_showCompaniesActionPerformed
 
     //show tickets
@@ -404,6 +401,7 @@ public class View extends javax.swing.JFrame {
             model.removeRow(i);
     }
     
+    ProvidersView pv = new ProvidersView();
     JTable providersTable = new JTable();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addVouchers;
