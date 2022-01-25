@@ -6,7 +6,6 @@
 package facturas.app.views;
 
 import facturas.app.Controller;
-import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Formater;
 import facturas.app.utils.ProfitCalculator;
@@ -49,14 +48,14 @@ public class View extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        addVouchers = new javax.swing.JButton();
+        addTickets = new javax.swing.JButton();
         vouchersTableScroll = new javax.swing.JScrollPane();
-        vouchersTable = new javax.swing.JTable(new DefaultTableModel(new Object[]{"Fecha","Tipo","Nro factura","Número Hasta","Cód. Autorización","Nro. Doc. Emisor","Denominación Emisor","Tipo Cambio","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"}, 0));
+        ticketsTable = new javax.swing.JTable();
         total = new javax.swing.JTextField();
         ivaTaxTextField = new javax.swing.JTextField();
         calculateButton = new javax.swing.JButton();
-        showCompanies = new javax.swing.JButton();
-        showVouchers = new javax.swing.JButton();
+        showProviders = new javax.swing.JButton();
+        showTickets = new javax.swing.JButton();
         startDate = new javax.swing.JTextField();
         finishDate = new javax.swing.JTextField();
         labelDate = new javax.swing.JLabel();
@@ -78,15 +77,15 @@ public class View extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        addVouchers.setText("Agregar Comprobantes");
-        addVouchers.setPreferredSize(new java.awt.Dimension(150, 50));
-        addVouchers.addActionListener(new java.awt.event.ActionListener() {
+        addTickets.setText("Agregar Comprobantes");
+        addTickets.setPreferredSize(new java.awt.Dimension(150, 50));
+        addTickets.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addVouchersActionPerformed(evt);
+                addTicketsActionPerformed(evt);
             }
         });
 
-        vouchersTable.setModel(new javax.swing.table.DefaultTableModel(
+        ticketsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -109,19 +108,19 @@ public class View extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        vouchersTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        vouchersTable.getTableHeader().setReorderingAllowed(false);
-        vouchersTableScroll.setViewportView(vouchersTable);
-        if (vouchersTable.getColumnModel().getColumnCount() > 0) {
-            vouchersTable.getColumnModel().getColumn(0).setPreferredWidth(2);
-            vouchersTable.getColumnModel().getColumn(1).setPreferredWidth(3);
+        ticketsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        ticketsTable.getTableHeader().setReorderingAllowed(false);
+        vouchersTableScroll.setViewportView(ticketsTable);
+        if (ticketsTable.getColumnModel().getColumnCount() > 0) {
+            ticketsTable.getColumnModel().getColumn(0).setPreferredWidth(2);
+            ticketsTable.getColumnModel().getColumn(1).setPreferredWidth(3);
         }
-        DefaultTableModel model = (DefaultTableModel)vouchersTable.getModel();
+        DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         for (Ticket t : controller.getTickets())
         model.addRow(Formater.ticketToForm(t));
 
-        vouchersTable.setCellSelectionEnabled(true);
-        vouchersTable.setVisible(true);
+        ticketsTable.setCellSelectionEnabled(true);
+        ticketsTable.setVisible(true);
 
         total.setEditable(false);
         total.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -143,17 +142,17 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        showCompanies.setText("Mostrar proveedores");
-        showCompanies.addActionListener(new java.awt.event.ActionListener() {
+        showProviders.setText("Mostrar proveedores");
+        showProviders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showCompaniesActionPerformed(evt);
+                showProvidersActionPerformed(evt);
             }
         });
 
-        showVouchers.setText("Mostrar comprobantes");
-        showVouchers.addActionListener(new java.awt.event.ActionListener() {
+        showTickets.setText("Mostrar comprobantes");
+        showTickets.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showVouchersActionPerformed(evt);
+                showTicketsActionPerformed(evt);
             }
         });
 
@@ -214,49 +213,48 @@ public class View extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(minTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(minTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(labelDate)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(finishDate, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(labelImpTotal)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(maxTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(minIva, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(12, 12, 12)
+                                    .addComponent(labelIva)
+                                    .addGap(12, 12, 12)
+                                    .addComponent(maxIva))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(labelCompanyCuit)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(companyCuit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(6, 6, 6))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelDate)
-                                .addGap(12, 12, 12)
-                                .addComponent(finishDate, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelImpTotal)
-                                .addGap(12, 12, 12)
-                                .addComponent(maxTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(minIva, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(12, 12, 12)
-                            .addComponent(labelIva)
-                            .addGap(12, 12, 12)
-                            .addComponent(maxIva))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(labelCompanyCuit)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(companyCuit, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(6, 6, 6))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelTicketType)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ticketTypesListScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(showCompanies)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(showVouchers, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(addVouchers, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(80, 80, 80)
-                                .addComponent(calculateButton)))
+                        .addComponent(labelTicketType)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ticketTypesListScroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(showProviders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addTickets, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
+                            .addComponent(showTickets, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(80, 80, 80)
+                        .addComponent(calculateButton)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ivaTaxLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,29 +265,23 @@ public class View extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(vouchersTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 1286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 233, Short.MAX_VALUE))
+                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(vouchersTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(vouchersTableScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(vouchersTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addVouchers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(calculateButton))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(showVouchers))
-                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -302,9 +294,15 @@ public class View extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(calculateButton)
+                                    .addComponent(addTickets, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showTickets)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showCompanies))
+                        .addComponent(showProviders))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(startDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -329,14 +327,14 @@ public class View extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addComponent(labelTicketType)
                             .addGap(84, 84, 84))))
-                .addContainerGap(298, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     //load tickets
-    private void addVouchersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVouchersActionPerformed
+    private void addTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTicketsActionPerformed
         
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
@@ -344,8 +342,8 @@ public class View extends javax.swing.JFrame {
         chooser.showOpenDialog(this);
 
         controller.loadTickets(chooser.getSelectedFile());
-        showVouchersActionPerformed(evt);
-    }//GEN-LAST:event_addVouchersActionPerformed
+        showTicketsActionPerformed(evt);
+    }//GEN-LAST:event_addTicketsActionPerformed
 
     private void totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalActionPerformed
         // TODO add your handling code here:
@@ -361,18 +359,18 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any
-    private void showCompaniesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showCompaniesActionPerformed
+    private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
         // TODO add your handling code here:
         pv.setVisible(true);
-    }//GEN-LAST:event_showCompaniesActionPerformed
+    }//GEN-LAST:event_showProvidersActionPerformed
 
     //show tickets
-    private void showVouchersActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        vouchersTableScroll.setViewportView(vouchersTable);
+    private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        vouchersTableScroll.setViewportView(ticketsTable);
         Map<String, Object> selectedFilters = getFilters();
         List<Ticket> tickets = controller.getTickets(selectedFilters);
         
-        DefaultTableModel model = (DefaultTableModel)vouchersTable.getModel();
+        DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
         for (Ticket t : tickets)
             model.addRow(Formater.ticketToForm(t));
@@ -411,7 +409,7 @@ public class View extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addVouchers;
+    private javax.swing.JButton addTickets;
     private javax.swing.JButton calculateButton;
     private javax.swing.JTextField companyCuit;
     private javax.swing.JTextField finishDate;
@@ -428,14 +426,14 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JTextField minTotal;
     private javax.swing.JTextField profitTax;
     private javax.swing.JTextField profitTaxLabel;
-    private javax.swing.JButton showCompanies;
-    private javax.swing.JButton showVouchers;
+    private javax.swing.JButton showProviders;
+    private javax.swing.JButton showTickets;
     private javax.swing.JTextField startDate;
     private javax.swing.JList<String> ticketTypesList;
     private javax.swing.JScrollPane ticketTypesListScroll;
+    private javax.swing.JTable ticketsTable;
     private javax.swing.JTextField total;
     private javax.swing.JTextField totalLabel;
-    private javax.swing.JTable vouchersTable;
     private javax.swing.JScrollPane vouchersTableScroll;
     // End of variables declaration//GEN-END:variables
 
