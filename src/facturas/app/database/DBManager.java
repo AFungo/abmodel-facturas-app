@@ -62,14 +62,10 @@ public class DBManager {
     private static boolean createProviderTable() {
         try {
             connection = getConnection();
-            if (tableAlreadyExists("PROVIDER")) {
-                System.out.println("la tabla ya existe");
+            if (tableAlreadyExists("PROVIDER"))
                 return false;
-            }
-            System.out.println("pase de largo xq la tabla no existia");
             Statement stm = connection.createStatement();
             
-            System.out.println("fua alta tabla");
             String tableProvider = "CREATE TABLE Provider ("
                     + "cuit VARCHAR(30) PRIMARY KEY,"
                     + "name VARCHAR(100),"
