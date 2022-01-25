@@ -116,6 +116,12 @@ public class View extends javax.swing.JFrame {
             vouchersTable.getColumnModel().getColumn(0).setPreferredWidth(2);
             vouchersTable.getColumnModel().getColumn(1).setPreferredWidth(3);
         }
+        DefaultTableModel model = (DefaultTableModel)vouchersTable.getModel();
+        for (Ticket t : controller.getTickets())
+        model.addRow(Formater.ticketToForm(t));
+
+        vouchersTable.setCellSelectionEnabled(true);
+        vouchersTable.setVisible(true);
 
         total.setEditable(false);
         total.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -367,7 +373,7 @@ public class View extends javax.swing.JFrame {
         List<Ticket> tickets = controller.getTickets(selectedFilters);
         
         DefaultTableModel model = (DefaultTableModel)vouchersTable.getModel();
-        refreshTable(model);
+        cleanTable(model);
         for (Ticket t : tickets)
             model.addRow(Formater.ticketToForm(t));
     }                                            
@@ -399,7 +405,7 @@ public class View extends javax.swing.JFrame {
         return selectedFilters;
     }
     
-    private void refreshTable(DefaultTableModel model) {
+    private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
     }

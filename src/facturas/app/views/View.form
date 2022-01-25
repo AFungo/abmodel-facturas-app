@@ -217,7 +217,7 @@
                 <Column editable="false" title="Imp. Total" type="java.lang.String"/>
               </Table>
             </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" postCode="DefaultTableModel model = (DefaultTableModel)vouchersTable.getModel();&#xa;for (Ticket t : controller.getTickets())&#xa;    model.addRow(Formater.ticketToForm(t));&#xa;&#xa;vouchersTable.setCellSelectionEnabled(true);&#xa;vouchersTable.setVisible(true);">
               <TableColumnModel selectionModel="0">
                 <Column maxWidth="-1" minWidth="-1" prefWidth="2" resizable="true">
                   <Title/>
