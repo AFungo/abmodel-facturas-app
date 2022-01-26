@@ -8,6 +8,7 @@ package facturas.app;
 import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.TicketDAO;
+import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Formater;
@@ -40,6 +41,16 @@ public class Controller {
         tickets.forEach((ticket) -> {
             TicketDAO.addTicket(ticket);
         });
+    }
+    
+    public void loadDollarPrices(File f) {
+        List<String> stringPrices = readCsv(f, "price");
+            
+        List<DollarPrice> prices = new ArrayList<>();
+        for (String priceStr : stringPrices)
+            prices.add(new DollarPrice(Formater.priceCsvToDict(priceStr)));
+            
+        System.out.println(prices);
     }
     
     public ProfitCalculator getProfit() {
