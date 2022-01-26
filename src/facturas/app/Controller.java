@@ -110,7 +110,7 @@ public class Controller {
         if (!text.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(text, String.class));
         
         List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
-        if (!typesList.isEmpty()) filter.add(new Pair<> ("type", "="), new Pair(typesList.get(0), String.class)); //for now we just took the first one
+        if (!typesList.isEmpty()) filter.add(new Pair<> ("type", "="), new Pair(typesList, List.class));
         
         return filter;
     }
