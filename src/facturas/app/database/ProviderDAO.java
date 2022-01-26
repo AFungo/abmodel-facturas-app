@@ -43,11 +43,31 @@ public class ProviderDAO extends DAO {
             if (result.next()) {
                 int len = result.getMetaData().getColumnCount();
                 String [ ] providerAttributes = new String [len];
-                for(int i = 1; i <= len; i++)
+                for(int i = 1; i <= len; i++) {
                     providerAttributes[i-1] = result.getString(i);
+                }
                 return new Provider(providerAttributes[2], providerAttributes[0], providerAttributes[1]);
             }
             return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalStateException(ex.toString());
+        }
+    }
+    
+    public static List<Provider> getProviders(String name) {
+        ResultSet result = executeQuery("SELECT * FROM Provider WHERE name='" + name + "'", false);
+        List<Provider> providers = new ArrayList<>();
+        try {
+            while (result.next()) {
+                int len = result.getMetaData().getColumnCount();
+                String [ ] providerAttributes = new String [len];
+                for(int i = 1; i <= len; i++) {
+                    providerAttributes[i-1] = result.getString(i);
+                }
+                providers.add(new Provider(providerAttributes[2], providerAttributes[0], providerAttributes[1]));
+            }
+            return providers;
         } catch (SQLException ex) {
             Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new IllegalStateException(ex.toString());
