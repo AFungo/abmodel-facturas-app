@@ -8,6 +8,7 @@ package facturas.app.database;
 import facturas.app.utils.Pair;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,7 +25,7 @@ public class SQLFilter {
     Map<Pair<String,String>, Pair<Object,Class<?>>> filters = new HashMap<>();
     
     public void add(Pair<String, String> fieldOperator, Pair<Object,Class<?>> values) {
-        filters.put(fieldOperator, values);
+        filters.put(fieldOperator, values); //adding filter
     }
     
     /**
@@ -34,24 +35,36 @@ public class SQLFilter {
         String sqlCode = " WHERE";
         boolean firstOne = true; // The first iteration should not add the AND connector
         for (Pair<String,String> k : filters.keySet()) {
-            if (!firstOne) {
-                sqlCode += " AND";
-            }
+            if (!firstOne) 
+                sqlCode +=  " AND";
             
             Pair<Object, Class<?>> value = filters.get(k);
-            sqlCode += " " + k.getFst() + " " + k.getSnd() + " ";
-            
-            Class<?> valueClass = value.getSnd();
-            if (valueClass == String.class) {
-                sqlCode += "'" + valueClass.cast(value.getFst()) + "'" ;
-            } else if (valueClass == Date.class) {
-                sqlCode += "'" + (Date)value.getFst() + "'";
+            if (k.getSnd() == "=") {
+                List<String> values = (List<String>)value.getFst(); //when operation is "=", value will allways be a List
+                sqlCode += loadList(values, k);
             } else {
-                sqlCode += valueClass.cast(value.getFst());
+                sqlCode += " " + k.getFst() + " " + k.getSnd() + " ";
+            
+                Class<?> valueClass = value.getSnd();
+                if (valueClass == String.class) 
+                    sqlCode += "'" + valueClass.cast(value.getFst()) + "'" ;
+                else if (valueClass == Date.class) 
+                    sqlCode += "'" + (Date)value.getFst() + "'";
+                else
+                    sqlCode += valueClass.cast(value.getFst());
             }
             firstOne = false;
         }
         return sqlCode;
+    }
+    
+    private String loadList(List<String> list, Pair<String,String> pred) {
+        String result = " (";
+        for (String value : list) 
+            result += pred.getFst() + " " + pred.getSnd() + " '" + value + "' OR ";
+
+        result = result.substring(0, result.length() - 4);  //remove the last " OR "
+        return result + ")";
     }
     
     public boolean isEmpty() {
