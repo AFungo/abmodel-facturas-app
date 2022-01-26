@@ -31,29 +31,11 @@ import java.util.logging.Logger;
 public class Controller {
     
     public void loadTickets(File f) {
-        if (f == null) {
-            System.out.println("File at " + f.getPath() + " doesn't exists");
-            return ;
-        }
-        
-        List<String> stringTickets = new ArrayList<>();
-        try {
-            stringTickets = Files.readAllLines(f.toPath(), Charset.defaultCharset());
-        } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        String initialLine = stringTickets.remove(0); //Remove the first row of the file for checking
-        if (!validFormat(initialLine)) {
-            System.out.println("File does not have a valid format to be loaded\nFile: " + f.getPath());
-            return;
-        }
+        List<String> stringTickets = readCsv(f, "ticket");
             
         List<Ticket> tickets = new ArrayList<>();
-        for (String strTicket : stringTickets) {
-            String[ ] ticketAttributes = strTicket.replace("\"", "").split(",");
-            tickets.add(new Ticket(Formater.ticketCsvToDict(ticketAttributes)));
-        }
+        for (String strTicket : stringTickets)
+            tickets.add(new Ticket(Formater.ticketCsvToDict(strTicket)));
         
         tickets.forEach((ticket) -> {
             TicketDAO.addTicket(ticket);
@@ -69,8 +51,7 @@ public class Controller {
     }
     
     public void createTicket(String ticketData) {
-        String[ ] ticketAttributes = ticketData.replace("\"", "").split(",");
-        Ticket ticket = new Ticket(Formater.ticketCsvToDict(ticketAttributes));
+        Ticket ticket = new Ticket(Formater.ticketCsvToDict(ticketData));
         TicketDAO.addTicket(ticket);
     }
     
@@ -115,12 +96,35 @@ public class Controller {
         return filter;
     }
     
-    private boolean validFormat(String initialLine) {
-        String expectedLine = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+    private boolean validFormat(String initialLine, String mode) {
+        String expectedLine = "";
+        if (mode == "ticket")
+            expectedLine = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+        else if (mode == "price")
+            expectedLine = "Fecha cotizacion;Compra;Venta;";
+        
         char initialChar = initialLine.charAt(0);
         if ((int)initialChar == 65279)  //special char that may come with utf-8 files
             initialLine = initialLine.substring(1); //remove special char
         
         return initialLine.contentEquals(expectedLine);
+    }
+    
+    private List<String> readCsv(File f, String type) {
+          if (f == null)
+            throw new IllegalArgumentException("File at " + f.getPath() + " doesn't exists");
+        
+        List<String> stringItems = new ArrayList<>();
+        try {
+            stringItems = Files.readAllLines(f.toPath(), Charset.defaultCharset());
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        String initialLine = stringItems.remove(0); //Remove the first row of the file for checking
+        if (!validFormat(initialLine, type))
+            throw new IllegalArgumentException("File does not have a valid format to be loaded\nFile: " + f.getPath());
+            
+        return stringItems;
     }
 }
