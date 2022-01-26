@@ -5,7 +5,10 @@
  */
 package facturas.app.models;
 
+import facturas.app.utils.Formater;
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -17,14 +20,21 @@ public class DollarPrice {
     private Float buy;
     private Float sell;
     
-    public DollarPrice(Date date, Float buy, Float sell) {
-        this.date = date;
-        this.buy = buy;
-        this.sell = sell;
+    public DollarPrice(Map<String, String> data) {
+        this.date = Formater.dateGen(data.get("date"));
+        this.buy = Float.parseFloat(data.get("buy"));
+        this.sell = Float.parseFloat(data.get("sell"));
     }
     
-    public Date getDate() {
-        return date;
+    public Map<String, Object> getValues() {
+        Map<String, Object> dict = new HashMap<>();
+        dict.put("date", date);
+        dict.put("buy", buy);
+        dict.put("sell", sell);
+        return dict;
     }
     
+    public String toString() {
+        return "Fecha: " + date + "\n" + "Compra: " + buy + "\n" + "Venta: " + sell + "\n"; 
+    }
 }

@@ -39,18 +39,19 @@ public class Withholding {
     }
 
     public void addDollarPrice(DollarPrice price) {
-        if (price.getDate().equals(this.date)) //if dates match
+        Date priceDate = (Date) price.getValues().get("date");
+        if (priceDate.equals(this.date)) //if dates match
             dollarPrice = price;
         else
-            throw new IllegalArgumentException("Ticket and price dates must be the same, but they differ: " + date + " != " + price.getDate());
+            throw new IllegalArgumentException("Ticket and price dates must be the same, but they differ: " + date + " != " + priceDate);
     }
     
     public Map<String, Object> getValues() {
         Map<String, Object> dict = new HashMap<>();
         dict.put("date", date);
         dict.put("type", type);
-        dict.put("totalAmount", totalAmount);
-        dict.put("provider", provider);
+        dict.put("totalAmount", totalAmount); 
+       dict.put("provider", provider);
         dict.put("number", number);
         return dict;
     }                  
