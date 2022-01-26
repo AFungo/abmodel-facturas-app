@@ -20,6 +20,7 @@ public class Withholding {
     protected Date date;
     protected Float totalAmount;
     protected String type;
+    protected DollarPrice dollarPrice;
     
     public Withholding(Map<String, String> data) {
         this.date = Formater.dateGen(data.get("date"));
@@ -37,6 +38,13 @@ public class Withholding {
         this.totalAmount = totalAmount;
     }
 
+    public void addDollarPrice(DollarPrice price) {
+        if (price.getDate().equals(this.date)) //if dates match
+            dollarPrice = price;
+        else
+            throw new IllegalArgumentException("Ticket and price dates must be the same, but they differ: " + date + " != " + price.getDate());
+    }
+    
     public Map<String, Object> getValues() {
         Map<String, Object> dict = new HashMap<>();
         dict.put("date", date);
