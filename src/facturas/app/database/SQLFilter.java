@@ -8,6 +8,7 @@ package facturas.app.database;
 import facturas.app.utils.Pair;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,8 @@ public class SQLFilter {
             
             Pair<Object, Class<?>> value = filters.get(k);
             if (k.getSnd() == "=") {
-                List<String> values = (List<String>)value.getFst(); //when operation is "=", value will allways be a List
+                List<String> values = new LinkedList<>();
+                values.add((String)value.getFst()); //when operation is "=", value will allways be a List
                 sqlCode += loadList(values, k);
             } else {
                 sqlCode += " " + k.getFst() + " " + k.getSnd() + " ";
