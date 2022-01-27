@@ -44,11 +44,7 @@ public class Withholding {
             return ;
         }
         
-        Date priceDate = (Date) price.getValues().get("date");
-        if (priceDate.equals(this.date)) //if dates match
-            dollarPrice = price;
-        else
-            throw new IllegalArgumentException("Ticket and price dates must be the same, but they differ: " + date + " != " + priceDate);
+        dollarPrice = price;
     }
     
     public Map<String, Object> getValues() {

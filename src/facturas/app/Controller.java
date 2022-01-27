@@ -59,9 +59,8 @@ public class Controller {
         ProfitCalculator profit = new ProfitCalculator();
         for(Ticket t : getTickets(selectedFilters)) {
             if (inDollars) {
-                Date ticketDate = (Date)t.getValues().get("date");
-                DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
-                t.addDollarPrice(price);
+                getDayPrice(t);
+               
             }
             profit.addTicket(t, inDollars);
         }
@@ -87,6 +86,15 @@ public class Controller {
     
     public List<Provider> getProviders() {
         return ProviderDAO.getProviders();
+    }
+    
+    private void getDayPrice(Ticket t) {
+        Date ticketDate = (Date)t.getValues().get("date");
+        DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
+        if (price == null)
+            price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
+        
+        t.addDollarPrice(price);
     }
     
     private SQLFilter createFilter(Map<String, Object> selectedFilters) {
