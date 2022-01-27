@@ -53,11 +53,11 @@ public class Controller {
         System.out.println(prices);
     }
     
-    public ProfitCalculator getProfit() {
+    public ProfitCalculator getProfit(Map<String, Object> selectedFilters) {
         ProfitCalculator profit = new ProfitCalculator();
-        for(Ticket t : getTickets())
+        SQLFilter filters = createFilter(selectedFilters);
+        for(Ticket t : getTickets(selectedFilters))
             profit.addTicket(t);
-        
         return profit;
     }
     

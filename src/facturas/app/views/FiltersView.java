@@ -24,6 +24,8 @@ public class FiltersView extends javax.swing.JFrame {
      * Creates new form FiltersView
      */
     public FiltersView(Controller controller, JTable ticketsTable) {
+        this.controller = controller;
+        this.ticketsTable = ticketsTable;
         initComponents();
     }
 
@@ -159,7 +161,7 @@ public class FiltersView extends javax.swing.JFrame {
 
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
         // TODO add your handling code here:
-        ticketTypesScrollPane.setViewportView(ticketsTable);
+        //ticketTypesScrollPane.setViewportView(ticketsTable);
         Map<String, Object> selectedFilters = getFilters();
         List<Ticket> tickets = controller.getTickets(selectedFilters);
         
@@ -169,7 +171,7 @@ public class FiltersView extends javax.swing.JFrame {
             model.addRow(Formater.ticketToForm(t));
     }//GEN-LAST:event_appyFiltersActionPerformed
 
-    private Map<String, Object> getFilters() {
+    public Map<String, Object> getFilters() {
         Map<String, Object> selectedFilters = new HashMap<> ();
         
         selectedFilters.put("startDate", minDateTextField.getText());
