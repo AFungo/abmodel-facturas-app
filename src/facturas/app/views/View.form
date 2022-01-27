@@ -76,48 +76,7 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="startDate" min="-2" pref="70" max="-2" attributes="0"/>
-                                  <Component id="minTotal" min="-2" pref="64" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="labelDate" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                      <Component id="finishDate" min="-2" pref="76" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="labelImpTotal" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                      <Component id="maxTotal" min="-2" pref="79" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                          </Group>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="minIva" min="-2" pref="64" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  <Component id="labelIva" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                                  <Component id="maxIva" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <Component id="labelCompanyCuit" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="companyCuit" min="-2" pref="95" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="labelTicketType" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="ticketTypesListScroll" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="472" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="showProviders" max="32767" attributes="0"/>
                           <Component id="showTickets" pref="154" max="32767" attributes="0"/>
@@ -162,37 +121,6 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="showProviders" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="startDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="finishDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelDate" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="minTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="maxTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelImpTotal" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="minIva" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="maxIva" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelIva" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="companyCuit" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="labelCompanyCuit" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="ticketTypesListScroll" alignment="1" min="-2" max="-2" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="labelTicketType" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="84" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -214,7 +142,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -302,7 +230,7 @@
               </TableColumnModel>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-              <Color id="Default Cursor"/>
+              <Color id="Cursor Por defecto"/>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
@@ -369,68 +297,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTicketsActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="startDate">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startDateActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="finishDate">
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelDate">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&lt; Fecha &lt;"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="maxTotal">
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelImpTotal">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&lt; imp. total &lt;"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="minTotal">
-    </Component>
-    <Component class="javax.swing.JTextField" name="maxIva">
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelTicketType">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Tipo comprobante:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="minIva">
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelIva">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&lt; iva &lt;"/>
-      </Properties>
-    </Component>
-    <Container class="javax.swing.JScrollPane" name="ticketTypesListScroll">
-      <AuxValues>
-        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-      </AuxValues>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-      <SubComponents>
-        <Component class="javax.swing.JList" name="ticketTypesList">
-          <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="6">
-                <StringItem index="0" value="6 - Factura B"/>
-                <StringItem index="1" value="1 - Factura A"/>
-                <StringItem index="2" value="11 - Factura C"/>
-                <StringItem index="3" value="3 - Nota de Cr&#xe9;dito A"/>
-                <StringItem index="4" value="2 - Nota de D&#xe9;bito A"/>
-                <StringItem index="5" value="13 - Nota de Cr&#xe9;dito C"/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="ticketTypesList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);"/>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
-        </Component>
-      </SubComponents>
-    </Container>
     <Component class="javax.swing.JTextField" name="profitTax">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
@@ -483,13 +349,6 @@
           <Border info="null"/>
         </Property>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelCompanyCuit">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="cuit provedor ="/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="companyCuit">
     </Component>
   </SubComponents>
 </Form>
