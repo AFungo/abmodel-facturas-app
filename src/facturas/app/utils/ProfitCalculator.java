@@ -33,10 +33,16 @@ public class ProfitCalculator {
         Float totalAmount = (Float) values.get("totalAmount") * exchangeType;
         Float iva = (values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType;
         Float netAmountWOI = (values.get("netAmountWOI") != null ? (Float) values.get("netAmountWOI") : 0.0f) * exchangeType;
-        if (t.isIncome())
-            sales.addTransaction(totalAmount, iva, netAmountWOI);
+        if ((boolean) values.get("myTicket"))
+            if(t.isIncome())
+                sales.addTransaction(totalAmount, iva, netAmountWOI);
+            else
+                sales.addTransaction(-totalAmount, -iva, -netAmountWOI);
         else
-            purchases.addTransaction(totalAmount, iva, netAmountWOI);
+            if(t.isIncome())
+                purchases.addTransaction(-totalAmount, -iva, -netAmountWOI);
+            else
+                purchases.addTransaction(totalAmount, iva, netAmountWOI);
     }
 
     
