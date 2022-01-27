@@ -41,8 +41,7 @@ public class SQLFilter {
             
             Pair<Object, Class<?>> value = filters.get(k);
             if (k.getSnd() == "=") {
-                List<String> values = new LinkedList<>();
-                values.add((String)value.getFst()); //when operation is "=", value will allways be a List
+                List<String> values = (List<String>)value.getFst(); //when operation is "=", value will allways be a List
                 sqlCode += loadList(values, k);
             } else {
                 sqlCode += " " + k.getFst() + " " + k.getSnd() + " ";
