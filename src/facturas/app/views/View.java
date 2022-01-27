@@ -76,10 +76,10 @@ public class View extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        dolarPrice = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
         tools = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        filters = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -217,13 +217,13 @@ public class View extends javax.swing.JFrame {
         });
         files.add(jMenuItem2);
 
-        jMenuItem3.setText("Cargar valor dolar");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        dolarPrice.setText("Cargar valor dolar");
+        dolarPrice.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                dolarPriceActionPerformed(evt);
             }
         });
-        files.add(jMenuItem3);
+        files.add(dolarPrice);
 
         menuBar.add(files);
 
@@ -232,13 +232,13 @@ public class View extends javax.swing.JFrame {
 
         tools.setText("Herramientas");
 
-        jMenuItem1.setText("Filtros");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        filters.setText("Filtros");
+        filters.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                filtersActionPerformed(evt);
             }
         });
-        tools.add(jMenuItem1);
+        tools.add(filters);
 
         menuBar.add(tools);
 
@@ -406,9 +406,9 @@ public class View extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ivaTaxLabelActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_filtersActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         JFileChooser chooser = new JFileChooser();
@@ -423,14 +423,14 @@ public class View extends javax.swing.JFrame {
         showTicketsActionPerformed(evt);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void dolarPriceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dolarPriceActionPerformed
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
 
         controller.loadDollarPrices(chooser.getSelectedFile());
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_dolarPriceActionPerformed
 
     private Map<String, Object> getFilters() {
         Map<String, Object> selectedFilters = new HashMap<> ();
@@ -455,14 +455,14 @@ public class View extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
     private javax.swing.JTextField companyCuit;
+    private javax.swing.JMenuItem dolarPrice;
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;
+    private javax.swing.JMenuItem filters;
     private javax.swing.JTextField finishDate;
     private javax.swing.JTextField ivaTaxLabel;
     private javax.swing.JTextField ivaTaxTextField;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JLabel labelCompanyCuit;
     private javax.swing.JLabel labelDate;
     private javax.swing.JLabel labelImpTotal;
