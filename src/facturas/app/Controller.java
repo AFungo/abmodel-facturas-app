@@ -60,9 +60,6 @@ public class Controller {
             profit.addTicket(t);
         return profit;
     }
-    public boolean prueba(){
-        return false;
-    }
     public void createTicket(String ticketData) {
         Ticket ticket = new Ticket(Formater.ticketCsvToDict(ticketData));
         TicketDAO.addTicket(ticket);
