@@ -380,9 +380,7 @@ public class View extends javax.swing.JFrame {
 
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        vouchersTableScroll.setViewportView(ticketsTable);
-        Map<String, Object> selectedFilters = getFilters();
-        List<Ticket> tickets = controller.getTickets(selectedFilters);
+        List<Ticket> tickets = controller.getTickets();
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
@@ -410,22 +408,7 @@ public class View extends javax.swing.JFrame {
 
         controller.loadDollarPrices(chooser.getSelectedFile());
     }//GEN-LAST:event_addPricesActionPerformed
-
-    private Map<String, Object> getFilters() {
-        Map<String, Object> selectedFilters = new HashMap<> ();
-        
-        selectedFilters.put("startDate", startDate.getText());
-        selectedFilters.put("finishDate", finishDate.getText());
-        selectedFilters.put("minTotal", minTotal.getText());
-        selectedFilters.put("maxTotal", maxTotal.getText());
-        selectedFilters.put("minIva", minIva.getText());
-        selectedFilters.put("maxIva", maxIva.getText());
-        selectedFilters.put("companyCuit", companyCuit.getText());
-        selectedFilters.put("ticketTypesList", ticketTypesList.getSelectedValuesList());
-        
-        return selectedFilters;
-    }
-    
+ 
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
