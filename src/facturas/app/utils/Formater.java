@@ -43,7 +43,8 @@ public class Formater {
         return values;
     }
     
-    public static Map<String, String> ticketCsvToDict(String[] data) {
+    public static Map<String, String> ticketCsvToDict(String strTicket) {
+        String[ ] data = strTicket.replace("\"", "").split(",");
         Map<String, String> dict = new HashMap<>();
         
         dict.put("date", data[0]);
@@ -66,6 +67,16 @@ public class Formater {
         String ivaVar = data[14];
         if (!ivaVar.isEmpty()) dict.put("iva", ivaVar);
         dict.put("totalAmount", data[15]);
+        
+        return dict;
+    }
+    
+    public static Map<String, String> priceCsvToDict(String priceStr) {
+        String[ ] data = priceStr.replace(",", ".").split(";");
+        Map<String, String> dict = new HashMap<>();
+        dict.put("date", data[0]);
+        dict.put("buy", data[1]);
+        dict.put("sell", data[2]);
         
         return dict;
     }

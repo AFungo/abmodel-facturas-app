@@ -50,13 +50,11 @@ public class DBManager {
     public static void initializeDB() {
         boolean providerTableCreated = createProviderTable();
         boolean ticketTableCreated = createTicketTable();
+        boolean dollarPriceTableCreated = createDollarPriceTable();
         
-        if (providerTableCreated && ticketTableCreated)
-            System.out.println("Tables were created");
-        else if (!providerTableCreated && ticketTableCreated)
-            System.out.println("ticketTable was created and providerTable already exists");
-        else 
-            System.out.println("Tables already exist");
+        System.out.println("providerTable " + (providerTableCreated ? "was created" : "already exists"));
+        System.out.println("ticketTable " + (ticketTableCreated ? "was created" : "already exists"));
+        System.out.println("dollarPriceTable " + (dollarPriceTableCreated ? "was created" : "already exists"));
     }
     
     private static boolean createProviderTable() {
@@ -113,19 +111,34 @@ public class DBManager {
         }
     }
     
+    private static boolean createDollarPriceTable() {
+        try {
+            connection = getConnection();
+            if (tableAlreadyExists("DOLLARPRICE"))
+                return false;
+            Statement stm = connection.createStatement();
+            
+            String tableDollarPrice = "CREATE TABLE DollarPrice ("
+                    + "date DATE PRIMARY KEY,"  //maybe ticket date should be fk to this, but dollar price may not exists for some days
+                    + "buy REAL NOT NULL,"
+                    + "sell REAL NOT NULL"
+                    + ")";
+
+            stm.executeUpdate(tableDollarPrice);
+            return true;
+        } catch (SQLException e) {
+            throw new IllegalStateException(e.toString());
+        }
+    }
+    
     public static void deleteDB() {
         boolean deletedTicketTable = dropTicketTable();
         boolean deletedProviderTable = dropProviderTable();
+        boolean deletedDollarPriceTable = dropDollarPriceTable();
         
-        if (deletedTicketTable && deletedProviderTable) {
-            System.out.println("Tables were deleted");
-        } else if (deletedTicketTable && !deletedProviderTable) {
-            System.out.println("ticketTable was deleted and providerTable does not exist");
-        } else if (!deletedTicketTable && deletedProviderTable) {
-            System.out.println("providerTable was deleted and ticketTable does not exist");
-        } else {
-            System.out.println("Tables do not exist");
-        }
+        System.out.println("providerTable " + (deletedProviderTable ? "was deleted" : "didn't exist"));
+        System.out.println("ticketTable " + (deletedTicketTable ? "was deleted" : "didn't exist"));
+        System.out.println("dollarPriceTable " + (deletedDollarPriceTable ? "was deleted" : "didn't exist"));
     }
     
     private static boolean dropTicketTable() {
@@ -152,6 +165,21 @@ public class DBManager {
             
             String tableProvider = "DROP TABLE Provider";
             stm.executeUpdate(tableProvider);
+            return true;
+        } catch (SQLException e) {
+            throw new IllegalStateException(e.toString());
+        }
+    }
+    
+    private static boolean dropDollarPriceTable() {
+        try {
+            connection = getConnection();
+            if (!tableAlreadyExists("DOLLARPRICE"))
+                return false;
+            Statement stm = connection.createStatement();
+
+            String tableDollarPrice = "DROP TABLE DollarPrice";
+            stm.executeUpdate(tableDollarPrice);
             return true;
         } catch (SQLException e) {
             throw new IllegalStateException(e.toString());
