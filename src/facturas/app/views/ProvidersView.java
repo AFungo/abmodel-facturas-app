@@ -30,6 +30,10 @@ public class ProvidersView extends javax.swing.JFrame {
         autoSuggestor.autoSuggest();
     }
     
+    public void updateSuggestions() {
+        autoSuggestor.setSuggestions(getProvidersName());
+    }
+    
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {

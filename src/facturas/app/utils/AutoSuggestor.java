@@ -63,6 +63,8 @@ public class AutoSuggestor {
         return textField.getText();
     }
     
+    // FIXME: The suggestion is not case sensitive, for the providers problem
+    // works well but maybe in other context the case sensitive could be important
     public void autoSuggest() {
         comboBox.setEditable(true);
         textField = (JTextField)comboBox.getEditor().getEditorComponent();
@@ -77,7 +79,7 @@ public class AutoSuggestor {
                             comboBox.hidePopup();
                             setModel(new DefaultComboBoxModel(suggestions), text);
                         } else {
-                            DefaultComboBoxModel m = getSuggestedModel(suggestions, text);
+                            DefaultComboBoxModel m = getSuggestedModel(suggestions, text.toUpperCase());
                             if (m.getSize() == 0 || hide_Flag) {
                                 comboBox.hidePopup();
                                 hide_Flag = false;
@@ -93,7 +95,7 @@ public class AutoSuggestor {
             
             @Override
             public void keyPressed(KeyEvent e) {
-                String text = textField.getText();
+                String text = textField.getText().toUpperCase();
                 int code = e.getKeyCode();
                 switch (code) {
                     case KeyEvent.VK_ENTER:

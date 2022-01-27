@@ -342,6 +342,9 @@ public class View extends javax.swing.JFrame {
         chooser.showOpenDialog(this);
 
         controller.loadTickets(chooser.getSelectedFile());
+        // FIXME: Maybe we can update the suggestions only 
+        // when we know that a providers was added
+        pv.updateSuggestions();
         showTicketsActionPerformed(evt);
     }//GEN-LAST:event_addTicketsActionPerformed
 
