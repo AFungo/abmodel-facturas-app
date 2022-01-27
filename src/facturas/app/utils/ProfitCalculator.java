@@ -5,6 +5,7 @@
  */
 package facturas.app.utils;
 
+import facturas.app.models.DollarPrice;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import java.util.Map;
@@ -27,25 +28,36 @@ public class ProfitCalculator {
         retentionGan = new Transaction(0.0f, 0.0f, 0.0f);
     }
     
-    public void addTicket(Ticket t) {
+    public void addTicket(Ticket t, boolean dollars) {
         Map<String, Object> values = t.getValues();
         Float exchangeType = (Float) t.getValues().get("exchangeType");
         Float totalAmount = (Float) values.get("totalAmount") * exchangeType;
         Float iva = (values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType;
         Float netAmountWOI = (values.get("netAmountWOI") != null ? (Float) values.get("netAmountWOI") : 0.0f) * exchangeType;
-        if ((boolean) values.get("myTicket"))
-            if(t.isIncome())
-                sales.addTransaction(totalAmount, iva, netAmountWOI);
-            else
+        
+        if (dollars && exchangeType == 1.0f) {  //if dollars are required and exchange type is pesos
+            DollarPrice price = t.getDollarPrice();
+            if (price != null) {    //if price was loaded (it may not be in db)
+                Float sellPrice = (Float)price.getValues().get("sell");
+                totalAmount /= sellPrice;
+                iva /= sellPrice;
+                netAmountWOI /= sellPrice;
+            }
+        }
+        
+        if ((boolean) values.get("myTicket")) {
+            if (t.isIncome())
                 sales.addTransaction(-totalAmount, -iva, -netAmountWOI);
-        else
-            if(t.isIncome())
-                purchases.addTransaction(-totalAmount, -iva, -netAmountWOI);
             else
+                sales.addTransaction(totalAmount, iva, netAmountWOI);
+        } else {
+            if (t.isIncome())
                 purchases.addTransaction(totalAmount, iva, netAmountWOI);
+            else
+                purchases.addTransaction(-totalAmount, -iva, -netAmountWOI);
+        }
     }
 
-    
     public void addRetention(Withholding r){
         Float ta = (Float) r.getValues().get("totalAmount");
         if(r.getValues().get("type").equals("retIva")) retentionIva.addTransaction(ta, 0.0f, 0.0f);
