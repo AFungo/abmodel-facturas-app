@@ -5,6 +5,7 @@
  */
 package facturas.app;
 
+import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.TicketDAO;
@@ -45,21 +46,28 @@ public class Controller {
     
     public void loadDollarPrices(File f) {
         List<String> stringPrices = readCsv(f, "price");
-            
+
         List<DollarPrice> prices = new ArrayList<>();
         for (String priceStr : stringPrices)
-            prices.add(new DollarPrice(Formater.priceCsvToDict(priceStr)));
+            prices.add(new DollarPrice(Formater.dollarPriceCsvToDict(priceStr)));
             
-        System.out.println(prices);
+        for (DollarPrice p : prices) 
+            DollarPriceDAO.addDollarPrice(p);
     }
     
-    public ProfitCalculator getProfit(Map<String, Object> selectedFilters) {
+    public ProfitCalculator getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
         ProfitCalculator profit = new ProfitCalculator();
-        SQLFilter filters = createFilter(selectedFilters);
-        for(Ticket t : getTickets(selectedFilters))
-            profit.addTicket(t);
+        for(Ticket t : getTickets(selectedFilters)) {
+            if (inDollars) {
+                Date ticketDate = (Date)t.getValues().get("date");
+                DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
+                t.addDollarPrice(price);
+            }
+            profit.addTicket(t, inDollars);
+        }
         return profit;
     }
+    
     public void createTicket(String ticketData) {
         Ticket ticket = new Ticket(Formater.ticketCsvToDict(ticketData));
         TicketDAO.addTicket(ticket);
