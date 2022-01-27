@@ -72,7 +72,7 @@ public class TicketDAO extends DAO {
                 if (result.getString(12) != null) ticketAttributes.put("amountImpEx", result.getString(12));
                 if (result.getString(13) != null) ticketAttributes.put("iva", result.getString(13));
                 ticketAttributes.put("totalAmount", result.getString(14));
-                
+                ticketAttributes.put("myTicket", "FALSE");//esta puesto de forma generico cuando determinemos como diferenciar las cargas hay que modificarlo
                 ticketsList.add(new Ticket(ticketAttributes));
             }
         } catch (SQLException ex) {
