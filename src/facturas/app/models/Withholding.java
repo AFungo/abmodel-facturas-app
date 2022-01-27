@@ -20,7 +20,7 @@ public class Withholding {
     protected Date date;
     protected Float totalAmount;
     protected String type;
-    protected DollarPrice dollarPrice;
+    protected DollarPrice dollarPrice = null;
     
     public Withholding(Map<String, String> data) {
         this.date = Formater.dateGen(data.get("date"));
@@ -39,6 +39,11 @@ public class Withholding {
     }
 
     public void addDollarPrice(DollarPrice price) {
+        if (price == null) {
+            System.out.println("No price for date " + date);
+            return ;
+        }
+        
         Date priceDate = (Date) price.getValues().get("date");
         if (priceDate.equals(this.date)) //if dates match
             dollarPrice = price;
@@ -55,4 +60,8 @@ public class Withholding {
         dict.put("number", number);
         return dict;
     }                  
+    
+    public DollarPrice getDollarPrice() {
+        return dollarPrice;
+    }
  }
