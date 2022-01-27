@@ -132,6 +132,11 @@ public class View extends javax.swing.JFrame {
         ivaTaxTextField.setEditable(false);
         ivaTaxTextField.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         ivaTaxTextField.setBorder(null);
+        ivaTaxTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ivaTaxTextFieldActionPerformed(evt);
+            }
+        });
 
         calculateButton.setText("Calcular");
         calculateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -369,11 +374,11 @@ public class View extends javax.swing.JFrame {
     
     //calculates profit of tickets
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        ProfitCalculator profit = controller.getProfit();
+        ProfitCalculator profit = controller.getProfit(getFilters());
         
         profitTax.setText(profit.getGanancia().toString());
-        ivaTaxTextField.setText(profit.getProfit().toString());
-        total.setText(profit.getIva().toString());
+        ivaTaxTextField.setText(profit.getIva().toString() );
+        total.setText(profit.getProfit().toString());
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any
@@ -431,6 +436,10 @@ public class View extends javax.swing.JFrame {
 
         controller.loadDollarPrices(chooser.getSelectedFile());
     }//GEN-LAST:event_dolarPriceActionPerformed
+
+    private void ivaTaxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ivaTaxTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ivaTaxTextFieldActionPerformed
 
     private Map<String, Object> getFilters() {
         Map<String, Object> selectedFilters = new HashMap<> ();
