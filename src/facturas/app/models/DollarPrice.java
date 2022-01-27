@@ -34,6 +34,10 @@ public class DollarPrice {
         return dict;
     }
     
+    public Date getDate() {
+        return date;
+    }
+    
     public String toString() {
         return "Fecha: " + date + "\n" + "Compra: " + buy + "\n" + "Venta: " + sell + "\n"; 
     }
