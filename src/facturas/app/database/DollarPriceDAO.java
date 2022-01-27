@@ -31,16 +31,16 @@ public class DollarPriceDAO extends DAO {
     }
     
     public static DollarPrice getPrice(Date date) {
-        ResultSet result = executeQuery("SELECT * FROM Ticket WHERE date = " + date, false);
+        ResultSet result = executeQuery("SELECT * FROM DollarPrice WHERE date = '" + date.toString() + "'", false);
         DollarPrice price = null;
         try {
-            if (!result.next())
+            if (!result.next()) {
                 return null;
-            else {
+            } else {
                 Map<String, String> priceAttributes = new HashMap<>();
-                priceAttributes.put("date", result.getString(2));
-                priceAttributes.put("buy", result.getString(3));
-                priceAttributes.put("sell", result.getString(4));
+                priceAttributes.put("date", result.getString(1));
+                priceAttributes.put("buy", result.getString(2));
+                priceAttributes.put("sell", result.getString(3));
                 price = new DollarPrice(priceAttributes);
             }
         } catch (SQLException ex) {
