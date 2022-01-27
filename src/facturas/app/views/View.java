@@ -61,6 +61,7 @@ public class View extends javax.swing.JFrame {
         ivaTaxLabel = new javax.swing.JTextField();
         profitTaxLabel = new javax.swing.JTextField();
         totalLabel = new javax.swing.JTextField();
+        inDollars = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -176,6 +177,8 @@ public class View extends javax.swing.JFrame {
         totalLabel.setText("Total:");
         totalLabel.setBorder(null);
 
+        inDollars.setText("Precio en dolares");
+
         files.setText("File");
 
         jMenuItem2.setText("Cargar comprobante");
@@ -225,18 +228,21 @@ public class View extends javax.swing.JFrame {
                             .addComponent(showProviders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(showTickets, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
                         .addGap(82, 82, 82)
-                        .addComponent(calculateButton)
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(ivaTaxLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(totalLabel)
-                                .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(calculateButton)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ivaTaxLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(totalLabel)
+                                        .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(inDollars)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(vouchersTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE)))
@@ -254,7 +260,9 @@ public class View extends javax.swing.JFrame {
                         .addGap(33, 33, 33)
                         .addComponent(showTickets)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(showProviders))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(showProviders)
+                            .addComponent(inDollars)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,11 +290,13 @@ public class View extends javax.swing.JFrame {
     
     //calculates profit of tickets
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        ProfitCalculator profit = controller.getProfit(fv.getFilters());
+        boolean dollar = inDollars.isSelected();
+        ProfitCalculator profit = controller.getProfit(fv.getFilters(), dollar);
         
-        profitTax.setText(profit.getGanancia().toString());
-        ivaTaxTextField.setText(profit.getIva().toString() );
-        total.setText(profit.getProfit().toString());
+        String money = dollar ? " USD" : " ARS";
+        profitTax.setText(profit.getGanancia().toString() + money);
+        ivaTaxTextField.setText(profit.getProfit().toString() + money);
+        total.setText(profit.getIva().toString() + money);
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any
@@ -355,6 +365,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;
     private javax.swing.JMenuItem filters;
+    private javax.swing.JCheckBox inDollars;
     private javax.swing.JTextField ivaTaxLabel;
     private javax.swing.JTextField ivaTaxTextField;
     private javax.swing.JMenuItem jMenuItem2;
