@@ -86,7 +86,7 @@ public class Formater {
         Map<String, Object> dict = price.getValues();
         String attributes = "", values = "";
         attributes += "date, buy, sell";
-        values += "'" + dict.get("date") + "', '" + dict.get("buy") + "', '" + dict.get("sell") + "'";
+        values += "'" + dict.get("date") + "', " + dict.get("buy") + ", " + dict.get("sell") + "";
 
         return new Pair<>(attributes, values);
     }
