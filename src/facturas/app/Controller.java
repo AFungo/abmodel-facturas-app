@@ -113,8 +113,8 @@ public class Controller {
         text = (String)selectedFilters.get("maxIva");
         if (!text.isEmpty()) filter.add(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class));
         
-        text = (String)selectedFilters.get("companyCuit");
-        if (!text.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(text, String.class));
+        List<String> cuitList = (List<String>)selectedFilters.get("companyCuit");
+        if (!cuitList.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(cuitList, List.class));
         
         List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
         if (!typesList.isEmpty()) filter.add(new Pair<> ("type", "="), new Pair(typesList, List.class));

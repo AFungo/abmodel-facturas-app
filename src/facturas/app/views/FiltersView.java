@@ -8,6 +8,7 @@ package facturas.app.views;
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Formater;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -180,7 +181,9 @@ public class FiltersView extends javax.swing.JFrame {
         selectedFilters.put("maxTotal", maxTotalAmountTextField.getText());
         selectedFilters.put("minIva", minIvaTextField.getText());
         selectedFilters.put("maxIva", maxIvaTextField.getText());
-        selectedFilters.put("companyCuit", cuitTextField.getText());
+        List<String> list = new ArrayList<> ();
+        list.add(cuitTextField.getText());
+        selectedFilters.put("companyCuit", list);
         selectedFilters.put("ticketTypesList", ticketTypesList.getSelectedValuesList());
         
         return selectedFilters;
