@@ -5,6 +5,7 @@
  */
 package facturas.app.utils;
 
+import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import java.sql.Date;
@@ -71,7 +72,7 @@ public class Formater {
         return dict;
     }
     
-    public static Map<String, String> priceCsvToDict(String priceStr) {
+    public static Map<String, String> dollarPriceCsvToDict(String priceStr) {
         String[ ] data = priceStr.replace(",", ".").split(";");
         Map<String, String> dict = new HashMap<>();
         dict.put("date", data[0]);
@@ -79,6 +80,15 @@ public class Formater {
         dict.put("sell", data[2]);
         
         return dict;
+    }
+    
+    public static Pair<String, String> dollarPriceToSQL(DollarPrice price) {
+        Map<String, Object> dict = price.getValues();
+        String attributes = "", values = "";
+        attributes += "date, buy, sell";
+        values += "'" + dict.get("date") + "', '" + dict.get("buy") + "', '" + dict.get("sell") + "'";
+
+        return new Pair<>(attributes, values);
     }
     
     public static Pair<String, String> providerToSQL(Provider p) {
