@@ -50,19 +50,22 @@ public class DollarPriceDAO extends DAO {
         else if (priceAfter == null)
             return priceBefore;
         else {
-            Date dateAfter = priceAfter.getDate();
-            Date dateBefore = priceBefore.getDate();
-            //getting time of each date
-            long currentTime = date.getTime();
-            long afterTime = dateAfter.getTime();
-            long beforeTime = dateBefore.getTime();
-            //getting difference between both dates
-            long afterAbs = Math.abs(afterTime - currentTime);
-            long beforeAbs = Math.abs(currentTime - beforeTime);
-            //return the DollarPrice of the nearest date
-            DollarPrice finalPrice = afterAbs <= beforeAbs ? priceAfter : priceBefore;
-            return finalPrice;
+            return getNearestDatePrice(priceBefore, priceAfter, date);
         }
+    }
+    
+    private static DollarPrice getNearestDatePrice(DollarPrice priceBefore, DollarPrice priceAfter, Date currentDate) {
+        Date dateBefore = priceBefore.getDate();
+        Date dateAfter = priceAfter.getDate();
+        //getting time of each date
+        long currentTime = currentDate.getTime();
+        long afterTime = dateAfter.getTime();
+        long beforeTime = dateBefore.getTime();
+        //getting difference between both dates
+        long afterAbs = Math.abs(afterTime - currentTime);
+        long beforeAbs = Math.abs(currentTime - beforeTime);
+        //return the DollarPrice of the nearest date
+        return afterAbs <= beforeAbs ? priceAfter : priceBefore;
     }
     
     private static DollarPrice buildDollarPrice(ResultSet result) {
