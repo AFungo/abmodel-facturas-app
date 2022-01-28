@@ -79,7 +79,7 @@ public class Controller {
     }
     
     public List<Ticket> getTickets(Map<String, Object> selectedFilters) {
-        SQLFilter filters = createFilter(selectedFilters);
+        SQLFilter filters = new SQLFilter(selectedFilters);
         if (filters.isEmpty()) {
             return getTickets();
         } else {
@@ -99,31 +99,6 @@ public class Controller {
         }
         
         t.addDollarPrice(price);
-    }
-    
-    private SQLFilter createFilter(Map<String, Object> selectedFilters) {
-        SQLFilter filter = new SQLFilter();
-        String text = (String)selectedFilters.get("startDate");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("date", ">"), new Pair(FormatUtils.dateGen(text), Date.class)); }
-        text = (String)selectedFilters.get("finishDate");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("date", "<"), new Pair(FormatUtils.dateGen(text), Date.class)); }
-        text = (String)selectedFilters.get("minTotal");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class)); }
-        text = (String)selectedFilters.get("maxTotal");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("totalAmount", "<"), new Pair(Float.parseFloat(text), Float.class)); }
-        
-        text = (String)selectedFilters.get("minIva");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("iva", ">"), new Pair(Float.parseFloat(text), Float.class)); }
-        text = (String)selectedFilters.get("maxIva");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class)); }
-
-        text = (String)selectedFilters.get("companyCuit");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("providerCuit", "="), new Pair(text, String.class)); }
-        
-        List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
-        if (!typesList.isEmpty()) { filter.add(new Pair<> ("type", "="), new Pair(typesList, List.class)); }
-        
-        return filter;
     }
     
     private List<String> readCsv(File f, String type) {

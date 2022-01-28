@@ -5,6 +5,7 @@
  */
 package facturas.app.database;
 
+import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import java.sql.Date;
 import java.util.HashMap;
@@ -23,6 +24,32 @@ public class SQLFilter {
      * the value for the condition and the class of that value (for the cast).
      */
     Map<Pair<String,String>, Pair<Object,Class<?>>> filters = new HashMap<>();
+    
+    public SQLFilter() {
+        filters = new HashMap<>();
+    }
+    
+    public SQLFilter(Map<String, Object> selectedFilters) {
+        String text = (String)selectedFilters.get("startDate");
+        if (!text.isEmpty()) { filters.put(new Pair<> ("date", ">"), new Pair(FormatUtils.dateGen(text), Date.class)); }
+        text = (String)selectedFilters.get("finishDate");
+        if (!text.isEmpty()) { filters.put(new Pair<> ("date", "<"), new Pair(FormatUtils.dateGen(text), Date.class)); }
+        text = (String)selectedFilters.get("minTotal");
+        if (!text.isEmpty()) { filters.put(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class)); }
+        text = (String)selectedFilters.get("maxTotal");
+        if (!text.isEmpty()) { filters.put(new Pair<> ("totalAmount", "<"), new Pair(Float.parseFloat(text), Float.class)); }
+        
+        text = (String)selectedFilters.get("minIva");
+        if (!text.isEmpty()) { filters.put(new Pair<> ("iva", ">"), new Pair(Float.parseFloat(text), Float.class)); }
+        text = (String)selectedFilters.get("maxIva");
+        if (!text.isEmpty()) { filters.put(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class)); }
+
+        text = (String)selectedFilters.get("companyCuit");
+        if (!text.isEmpty()) { filters.put(new Pair<> ("providerCuit", "="), new Pair(text, String.class)); }
+        
+        List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
+        if (!typesList.isEmpty()) { filters.put(new Pair<> ("type", "="), new Pair(typesList, List.class)); }
+    }
     
     public void add(Pair<String, String> fieldOperator, Pair<Object,Class<?>> values) {
         filters.put(fieldOperator, values); //adding filter
