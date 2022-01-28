@@ -12,6 +12,7 @@ import facturas.app.utils.ProfitCalculator;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -33,6 +34,7 @@ public class View extends javax.swing.JFrame {
      * @param controller
      */
     public View(Controller controller) {
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.controller = controller;
         initComponents();
         providersView = new ProvidersView(controller);
@@ -69,6 +71,14 @@ public class View extends javax.swing.JFrame {
         filters = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PROGRAMA");
+        setPreferredSize(getMaximumSize());
+        setSize(new java.awt.Dimension(0, 0));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         ticketsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -250,7 +260,7 @@ public class View extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(vouchersTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
+                .addComponent(vouchersTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 32609, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -280,6 +290,7 @@ public class View extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalActionPerformed
@@ -354,6 +365,10 @@ public class View extends javax.swing.JFrame {
     private void ivaTaxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ivaTaxTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ivaTaxTextFieldActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowOpened
 
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)

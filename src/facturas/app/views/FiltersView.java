@@ -60,6 +60,8 @@ public class FiltersView extends javax.swing.JFrame {
         ticketTypesList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("FILTROS");
+        setLocation(new java.awt.Point(0, 350));
 
         minDateLabel.setText("Fecha Minino");
 
