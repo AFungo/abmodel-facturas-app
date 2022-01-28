@@ -184,9 +184,7 @@ public class FiltersView extends javax.swing.JFrame {
         selectedFilters.put("maxTotal", maxTotalAmountTextField.getText());
         selectedFilters.put("minIva", minIvaTextField.getText());
         selectedFilters.put("maxIva", maxIvaTextField.getText());
-        List<String> list = new LinkedList<> ();
-        list.add(cuitTextField.getText());
-        selectedFilters.put("companyCuit", list);
+        selectedFilters.put("companyCuit", cuitTextField.getText());
         selectedFilters.put("ticketTypesList", ticketTypesList.getSelectedValuesList());
         
         return selectedFilters;
