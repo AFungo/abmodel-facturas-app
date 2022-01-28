@@ -289,15 +289,15 @@ public class View extends javax.swing.JFrame {
     //calculates profit of tickets
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         boolean dollar = inDollars.isSelected();
-        DecimalFormat numberFormat = new DecimalFormat("#.00");
+        DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         ;
 
         ProfitCalculator profit = controller.getProfit(fv.getFilters(), dollar);
         
         String money = dollar ? " USD" : " ARS";
         profitTax.setText(numberFormat.format(profit.getGanancia()) + money);
-        ivaTaxTextField.setText(numberFormat.format(profit.getProfit()) + money);
-        total.setText(numberFormat.format(profit.getIva())+ money);
+        ivaTaxTextField.setText(numberFormat.format(profit.getIva())+ money);
+        total.setText(numberFormat.format(profit.getProfit()) + money);
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any

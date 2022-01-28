@@ -13,26 +13,26 @@ import java.util.HashMap;
  */
 public class Transaction {
     
-    private Float netAmountWOI;
+    private Float netAmountWI;
     private Float totalAmount;
     private Float iva;
     
-    public Transaction(Float totalAmount, Float iva, Float netAmountWOI) {
+    public Transaction(Float totalAmount, Float iva, Float netAmountWI) {
         this.totalAmount = totalAmount;
         this.iva = iva;
-        this.netAmountWOI = netAmountWOI;
+        this.netAmountWI = netAmountWI;
     }
-    public void addTransaction(Float amount, Float iva, Float netAmountWOI) {
+    public void addTransaction(Float amount, Float iva, Float netAmountWI) {
         this.totalAmount += amount;
         this.iva += iva;
-        this.netAmountWOI += netAmountWOI;    
+        this.netAmountWI += netAmountWI;    
     }
     
     public Map<String, Object> getTransactions() {
         Map<String, Object> transactions = new HashMap<>();
         transactions.put("totalAmount", totalAmount);
         transactions.put("iva", iva);
-        transactions.put("netAmountWOI", netAmountWOI);
+        transactions.put("netAmountWI", netAmountWI);
         return transactions;
     }
 }
