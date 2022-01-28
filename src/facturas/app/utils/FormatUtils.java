@@ -16,7 +16,7 @@ import java.util.Map;
  *
  * @author nacho
  */
-public class Formater {
+public class FormatUtils {
     
      public static Pair<String, String> ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
@@ -34,7 +34,7 @@ public class Formater {
 
         return new Pair<>(attributes, values);
     }
-    
+     
     public static Object[] ticketToForm(Ticket t) {
         Map<String, Object> dict = t.getValues();
         Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
@@ -98,6 +98,22 @@ public class Formater {
         values += "'" + dict.get("cuit") + "', '" + dict.get("name") + "', '" + dict.get("documentType") + "'";
 
         return new Pair<>(attributes, values);
+    }
+
+    public static boolean validFormat(String initialLine, String mode) {
+        String expectedLine = "";
+        if ("ticket".equals(mode)) {
+            expectedLine = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+        } else if ("price".equals(mode)) {
+            expectedLine = "Fecha cotizacion;Compra;Venta;";
+        }
+        
+        char initialChar = initialLine.charAt(0);
+        if ((int)initialChar == 65279) {  //special char that may come with utf-8 files
+            initialLine = initialLine.substring(1); //remove special char
+        }
+
+        return initialLine.contentEquals(expectedLine);
     }
     
     //this method takes a String and returns a Date.

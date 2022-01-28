@@ -9,7 +9,7 @@ import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.models.Provider;
 import facturas.app.utils.Pair;
-import facturas.app.utils.Formater;
+import facturas.app.utils.FormatUtils;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 public class TicketDAO extends DAO {
     
     public static void addTicket(Ticket ticket) {
-        Pair<String, String> sqlValues = Formater.ticketToSQL(ticket);
+        Pair<String, String> sqlValues = FormatUtils.ticketToSQL(ticket);
         Provider provider = (Provider)ticket.getValues().get("provider");
         if (!ProviderDAO.providerExist(provider.getCuit())) {
             ProviderDAO.addProvider(provider);

@@ -7,7 +7,7 @@ package facturas.app.database;
 
 import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.DollarPrice;
-import facturas.app.utils.Formater;
+import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class DollarPriceDAO extends DAO {
     
     public static void addDollarPrice(DollarPrice price) {
-        Pair<String, String> sqlValues = Formater.dollarPriceToSQL(price);
+        Pair<String, String> sqlValues = FormatUtils.dollarPriceToSQL(price);
         String query = "INSERT INTO DollarPrice (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
         executeQuery(query, true);

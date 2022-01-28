@@ -5,7 +5,7 @@
  */
 package facturas.app.models;
 
-import facturas.app.utils.Formater;
+import facturas.app.utils.FormatUtils;
 import java.util.Map;
 import java.util.HashMap;
 import java.sql.Date;
@@ -23,7 +23,7 @@ public class Withholding {
     protected DollarPrice dollarPrice = null;
     
     public Withholding(Map<String, String> data) {
-        this.date = Formater.dateGen(data.get("date"));
+        this.date = FormatUtils.dateGen(data.get("date"));
         this.type = data.get("type");
         this.number = Integer.parseInt(data.get("number"));
         this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));

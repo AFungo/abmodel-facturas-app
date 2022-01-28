@@ -5,7 +5,7 @@
  */
 package facturas.app.models;
 
-import facturas.app.utils.Formater;
+import facturas.app.utils.FormatUtils;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class DollarPrice {
     private Float sell;
     
     public DollarPrice(Map<String, String> data) {
-        this.date = Formater.dateGen(data.get("date"));
+        this.date = FormatUtils.dateGen(data.get("date"));
         this.buy = Float.parseFloat(data.get("buy"));
         this.sell = Float.parseFloat(data.get("sell"));
     }

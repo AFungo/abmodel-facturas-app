@@ -7,7 +7,7 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
-import facturas.app.utils.Formater;
+import facturas.app.utils.FormatUtils;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -171,7 +171,7 @@ public class FiltersView extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
         for (Ticket t : tickets) {
-            model.addRow(Formater.ticketToForm(t));
+            model.addRow(FormatUtils.ticketToForm(t));
         }
     }//GEN-LAST:event_appyFiltersActionPerformed
 

@@ -7,7 +7,7 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
-import facturas.app.utils.Formater;
+import facturas.app.utils.FormatUtils;
 import facturas.app.utils.ProfitCalculator;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -102,7 +102,7 @@ public class View extends javax.swing.JFrame {
         }
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         for (Ticket t : controller.getTickets())
-        model.addRow(Formater.ticketToForm(t));
+        model.addRow(FormatUtils.ticketToForm(t));
 
         ticketsTable.setCellSelectionEnabled(true);
         ticketsTable.setVisible(true);
@@ -313,7 +313,7 @@ public class View extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
         for (Ticket t : tickets)
-            model.addRow(Formater.ticketToForm(t));
+            model.addRow(FormatUtils.ticketToForm(t));
     }                                            
 
     private void profitTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profitTaxActionPerformed

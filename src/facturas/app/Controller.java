@@ -12,7 +12,7 @@ import facturas.app.database.TicketDAO;
 import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
-import facturas.app.utils.Formater;
+import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
@@ -37,7 +37,7 @@ public class Controller {
             
         List<Ticket> tickets = new LinkedList<>();
         for (String strTicket : stringTickets) {
-            tickets.add(new Ticket(Formater.ticketCsvToDict(strTicket)));
+            tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket)));
         }
 
         tickets.forEach((ticket) -> {
@@ -50,7 +50,7 @@ public class Controller {
 
         List<DollarPrice> prices = new LinkedList<>();
         for (String priceStr : stringPrices) {
-            prices.add(new DollarPrice(Formater.dollarPriceCsvToDict(priceStr)));
+            prices.add(new DollarPrice(FormatUtils.dollarPriceCsvToDict(priceStr)));
         }
             
         for (DollarPrice p : prices) {
@@ -70,7 +70,7 @@ public class Controller {
     }
     
     public void createTicket(String ticketData) {
-        Ticket ticket = new Ticket(Formater.ticketCsvToDict(ticketData));
+        Ticket ticket = new Ticket(FormatUtils.ticketCsvToDict(ticketData));
         TicketDAO.addTicket(ticket);
     }
     
@@ -104,9 +104,9 @@ public class Controller {
     private SQLFilter createFilter(Map<String, Object> selectedFilters) {
         SQLFilter filter = new SQLFilter();
         String text = (String)selectedFilters.get("startDate");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("date", ">"), new Pair(Formater.dateGen(text), Date.class)); }
+        if (!text.isEmpty()) { filter.add(new Pair<> ("date", ">"), new Pair(FormatUtils.dateGen(text), Date.class)); }
         text = (String)selectedFilters.get("finishDate");
-        if (!text.isEmpty()) { filter.add(new Pair<> ("date", "<"), new Pair(Formater.dateGen(text), Date.class)); }
+        if (!text.isEmpty()) { filter.add(new Pair<> ("date", "<"), new Pair(FormatUtils.dateGen(text), Date.class)); }
         text = (String)selectedFilters.get("minTotal");
         if (!text.isEmpty()) { filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class)); }
         text = (String)selectedFilters.get("maxTotal");
@@ -126,22 +126,6 @@ public class Controller {
         return filter;
     }
     
-    private boolean validFormat(String initialLine, String mode) {
-        String expectedLine = "";
-        if ("ticket".equals(mode)) {
-            expectedLine = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
-        } else if ("price".equals(mode)) {
-            expectedLine = "Fecha cotizacion;Compra;Venta;";
-        }
-        
-        char initialChar = initialLine.charAt(0);
-        if ((int)initialChar == 65279) {  //special char that may come with utf-8 files
-            initialLine = initialLine.substring(1); //remove special char
-        }
-
-        return initialLine.contentEquals(expectedLine);
-    }
-    
     private List<String> readCsv(File f, String type) {
         if (f == null) {
             throw new IllegalArgumentException("File is null");
@@ -155,7 +139,7 @@ public class Controller {
         }
         
         String initialLine = stringItems.remove(0); //Remove the first row of the file for checking
-        if (!validFormat(initialLine, type)) {
+        if (!FormatUtils.validFormat(initialLine, type)) {
             throw new IllegalArgumentException("File does not have a valid format to be loaded\nFile: " + f.getPath());
         }
         
