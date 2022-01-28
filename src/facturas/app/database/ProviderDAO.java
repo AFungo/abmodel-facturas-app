@@ -36,6 +36,29 @@ public class ProviderDAO extends DAO {
             throw new IllegalStateException(e.toString());
         }
     }
+    
+    public static List<Provider> getProviders(SQLFilter filters) {
+        if (filters == null) {
+            throw new IllegalArgumentException("The parameter filters can not be null");
+        }
+        
+        ResultSet result = executeQuery("SELECT * FROM Provider" + filters.get(), false);
+        List<Provider> providers = new LinkedList<>();
+        try {
+            while (result.next()) {
+                int len = result.getMetaData().getColumnCount();
+                String [ ] providerAttributes = new String [len];
+                for(int i = 1; i <= len; i++) {
+                    providerAttributes[i-1] = result.getString(i);
+                }
+                providers.add(new Provider(providerAttributes[2], providerAttributes[0], providerAttributes[1]));
+            }
+            return providers;
+        } catch (SQLException ex) {
+            Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalStateException(ex.toString());
+        }
+    }
      
     public static Provider getProvider(String cuit) {
         ResultSet result = executeQuery("SELECT * FROM Provider WHERE cuit='" + cuit + "'", false);
@@ -49,25 +72,6 @@ public class ProviderDAO extends DAO {
                 return new Provider(providerAttributes[2], providerAttributes[0], providerAttributes[1]);
             }
             return null;
-        } catch (SQLException ex) {
-            Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new IllegalStateException(ex.toString());
-        }
-    }
-    
-    public static List<Provider> getProviders(String name) {
-        ResultSet result = executeQuery("SELECT * FROM Provider WHERE name='" + name + "'", false);
-        List<Provider> providers = new LinkedList<>();
-        try {
-            while (result.next()) {
-                int len = result.getMetaData().getColumnCount();
-                String [ ] providerAttributes = new String [len];
-                for(int i = 1; i <= len; i++) {
-                    providerAttributes[i-1] = result.getString(i);
-                }
-                providers.add(new Provider(providerAttributes[2], providerAttributes[0], providerAttributes[1]));
-            }
-            return providers;
         } catch (SQLException ex) {
             Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new IllegalStateException(ex.toString());

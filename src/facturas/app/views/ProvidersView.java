@@ -7,8 +7,10 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.database.ProviderDAO;
+import facturas.app.database.SQLFilter;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.Pair;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JTextField;
@@ -151,7 +153,10 @@ public class ProvidersView extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
         cleanTable(model);
-        List<Provider> providers = ProviderDAO.getProviders(autoSuggestor.getText());
+        
+        SQLFilter filter = new SQLFilter();
+        filter.add(new Pair<>("name", "="), new Pair<>(autoSuggestor.getText(), String.class));
+        List<Provider> providers = ProviderDAO.getProviders(filter);
         for (Provider p : providers) {
             model.addRow(new Object[] {p.getCuit(), p.getName(), p.getDocType()});
         }

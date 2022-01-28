@@ -23,8 +23,8 @@ import javax.swing.table.DefaultTableModel;
 public class View extends javax.swing.JFrame {
 
     private Controller controller;
-    private ProvidersView pv;
-    private FiltersView fv;
+    private ProvidersView providersView;
+    private FiltersView filtersView;
     private JTable providersTable = new JTable();
 
     /**
@@ -35,8 +35,8 @@ public class View extends javax.swing.JFrame {
     public View(Controller controller) {
         this.controller = controller;
         initComponents();
-        pv = new ProvidersView(controller);
-        fv = new FiltersView(controller, ticketsTable);
+        providersView = new ProvidersView(controller);
+        filtersView = new FiltersView(controller, ticketsTable);
     }
 
     /**
@@ -292,7 +292,7 @@ public class View extends javax.swing.JFrame {
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         ;
 
-        ProfitCalculator profit = controller.getProfit(fv.getFilters(), dollar);
+        ProfitCalculator profit = controller.getProfit(filtersView.getFilters(), dollar);
         
         String money = dollar ? " USD" : " ARS";
         profitTax.setText(numberFormat.format(profit.getGanancia()) + money);
@@ -303,7 +303,7 @@ public class View extends javax.swing.JFrame {
     //show providers if any
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
         // TODO add your handling code here:
-        pv.setVisible(true);
+        providersView.setVisible(true);
     }//GEN-LAST:event_showProvidersActionPerformed
 
     //show tickets
@@ -326,7 +326,7 @@ public class View extends javax.swing.JFrame {
 
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
         // TODO add your handling code here:
-        fv.setVisible(true);
+        filtersView.setVisible(true);
     }//GEN-LAST:event_filtersActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -338,7 +338,7 @@ public class View extends javax.swing.JFrame {
         controller.loadTickets(chooser.getSelectedFile());
         // FIXME: Maybe we can update the suggestions only 
         // when we know that a providers was added
-        pv.updateSuggestions();
+        providersView.updateSuggestions();
         showTicketsActionPerformed(evt);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
