@@ -8,8 +8,8 @@ package facturas.app.views;
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Formater;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JTable;
@@ -23,6 +23,8 @@ public class FiltersView extends javax.swing.JFrame {
 
     /**
      * Creates new form FiltersView
+     * @param controller
+     * @param ticketsTable
      */
     public FiltersView(Controller controller, JTable ticketsTable) {
         this.controller = controller;
@@ -168,8 +170,9 @@ public class FiltersView extends javax.swing.JFrame {
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
-        for (Ticket t : tickets)
+        for (Ticket t : tickets) {
             model.addRow(Formater.ticketToForm(t));
+        }
     }//GEN-LAST:event_appyFiltersActionPerformed
 
     public Map<String, Object> getFilters() {
@@ -181,7 +184,7 @@ public class FiltersView extends javax.swing.JFrame {
         selectedFilters.put("maxTotal", maxTotalAmountTextField.getText());
         selectedFilters.put("minIva", minIvaTextField.getText());
         selectedFilters.put("maxIva", maxIvaTextField.getText());
-        List<String> list = new ArrayList<> ();
+        List<String> list = new LinkedList<> ();
         list.add(cuitTextField.getText());
         selectedFilters.put("companyCuit", list);
         selectedFilters.put("ticketTypesList", ticketTypesList.getSelectedValuesList());

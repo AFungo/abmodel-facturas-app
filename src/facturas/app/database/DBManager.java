@@ -80,8 +80,9 @@ public class DBManager {
     private static boolean createTicketTable() {
         try {
             connection = getConnection();
-            if (tableAlreadyExists("TICKET"))
+            if (tableAlreadyExists("TICKET")) {
                 return false;
+            }
             Statement stm = connection.createStatement();
             
             String tableTicket = "CREATE TABLE Ticket ("
@@ -114,8 +115,9 @@ public class DBManager {
     private static boolean createDollarPriceTable() {
         try {
             connection = getConnection();
-            if (tableAlreadyExists("DOLLARPRICE"))
+            if (tableAlreadyExists("DOLLARPRICE")) {
                 return false;
+            }
             Statement stm = connection.createStatement();
             
             String tableDollarPrice = "CREATE TABLE DollarPrice ("
@@ -144,8 +146,9 @@ public class DBManager {
     private static boolean dropTicketTable() {
         try {
             connection = getConnection();
-            if (!tableAlreadyExists("TICKET"))
+            if (!tableAlreadyExists("TICKET")) {
                 return false;
+            }
             Statement stm = connection.createStatement();
 
             String tableTicket = "DROP TABLE Ticket";
@@ -159,8 +162,9 @@ public class DBManager {
     private static boolean dropProviderTable() {
         try {
             connection = getConnection();
-            if (!tableAlreadyExists("PROVIDER"))
+            if (!tableAlreadyExists("PROVIDER")) {
                 return false;
+            }
             Statement stm = connection.createStatement();
             
             String tableProvider = "DROP TABLE Provider";
@@ -174,8 +178,9 @@ public class DBManager {
     private static boolean dropDollarPriceTable() {
         try {
             connection = getConnection();
-            if (!tableAlreadyExists("DOLLARPRICE"))
+            if (!tableAlreadyExists("DOLLARPRICE")) {
                 return false;
+            }
             Statement stm = connection.createStatement();
 
             String tableDollarPrice = "DROP TABLE DollarPrice";

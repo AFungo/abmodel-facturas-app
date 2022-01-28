@@ -10,7 +10,7 @@ import facturas.app.utils.Formater;
 import facturas.app.utils.Pair;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,7 +57,7 @@ public class ProviderDAO extends DAO {
     
     public static List<Provider> getProviders(String name) {
         ResultSet result = executeQuery("SELECT * FROM Provider WHERE name='" + name + "'", false);
-        List<Provider> providers = new ArrayList<>();
+        List<Provider> providers = new LinkedList<>();
         try {
             while (result.next()) {
                 int len = result.getMetaData().getColumnCount();
@@ -76,7 +76,7 @@ public class ProviderDAO extends DAO {
 
     public static List<Provider> getProviders() {
         ResultSet result = executeQuery("SELECT * FROM Provider", false);
-        List<Provider> providersList = new ArrayList<>();
+        List<Provider> providersList = new LinkedList<>();
         
         try {
             while(result.next()) {

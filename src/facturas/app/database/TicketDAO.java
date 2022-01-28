@@ -12,8 +12,8 @@ import facturas.app.utils.Pair;
 import facturas.app.utils.Formater;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -52,7 +52,7 @@ public class TicketDAO extends DAO {
     }
 
     private static List<Ticket> getTicketsList(ResultSet result) {
-        List<Ticket> ticketsList = new ArrayList<>();
+        List<Ticket> ticketsList = new LinkedList<>();
         try {
             while(result.next()) {
                 Map<String, String> ticketAttributes = new HashMap<>();

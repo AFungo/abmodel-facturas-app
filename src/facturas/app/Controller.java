@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.Date;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -35,10 +35,11 @@ public class Controller {
     public void loadTickets(File f) {
         List<String> stringTickets = readCsv(f, "ticket");
             
-        List<Ticket> tickets = new ArrayList<>();
-        for (String strTicket : stringTickets)
+        List<Ticket> tickets = new LinkedList<>();
+        for (String strTicket : stringTickets) {
             tickets.add(new Ticket(Formater.ticketCsvToDict(strTicket)));
-        
+        }
+
         tickets.forEach((ticket) -> {
             TicketDAO.addTicket(ticket);
         });
@@ -47,20 +48,21 @@ public class Controller {
     public void loadDollarPrices(File f) {
         List<String> stringPrices = readCsv(f, "price");
 
-        List<DollarPrice> prices = new ArrayList<>();
-        for (String priceStr : stringPrices)
+        List<DollarPrice> prices = new LinkedList<>();
+        for (String priceStr : stringPrices) {
             prices.add(new DollarPrice(Formater.dollarPriceCsvToDict(priceStr)));
+        }
             
-        for (DollarPrice p : prices) 
+        for (DollarPrice p : prices) {
             DollarPriceDAO.addDollarPrice(p);
+        }
     }
     
     public ProfitCalculator getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
         ProfitCalculator profit = new ProfitCalculator();
         for(Ticket t : getTickets(selectedFilters)) {
             if (inDollars) {
-                getDayPrice(t);
-               
+                getDayPrice(t); 
             }
             profit.addTicket(t, inDollars);
         }
@@ -78,10 +80,11 @@ public class Controller {
     
     public List<Ticket> getTickets(Map<String, Object> selectedFilters) {
         SQLFilter filters = createFilter(selectedFilters);
-        if (filters.isEmpty())
+        if (filters.isEmpty()) {
             return getTickets();
-        else
+        } else {
             return TicketDAO.getTickets(filters);
+        }
     }
     
     public List<Provider> getProviders() {
@@ -91,8 +94,9 @@ public class Controller {
     private void getDayPrice(Ticket t) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
-        if (price == null)
+        if (price == null) {
             price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
+        }
         
         t.addDollarPrice(price);
     }
@@ -100,47 +104,50 @@ public class Controller {
     private SQLFilter createFilter(Map<String, Object> selectedFilters) {
         SQLFilter filter = new SQLFilter();
         String text = (String)selectedFilters.get("startDate");
-        if (!text.isEmpty()) filter.add(new Pair<> ("date", ">"), new Pair(Formater.dateGen(text), Date.class));
+        if (!text.isEmpty()) { filter.add(new Pair<> ("date", ">"), new Pair(Formater.dateGen(text), Date.class)); }
         text = (String)selectedFilters.get("finishDate");
-        if (!text.isEmpty()) filter.add(new Pair<> ("date", "<"), new Pair(Formater.dateGen(text), Date.class));
+        if (!text.isEmpty()) { filter.add(new Pair<> ("date", "<"), new Pair(Formater.dateGen(text), Date.class)); }
         text = (String)selectedFilters.get("minTotal");
-        if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class));
+        if (!text.isEmpty()) { filter.add(new Pair<> ("totalAmount", ">"), new Pair(Float.parseFloat(text), Float.class)); }
         text = (String)selectedFilters.get("maxTotal");
-        if (!text.isEmpty()) filter.add(new Pair<> ("totalAmount", "<"), new Pair(Float.parseFloat(text), Float.class));
+        if (!text.isEmpty()) { filter.add(new Pair<> ("totalAmount", "<"), new Pair(Float.parseFloat(text), Float.class)); }
         
         text = (String)selectedFilters.get("minIva");
-        if (!text.isEmpty()) filter.add(new Pair<> ("iva", ">"), new Pair(Float.parseFloat(text), Float.class));
+        if (!text.isEmpty()) { filter.add(new Pair<> ("iva", ">"), new Pair(Float.parseFloat(text), Float.class)); }
         text = (String)selectedFilters.get("maxIva");
-        if (!text.isEmpty()) filter.add(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class));
+        if (!text.isEmpty()) { filter.add(new Pair<> ("iva", "<"), new Pair(Float.parseFloat(text), Float.class)); }
         
         List<String> cuitList = (List<String>)selectedFilters.get("companyCuit");
-        if (!cuitList.isEmpty()) filter.add(new Pair<> ("providerCuit", "="), new Pair(cuitList, List.class));
+        if (!cuitList.isEmpty()) { filter.add(new Pair<> ("providerCuit", "="), new Pair(cuitList, List.class)); }
         
         List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
-        if (!typesList.isEmpty()) filter.add(new Pair<> ("type", "="), new Pair(typesList, List.class));
+        if (!typesList.isEmpty()) { filter.add(new Pair<> ("type", "="), new Pair(typesList, List.class)); }
         
         return filter;
     }
     
     private boolean validFormat(String initialLine, String mode) {
         String expectedLine = "";
-        if (mode == "ticket")
+        if ("ticket".equals(mode)) {
             expectedLine = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
-        else if (mode == "price")
+        } else if ("price".equals(mode)) {
             expectedLine = "Fecha cotizacion;Compra;Venta;";
+        }
         
         char initialChar = initialLine.charAt(0);
-        if ((int)initialChar == 65279)  //special char that may come with utf-8 files
+        if ((int)initialChar == 65279) {  //special char that may come with utf-8 files
             initialLine = initialLine.substring(1); //remove special char
-        
+        }
+
         return initialLine.contentEquals(expectedLine);
     }
     
     private List<String> readCsv(File f, String type) {
-          if (f == null)
+        if (f == null) { // FIXME: null.getPath()
             throw new IllegalArgumentException("File at " + f.getPath() + " doesn't exists");
-        
-        List<String> stringItems = new ArrayList<>();
+        }
+            
+        List<String> stringItems = new LinkedList<>();
         try {
             stringItems = Files.readAllLines(f.toPath(), Charset.defaultCharset());
         } catch (IOException ex) {
@@ -148,9 +155,10 @@ public class Controller {
         }
         
         String initialLine = stringItems.remove(0); //Remove the first row of the file for checking
-        if (!validFormat(initialLine, type))
+        if (!validFormat(initialLine, type)) {
             throw new IllegalArgumentException("File does not have a valid format to be loaded\nFile: " + f.getPath());
-            
+        }
+        
         return stringItems;
     }
 }

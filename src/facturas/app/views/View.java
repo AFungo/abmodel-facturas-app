@@ -9,12 +9,9 @@ import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Formater;
 import facturas.app.utils.ProfitCalculator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 

@@ -6,7 +6,6 @@
 
 package facturas.app.models;
 
-import facturas.app.utils.Pair;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -8,7 +8,6 @@ package facturas.app.database;
 import facturas.app.utils.Pair;
 import java.sql.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
