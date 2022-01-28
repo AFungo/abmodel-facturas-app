@@ -143,8 +143,8 @@ public class Controller {
     }
     
     private List<String> readCsv(File f, String type) {
-        if (f == null) { // FIXME: null.getPath()
-            throw new IllegalArgumentException("File at " + f.getPath() + " doesn't exists");
+        if (f == null) {
+            throw new IllegalArgumentException("File is null");
         }
             
         List<String> stringItems = new LinkedList<>();
