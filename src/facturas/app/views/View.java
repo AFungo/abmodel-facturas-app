@@ -9,6 +9,7 @@ import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.utils.Formater;
 import facturas.app.utils.ProfitCalculator;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JTable;
@@ -288,12 +289,15 @@ public class View extends javax.swing.JFrame {
     //calculates profit of tickets
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         boolean dollar = inDollars.isSelected();
+        DecimalFormat numberFormat = new DecimalFormat("#.00");
+        ;
+
         ProfitCalculator profit = controller.getProfit(fv.getFilters(), dollar);
         
         String money = dollar ? " USD" : " ARS";
-        profitTax.setText(profit.getGanancia().toString() + money);
-        ivaTaxTextField.setText(profit.getProfit().toString() + money);
-        total.setText(profit.getIva().toString() + money);
+        profitTax.setText(numberFormat.format(profit.getGanancia()) + money);
+        ivaTaxTextField.setText(numberFormat.format(profit.getProfit()) + money);
+        total.setText(numberFormat.format(profit.getIva())+ money);
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any
