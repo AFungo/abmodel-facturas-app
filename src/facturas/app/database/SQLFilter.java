@@ -39,13 +39,14 @@ public class SQLFilter {
                 sqlCode +=  " AND";
             
             Pair<Object, Class<?>> value = filters.get(k);
-            if (k.getSnd() == "=") {
-                List<String> values = (List<String>)value.getFst(); //when operation is "=", value will allways be a List
+            Class<?> valueClass = value.getSnd();
+            
+            if (valueClass == List.class) {
+                List<String> values = (List<String>)value.getFst(); // when the type is a list, operator will be a =
                 sqlCode += loadList(values, k);
             } else {
                 sqlCode += " " + k.getFst() + " " + k.getSnd() + " ";
             
-                Class<?> valueClass = value.getSnd();
                 if (valueClass == String.class) 
                     sqlCode += "'" + valueClass.cast(value.getFst()) + "'" ;
                 else if (valueClass == Date.class) 
