@@ -23,56 +23,75 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="loadTicket" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="331" max="-2" attributes="0"/>
+          </Group>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabel1" pref="150" max="32767" attributes="0"/>
-                          <Component id="jTextField5" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel5" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jLabel9" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTextField13" alignment="0" max="32767" attributes="0"/>
+                          <Component id="netAmountWOITextField" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabel13" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jLabel10" max="32767" attributes="0"/>
+                          <Component id="exchangeTypeTextField" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="91" pref="91" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTextField6" pref="150" max="32767" attributes="0"/>
-                          <Component id="jTextField10" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTextField14" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTextField2" alignment="0" pref="150" max="32767" attributes="0"/>
-                          <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel10" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel14" alignment="0" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="providerCuitTextField" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="amountImpExTextField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="typeTextField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel14" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="jLabel8" pref="150" max="32767" attributes="0"/>
+                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                              </Group>
+                              <Component id="exchangeMoneyTextField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
-                  <Component id="jTextField1" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                  <Component id="jTextField9" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="dateTextField" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="providerDocTypeTextField" alignment="0" max="32767" attributes="0"/>
+                      <Component id="jLabel7" alignment="0" pref="150" max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jTextField3" max="32767" attributes="0"/>
-                  <Component id="jTextField15" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextField11" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextField7" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel7" alignment="0" pref="150" max="32767" attributes="0"/>
-                  <Component id="jLabel15" alignment="0" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="numberTextField" max="32767" attributes="0"/>
+                                  <Component id="ivaTextField" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jLabel3" alignment="0" pref="150" max="32767" attributes="0"/>
+                                  <Component id="jLabel15" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="totalAmountTextField" alignment="0" pref="150" max="32767" attributes="0"/>
+                                  <Component id="jLabel16" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="providerNameTextField" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="jLabel9" min="-2" pref="150" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="0" pref="10" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="netAmountWITextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel12" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jTextField4" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextField8" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextField12" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextField16" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel8" alignment="0" pref="150" max="32767" attributes="0"/>
-                  <Component id="jLabel12" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jLabel16" alignment="0" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="0" pref="8" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -84,54 +103,49 @@
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="typeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="numberTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jTextField5" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField6" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="jTextField8" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jTextField7" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="providerDocTypeTextField" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="providerCuitTextField" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="providerNameTextField" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextField9" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField10" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField11" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField12" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="exchangeTypeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="netAmountWITextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="exchangeMoneyTextField" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -142,12 +156,14 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextField13" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField14" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField15" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField16" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="netAmountWOITextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="amountImpExTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ivaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="totalAmountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="10" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="loadTicket" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -165,22 +181,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Punto de Venta"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Numero desde"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel5">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Numero hasta"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel6">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Codigo de Autorizacion"/>
+        <Property name="text" type="java.lang.String" value="Numero de Comprobante"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
@@ -233,37 +234,39 @@
         <Property name="text" type="java.lang.String" value="Imp. Total"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField1">
+    <Component class="javax.swing.JTextField" name="dateTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField2">
+    <Component class="javax.swing.JTextField" name="typeTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField3">
+    <Component class="javax.swing.JTextField" name="numberTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField4">
+    <Component class="javax.swing.JTextField" name="providerDocTypeTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField5">
+    <Component class="javax.swing.JTextField" name="providerCuitTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField6">
+    <Component class="javax.swing.JTextField" name="providerNameTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField7">
+    <Component class="javax.swing.JTextField" name="exchangeTypeTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField8">
+    <Component class="javax.swing.JTextField" name="exchangeMoneyTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField9">
+    <Component class="javax.swing.JTextField" name="netAmountWITextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField10">
+    <Component class="javax.swing.JTextField" name="netAmountWOITextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField11">
+    <Component class="javax.swing.JTextField" name="amountImpExTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField12">
+    <Component class="javax.swing.JTextField" name="ivaTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField13">
+    <Component class="javax.swing.JTextField" name="totalAmountTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField14">
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextField15">
-    </Component>
-    <Component class="javax.swing.JTextField" name="jTextField16">
+    <Component class="javax.swing.JButton" name="loadTicket">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Agregar comprobante"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadTicketActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -46,6 +46,10 @@ public class Controller {
         });
     }
     
+    public void loadTicket(Map<String, String> values) {
+        TicketDAO.addTicket(new Ticket(values));
+    }
+    
     public void loadDollarPrices(File f) {
         List<String> stringPrices = readCsv(f, "price");
 

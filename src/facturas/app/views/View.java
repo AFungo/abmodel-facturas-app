@@ -42,7 +42,7 @@ public class View extends javax.swing.JFrame {
         providersView = new ProvidersView(controller);
         filtersView = new FiltersView(controller, ticketsTable);
         columnSelectorView = new ColumnSelector();
-        ticketLoaderView = new TicketLoaderView();
+        ticketLoaderView = new TicketLoaderView(controller);
     }
 
     /**
