@@ -70,6 +70,7 @@ public class DBManager {
                     + "cuit VARCHAR(30) PRIMARY KEY,"
                     + "name VARCHAR(100),"
                     + "documentType VARCHAR(20),"
+                    + "direction VARCHAR(50),"
                     + "sector VARCHAR(50),"
                     + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
                     + ")";
