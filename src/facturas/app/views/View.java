@@ -26,6 +26,7 @@ public class View extends javax.swing.JFrame {
     private Controller controller;
     private ProvidersView providersView;
     private FiltersView filtersView;
+    private ColumnSelector columnSelectorView;
     private TicketLoaderView ticketLoaderView;
     private JTable providersTable = new JTable();
 
@@ -40,6 +41,7 @@ public class View extends javax.swing.JFrame {
         initComponents();
         providersView = new ProvidersView(controller);
         filtersView = new FiltersView(controller, ticketsTable);
+        columnSelectorView = new ColumnSelector();
         ticketLoaderView = new TicketLoaderView();
     }
 
@@ -72,6 +74,7 @@ public class View extends javax.swing.JFrame {
         edit = new javax.swing.JMenu();
         tools = new javax.swing.JMenu();
         filters = new javax.swing.JMenuItem();
+        columnSelector = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA");
@@ -231,6 +234,14 @@ public class View extends javax.swing.JFrame {
         });
         tools.add(filters);
 
+        columnSelector.setText("Seleccionar columnas");
+        columnSelector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                columnSelectorActionPerformed(evt);
+            }
+        });
+        tools.add(columnSelector);
+
         menuBar.add(tools);
 
         setJMenuBar(menuBar);
@@ -388,6 +399,11 @@ public class View extends javax.swing.JFrame {
         controller.loadDollarPrices(chooser.getSelectedFile());
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
+    private void columnSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectorActionPerformed
+        // TODO add your handling code here:
+        columnSelectorView.setVisible(true);
+    }//GEN-LAST:event_columnSelectorActionPerformed
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
@@ -395,6 +411,7 @@ public class View extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
+    private javax.swing.JMenuItem columnSelector;
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;
     private javax.swing.JMenuItem filters;
