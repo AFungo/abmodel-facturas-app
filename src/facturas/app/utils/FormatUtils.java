@@ -21,10 +21,10 @@ public class FormatUtils {
      public static Pair<String, String> ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
-        attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerCuit";
+        attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerCuit, issuedByMe";
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
                 + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
-                + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getCuit() + "'";
+                + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getCuit() + "', " + dict.get("issuedByMe");
 
         if (dict.get("iva") != null) { attributes += ", iva"; values += ", " + dict.get("iva");}
         if (dict.get("netAmountWI") != null) { attributes += ", netAmountWI"; values += ", " + dict.get("netAmountWI");}
@@ -39,12 +39,13 @@ public class FormatUtils {
         Map<String, Object> dict = t.getValues();
         Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
             ((Provider)dict.get("provider")).getCuit(), ((Provider)dict.get("provider")).getName(), dict.get("exchangeType"), 
-            dict.get("netAmountWI"), dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount")};
+            dict.get("netAmountWI"), dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), 
+            dict.get("totalAmount"), dict.get("issuedByMe")};
 
         return values;
     }
     
-    public static Map<String, String> ticketCsvToDict(String strTicket) {
+    public static Map<String, String> ticketCsvToDict(String strTicket, boolean issuedByMe) {
         String[ ] data = strTicket.replace("\"", "").split(",");
         Map<String, String> dict = new HashMap<>();
         
@@ -68,6 +69,7 @@ public class FormatUtils {
         String ivaVar = data[14];
         if (!ivaVar.isEmpty()) dict.put("iva", ivaVar);
         dict.put("totalAmount", data[15]);
+        dict.put("issuedByMe", issuedByMe ? "true" : "false");
         
         return dict;
     }

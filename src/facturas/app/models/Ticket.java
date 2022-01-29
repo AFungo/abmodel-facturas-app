@@ -20,7 +20,7 @@ public class Ticket extends Withholding{
     private Float amountImpEx;//imp. op. Exentas ver que es
     private Integer numberTo;
     private String authCode;
-    private boolean myTicket;
+    private boolean issuedByMe;
     
    public Ticket(Map<String, String> data){
         super(data);
@@ -32,7 +32,7 @@ public class Ticket extends Withholding{
         this.netAmountWOI = data.get("netAmountWOI") != null ? Float.parseFloat(data.get("netAmountWOI")) : null ;
         this.amountImpEx = data.get("amountImpEx") != null ? Float.parseFloat(data.get("amountImpEx")) : null ;
         this.iva = data.get("iva") != null ? Float.parseFloat(data.get("iva")) : null ;
-        //this.myTicket =  data.get("myTicket").equals("TRUE"); 
+        //this.issuedByMe =  data.get("issuedByMe").equals("true");
   }
 
     @Override
@@ -43,7 +43,7 @@ public class Ticket extends Withholding{
         dict.put("provider", provider);
         dict.put("exchangeType", exchangeType);
         dict.put("exchangeMoney", exchangeMoney);
-        dict.put("myTicket", myTicket);
+        dict.put("issuedByMe", issuedByMe);
         if (netAmountWI != null) dict.put("netAmountWI", netAmountWI);
         if (netAmountWOI != null) dict.put("netAmountWOI", netAmountWOI);
         if (amountImpEx != null) dict.put("amountImpEx", amountImpEx);

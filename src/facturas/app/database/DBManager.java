@@ -48,15 +48,15 @@ public class DBManager {
     }
 
     public static void initializeDB() {
+        boolean sectorTableCreated = createSectorTable();
         boolean providerTableCreated = createProviderTable();
         boolean ticketTableCreated = createTicketTable();
         boolean dollarPriceTableCreated = createDollarPriceTable();
-        boolean sectorTableCreated = createSectorTable();
         
+        System.out.println("sectorTable " + (sectorTableCreated ? "was created" : "already exists"));
         System.out.println("providerTable " + (providerTableCreated ? "was created" : "already exists"));
         System.out.println("ticketTable " + (ticketTableCreated ? "was created" : "already exists"));
         System.out.println("dollarPriceTable " + (dollarPriceTableCreated ? "was created" : "already exists"));
-        System.out.println("sectorTable " + (sectorTableCreated ? "was created" : "already exists"));
     }
     
     private static boolean createProviderTable() {
@@ -69,7 +69,9 @@ public class DBManager {
             String tableProvider = "CREATE TABLE Provider ("
                     + "cuit VARCHAR(30) PRIMARY KEY,"
                     + "name VARCHAR(100),"
-                    + "documentType VARCHAR(20)"
+                    + "documentType VARCHAR(20),"
+                    + "sector VARCHAR(50),"
+                    + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
                     + ")";
 
             stm.executeUpdate(tableProvider);
@@ -102,7 +104,10 @@ public class DBManager {
                     + "amountImpEx REAL,"
                     + "iva REAL," //
                     + "totalAmount REAL NOT NULL," //
+                    + "issuedByMe BOOLEAN NOT NULL," //
+                    + "sector VARCHAR(50)," //
                     + "PRIMARY KEY (date, number, providerCuit),"
+                    + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name),"
                     + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
                     + ")";    
 
