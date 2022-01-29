@@ -17,6 +17,8 @@ public class Provider {
     private String cuit;
     private String name;
     private String documentType;
+    private String direction;
+    private String sector;
 
     public Provider(String documentType, String cuit, String name){
         this.documentType = documentType;
@@ -35,6 +37,14 @@ public class Provider {
         return name;
     }
     
+    public void addDirection(String direction) {
+        this.direction = direction;
+    }
+    
+    public void addSector(String sector) {
+        this.sector = sector;
+    }
+    
     @Override
     public String toString(){
         return "Nombre" + name + "    " + "Cuit" + cuit; 
@@ -45,6 +55,8 @@ public class Provider {
         values.put("cuit", cuit);
         values.put("name", name);
         values.put("documentType", documentType);
+        if (direction != null) values.put("direction", direction);
+        if (sector != null) values.put("sector", sector);
         return values;
     }
 }
