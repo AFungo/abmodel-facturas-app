@@ -33,7 +33,7 @@ public class Ticket extends Withholding{
         this.netAmountWOI = data.get("netAmountWOI") != null ? Float.parseFloat(data.get("netAmountWOI")) : null ;
         this.amountImpEx = data.get("amountImpEx") != null ? Float.parseFloat(data.get("amountImpEx")) : null ;
         this.iva = data.get("iva") != null ? Float.parseFloat(data.get("iva")) : null ;
-        //this.issuedByMe =  data.get("issuedByMe").equals("true");
+        this.issuedByMe =  data.get("issuedByMe").equals("true");
   }
 
     @Override
