@@ -37,7 +37,8 @@ public class Controller {
             
         List<Ticket> tickets = new LinkedList<>();
         for (String strTicket : stringTickets) {
-            tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket)));
+            boolean issuedByMe = true;  //for now this will be fixed to true
+            tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket, issuedByMe)));
         }
 
         tickets.forEach((ticket) -> {
@@ -70,7 +71,8 @@ public class Controller {
     }
     
     public void createTicket(String ticketData) {
-        Ticket ticket = new Ticket(FormatUtils.ticketCsvToDict(ticketData));
+        boolean issuedByMe = true;  //for now this will be fixed to true
+        Ticket ticket = new Ticket(FormatUtils.ticketCsvToDict(ticketData, issuedByMe));
         TicketDAO.addTicket(ticket);
     }
     

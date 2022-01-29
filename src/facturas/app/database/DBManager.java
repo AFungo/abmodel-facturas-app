@@ -102,6 +102,7 @@ public class DBManager {
                     + "amountImpEx REAL,"
                     + "iva REAL," //
                     + "totalAmount REAL NOT NULL," //
+                    + "issuedByMe BOOLEAN NOT NULL," //
                     + "PRIMARY KEY (date, number, providerCuit),"
                     + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
                     + ")";    
