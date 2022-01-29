@@ -21,6 +21,7 @@ public class Ticket extends Withholding{
     private Integer numberTo;
     private String authCode;
     private boolean issuedByMe;
+    private String sector = null;
     
    public Ticket(Map<String, String> data){
         super(data);
@@ -48,7 +49,12 @@ public class Ticket extends Withholding{
         if (netAmountWOI != null) dict.put("netAmountWOI", netAmountWOI);
         if (amountImpEx != null) dict.put("amountImpEx", amountImpEx);
         if (iva != null) dict.put("iva", iva);
+        if (sector != null) dict.put("sector", sector);
         return dict;
+    }
+    
+    public void addSector(String sector) {
+        this.sector = sector;
     }
     
     public boolean isIncome(){
