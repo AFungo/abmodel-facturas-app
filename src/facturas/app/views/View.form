@@ -9,20 +9,28 @@
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="loadTicketsFromCSV">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cargar comprobante"/>
+                <Property name="text" type="java.lang.String" value="Cargar comprobantes (.csv)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadTicketsFromCSVActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="dolarPrice">
+            <MenuItem class="javax.swing.JMenuItem" name="loadTicketManually">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Agregar comprobante"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadTicketManuallyActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="loadDollarValue">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cargar valor dolar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dolarPriceActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadDollarValueActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -89,7 +97,7 @@
                       <EmptySpace min="-2" pref="472" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="showProviders" max="32767" attributes="0"/>
-                          <Component id="showTickets" pref="154" max="32767" attributes="0"/>
+                          <Component id="showTickets" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">

@@ -14,7 +14,7 @@ import java.awt.event.WindowEvent;
  *
  * @author Agustin
  */
-public class Main {
+public class FacturasApp {
     
     /**
      * @param args the command line arguments

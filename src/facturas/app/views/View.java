@@ -26,6 +26,7 @@ public class View extends javax.swing.JFrame {
     private Controller controller;
     private ProvidersView providersView;
     private FiltersView filtersView;
+    private TicketLoaderView ticketLoaderView;
     private JTable providersTable = new JTable();
 
     /**
@@ -39,6 +40,7 @@ public class View extends javax.swing.JFrame {
         initComponents();
         providersView = new ProvidersView(controller);
         filtersView = new FiltersView(controller, ticketsTable);
+        ticketLoaderView = new TicketLoaderView();
     }
 
     /**
@@ -64,8 +66,9 @@ public class View extends javax.swing.JFrame {
         inDollars = new javax.swing.JCheckBox();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        dolarPrice = new javax.swing.JMenuItem();
+        loadTicketsFromCSV = new javax.swing.JMenuItem();
+        loadTicketManually = new javax.swing.JMenuItem();
+        loadDollarValue = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
         tools = new javax.swing.JMenu();
         filters = new javax.swing.JMenuItem();
@@ -112,7 +115,7 @@ public class View extends javax.swing.JFrame {
         }
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         for (Ticket t : controller.getTickets())
-        model.addRow(FormatUtils.ticketToForm(t));
+        model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
 
         ticketsTable.setCellSelectionEnabled(true);
         ticketsTable.setVisible(true);
@@ -189,21 +192,29 @@ public class View extends javax.swing.JFrame {
 
         files.setText("File");
 
-        jMenuItem2.setText("Cargar comprobante");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        loadTicketsFromCSV.setText("Cargar comprobantes (.csv)");
+        loadTicketsFromCSV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                loadTicketsFromCSVActionPerformed(evt);
             }
         });
-        files.add(jMenuItem2);
+        files.add(loadTicketsFromCSV);
 
-        dolarPrice.setText("Cargar valor dolar");
-        dolarPrice.addActionListener(new java.awt.event.ActionListener() {
+        loadTicketManually.setText("Agregar comprobante");
+        loadTicketManually.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dolarPriceActionPerformed(evt);
+                loadTicketManuallyActionPerformed(evt);
             }
         });
-        files.add(dolarPrice);
+        files.add(loadTicketManually);
+
+        loadDollarValue.setText("Cargar valor dolar");
+        loadDollarValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadDollarValueActionPerformed(evt);
+            }
+        });
+        files.add(loadDollarValue);
 
         menuBar.add(files);
 
@@ -234,7 +245,7 @@ public class View extends javax.swing.JFrame {
                         .addGap(472, 472, 472)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(showProviders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(showTickets, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE))
+                            .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(82, 82, 82)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -323,8 +334,9 @@ public class View extends javax.swing.JFrame {
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
-        for (Ticket t : tickets)
+        for (Ticket t : tickets) {
             model.addRow(FormatUtils.ticketToForm(t));
+        }
     }                                            
 
     private void profitTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profitTaxActionPerformed
@@ -340,7 +352,7 @@ public class View extends javax.swing.JFrame {
         filtersView.setVisible(true);
     }//GEN-LAST:event_filtersActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void loadTicketsFromCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsFromCSVActionPerformed
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
@@ -351,16 +363,7 @@ public class View extends javax.swing.JFrame {
         // when we know that a providers was added
         providersView.updateSuggestions();
         showTicketsActionPerformed(evt);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void dolarPriceActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
-        chooser.setFileFilter(fileTypes);
-        chooser.showOpenDialog(this);
-
-        controller.loadDollarPrices(chooser.getSelectedFile());
-    }                                          
+    }//GEN-LAST:event_loadTicketsFromCSVActionPerformed
 
     private void ivaTaxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ivaTaxTextFieldActionPerformed
         // TODO add your handling code here:
@@ -370,6 +373,21 @@ public class View extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
 
+    private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
+        // TODO add your handling code here:
+        ticketLoaderView.setVisible(true);
+    }//GEN-LAST:event_loadTicketManuallyActionPerformed
+
+    private void loadDollarValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarValueActionPerformed
+        // TODO add your handling code here:                                   
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
+        chooser.setFileFilter(fileTypes);
+        chooser.showOpenDialog(this);
+
+        controller.loadDollarPrices(chooser.getSelectedFile());
+    }//GEN-LAST:event_loadDollarValueActionPerformed
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
@@ -377,14 +395,15 @@ public class View extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
-    private javax.swing.JMenuItem dolarPrice;
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;
     private javax.swing.JMenuItem filters;
     private javax.swing.JCheckBox inDollars;
     private javax.swing.JTextField ivaTaxLabel;
     private javax.swing.JTextField ivaTaxTextField;
-    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem loadDollarValue;
+    private javax.swing.JMenuItem loadTicketManually;
+    private javax.swing.JMenuItem loadTicketsFromCSV;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JTextField profitTax;
     private javax.swing.JTextField profitTaxLabel;
