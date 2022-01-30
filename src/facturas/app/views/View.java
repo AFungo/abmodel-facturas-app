@@ -95,10 +95,10 @@ public class View extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -112,10 +112,6 @@ public class View extends javax.swing.JFrame {
         ticketsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         ticketsTable.getTableHeader().setReorderingAllowed(false);
         vouchersTableScroll.setViewportView(ticketsTable);
-        if (ticketsTable.getColumnModel().getColumnCount() > 0) {
-            ticketsTable.getColumnModel().getColumn(0).setPreferredWidth(2);
-            ticketsTable.getColumnModel().getColumn(1).setPreferredWidth(3);
-        }
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         for (Ticket t : controller.getTickets())
         model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
