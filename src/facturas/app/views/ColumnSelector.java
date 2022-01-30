@@ -7,6 +7,8 @@ package facturas.app.views;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,7 +19,8 @@ public class ColumnSelector extends javax.swing.JFrame {
     /**
      * Creates new form ColumnSelector
      */
-    public ColumnSelector() {
+    public ColumnSelector(JTable ticketsTable) {
+        this.ticketsTable = ticketsTable;
         initComponents();
     }
 
@@ -53,7 +56,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         providerSectorCheckBox = new javax.swing.JCheckBox();
         applyButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         ticketLabel.setText("Comprobante");
 
@@ -226,29 +229,42 @@ public class ColumnSelector extends javax.swing.JFrame {
 
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
+        boolean[] columns = getTicketSelectedColumns();
+        for (int i = columns.length - 1; 0 <= i; i--) {
+            if (!columns[i])
+                hideColumn(model, i);
+        }
     }//GEN-LAST:event_applyButtonActionPerformed
 
-    public Map<String, Boolean> getTicketSelectedColumns() {
-        Map<String, Boolean> dict = new HashMap<>();
-        
-        dict.put("date", dateCheckBox.isSelected());
-        dict.put("type", typeCheckBox.isSelected());
-        dict.put("noTicket", noTicketCheckBox.isSelected());
-        dict.put("numberTo", numberToCheckBox.isSelected());
-        dict.put("authCode", authCodeCheckBox.isSelected());
-        dict.put("noCuit", noCuitCheckBox.isSelected());
-        dict.put("providerName", providerNameCheckBox.isSelected());
-        dict.put("changeType", changeTypeCheckBox.isSelected());
-        dict.put("netAmountWI", netAmountWICheckBox.isSelected());
-        dict.put("netAmountWOI", netAmountWOICheckBox.isSelected());
-        dict.put("amountImpEx", amountImpExCheckBox.isSelected());
-        dict.put("iva", ivaCheckBox.isSelected());
-        dict.put("totalAmount", totalAmountCheckBox.isSelected());
-        dict.put("ticketSector", ticketSectorCheckBox.isSelected());
-        
-        return dict;
+    private void hideColumn(DefaultTableModel model, int i) {
+        ticketsTable.getColumnModel().getColumn(i).setMinWidth(0);
+        ticketsTable.getColumnModel().getColumn(i).setMaxWidth(0);
+        ticketsTable.getColumnModel().getColumn(i).setWidth(0);
     }
     
+    public boolean[] getTicketSelectedColumns() {
+        boolean[] columns = new boolean [14];
+        
+        columns[0] = dateCheckBox.isSelected();
+        columns[1] = typeCheckBox.isSelected();
+        columns[2] = noTicketCheckBox.isSelected();
+        columns[3] = numberToCheckBox.isSelected();
+        columns[4] = authCodeCheckBox.isSelected();
+        columns[5] = noCuitCheckBox.isSelected();
+        columns[6] = providerNameCheckBox.isSelected();
+        columns[7] = changeTypeCheckBox.isSelected();
+        columns[8] = netAmountWICheckBox.isSelected();
+        columns[9] = netAmountWOICheckBox.isSelected();
+        columns[10] = amountImpExCheckBox.isSelected();
+        columns[11] = ivaCheckBox.isSelected();
+        columns[12] = totalAmountCheckBox.isSelected();
+        columns[13] = ticketSectorCheckBox.isSelected();
+        
+        return columns;
+    }
+    
+    private JTable ticketsTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox amountImpExCheckBox;
     private javax.swing.JButton applyButton;

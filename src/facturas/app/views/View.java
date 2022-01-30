@@ -41,7 +41,7 @@ public class View extends javax.swing.JFrame {
         initComponents();
         providersView = new ProvidersView(controller);
         filtersView = new FiltersView(controller, ticketsTable);
-        columnSelectorView = new ColumnSelector();
+        columnSelectorView = new ColumnSelector(ticketsTable);
         ticketLoaderView = new TicketLoaderView(controller);
     }
 
@@ -91,7 +91,7 @@ public class View extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total"
+                "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro"
             }
         ) {
             Class[] types = new Class [] {
@@ -349,7 +349,7 @@ public class View extends javax.swing.JFrame {
             model.addRow(FormatUtils.ticketToForm(t));
         }
     }                                            
-
+ 
     private void profitTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profitTaxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_profitTaxActionPerformed
