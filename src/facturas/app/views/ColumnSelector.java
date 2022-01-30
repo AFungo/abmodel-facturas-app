@@ -19,8 +19,9 @@ public class ColumnSelector extends javax.swing.JFrame {
     /**
      * Creates new form ColumnSelector
      */
-    public ColumnSelector(JTable ticketsTable) {
+    public ColumnSelector(JTable ticketsTable, JTable providersTable) {
         this.ticketsTable = ticketsTable;
+        this.providersTable = providersTable;
         initComponents();
     }
 
@@ -229,25 +230,31 @@ public class ColumnSelector extends javax.swing.JFrame {
 
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
         // TODO add your handling code here:
-        boolean[] columns = getTicketSelectedColumns();
-        for (int i = columns.length - 1; 0 <= i; i--) {
-            if (columns[i])
-                unhideColumn(i);
-            else
-                hideColumn(i);
-        }
+        boolean[] ticketColumns = getTicketSelectedColumns();
+        boolean[] providerColumns = getProviderSelectedColumns();
+        applyChanges(ticketsTable, ticketColumns);
+        applyChanges(providersTable, providerColumns);
     }//GEN-LAST:event_applyButtonActionPerformed
 
-    private void unhideColumn(int i) {
-        ticketsTable.getColumnModel().getColumn(i).setMinWidth(0);
-        ticketsTable.getColumnModel().getColumn(i).setMaxWidth(500);
-        ticketsTable.getColumnModel().getColumn(i).setWidth(300);
+    private void applyChanges(JTable model, boolean[] columns) {
+        for (int i = columns.length - 1; 0 <= i; i--) {
+            if (columns[i])
+                unhideColumn(i, model);
+            else
+                hideColumn(i, model);
+        }
     }
     
-    private void hideColumn(int i) {
-        ticketsTable.getColumnModel().getColumn(i).setMinWidth(0);
-        ticketsTable.getColumnModel().getColumn(i).setMaxWidth(0);
-        ticketsTable.getColumnModel().getColumn(i).setWidth(0);
+    private void unhideColumn(int i, JTable model) {
+        model.getColumnModel().getColumn(i).setMinWidth(0);
+        model.getColumnModel().getColumn(i).setMaxWidth(500);
+        model.getColumnModel().getColumn(i).setWidth(300);
+    }
+    
+    private void hideColumn(int i, JTable model) {
+        model.getColumnModel().getColumn(i).setMinWidth(0);
+        model.getColumnModel().getColumn(i).setMaxWidth(0);
+        model.getColumnModel().getColumn(i).setWidth(0);
     }
     
     public boolean[] getTicketSelectedColumns() {
@@ -271,6 +278,19 @@ public class ColumnSelector extends javax.swing.JFrame {
         return columns;
     }
     
+    public boolean[] getProviderSelectedColumns() {
+        boolean[] columns = new boolean [5];
+        
+        columns[0] = cuitCheckBox.isSelected();
+        columns[1] = nameCheckBox.isSelected();
+        columns[2] = docTypeCheckBox.isSelected();
+        columns[3] = directionCheckBox.isSelected();
+        columns[4] = providerSectorCheckBox.isSelected();
+        
+        return columns;
+    }
+    
+    private JTable providersTable;
     private JTable ticketsTable;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox amountImpExCheckBox;

@@ -36,6 +36,10 @@ public class ProvidersView extends javax.swing.JFrame {
         autoSuggestor.setSuggestions(getProvidersName());
     }
     
+    public javax.swing.JTable getTable() {
+        return providersTable;
+    }
+    
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
@@ -68,14 +72,14 @@ public class ProvidersView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CUIT", "Nombre", "Tipo de documento"
+                "CUIT", "Nombre", "Tipo de documento", "Direccion", "Rubro"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
