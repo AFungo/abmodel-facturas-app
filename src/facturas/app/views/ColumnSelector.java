@@ -229,15 +229,22 @@ public class ColumnSelector extends javax.swing.JFrame {
 
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         boolean[] columns = getTicketSelectedColumns();
         for (int i = columns.length - 1; 0 <= i; i--) {
-            if (!columns[i])
-                hideColumn(model, i);
+            if (columns[i])
+                unhideColumn(i);
+            else
+                hideColumn(i);
         }
     }//GEN-LAST:event_applyButtonActionPerformed
 
-    private void hideColumn(DefaultTableModel model, int i) {
+    private void unhideColumn(int i) {
+        ticketsTable.getColumnModel().getColumn(i).setMinWidth(0);
+        ticketsTable.getColumnModel().getColumn(i).setMaxWidth(500);
+        ticketsTable.getColumnModel().getColumn(i).setWidth(300);
+    }
+    
+    private void hideColumn(int i) {
         ticketsTable.getColumnModel().getColumn(i).setMinWidth(0);
         ticketsTable.getColumnModel().getColumn(i).setMaxWidth(0);
         ticketsTable.getColumnModel().getColumn(i).setWidth(0);
