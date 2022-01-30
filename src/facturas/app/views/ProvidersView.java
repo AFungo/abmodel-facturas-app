@@ -99,10 +99,6 @@ public class ProvidersView extends javax.swing.JFrame {
             providersTable.getColumnModel().getColumn(1).setPreferredWidth(3);
         }
 
-        DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
-        for (Provider p : controller.getProviders()) {
-            model.addRow(new Object[] {p.getCuit(), p.getName(), p.getDocType()});
-        }
         providersTable.setCellSelectionEnabled(true);
         providersTable.setVisible(true);
 

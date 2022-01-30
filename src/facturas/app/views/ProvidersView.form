@@ -76,7 +76,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="providersTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));&#xa;providersTable.getTableHeader().setReorderingAllowed(false);&#xa;jScrollPane1.setViewportView(providersTable);&#xa;if (providersTable.getColumnModel().getColumnCount() &gt; 0) {&#xa;    providersTable.getColumnModel().getColumn(0).setPreferredWidth(2);&#xa;    providersTable.getColumnModel().getColumn(1).setPreferredWidth(3);&#xa;}&#xa;&#xa;DefaultTableModel model = (DefaultTableModel)providersTable.getModel();&#xa;for (Provider p : controller.getProviders()) {&#xa;    model.addRow(new Object[] {p.getCuit(), p.getName(), p.getDocType()});&#xa;}&#xa;providersTable.setCellSelectionEnabled(true);&#xa;providersTable.setVisible(true);"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="providersTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));&#xa;providersTable.getTableHeader().setReorderingAllowed(false);&#xa;jScrollPane1.setViewportView(providersTable);&#xa;if (providersTable.getColumnModel().getColumnCount() &gt; 0) {&#xa;    providersTable.getColumnModel().getColumn(0).setPreferredWidth(2);&#xa;    providersTable.getColumnModel().getColumn(1).setPreferredWidth(3);&#xa;}&#xa;&#xa;providersTable.setCellSelectionEnabled(true);&#xa;providersTable.setVisible(true);"/>
           </AuxValues>
         </Component>
       </SubComponents>

@@ -334,6 +334,7 @@ public class View extends javax.swing.JFrame {
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
         // TODO add your handling code here:
         providersView.setVisible(true);
+        // FIXME: search a better option (optimized)
         providersView.updateProviders(evt);
     }//GEN-LAST:event_showProvidersActionPerformed
 
