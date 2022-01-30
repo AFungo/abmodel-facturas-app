@@ -177,6 +177,11 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_showAllProvidersActionPerformed
 
+    public void updateProviders(java.awt.event.ActionEvent evt) {
+        showAllProvidersActionPerformed(evt);
+    }
+    
+    
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);

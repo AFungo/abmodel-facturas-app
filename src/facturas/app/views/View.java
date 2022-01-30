@@ -113,8 +113,9 @@ public class View extends javax.swing.JFrame {
         ticketsTable.getTableHeader().setReorderingAllowed(false);
         vouchersTableScroll.setViewportView(ticketsTable);
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
-        for (Ticket t : controller.getTickets())
-        model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
+        for (Ticket t : controller.getTickets()) {
+            model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
+        }
 
         ticketsTable.setCellSelectionEnabled(true);
         ticketsTable.setVisible(true);
@@ -333,6 +334,7 @@ public class View extends javax.swing.JFrame {
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
         // TODO add your handling code here:
         providersView.setVisible(true);
+        providersView.updateProviders(evt);
     }//GEN-LAST:event_showProvidersActionPerformed
 
     //show tickets
