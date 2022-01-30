@@ -40,7 +40,7 @@ public class FormatUtils {
         Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
             ((Provider)dict.get("provider")).getCuit(), ((Provider)dict.get("provider")).getName(), dict.get("exchangeType"), 
             dict.get("netAmountWI"), dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), 
-            dict.get("totalAmount"), dict.get("issuedByMe")};
+            dict.get("totalAmount"), dict.get("sector")};
 
         return values;
     }
