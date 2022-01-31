@@ -68,6 +68,7 @@ public class AutoSuggestor {
     public void autoSuggest() {
         comboBox.setEditable(true);
         textField = (JTextField)comboBox.getEditor().getEditorComponent();
+        setModel(getSuggestedModel(suggestions, ""), "");
         textField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
