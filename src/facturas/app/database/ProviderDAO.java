@@ -83,4 +83,12 @@ public class ProviderDAO extends DAO {
         }
     }
     
+    public static void changeDirection(String cuit, String direction) {
+        if (providerExist(cuit)) {
+            String query = "UPDATE Provider SET direction = '" + direction  + "' WHERE cuit = '" + cuit + "'";
+            executeQuery(query, true);
+        } else {
+            System.out.println("The provider of cuit " + cuit + "was not found");
+        }
+    }
 }
