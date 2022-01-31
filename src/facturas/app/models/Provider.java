@@ -38,11 +38,13 @@ public class Provider {
     }
     
     public void addDirection(String direction) {
-        this.direction = direction;
+        if (direction != null)
+            this.direction = direction;
     }
     
     public void addSector(String sector) {
-        this.sector = sector;
+        if (sector != null)
+            this.sector = sector;
     }
     
     @Override

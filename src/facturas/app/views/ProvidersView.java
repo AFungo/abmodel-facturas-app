@@ -10,6 +10,7 @@ import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
@@ -183,7 +184,7 @@ public class ProvidersView extends javax.swing.JFrame {
         filter.add(new Pair<>("name", "="), new Pair<>(autoSuggestor.getText(), String.class));
         List<Provider> providers = ProviderDAO.getProviders(filter);
         for (Provider p : providers) {
-            model.addRow(new Object[] {p.getCuit(), p.getName(), p.getDocType()});
+            model.addRow(FormatUtils.providerToForm(p));
         }
     }//GEN-LAST:event_searchProviderActionPerformed
 
@@ -192,7 +193,7 @@ public class ProvidersView extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
         cleanTable(model);
         for (Provider p : controller.getProviders()) {
-            model.addRow(new Object[] {p.getCuit(), p.getName(), p.getDocType()});
+            model.addRow(FormatUtils.providerToForm(p));
         }
     }//GEN-LAST:event_showAllProvidersActionPerformed
 
