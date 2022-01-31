@@ -43,7 +43,7 @@ public class ConfigManager {
             if (line.equals("[selected columns]")) continue;
             
             String[] values = line.split("=");
-            configs.put(values[0], new Boolean(values[1]));
+            configs.put(values[0], Boolean.valueOf(values[1]));
         }
         return configs;
     }
