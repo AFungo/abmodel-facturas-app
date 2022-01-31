@@ -386,6 +386,7 @@ public class View extends javax.swing.JFrame {
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
         // TODO add your handling code here:
         ticketLoaderView.setVisible(true);
+        ticketLoaderView.updateSuggestions();
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
     private void loadDollarValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarValueActionPerformed
