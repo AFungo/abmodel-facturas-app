@@ -98,8 +98,25 @@ public class FormatUtils {
         String attributes = "", values = "";
         attributes += "cuit, name, documentType";
         values += "'" + dict.get("cuit") + "', '" + dict.get("name") + "', '" + dict.get("documentType") + "'";
+        
+        if (dict.get("direction") != null) { attributes += ", direction"; values += ", " + dict.get("direction");}
+        if (dict.get("sector") != null) { attributes += ", sector"; values += ", " + dict.get("sector");}
 
         return new Pair<>(attributes, values);
+    }
+    
+    public static Object[] providerToForm(Provider prov) {
+        Map<String, Object> dict = prov.getValues();
+        Object[] values = new Object[5];
+        values[0] = dict.get("cuit");
+        values[1] = dict.get("name");
+        values[2] = dict.get("documentType");
+        if (dict.get("direction") != null)
+            values[3] = dict.get("direction");
+        if (dict.get("sector") != null)
+            values[4] = dict.get("sector");
+
+        return values;
     }
 
     public static boolean validFormat(String initialLine, String mode) {
