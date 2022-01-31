@@ -12,6 +12,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Modificar direccion"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="directionMenuItemActionPerformed"/>
+          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="sectorMenuItem">
           <Properties>
@@ -20,6 +23,11 @@
         </MenuItem>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JOptionPane" name="optionPane">
+      <Properties>
+        <Property name="wantsInput" type="boolean" value="true"/>
+      </Properties>
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
