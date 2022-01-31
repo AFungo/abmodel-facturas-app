@@ -46,7 +46,7 @@ public class ProviderDAO extends DAO {
         List<Provider> providers = new LinkedList<>();
         try {
             while (result.next()) {
-                providers.add(new Provider(result.getString(3), result.getString(2), result.getString(1)));
+                providers.add(new Provider(result.getString(3), result.getString(1), result.getString(2)));
             }
             return providers;
         } catch (SQLException ex) {
@@ -59,7 +59,7 @@ public class ProviderDAO extends DAO {
         ResultSet result = executeQuery("SELECT * FROM Provider WHERE cuit='" + cuit + "'", false);
         try {
             if (result.next()) {
-                return new Provider(result.getString(3), result.getString(2), result.getString(1));
+                return new Provider(result.getString(3), result.getString(1), result.getString(2));
             }
             return null;
         } catch (SQLException ex) {
@@ -74,7 +74,7 @@ public class ProviderDAO extends DAO {
         
         try {
             while(result.next()) {
-                providers.add(new Provider(result.getString(3), result.getString(2), result.getString(1)));
+                providers.add(new Provider(result.getString(3), result.getString(1), result.getString(2)));
             }
             return providers;
         } catch (SQLException ex) {

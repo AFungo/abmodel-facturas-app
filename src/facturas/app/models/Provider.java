@@ -21,9 +21,9 @@ public class Provider {
     private String sector;
 
     public Provider(String documentType, String cuit, String name){
-        this.documentType = documentType;
         this.cuit = cuit;
         this.name = name;
+        this.documentType = documentType;
     }
     
     public String getDocType(){
