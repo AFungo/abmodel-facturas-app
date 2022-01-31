@@ -28,63 +28,56 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="appyFilters" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="minTotalAmountLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="minIvaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="cuitLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="minTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="minIvaTextField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="cuitTextField" alignment="0" pref="100" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="minDateLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="minDateChooser" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="minDateLabel" max="32767" attributes="0"/>
+                          <Component id="minTotalAmountLabel" alignment="0" pref="120" max="32767" attributes="0"/>
+                          <Component id="minIvaLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cuitLabel" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="minDateChooser" pref="150" max="32767" attributes="0"/>
+                          <Component id="minTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="minIvaTextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cuitTextField" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                      <Component id="appyFilters" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="maxTotalAmountLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="maxIvaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="maxTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="maxIvaTextField" alignment="0" pref="100" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
                   <Component id="ticketTypesScrollPane" min="-2" pref="123" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="maxDateLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="maxDateChooser" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="maxTotalAmountLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="maxIvaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="maxDateLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="maxDateChooser" alignment="0" pref="150" max="32767" attributes="0"/>
+                          <Component id="maxTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="maxIvaTextField" alignment="0" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="minDateLabel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -93,33 +86,37 @@
                   <Component id="maxDateChooser" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="minDateChooser" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="minTotalAmountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="maxTotalAmountTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="minTotalAmountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="maxTotalAmountLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="minIvaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="maxIvaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="minIvaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="maxIvaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="cuitLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cuitTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cuitTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cuitLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                      <Component id="appyFilters" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                      <Component id="ticketTypesScrollPane" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
-                  <Component id="ticketTypesScrollPane" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="appyFilters" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -205,8 +202,14 @@
       </SubComponents>
     </Container>
     <Component class="com.toedter.calendar.JDateChooser" name="minDateChooser">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="minDateChooser.setDateFormatString(&quot;dd-MM-yyyy&quot;);&#xa;JTextFieldDateEditor textField = (JTextFieldDateEditor) minDateChooser.getDateEditor();&#xa;textField.setEditable(false);"/>
+      </AuxValues>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="maxDateChooser">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="maxDateChooser.setDateFormatString(&quot;dd-MM-yyyy&quot;);&#xa;textField = (JTextFieldDateEditor) maxDateChooser.getDateEditor();&#xa;textField.setEditable(false);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
