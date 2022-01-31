@@ -49,7 +49,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         typeTextField = new javax.swing.JTextField();
         numberTextField = new javax.swing.JTextField();
-        providerDocTypeTextField = new javax.swing.JTextField();
         providerCuitTextField = new javax.swing.JTextField();
         providerNameTextField = new javax.swing.JTextField();
         exchangeTypeTextField = new javax.swing.JTextField();
@@ -60,8 +59,9 @@ public class TicketLoaderView extends javax.swing.JFrame {
         ivaTextField = new javax.swing.JTextField();
         totalAmountTextField = new javax.swing.JTextField();
         loadTicket = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        issuedByMeCheckBox = new javax.swing.JCheckBox();
         dateDateChooser = new com.toedter.calendar.JDateChooser();
+        providerDocTypeComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -98,11 +98,14 @@ public class TicketLoaderView extends javax.swing.JFrame {
             }
         });
 
-        jCheckBox1.setText("Emitido por mi");
+        issuedByMeCheckBox.setText("Emitido por mi");
 
         dateDateChooser.setDateFormatString("dd-MM-yyyy");
         JTextFieldDateEditor textField = (JTextFieldDateEditor) dateDateChooser.getDateEditor();
         textField.setEditable(false);
+
+        providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
+        providerDocTypeComboBox.setSelectedIndex(-1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,7 +130,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(dateDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(dateDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(providerDocTypeComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(70, 70, 70)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(providerCuitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -142,9 +146,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                                 .addComponent(exchangeMoneyTextField)
                                 .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(providerDocTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,7 +165,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(totalAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                                     .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jCheckBox1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(issuedByMeCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -185,14 +187,15 @@ public class TicketLoaderView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(typeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(numberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBox1)
+                            .addComponent(issuedByMeCheckBox)
                             .addComponent(dateDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(providerDocTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(providerDocTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -247,15 +250,12 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("netAmountWOI", netAmountWOITextField.getText());
         values.put("number", numberTextField.getText());
         values.put("providerCuit", providerCuitTextField.getText());
-        values.put("providerDocType", providerDocTypeTextField.getText());
+        values.put("providerDocType", providerDocTypeComboBox.getSelectedItem().toString());
         values.put("providerName", providerNameTextField.getText());
         values.put("totalAmount", totalAmountTextField.getText());
         values.put("type", typeTextField.getText());
-        if (jCheckBox1.isSelected()) {
-            values.put("issuedByMe", "true");
-        } else {
-            values.put("issuedByMe", "false");
-        }
+        values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));
+
 
         controller.loadTicket(values);
     }//GEN-LAST:event_loadTicketActionPerformed
@@ -271,8 +271,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dateDateChooser;
     private javax.swing.JTextField exchangeMoneyTextField;
     private javax.swing.JTextField exchangeTypeTextField;
+    private javax.swing.JCheckBox issuedByMeCheckBox;
     private javax.swing.JTextField ivaTextField;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -291,7 +291,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private javax.swing.JTextField netAmountWOITextField;
     private javax.swing.JTextField numberTextField;
     private javax.swing.JTextField providerCuitTextField;
-    private javax.swing.JTextField providerDocTypeTextField;
+    private javax.swing.JComboBox<String> providerDocTypeComboBox;
     private javax.swing.JTextField providerNameTextField;
     private javax.swing.JTextField totalAmountTextField;
     private javax.swing.JTextField typeTextField;

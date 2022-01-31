@@ -50,6 +50,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel1" alignment="1" max="32767" attributes="0"/>
                                   <Component id="dateDateChooser" max="32767" attributes="0"/>
+                                  <Component id="providerDocTypeComboBox" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="70" pref="70" max="-2" attributes="0"/>
                           </Group>
@@ -71,10 +72,7 @@
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel7" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Component id="providerDocTypeTextField" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jLabel7" min="-2" pref="150" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -97,7 +95,7 @@
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="totalAmountTextField" alignment="0" pref="150" max="32767" attributes="0"/>
                                   <Component id="jLabel16" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jCheckBox1" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="issuedByMeCheckBox" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -129,15 +127,16 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="typeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="numberTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jCheckBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="issuedByMeCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="dateDateChooser" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="providerDocTypeTextField" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="providerDocTypeComboBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
@@ -262,8 +261,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="numberTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="providerDocTypeTextField">
-    </Component>
     <Component class="javax.swing.JTextField" name="providerCuitTextField">
     </Component>
     <Component class="javax.swing.JTextField" name="providerNameTextField">
@@ -290,7 +287,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadTicketActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+    <Component class="javax.swing.JCheckBox" name="issuedByMeCheckBox">
       <Properties>
         <Property name="text" type="java.lang.String" value="Emitido por mi"/>
       </Properties>
@@ -301,6 +298,20 @@
       </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="JTextFieldDateEditor textField = (JTextFieldDateEditor) dateDateChooser.getDateEditor();&#xa;textField.setEditable(false);"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="providerDocTypeComboBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="CUIT"/>
+            <StringItem index="1" value="CUIL"/>
+          </StringArray>
+        </Property>
+        <Property name="selectedIndex" type="int" value="-1"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
   </SubComponents>
