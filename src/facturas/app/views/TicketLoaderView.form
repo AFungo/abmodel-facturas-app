@@ -296,6 +296,12 @@
       </Properties>
     </Component>
     <Component class="com.toedter.calendar.JDateChooser" name="dateDateChooser">
+      <Properties>
+        <Property name="dateFormatString" type="java.lang.String" value="dd-MM-yyyy"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="JTextFieldDateEditor textField = (JTextFieldDateEditor) dateDateChooser.getDateEditor();&#xa;textField.setEditable(false);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

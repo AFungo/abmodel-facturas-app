@@ -4,6 +4,7 @@
  */
 package facturas.app.views;
 
+import com.toedter.calendar.JTextFieldDateEditor;
 import facturas.app.Controller;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -98,6 +99,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
         });
 
         jCheckBox1.setText("Emitido por mi");
+
+        dateDateChooser.setDateFormatString("dd-MM-yyyy");
+        JTextFieldDateEditor textField = (JTextFieldDateEditor) dateDateChooser.getDateEditor();
+        textField.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
