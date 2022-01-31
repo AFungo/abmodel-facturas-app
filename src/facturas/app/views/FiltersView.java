@@ -8,6 +8,7 @@ package facturas.app.views;
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.utils.FormatUtils;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,8 +42,6 @@ public class FiltersView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        minDateTextField = new javax.swing.JTextField();
-        maxDateTextField = new javax.swing.JTextField();
         minTotalAmountTextField = new javax.swing.JTextField();
         maxTotalAmountTextField = new javax.swing.JTextField();
         minIvaTextField = new javax.swing.JTextField();
@@ -58,6 +57,8 @@ public class FiltersView extends javax.swing.JFrame {
         appyFilters = new javax.swing.JButton();
         ticketTypesScrollPane = new javax.swing.JScrollPane();
         ticketTypesList = new javax.swing.JList<>();
+        minDateChooser = new com.toedter.calendar.JDateChooser();
+        maxDateChooser = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("FILTROS");
@@ -98,46 +99,53 @@ public class FiltersView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(minTotalAmountLabel)
-                            .addComponent(minIvaLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(minDateLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cuitLabel, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(minDateTextField)
-                            .addComponent(minTotalAmountTextField)
-                            .addComponent(minIvaTextField)
-                            .addComponent(cuitTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                        .addGap(45, 45, 45))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(appyFilters)
-                        .addGap(81, 81, 81)))
+                        .addGap(81, 81, 81))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(minTotalAmountLabel)
+                                    .addComponent(minIvaLabel, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cuitLabel, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(minTotalAmountTextField)
+                                    .addComponent(minIvaTextField)
+                                    .addComponent(cuitTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(minDateLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(minDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(45, 45, 45)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(maxTotalAmountLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(maxDateLabel)
                             .addComponent(maxIvaLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(maxDateTextField)
                             .addComponent(maxTotalAmountTextField)
                             .addComponent(maxIvaTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
-                    .addComponent(ticketTypesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ticketTypesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(maxDateLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(maxDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(minDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(maxDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(minDateLabel)
-                    .addComponent(maxDateLabel))
-                .addGap(28, 28, 28)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(minDateLabel)
+                        .addComponent(maxDateLabel))
+                    .addComponent(maxDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(minDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(minTotalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(maxTotalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -180,8 +188,9 @@ public class FiltersView extends javax.swing.JFrame {
     public Map<String, Object> getFilters() {
         Map<String, Object> selectedFilters = new HashMap<> ();
         
-        selectedFilters.put("startDate", minDateTextField.getText());
-        selectedFilters.put("finishDate", maxDateTextField.getText());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        selectedFilters.put("startDate", sdf.format(minDateChooser.getDate()));
+        selectedFilters.put("finishDate", sdf.format(maxDateChooser.getDate()));
         selectedFilters.put("minTotal", minTotalAmountTextField.getText());
         selectedFilters.put("maxTotal", maxTotalAmountTextField.getText());
         selectedFilters.put("minIva", minIvaTextField.getText());
@@ -203,14 +212,14 @@ public class FiltersView extends javax.swing.JFrame {
     private javax.swing.JButton appyFilters;
     private javax.swing.JLabel cuitLabel;
     private javax.swing.JTextField cuitTextField;
+    private com.toedter.calendar.JDateChooser maxDateChooser;
     private javax.swing.JLabel maxDateLabel;
-    private javax.swing.JTextField maxDateTextField;
     private javax.swing.JLabel maxIvaLabel;
     private javax.swing.JTextField maxIvaTextField;
     private javax.swing.JLabel maxTotalAmountLabel;
     private javax.swing.JTextField maxTotalAmountTextField;
+    private com.toedter.calendar.JDateChooser minDateChooser;
     private javax.swing.JLabel minDateLabel;
-    private javax.swing.JTextField minDateTextField;
     private javax.swing.JLabel minIvaLabel;
     private javax.swing.JTextField minIvaTextField;
     private javax.swing.JLabel minTotalAmountLabel;
