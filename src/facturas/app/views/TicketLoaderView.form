@@ -23,58 +23,34 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="loadTicket" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="331" max="-2" attributes="0"/>
-          </Group>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="netAmountWOITextField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLabel13" alignment="1" pref="150" max="32767" attributes="0"/>
-                                  <Component id="jLabel10" max="32767" attributes="0"/>
-                                  <Component id="exchangeTypeTextField" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="providerDocTypeComboBox" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="dateDateChooser" alignment="1" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                          </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jLabel1" max="32767" attributes="0"/>
+                          <Component id="dateDateChooser" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
+                          <Component id="providerDocTypeComboBox" alignment="0" max="32767" attributes="0"/>
+                          <Component id="exchangeTypeTextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel13" alignment="0" pref="150" max="32767" attributes="0"/>
+                          <Component id="netAmountWOITextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel10" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace pref="50" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="providerCuitTextField" min="-2" pref="150" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="typeTextField" max="32767" attributes="0"/>
                               <Component id="amountImpExTextField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="typeTextField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jLabel2" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jLabel14" alignment="0" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel8" pref="150" max="32767" attributes="0"/>
-                                  <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="providerCuitTextField" alignment="0" max="32767" attributes="0"/>
                               <Component id="exchangeMoneyTextField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jLabel11" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel8" alignment="1" pref="150" max="32767" attributes="0"/>
+                              <Component id="jLabel11" alignment="1" max="32767" attributes="0"/>
+                              <Component id="jLabel14" alignment="1" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="jLabel2" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel7" min="-2" pref="150" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                      <EmptySpace pref="50" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel9" min="-2" pref="150" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
@@ -87,7 +63,7 @@
                                   </Group>
                                   <Component id="providerNameTextField" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                              <EmptySpace pref="52" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="totalAmountTextField" alignment="0" pref="150" max="32767" attributes="0"/>
                                   <Component id="jLabel16" alignment="0" max="32767" attributes="0"/>
@@ -95,17 +71,19 @@
                                   <Component id="providersComboBox" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="netAmountWITextField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jLabel12" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="netAmountWITextField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel12" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="loadTicket" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -121,25 +99,23 @@
               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="typeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="numberTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="issuedByMeCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="dateDateChooser" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="typeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="numberTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="issuedByMeCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="providerDocTypeComboBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="providerCuitTextField" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="providerDocTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="providerCuitTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -149,35 +125,32 @@
                           <Component id="providerNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="providersComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="exchangeTypeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="netAmountWITextField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="exchangeMoneyTextField" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="exchangeMoneyTextField" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel13" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="netAmountWOITextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="amountImpExTextField" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -186,7 +159,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="loadTicket" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+              <EmptySpace pref="20" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
