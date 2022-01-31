@@ -11,6 +11,7 @@ import facturas.app.database.SQLFilter;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.Pair;
+import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.JTextField;
@@ -57,11 +58,20 @@ public class ProvidersView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenu = new javax.swing.JPopupMenu();
+        directionMenuItem = new javax.swing.JMenuItem();
+        sectorMenuItem = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         providersTable = new javax.swing.JTable();
         searchProvider = new javax.swing.JButton();
         comboBox = new javax.swing.JComboBox<>();
         showAllProviders = new javax.swing.JButton();
+
+        directionMenuItem.setText("Modificar direccion");
+        popupMenu.add(directionMenuItem);
+
+        sectorMenuItem.setText("Modificar rubro");
+        popupMenu.add(sectorMenuItem);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
@@ -88,6 +98,11 @@ public class ProvidersView extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        providersTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                providersTableMouseReleased(evt);
             }
         });
         jScrollPane1.setViewportView(providersTable);
@@ -173,6 +188,17 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_showAllProvidersActionPerformed
 
+    private void providersTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_providersTableMouseReleased
+        if (evt.getButton() == MouseEvent.BUTTON3) {//right click
+            System.out.println("click derecho");
+            System.out.println("filas seleccionadas: " + providersTable.getSelectedRowCount());
+            System.out.println("es un popup trigger: " + evt.isPopupTrigger());
+            if (evt.isPopupTrigger() && providersTable.getSelectedRowCount() != 0) {
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_providersTableMouseReleased
+
     public void updateProviders(java.awt.event.ActionEvent evt) {
         showAllProvidersActionPerformed(evt);
     }
@@ -189,9 +215,12 @@ public class ProvidersView extends javax.swing.JFrame {
     private JTextField nameTextField;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboBox;
+    private javax.swing.JMenuItem directionMenuItem;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable providersTable;
     private javax.swing.JButton searchProvider;
+    private javax.swing.JMenuItem sectorMenuItem;
     private javax.swing.JButton showAllProviders;
     // End of variables declaration//GEN-END:variables
 }
