@@ -61,6 +61,7 @@ public class ProvidersView extends javax.swing.JFrame {
         popupMenu = new javax.swing.JPopupMenu();
         directionMenuItem = new javax.swing.JMenuItem();
         sectorMenuItem = new javax.swing.JMenuItem();
+        optionPane = new javax.swing.JOptionPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         providersTable = new javax.swing.JTable();
         searchProvider = new javax.swing.JButton();
@@ -68,10 +69,17 @@ public class ProvidersView extends javax.swing.JFrame {
         showAllProviders = new javax.swing.JButton();
 
         directionMenuItem.setText("Modificar direccion");
+        directionMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                directionMenuItemActionPerformed(evt);
+            }
+        });
         popupMenu.add(directionMenuItem);
 
         sectorMenuItem.setText("Modificar rubro");
         popupMenu.add(sectorMenuItem);
+
+        optionPane.setWantsInput(true);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
@@ -190,14 +198,20 @@ public class ProvidersView extends javax.swing.JFrame {
 
     private void providersTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_providersTableMouseReleased
         if (evt.getButton() == MouseEvent.BUTTON3) {//right click
-            System.out.println("click derecho");
-            System.out.println("filas seleccionadas: " + providersTable.getSelectedRowCount());
-            System.out.println("es un popup trigger: " + evt.isPopupTrigger());
             if (evt.isPopupTrigger() && providersTable.getSelectedRowCount() != 0) {
+                int row = providersTable.getSelectedRow();
+                selectedCuit = (String)providersTable.getValueAt(row, 0); //0 is the cuit column
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
     }//GEN-LAST:event_providersTableMouseReleased
+
+    private void directionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionMenuItemActionPerformed
+        String userInput = optionPane.showInputDialog(null, "Dirección: ", "");
+        if (userInput != null) {
+            ProviderDAO.changeDirection(selectedCuit, userInput);
+        }
+    }//GEN-LAST:event_directionMenuItemActionPerformed
 
     public void updateProviders(java.awt.event.ActionEvent evt) {
         showAllProvidersActionPerformed(evt);
@@ -213,10 +227,12 @@ public class ProvidersView extends javax.swing.JFrame {
     private Controller controller;
     private AutoSuggestor autoSuggestor;
     private JTextField nameTextField;
+    private String selectedCuit;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JMenuItem directionMenuItem;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JOptionPane optionPane;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable providersTable;
     private javax.swing.JButton searchProvider;
