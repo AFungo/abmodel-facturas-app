@@ -301,6 +301,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("totalAmount", totalAmountTextField.getText());
         values.put("type", typeTextField.getText());
         values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));
+        
+        if (sectorsComboBox.getSelectedItem() != null) {
+            values.put("sector", sectorsComboBox.getSelectedItem().toString());
+        }
 
 
         controller.loadTicket(values);
