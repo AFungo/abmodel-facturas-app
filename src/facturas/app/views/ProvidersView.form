@@ -20,6 +20,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Modificar rubro"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sectorMenuItemActionPerformed"/>
+          </Events>
         </MenuItem>
       </SubComponents>
     </Container>
@@ -27,6 +30,16 @@
       <Properties>
         <Property name="wantsInput" type="boolean" value="true"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="sectorComboBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors()))" type="code"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </NonVisualComponents>
   <Properties>

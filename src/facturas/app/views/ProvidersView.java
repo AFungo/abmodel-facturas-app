@@ -8,6 +8,7 @@ package facturas.app.views;
 import facturas.app.Controller;
 import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
+import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FormatUtils;
@@ -15,6 +16,9 @@ import facturas.app.utils.Pair;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import java.util.Vector;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -63,6 +67,7 @@ public class ProvidersView extends javax.swing.JFrame {
         directionMenuItem = new javax.swing.JMenuItem();
         sectorMenuItem = new javax.swing.JMenuItem();
         optionPane = new javax.swing.JOptionPane();
+        sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         providersTable = new javax.swing.JTable();
         searchProvider = new javax.swing.JButton();
@@ -78,9 +83,16 @@ public class ProvidersView extends javax.swing.JFrame {
         popupMenu.add(directionMenuItem);
 
         sectorMenuItem.setText("Modificar rubro");
+        sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sectorMenuItemActionPerformed(evt);
+            }
+        });
         popupMenu.add(sectorMenuItem);
 
         optionPane.setWantsInput(true);
+
+        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
@@ -216,6 +228,16 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_directionMenuItemActionPerformed
 
+    private void sectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorMenuItemActionPerformed
+        int selection = optionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", optionPane.OK_CANCEL_OPTION);
+        if (selection == optionPane.OK_OPTION) {
+            String sector = (String)sectorComboBox.getSelectedItem();
+            ProviderDAO.changeSector(selectedCuit, sector);
+            int row = providersTable.getSelectedRow();
+            providersTable.setValueAt(sector, row, 4);   //column 4 is for sector
+        }
+    }//GEN-LAST:event_sectorMenuItemActionPerformed
+
     public void updateProviders(java.awt.event.ActionEvent evt) {
         showAllProvidersActionPerformed(evt);
     }
@@ -239,6 +261,7 @@ public class ProvidersView extends javax.swing.JFrame {
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable providersTable;
     private javax.swing.JButton searchProvider;
+    private javax.swing.JComboBox<String> sectorComboBox;
     private javax.swing.JMenuItem sectorMenuItem;
     private javax.swing.JButton showAllProviders;
     // End of variables declaration//GEN-END:variables
