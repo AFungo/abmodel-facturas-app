@@ -46,7 +46,7 @@ public class ProviderDAO extends DAO {
         List<Provider> providers = new LinkedList<>();
         try {
             while (result.next()) {
-                providers.add(new Provider(result.getString(3), result.getString(1), result.getString(2)));
+                providers.add(createProvider(result));
             }
             return providers;
         } catch (SQLException ex) {
@@ -59,7 +59,7 @@ public class ProviderDAO extends DAO {
         ResultSet result = executeQuery("SELECT * FROM Provider WHERE cuit='" + cuit + "'", false);
         try {
             if (result.next()) {
-                return new Provider(result.getString(3), result.getString(1), result.getString(2));
+                return createProvider(result);
             }
             return null;
         } catch (SQLException ex) {
@@ -74,7 +74,7 @@ public class ProviderDAO extends DAO {
         
         try {
             while(result.next()) {
-                providers.add(new Provider(result.getString(3), result.getString(1), result.getString(2)));
+                providers.add(createProvider(result));
             }
             return providers;
         } catch (SQLException ex) {
@@ -90,5 +90,12 @@ public class ProviderDAO extends DAO {
         } else {
             System.out.println("The provider of cuit " + cuit + "was not found");
         }
+    }
+    
+    private static Provider createProvider(ResultSet result) throws SQLException {
+        Provider prov = new Provider(result.getString(3), result.getString(1), result.getString(2));
+        prov.addDirection(result.getString(4));
+        prov.addSector(result.getString(5));
+        return prov;
     }
 }
