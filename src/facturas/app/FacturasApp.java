@@ -7,7 +7,6 @@ package facturas.app;
 
 import facturas.app.views.View;
 import facturas.app.database.DBManager;
-import facturas.app.database.SectorDAO;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -23,10 +22,6 @@ public class FacturasApp {
     public static void main(String[] args) {
         DBManager.createConnection();
         DBManager.initializeDB();
-        
-        SectorDAO.addSector("FARMACIA");
-        SectorDAO.addSector("DROGA");
-        SectorDAO.addSector("ARMAS");
         
         View view = new View(new Controller());
         view.setVisible(true);
