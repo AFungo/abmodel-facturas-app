@@ -28,6 +28,9 @@ public class Withholding {
         this.type = data.get("type");
         this.number = Integer.parseInt(data.get("number"));
         this.provider = ProviderDAO.getProvider(data.get("providerCuit"));
+        if (this.provider == null) {    //if this provider was not in database
+            this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));
+        }
         this.totalAmount = Float.parseFloat(data.get("totalAmount"));
     }
 
