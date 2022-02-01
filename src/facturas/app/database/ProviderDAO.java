@@ -92,6 +92,15 @@ public class ProviderDAO extends DAO {
         }
     }
     
+    public static void changeSector(String cuit, String sector) {
+        if (providerExist(cuit)) {
+            String query = "UPDATE Provider SET sector = '" + sector  + "' WHERE cuit = '" + cuit + "'";
+            executeQuery(query, true);
+        } else {
+            System.out.println("The provider of cuit " + cuit + "was not found");
+        }
+    }
+    
     private static Provider createProvider(ResultSet result) throws SQLException {
         Provider prov = new Provider(result.getString(3), result.getString(1), result.getString(2));
         prov.addDirection(result.getString(4));
