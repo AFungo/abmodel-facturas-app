@@ -196,6 +196,7 @@ public class FiltersView extends javax.swing.JFrame {
     public Map<String, Object> getFilters() {
         Map<String, Object> selectedFilters = new HashMap<> ();
         
+        // FIXME: If the date is null because we dont select it
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         selectedFilters.put("startDate", sdf.format(minDateChooser.getDate()));
         selectedFilters.put("finishDate", sdf.format(maxDateChooser.getDate()));

@@ -42,7 +42,7 @@
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="typeTextField" max="32767" attributes="0"/>
                               <Component id="amountImpExTextField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="providerCuitTextField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="providerDocTextField" alignment="0" max="32767" attributes="0"/>
                               <Component id="exchangeMoneyTextField" alignment="0" max="32767" attributes="0"/>
                               <Component id="jLabel8" alignment="1" pref="150" max="32767" attributes="0"/>
                               <Component id="jLabel11" alignment="1" max="32767" attributes="0"/>
@@ -114,7 +114,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="providerDocTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="providerCuitTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="providerDocTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -238,7 +238,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="numberTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="providerCuitTextField">
+    <Component class="javax.swing.JTextField" name="providerDocTextField">
     </Component>
     <Component class="javax.swing.JTextField" name="providerNameTextField">
     </Component>
@@ -297,6 +297,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="providersComboBoxItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>

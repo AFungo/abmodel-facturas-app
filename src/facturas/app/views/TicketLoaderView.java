@@ -6,9 +6,12 @@ package facturas.app.views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import facturas.app.Controller;
+import facturas.app.database.ProviderDAO;
+import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.Pair;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -76,7 +79,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         typeTextField = new javax.swing.JTextField();
         numberTextField = new javax.swing.JTextField();
-        providerCuitTextField = new javax.swing.JTextField();
+        providerDocTextField = new javax.swing.JTextField();
         providerNameTextField = new javax.swing.JTextField();
         exchangeTypeTextField = new javax.swing.JTextField();
         exchangeMoneyTextField = new javax.swing.JTextField();
@@ -138,6 +141,12 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
         providerDocTypeComboBox.setSelectedIndex(-1);
 
+        providersComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                providersComboBoxItemStateChanged(evt);
+            }
+        });
+
         jLabel4.setText("Proveedores existentes");
 
         jLabel5.setText("Rubro");
@@ -164,7 +173,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(typeTextField)
                                 .addComponent(amountImpExTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(providerCuitTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(providerDocTextField, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(exchangeMoneyTextField, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                                 .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -221,7 +230,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(providerDocTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(providerCuitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(providerDocTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
@@ -275,9 +284,20 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("netAmountWI", netAmountWITextField.getText());
         values.put("netAmountWOI", netAmountWOITextField.getText());
         values.put("number", numberTextField.getText());
-        values.put("providerCuit", providerCuitTextField.getText());
-        values.put("providerDocType", providerDocTypeComboBox.getSelectedItem().toString());
-        values.put("providerName", providerNameTextField.getText());
+        
+        if (providersComboBox.getSelectedItem() != null) {
+            SQLFilter filter = new SQLFilter();
+            filter.add(new Pair<>("name", "="), new Pair<>(providersComboBox.getSelectedItem(), String.class));
+            List<Provider> providers = ProviderDAO.getProviders(filter);
+            values.put("providerCuit", providers.get(0).getCuit());
+            values.put("providerDocType", providers.get(0).getDocType());
+            values.put("providerName", providers.get(0).getName());
+        } else {
+            values.put("providerCuit", providerDocTextField.getText());
+            values.put("providerDocType", providerDocTypeComboBox.getSelectedItem().toString());
+            values.put("providerName", providerNameTextField.getText());
+        }
+        
         values.put("totalAmount", totalAmountTextField.getText());
         values.put("type", typeTextField.getText());
         values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));
@@ -285,6 +305,17 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
         controller.loadTicket(values);
     }//GEN-LAST:event_loadTicketActionPerformed
+
+    private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
+        // TODO add your handling code here:
+        setEnabledProvidersDataLoader(providersComboBox.getSelectedItem() == null);
+    }//GEN-LAST:event_providersComboBoxItemStateChanged
+    
+    private void setEnabledProvidersDataLoader(boolean value) {
+        providerDocTextField.setEnabled(value);
+        providerNameTextField.setEnabled(value);
+        providerDocTypeComboBox.setEnabled(value);
+    }
     
     //"Fecha","Tipo","Punto de Venta","Número Desde","Número Hasta","Cód. Autorización",
     //"Tipo Doc. Emisor","Nro. Doc. Emisor","Denominación Emisor","Tipo Cambio","Moneda",
@@ -321,7 +352,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private javax.swing.JTextField netAmountWITextField;
     private javax.swing.JTextField netAmountWOITextField;
     private javax.swing.JTextField numberTextField;
-    private javax.swing.JTextField providerCuitTextField;
+    private javax.swing.JTextField providerDocTextField;
     private javax.swing.JComboBox<String> providerDocTypeComboBox;
     private javax.swing.JTextField providerNameTextField;
     private javax.swing.JComboBox<String> providersComboBox;
