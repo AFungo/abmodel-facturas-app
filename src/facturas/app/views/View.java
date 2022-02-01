@@ -77,8 +77,8 @@ public class View extends javax.swing.JFrame {
         loadTicketsEmitedByO = new javax.swing.JMenuItem();
         loadDollarValue = new javax.swing.JMenuItem();
         loadTicketManually = new javax.swing.JMenuItem();
-        sectorsViewItem = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
+        sectorsViewItem = new javax.swing.JMenuItem();
         tools = new javax.swing.JMenu();
         filters = new javax.swing.JMenuItem();
         columnSelector = new javax.swing.JMenuItem();
@@ -241,17 +241,18 @@ public class View extends javax.swing.JFrame {
         });
         files.add(loadTicketManually);
 
+        menuBar.add(files);
+
+        edit.setText("Edit");
+
         sectorsViewItem.setText("Agregar/Borrar rubro");
         sectorsViewItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sectorsViewItemActionPerformed(evt);
             }
         });
-        files.add(sectorsViewItem);
+        edit.add(sectorsViewItem);
 
-        menuBar.add(files);
-
-        edit.setText("Edit");
         menuBar.add(edit);
 
         tools.setText("Herramientas");

@@ -62,46 +62,54 @@ public class SectorsView extends javax.swing.JFrame {
             }
         });
 
-        sectorsComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        sectorsComboBox.setSelectedIndex(-1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(91, 91, 91)
-                .addComponent(addSector)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
-                .addComponent(deleteSector)
-                .addGap(73, 73, 73))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(addSector, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(deleteSector, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(157, 157, 157))
+                .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(83, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addSector)
                     .addComponent(deleteSector))
-                .addGap(97, 97, 97))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void addSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSectorActionPerformed
-        // TODO add your handling code here:
-        System.out.println("adding " + sectorsTextField.getText());
+        if (!SectorDAO.sectorExist(sectorsAutoSuggestor.getText())) {
+            SectorDAO.addSector(sectorsAutoSuggestor.getText());
+            updateSuggestions();
+            sectorsAutoSuggestor.setText("");
+        } // TODO: Maybe if the sector already exists then show a massage
     }//GEN-LAST:event_addSectorActionPerformed
 
     private void deleteSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorActionPerformed
-        // TODO add your handling code here:
-        System.out.println("deleting " + sectorsTextField.getText());
+        if (SectorDAO.sectorExist(sectorsAutoSuggestor.getText())) {
+            SectorDAO.deleteSector(sectorsAutoSuggestor.getText());
+            updateSuggestions();
+            sectorsAutoSuggestor.setText("");
+        } // TODO: Maybe if the sector is deleted then show a massage
+        // FIXME: If a sector is related with a ticket or provider then it cant
+        // be removed
     }//GEN-LAST:event_deleteSectorActionPerformed
 
     JTextField sectorsTextField;
