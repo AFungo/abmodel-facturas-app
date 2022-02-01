@@ -47,9 +47,13 @@ public class Provider {
             this.sector = sector;
     }
     
+    public String getSector() {
+        return sector;
+    }
+    
     @Override
     public String toString(){
-        return "Nombre" + name + "    " + "Cuit" + cuit; 
+        return "Nombre: " + name + ", Cuit: " + cuit + ", direccion: " + direction + ", sector: " + sector; 
     }          
     
     public Map<String, Object> getValues() {
