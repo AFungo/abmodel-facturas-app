@@ -5,6 +5,7 @@
  */
 package facturas.app.models;
 
+import facturas.app.database.ProviderDAO;
 import facturas.app.utils.FormatUtils;
 import java.util.Map;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class Withholding {
         this.date = FormatUtils.dateGen(data.get("date"));
         this.type = data.get("type");
         this.number = Integer.parseInt(data.get("number"));
-        this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));
+        this.provider = ProviderDAO.getProvider(data.get("providerCuit"));
         this.totalAmount = Float.parseFloat(data.get("totalAmount"));
     }
 
