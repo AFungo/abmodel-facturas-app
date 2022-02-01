@@ -30,10 +30,10 @@ public class SQLFilter {
     }
     
     public SQLFilter(Map<String, Object> selectedFilters) {
-        String text = (String)selectedFilters.get("startDate");
-        if (!text.isEmpty()) { filters.put(new Pair<> ("date", ">="), new Pair(FormatUtils.dateGen(text), Date.class)); }
+        String text = (String) selectedFilters.get("startDate");
+        if (text != null && !text.isEmpty()) { filters.put(new Pair<> ("date", ">="), new Pair(FormatUtils.dateGen(text), Date.class)); }
         text = (String)selectedFilters.get("finishDate");
-        if (!text.isEmpty()) { filters.put(new Pair<> ("date", "<="), new Pair(FormatUtils.dateGen(text), Date.class)); }
+        if (text != null && !text.isEmpty()) { filters.put(new Pair<> ("date", "<="), new Pair(FormatUtils.dateGen(text), Date.class)); }
         text = (String)selectedFilters.get("minTotal");
         if (!text.isEmpty()) { filters.put(new Pair<> ("totalAmount", ">="), new Pair(Float.parseFloat(text), Float.class)); }
         text = (String)selectedFilters.get("maxTotal");

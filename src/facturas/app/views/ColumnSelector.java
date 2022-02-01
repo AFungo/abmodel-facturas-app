@@ -19,6 +19,7 @@ public class ColumnSelector extends javax.swing.JFrame {
      * Creates new form ColumnSelector
      */
     public ColumnSelector(JTable ticketsTable, JTable providersTable) {
+         
         this.ticketsTable = ticketsTable;
         this.providersTable = providersTable;
         this.config = ConfigManager.readConfig();
@@ -59,6 +60,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         applyButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("COLUMNAS");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -67,63 +69,64 @@ public class ColumnSelector extends javax.swing.JFrame {
 
         ticketLabel.setText("Comprobante");
 
-        dateCheckBox.setSelected(config.get("date"));
+        dateCheckBox.setSelected(config.get("date")
+        );
         dateCheckBox.setText("Fecha");
 
-        typeCheckBox.setSelected(config.get("type"));
+        typeCheckBox.setSelected(true);
         typeCheckBox.setText("Tipo");
 
-        noTicketCheckBox.setSelected(config.get("noTicket"));
+        noTicketCheckBox.setSelected(true);
         noTicketCheckBox.setText("Nro factura");
 
-        numberToCheckBox.setSelected(config.get("numberTo"));
+        numberToCheckBox.setSelected(true);
         numberToCheckBox.setText("Numero hasta");
 
-        authCodeCheckBox.setSelected(config.get("authCode"));
+        authCodeCheckBox.setSelected(true);
         authCodeCheckBox.setText("Cód. Autorización");
 
-        noCuitCheckBox.setSelected(config.get("noCuit"));
+        noCuitCheckBox.setSelected(true);
         noCuitCheckBox.setText("Nro. Doc. Emisor");
 
-        providerNameCheckBox.setSelected(config.get("providerName"));
+        providerNameCheckBox.setSelected(true);
         providerNameCheckBox.setText("Denominación Emisor");
 
-        changeTypeCheckBox.setSelected(config.get("changeType"));
+        changeTypeCheckBox.setSelected(true);
         changeTypeCheckBox.setText("Tipo Cambio");
 
-        netAmountWICheckBox.setSelected(config.get("netAmountWI"));
+        netAmountWICheckBox.setSelected(true);
         netAmountWICheckBox.setText("Imp. Neto Gravado");
 
-        netAmountWOICheckBox.setSelected(config.get("netAmountWOI"));
+        netAmountWOICheckBox.setSelected(true);
         netAmountWOICheckBox.setText("Imp. Neto No Gravado");
 
-        amountImpExCheckBox.setSelected(config.get("amountImpEx"));
+        amountImpExCheckBox.setSelected(true);
         amountImpExCheckBox.setText("Imp. Op. Exentas");
 
-        ivaCheckBox.setSelected(config.get("iva"));
+        ivaCheckBox.setSelected(true);
         ivaCheckBox.setText("IVA");
 
-        ticketSectorCheckBox.setSelected(config.get("ticketSector"));
+        ticketSectorCheckBox.setSelected(true);
         ticketSectorCheckBox.setText("Rubro");
 
-        totalAmountCheckBox.setSelected(config.get("totalAmount"));
+        totalAmountCheckBox.setSelected(true);
         totalAmountCheckBox.setText("Imp. Total");
 
         providerLabel.setText("Proveedor");
 
-        cuitCheckBox.setSelected(config.get("cuit"));
+        cuitCheckBox.setSelected(true);
         cuitCheckBox.setText("CUIT");
 
-        nameCheckBox.setSelected(config.get("name"));
+        nameCheckBox.setSelected(true);
         nameCheckBox.setText("Nombre");
 
-        docTypeCheckBox.setSelected(config.get("docType"));
+        docTypeCheckBox.setSelected(true);
         docTypeCheckBox.setText("Tipo de documento");
 
-        directionCheckBox.setSelected(config.get("direction"));
+        directionCheckBox.setSelected(true);
         directionCheckBox.setText("Dirección");
 
-        providerSectorCheckBox.setSelected(config.get("providerSector"));
+        providerSectorCheckBox.setSelected(true);
         providerSectorCheckBox.setText("Rubro");
 
         applyButton.setText("Aplicar");
@@ -232,6 +235,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
