@@ -23,6 +23,20 @@ public class SectorDAO extends DAO {
         executeQuery(query, true);
     }
     
+    public static void deleteSector(String name) {
+        String query = "DELETE FROM Sector WHERE name = '" + name + "'";
+        executeQuery(query, true);
+    }
+    
+    public static boolean sectorExist(String name) {
+        ResultSet result = executeQuery("SELECT * FROM Sector WHERE name = '" + name + "'", false);
+        try {
+            return result.next();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e.toString());
+        }
+    }
+    
     public static List<String> getSectors() {
         ResultSet result = executeQuery("SELECT * FROM Sector", false);
         List<String> providers = new LinkedList<>();
