@@ -13,7 +13,6 @@ import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.FormatUtils;
-import facturas.app.utils.Pair;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
 import java.io.IOException;
