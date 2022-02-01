@@ -211,6 +211,8 @@ public class ProvidersView extends javax.swing.JFrame {
         String userInput = optionPane.showInputDialog(null, "Dirección: ", "");
         if (userInput != null) {
             ProviderDAO.changeDirection(selectedCuit, userInput);
+            int row = providersTable.getSelectedRow();
+            providersTable.setValueAt(userInput, row, 3);   //column 3 is for direction
         }
     }//GEN-LAST:event_directionMenuItemActionPerformed
 

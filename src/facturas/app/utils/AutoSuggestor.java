@@ -32,16 +32,8 @@ public class AutoSuggestor {
         setSuggestions(suggestions);
     }
     
-    private Vector<String> convertListToVector(List<String> list) {
-        Vector<String> vector = new Vector<>();
-        for (String s : list) {
-            vector.addElement(s);
-        }
-        return vector;
-    }
-    
     public void setSuggestions(List<String> suggestions) {
-        this.suggestions = convertListToVector(suggestions);
+        this.suggestions = FormatUtils.listToVector(suggestions);
     }
     
     private void setModel(DefaultComboBoxModel model, String str) {
