@@ -332,7 +332,7 @@ public class View extends javax.swing.JFrame {
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
-        ;
+        
 
         ProfitCalculator profit = controller.getProfit(filtersView.getFilters(), dollar);
         

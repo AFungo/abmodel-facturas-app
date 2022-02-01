@@ -33,7 +33,7 @@ public class ProfitCalculator {
         Float exchangeType = (Float) t.getValues().get("exchangeType");
         Float totalAmount = (Float) values.get("totalAmount") * exchangeType;
         Float iva = (values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType;
-        Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : 0.0f) * exchangeType;
+        Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType;
         
         if (dollars && exchangeType == 1.0f) {  //if dollars are required and exchange type is pesos
             DollarPrice price = t.getDollarPrice();
@@ -45,7 +45,7 @@ public class ProfitCalculator {
             }
         }
         
-        if ((boolean) values.get("myTicket")) {
+        if ((boolean) values.get("issuedByMe")) {
             if (t.isIncome())
                 sales.addTransaction(-totalAmount, -iva, -netAmountWI);
             else
