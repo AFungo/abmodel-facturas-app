@@ -31,12 +31,11 @@ import java.util.logging.Logger;
  */
 public class Controller {
     
-    public void loadTickets(File f) {
+    public void loadTickets(File f, boolean issuedByMe) {
         List<String> stringTickets = readCsv(f, "ticket");
             
         List<Ticket> tickets = new LinkedList<>();
         for (String strTicket : stringTickets) {
-            boolean issuedByMe = true;  //for now this will be fixed to true
             tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket, issuedByMe)));
         }
 

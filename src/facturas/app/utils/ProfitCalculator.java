@@ -44,17 +44,19 @@ public class ProfitCalculator {
                 netAmountWI /= sellPrice;
             }
         }
-        
-        if ((boolean) values.get("issuedByMe")) {
-            if (t.isIncome())
+
+        if ((boolean)values.get("issuedByMe")) {
+            if (t.isIncome()){
                 sales.addTransaction(-totalAmount, -iva, -netAmountWI);
-            else
+            }else{          
                 sales.addTransaction(totalAmount, iva, netAmountWI);
+            }
         } else {
-            if (t.isIncome())
+            if (t.isIncome()){
                 purchases.addTransaction(totalAmount, iva, netAmountWI);
-            else
+            }else{
                 purchases.addTransaction(-totalAmount, -iva, -netAmountWI);
+            }
         }
     }
 
@@ -65,14 +67,15 @@ public class ProfitCalculator {
     }
     
     public Float getProfit(){
-        return ((Float)sales.getTransactions().get("totalAmount") - (Float)purchases.getTransactions().get("totalAmount"));
+        return ((Float)sales.getTransactions().get("totalAmount") + (Float)purchases.getTransactions().get("totalAmount"));
+        
     }
     
     public Float getIva(){
-        return ((Float)sales.getTransactions().get("iva") - (Float)purchases.getTransactions().get("iva") - (Float) retentionIva.getTransactions().get("totalAmount"));
+        return ((Float)sales.getTransactions().get("iva") + (Float)purchases.getTransactions().get("iva") - (Float) retentionIva.getTransactions().get("totalAmount"));
     }
     public Float getGanancia(){//falta restarle las retenciones para que te quede el numero.
-        return ((Float)sales.getTransactions().get("netAmountWI")- (Float)purchases.getTransactions().get("netAmountWI") - (Float) retentionGan.getTransactions().get("totalAmount"));
+        return ((Float)sales.getTransactions().get("netAmountWI") + (Float)purchases.getTransactions().get("netAmountWI") - (Float) retentionGan.getTransactions().get("totalAmount"));
     }
     
 }

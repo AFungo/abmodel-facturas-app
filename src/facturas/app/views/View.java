@@ -72,10 +72,12 @@ public class View extends javax.swing.JFrame {
         resetDBButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
-        loadTicketsFromCSV = new javax.swing.JMenuItem();
+        multipleLoad = new javax.swing.JMenu();
+        loadTicketsEmitedByMy = new javax.swing.JMenuItem();
+        loadTicketsEmitedByO = new javax.swing.JMenuItem();
+        loadDollarValue = new javax.swing.JMenuItem();
         loadTicketManually = new javax.swing.JMenuItem();
         sectorsViewItem = new javax.swing.JMenuItem();
-        loadDollarValue = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
         tools = new javax.swing.JMenu();
         filters = new javax.swing.JMenuItem();
@@ -203,13 +205,33 @@ public class View extends javax.swing.JFrame {
 
         files.setText("File");
 
-        loadTicketsFromCSV.setText("Cargar comprobantes (.csv)");
-        loadTicketsFromCSV.addActionListener(new java.awt.event.ActionListener() {
+        multipleLoad.setText("Cargar (.csv)...");
+
+        loadTicketsEmitedByMy.setText("Emitidos por mi");
+        loadTicketsEmitedByMy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadTicketsFromCSVActionPerformed(evt);
+                loadTicketsEmitedByMyActionPerformed(evt);
             }
         });
-        files.add(loadTicketsFromCSV);
+        multipleLoad.add(loadTicketsEmitedByMy);
+
+        loadTicketsEmitedByO.setText("Emitidos por terceros");
+        loadTicketsEmitedByO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadTicketsEmitedByOActionPerformed(evt);
+            }
+        });
+        multipleLoad.add(loadTicketsEmitedByO);
+
+        loadDollarValue.setText("Cargar valor dolar");
+        loadDollarValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadDollarValueActionPerformed(evt);
+            }
+        });
+        multipleLoad.add(loadDollarValue);
+
+        files.add(multipleLoad);
 
         loadTicketManually.setText("Cargar comprobante");
         loadTicketManually.addActionListener(new java.awt.event.ActionListener() {
@@ -226,14 +248,6 @@ public class View extends javax.swing.JFrame {
             }
         });
         files.add(sectorsViewItem);
-
-        loadDollarValue.setText("Cargar valor dolar");
-        loadDollarValue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadDollarValueActionPerformed(evt);
-            }
-        });
-        files.add(loadDollarValue);
 
         menuBar.add(files);
 
@@ -385,18 +399,18 @@ public class View extends javax.swing.JFrame {
         filtersView.setVisible(true);
     }//GEN-LAST:event_filtersActionPerformed
 
-    private void loadTicketsFromCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsFromCSVActionPerformed
+    private void loadTicketsEmitedByMyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsEmitedByMyActionPerformed
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
 
-        controller.loadTickets(chooser.getSelectedFile());
+        controller.loadTickets(chooser.getSelectedFile(), true);
         // FIXME: Maybe we can update the suggestions only 
         // when we know that a providers was added
         providersView.updateSuggestions();
         showTicketsActionPerformed(evt);
-    }//GEN-LAST:event_loadTicketsFromCSVActionPerformed
+    }//GEN-LAST:event_loadTicketsEmitedByMyActionPerformed
 
     private void ivaTaxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ivaTaxTextFieldActionPerformed
         // TODO add your handling code here:
@@ -440,6 +454,19 @@ public class View extends javax.swing.JFrame {
         sectorsView.updateSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
 
+    private void loadTicketsEmitedByOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsEmitedByOActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
+        chooser.setFileFilter(fileTypes);
+        chooser.showOpenDialog(this);
+
+        controller.loadTickets(chooser.getSelectedFile(), false);
+        // FIXME: Maybe we can update the suggestions only 
+        // when we know that a providers was added
+        providersView.updateSuggestions();
+        showTicketsActionPerformed(evt);
+    }//GEN-LAST:event_loadTicketsEmitedByOActionPerformed
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
@@ -456,8 +483,10 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JTextField ivaTaxTextField;
     private javax.swing.JMenuItem loadDollarValue;
     private javax.swing.JMenuItem loadTicketManually;
-    private javax.swing.JMenuItem loadTicketsFromCSV;
+    private javax.swing.JMenuItem loadTicketsEmitedByMy;
+    private javax.swing.JMenuItem loadTicketsEmitedByO;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu multipleLoad;
     private javax.swing.JTextField profitTax;
     private javax.swing.JTextField profitTaxLabel;
     private javax.swing.JButton resetDBButton;
