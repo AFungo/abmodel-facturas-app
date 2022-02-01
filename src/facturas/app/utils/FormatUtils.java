@@ -40,10 +40,15 @@ public class FormatUtils {
      
     public static Object[] ticketToForm(Ticket t) {
         Map<String, Object> dict = t.getValues();
+        Provider provider = (Provider)dict.get("provider");
+        String sector = (String)dict.get("sector");
+        if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
+            sector = provider.getSector();
+        }
+        
         Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
-            ((Provider)dict.get("provider")).getCuit(), ((Provider)dict.get("provider")).getName(), dict.get("exchangeType"), 
-            dict.get("netAmountWI"), dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), 
-            dict.get("totalAmount"), dict.get("sector")};
+            ((Provider)dict.get("provider")).getCuit(), provider.getName(), dict.get("exchangeType"), dict.get("netAmountWI"), 
+            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector};
 
         return values;
     }
