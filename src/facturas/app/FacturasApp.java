@@ -22,7 +22,6 @@ public class FacturasApp {
      */
     public static void main(String[] args) {
         DBManager.createConnection();
-        DBManager.deleteDB();
         DBManager.initializeDB();
         
         SectorDAO.addSector("FARMACIA");

@@ -6,6 +6,7 @@
 package facturas.app.views;
 
 import facturas.app.Controller;
+import facturas.app.database.DBManager;
 import facturas.app.models.Ticket;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.ProfitCalculator;
@@ -66,6 +67,7 @@ public class View extends javax.swing.JFrame {
         profitTaxLabel = new javax.swing.JTextField();
         totalLabel = new javax.swing.JTextField();
         inDollars = new javax.swing.JCheckBox();
+        resetDBButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         loadTicketsFromCSV = new javax.swing.JMenuItem();
@@ -78,7 +80,6 @@ public class View extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA");
-        setPreferredSize(getMaximumSize());
         setSize(new java.awt.Dimension(0, 0));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
@@ -190,6 +191,13 @@ public class View extends javax.swing.JFrame {
 
         inDollars.setText("Precio en dolares");
 
+        resetDBButton.setText("Reset DB");
+        resetDBButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetDBButtonActionPerformed(evt);
+            }
+        });
+
         files.setText("File");
 
         loadTicketsFromCSV.setText("Cargar comprobantes (.csv)");
@@ -268,7 +276,10 @@ public class View extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(94, 94, 94)
+                                        .addComponent(resetDBButton))))
                             .addComponent(inDollars)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -304,7 +315,8 @@ public class View extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(resetDBButton))))
                 .addGap(33, 33, 33))
         );
 
@@ -404,6 +416,13 @@ public class View extends javax.swing.JFrame {
         columnSelectorView.setVisible(true);
     }//GEN-LAST:event_columnSelectorActionPerformed
 
+    private void resetDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDBButtonActionPerformed
+        // TODO add your handling code here:
+        DBManager.deleteDB();
+        DBManager.initializeDB();
+        cleanTable((DefaultTableModel)ticketsTable.getModel());
+    }//GEN-LAST:event_resetDBButtonActionPerformed
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
@@ -424,6 +443,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JTextField profitTax;
     private javax.swing.JTextField profitTaxLabel;
+    private javax.swing.JButton resetDBButton;
     private javax.swing.JButton showProviders;
     private javax.swing.JButton showTickets;
     private javax.swing.JTable ticketsTable;
