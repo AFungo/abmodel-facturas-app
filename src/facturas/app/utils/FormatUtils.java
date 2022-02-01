@@ -31,6 +31,7 @@ public class FormatUtils {
         if (dict.get("netAmountWOI") != null) { attributes += ", netAmountWOI"; values += ", " + dict.get("netAmountWOI");}
         if (dict.get("numberTo") != null) { attributes += ", numberTo"; values += ", " + dict.get("numberTo");}
         if (dict.get("amountImpEx") != null) { attributes += ", amountImpEx"; values += ", " + dict.get("amountImpEx");}
+        if (dict.get("sector") != null) { attributes += ", sector"; values += ", '" + dict.get("sector") + "'"; }
 
         return new Pair<>(attributes, values);
     }
