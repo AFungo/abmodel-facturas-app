@@ -55,6 +55,10 @@ public class AutoSuggestor {
         return textField.getText();
     }
     
+    public void setText(String t) {
+        textField.setText(t);
+    }
+    
     // FIXME: The suggestion is not case sensitive, for the providers problem
     // works well but maybe in other context the case sensitive could be important
     public void autoSuggest() {
