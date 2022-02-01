@@ -10,7 +10,9 @@ import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 /**
  *
@@ -133,6 +135,14 @@ public class FormatUtils {
         }
 
         return initialLine.contentEquals(expectedLine);
+    }
+
+    public static Vector<String> listToVector(List<String> list) {
+        Vector<String> vector = new Vector<>();
+        for (String s : list) {
+            vector.addElement(s);
+        }
+        return vector;
     }
     
     //this method takes a String and returns a Date.
