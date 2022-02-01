@@ -29,6 +29,7 @@ public class View extends javax.swing.JFrame {
     private FiltersView filtersView;
     private ColumnSelector columnSelectorView;
     private TicketLoaderView ticketLoaderView;
+    private SectorsView sectorsView;
     private JTable providersTable = new JTable();
 
     /**
@@ -44,6 +45,7 @@ public class View extends javax.swing.JFrame {
         filtersView = new FiltersView(controller, ticketsTable);
         columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
         ticketLoaderView = new TicketLoaderView(controller);
+        sectorsView = new SectorsView();
     }
 
     /**
@@ -72,6 +74,7 @@ public class View extends javax.swing.JFrame {
         files = new javax.swing.JMenu();
         loadTicketsFromCSV = new javax.swing.JMenuItem();
         loadTicketManually = new javax.swing.JMenuItem();
+        sectorsViewItem = new javax.swing.JMenuItem();
         loadDollarValue = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
         tools = new javax.swing.JMenu();
@@ -208,13 +211,21 @@ public class View extends javax.swing.JFrame {
         });
         files.add(loadTicketsFromCSV);
 
-        loadTicketManually.setText("Agregar comprobante");
+        loadTicketManually.setText("Cargar comprobante");
         loadTicketManually.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadTicketManuallyActionPerformed(evt);
             }
         });
         files.add(loadTicketManually);
+
+        sectorsViewItem.setText("Agregar/Borrar rubro");
+        sectorsViewItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sectorsViewItemActionPerformed(evt);
+            }
+        });
+        files.add(sectorsViewItem);
 
         loadDollarValue.setText("Cargar valor dolar");
         loadDollarValue.addActionListener(new java.awt.event.ActionListener() {
@@ -423,6 +434,12 @@ public class View extends javax.swing.JFrame {
         cleanTable((DefaultTableModel)ticketsTable.getModel());
     }//GEN-LAST:event_resetDBButtonActionPerformed
 
+    private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
+        // TODO add your handling code here:
+        sectorsView.setVisible(true);
+        sectorsView.updateSuggestions();
+    }//GEN-LAST:event_sectorsViewItemActionPerformed
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
@@ -444,6 +461,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JTextField profitTax;
     private javax.swing.JTextField profitTaxLabel;
     private javax.swing.JButton resetDBButton;
+    private javax.swing.JMenuItem sectorsViewItem;
     private javax.swing.JButton showProviders;
     private javax.swing.JButton showTickets;
     private javax.swing.JTable ticketsTable;
