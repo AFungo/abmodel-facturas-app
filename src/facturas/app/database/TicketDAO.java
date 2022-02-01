@@ -6,10 +6,12 @@
 package facturas.app.database;
 
 import facturas.app.Controller;
+import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.Ticket;
 import facturas.app.models.Provider;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -49,6 +51,11 @@ public class TicketDAO extends DAO {
         ResultSet result = executeQuery("SELECT * FROM Ticket" + filters.get(), false);
         List<Ticket> ticketsList = getTicketsList(result);
         return ticketsList;
+    }
+    
+    public static void changeSector(Date date, int noTicket, String cuit, String sector) {
+        String query = "UPDATE Ticket SET sector = '" + sector  + "' WHERE providerCuit = '" + cuit + "' AND date = '" + date + "' AND number = " + noTicket;
+        executeQuery(query, true);
     }
 
     private static List<Ticket> getTicketsList(ResultSet result) {
