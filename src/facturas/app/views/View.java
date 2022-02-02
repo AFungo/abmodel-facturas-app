@@ -7,11 +7,16 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.database.DBManager;
+import facturas.app.database.SectorDAO;
+import facturas.app.database.TicketDAO;
 import facturas.app.models.Ticket;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.ProfitCalculator;
+import java.awt.event.MouseEvent;
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -57,6 +62,10 @@ public class View extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        popupMenu = new javax.swing.JPopupMenu();
+        sectorMenuItem = new javax.swing.JMenuItem();
+        optionPane = new javax.swing.JOptionPane();
+        sectorComboBox = new javax.swing.JComboBox<>();
         vouchersTableScroll = new javax.swing.JScrollPane();
         ticketsTable = new javax.swing.JTable();
         total = new javax.swing.JTextField();
@@ -83,14 +92,19 @@ public class View extends javax.swing.JFrame {
         filters = new javax.swing.JMenuItem();
         columnSelector = new javax.swing.JMenuItem();
 
+        sectorMenuItem.setText("Modificar rubro");
+        sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sectorMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(sectorMenuItem);
+
+        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA");
         setSize(new java.awt.Dimension(0, 0));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         ticketsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -117,6 +131,11 @@ public class View extends javax.swing.JFrame {
         });
         ticketsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         ticketsTable.getTableHeader().setReorderingAllowed(false);
+        ticketsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                ticketsTableMouseReleased(evt);
+            }
+        });
         vouchersTableScroll.setViewportView(ticketsTable);
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         for (Ticket t : controller.getTickets()) {
@@ -417,10 +436,6 @@ public class View extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ivaTaxTextFieldActionPerformed
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formWindowOpened
-
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
         // TODO add your handling code here:
         ticketLoaderView.setVisible(true);
@@ -468,6 +483,28 @@ public class View extends javax.swing.JFrame {
         showTicketsActionPerformed(evt);
     }//GEN-LAST:event_loadTicketsEmitedByOActionPerformed
 
+    private void ticketsTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
+        if (evt.getButton() == MouseEvent.BUTTON3) {//right click
+            if (evt.isPopupTrigger() && ticketsTable.getSelectedRowCount() != 0) {
+                popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_ticketsTableMouseReleased
+
+    private void sectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorMenuItemActionPerformed
+        int selection = optionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", optionPane.OK_CANCEL_OPTION);
+        if (selection == optionPane.OK_OPTION) {
+            int row = ticketsTable.getSelectedRow();
+            String sector = (String)sectorComboBox.getSelectedItem();
+            Date date = (Date)ticketsTable.getValueAt(row, 0); //0 is the date column
+            int noTicket = (int)ticketsTable.getValueAt(row, 2); //2 is the noTicket column
+            String cuit = (String)ticketsTable.getValueAt(row, 5); //5 is the cuit column
+            
+            TicketDAO.changeSector(date, noTicket, cuit, sector);
+            ticketsTable.setValueAt(sector, row, 13);   //column 13 is for sector
+        }
+    }//GEN-LAST:event_sectorMenuItemActionPerformed
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
@@ -488,10 +525,14 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem loadTicketsEmitedByO;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu multipleLoad;
+    private javax.swing.JOptionPane optionPane;
+    private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTextField profitTax;
     private javax.swing.JTextField profitTaxLabel;
     private javax.swing.JButton resetDBButton;
     private javax.swing.JMenuItem sectorsViewItem;
+    private javax.swing.JComboBox<String> sectorComboBox;
+    private javax.swing.JMenuItem sectorMenuItem;
     private javax.swing.JButton showProviders;
     private javax.swing.JButton showTickets;
     private javax.swing.JTable ticketsTable;
