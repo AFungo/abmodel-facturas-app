@@ -53,8 +53,8 @@ public class TicketDAO extends DAO {
         return ticketsList;
     }
     
-    public static void changeSector(Date date, int noTicket, String cuit, String sector) {
-        String query = "UPDATE Ticket SET sector = '" + sector  + "' WHERE providerCuit = '" + cuit + "' AND date = '" + date + "' AND number = " + noTicket;
+    public static void changeSector(SQLFilter filter, String sector) {
+        String query = "UPDATE Ticket SET sector = '" + sector  + "'" + filter.get();
         executeQuery(query, true);
     }
 

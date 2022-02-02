@@ -7,6 +7,7 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.database.DBManager;
+import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.database.TicketDAO;
 import facturas.app.models.Ticket;
@@ -459,12 +460,16 @@ public class View extends javax.swing.JFrame {
         int selection = optionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", optionPane.OK_CANCEL_OPTION);
         if (selection == optionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
+            SQLFilter filter = new SQLFilter();
             String sector = (String)sectorComboBox.getSelectedItem();
             Date date = (Date)ticketsTable.getValueAt(row, 0); //0 is the date column
-            int noTicket = (int)ticketsTable.getValueAt(row, 2); //2 is the noTicket column
+            filter.add("date", "=", date, Date.class);
+            Integer noTicket = (Integer)ticketsTable.getValueAt(row, 2); //2 is the noTicket column
+            filter.add("number", "=", noTicket, Integer.class);
             String cuit = (String)ticketsTable.getValueAt(row, 5); //5 is the cuit column
+            filter.add("providerCuit", "=", cuit, String.class);
             
-            TicketDAO.changeSector(date, noTicket, cuit, sector);
+            TicketDAO.changeSector(filter, sector);
             ticketsTable.setValueAt(sector, row, 13);   //column 13 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
