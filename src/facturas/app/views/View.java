@@ -148,20 +148,10 @@ public class View extends javax.swing.JFrame {
         total.setEditable(false);
         total.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         total.setBorder(null);
-        total.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                totalActionPerformed(evt);
-            }
-        });
 
         ivaTaxTextField.setEditable(false);
         ivaTaxTextField.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         ivaTaxTextField.setBorder(null);
-        ivaTaxTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ivaTaxTextFieldActionPerformed(evt);
-            }
-        });
 
         calculateButton.setText("Calcular");
         calculateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -187,21 +177,11 @@ public class View extends javax.swing.JFrame {
         profitTax.setEditable(false);
         profitTax.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         profitTax.setBorder(null);
-        profitTax.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                profitTaxActionPerformed(evt);
-            }
-        });
 
         ivaTaxLabel.setEditable(false);
         ivaTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         ivaTaxLabel.setText("Iva:");
         ivaTaxLabel.setBorder(null);
-        ivaTaxLabel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ivaTaxLabelActionPerformed(evt);
-            }
-        });
 
         profitTaxLabel.setEditable(false);
         profitTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -368,10 +348,6 @@ public class View extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void totalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_totalActionPerformed
     
     //calculates profit of tickets
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
@@ -406,14 +382,6 @@ public class View extends javax.swing.JFrame {
         }
     }                                            
  
-    private void profitTaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profitTaxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_profitTaxActionPerformed
-
-    private void ivaTaxLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ivaTaxLabelActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ivaTaxLabelActionPerformed
-
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
         // TODO add your handling code here:
         filtersView.setVisible(true);
@@ -431,10 +399,6 @@ public class View extends javax.swing.JFrame {
         providersView.updateSuggestions();
         showTicketsActionPerformed(evt);
     }//GEN-LAST:event_loadTicketsEmitedByMyActionPerformed
-
-    private void ivaTaxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ivaTaxTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ivaTaxTextFieldActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
         // TODO add your handling code here:
@@ -530,9 +494,9 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JTextField profitTax;
     private javax.swing.JTextField profitTaxLabel;
     private javax.swing.JButton resetDBButton;
-    private javax.swing.JMenuItem sectorsViewItem;
     private javax.swing.JComboBox<String> sectorComboBox;
     private javax.swing.JMenuItem sectorMenuItem;
+    private javax.swing.JMenuItem sectorsViewItem;
     private javax.swing.JButton showProviders;
     private javax.swing.JButton showTickets;
     private javax.swing.JTable ticketsTable;
