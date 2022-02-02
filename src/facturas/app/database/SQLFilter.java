@@ -51,7 +51,9 @@ public class SQLFilter {
         if (!typesList.isEmpty()) { filters.put(new Pair<> ("type", "="), new Pair(typesList, List.class)); }
     }
     
-    public void add(Pair<String, String> fieldOperator, Pair<Object,Class<?>> values) {
+    public void add(String attribute, String comparison, Object value, Class<?> valueClass) {
+        Pair<String, String> fieldOperator = new Pair<>(attribute, comparison);
+        Pair<Object,Class<?>> values = new Pair<>(value, valueClass);
         filters.put(fieldOperator, values); //adding filter
     }
     

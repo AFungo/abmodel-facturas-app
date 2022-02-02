@@ -12,7 +12,6 @@ import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FormatUtils;
-import facturas.app.utils.Pair;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -278,7 +277,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketActionPerformed
-        // TODO add your handling code here:
         Map<String, String> values = new HashMap<>();
         values.put("amountImpEx", amountImpExTextField.getText());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -296,7 +294,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         
         if (providersComboBox.getSelectedItem() != null) {
             SQLFilter filter = new SQLFilter();
-            filter.add(new Pair<>("name", "="), new Pair<>(providersComboBox.getSelectedItem(), String.class));
+            filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
             List<Provider> providers = ProviderDAO.getProviders(filter);
             values.put("providerCuit", providers.get(0).getCuit());
             values.put("providerDocType", providers.get(0).getDocType());
@@ -328,7 +326,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_loadTicketActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
-        // TODO add your handling code here:
         setEnabledProvidersDataLoader(providersComboBox.getSelectedItem() == null);
     }//GEN-LAST:event_providersComboBoxItemStateChanged
     
