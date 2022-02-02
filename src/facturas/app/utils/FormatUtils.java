@@ -151,6 +151,22 @@ public class FormatUtils {
         return vector;
     }
     
+    public static boolean validTicketInput(Map<String, String> values) {
+        try {
+            Float.parseFloat(values.get("amountImpEx"));
+            Float.parseFloat(values.get("exchangeType"));
+            Float.parseFloat(values.get("iva"));
+            Float.parseFloat(values.get("netAmountWI"));
+            Float.parseFloat(values.get("netAmountWOI"));
+            Integer.parseInt(values.get("number"));
+            Float.parseFloat(values.get("providerCuit"));
+            Float.parseFloat(values.get("totalAmount"));
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
     //this method takes a String and returns a Date.
     public static Date dateGen(String dateStr) {
         String[] fields = dateStr.split("/"); //d-m-y
