@@ -11,6 +11,7 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, sectorsTextField, getSectors());
         sectorsAutoSuggestor.autoSuggest();
+        notificationView = new NotificationView();
     }
     
     public void updateSuggestions() {
@@ -280,8 +282,13 @@ public class TicketLoaderView extends javax.swing.JFrame {
         Map<String, String> values = new HashMap<>();
         values.put("amountImpEx", amountImpExTextField.getText());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        if (dateDateChooser.getDate() == null) {
+            notificationView.setVisible(true);
+            return;
+        }
         values.put("date", sdf.format(dateDateChooser.getDate()));
         values.put("exchangeType", exchangeTypeTextField.getText());
+        values.put("exchangeMoney", exchangeMoneyTextField.getText());
         values.put("iva", ivaTextField.getText());
         values.put("netAmountWI", netAmountWITextField.getText());
         values.put("netAmountWOI", netAmountWOITextField.getText());
@@ -294,8 +301,13 @@ public class TicketLoaderView extends javax.swing.JFrame {
             values.put("providerCuit", providers.get(0).getCuit());
             values.put("providerDocType", providers.get(0).getDocType());
             values.put("providerName", providers.get(0).getName());
+            values.put("sector", providers.get(0).getSector());
         } else {
             values.put("providerCuit", providerDocTextField.getText());
+            if (providerDocTypeComboBox.getSelectedItem() == null) {
+                notificationView.setVisible(true);
+                return;
+            }
             values.put("providerDocType", providerDocTypeComboBox.getSelectedItem().toString());
             values.put("providerName", providerNameTextField.getText());
         }
@@ -308,8 +320,11 @@ public class TicketLoaderView extends javax.swing.JFrame {
             values.put("sector", sectorsComboBox.getSelectedItem().toString());
         }
 
-
-        controller.loadTicket(values);
+        if (FormatUtils.validTicketInput(values)) {
+            controller.loadTicket(values);
+        } else {
+            notificationView.setVisible(true);
+        }
     }//GEN-LAST:event_loadTicketActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
@@ -332,6 +347,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     AutoSuggestor sectorsAutoSuggestor;
     JTextField providersTextField;
     JTextField sectorsTextField;
+    NotificationView notificationView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField amountImpExTextField;
     private com.toedter.calendar.JDateChooser dateDateChooser;
