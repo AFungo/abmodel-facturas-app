@@ -382,10 +382,6 @@ public class View extends javax.swing.JFrame {
         for (Ticket t : tickets) {
             model.addRow(FormatUtils.ticketToForm(t));
         }
-        
-        SQLFilter filter = new SQLFilter();
-        filter.add("cuit", "=", "123", String.class);
-        ProviderDAO.changeAttribute(filter, "direction", "alta calle perrix");
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
