@@ -295,29 +295,28 @@ public class TicketLoaderView extends javax.swing.JFrame {
         if (providersComboBox.getSelectedItem() != null) {
             SQLFilter filter = new SQLFilter();
             filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-            List<Provider> providers = ProviderDAO.getProviders(filter);
-            values.put("providerCuit", providers.get(0).getDocNo());
-            values.put("providerDocType", providers.get(0).getDocType());
-            values.put("providerName", providers.get(0).getName());
-            values.put("sector", providers.get(0).getSector());
+            Provider provider = ProviderDAO.getProviders(filter).get(0);
+            values.put("docNo", provider.getDocNo());
+            values.put("docType", provider.getDocType());
+            values.put("name", provider.getName());
+            values.put("provSector", provider.getSector());
         } else {
-            values.put("providerCuit", providerDocTextField.getText());
+            values.put("docNo", providerDocTextField.getText());
             if (providerDocTypeComboBox.getSelectedItem() == null) {
                 notificationView.setVisible(true);
                 return;
             }
-            values.put("providerDocType", providerDocTypeComboBox.getSelectedItem().toString());
-            values.put("providerName", providerNameTextField.getText());
+            values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());
+            values.put("name", providerNameTextField.getText());
         }
         
         values.put("totalAmount", totalAmountTextField.getText());
         values.put("type", typeTextField.getText());
         values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));
-        
         if (sectorsComboBox.getSelectedItem() != null) {
             values.put("sector", sectorsComboBox.getSelectedItem().toString());
         }
-
+        
         if (FormatUtils.validTicketInput(values)) {
             controller.loadTicket(values);
         } else {
