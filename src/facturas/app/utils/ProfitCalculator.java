@@ -30,14 +30,18 @@ public class ProfitCalculator {
     
     public void addTicket(Ticket t, boolean dollars) {
         Map<String, Object> values = t.getValues();
-        Float exchangeType = (Float) t.getValues().get("exchangeType");
-        Float totalAmount = (Float) values.get("totalAmount") * exchangeType;
-        Float iva = (values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType;
-        Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType;
         
-        inDollars(dollars, exchangeType, t.getDollarPrice(), totalAmount, iva, netAmountWI);
+        Float exchangeType = (Float) t.getValues().get("exchangeType");
+        Float sellPrice = inDollars(dollars, exchangeType, t.getDollarPrice());
+        
+       
+        Float totalAmount = ((Float) values.get("totalAmount") * exchangeType) / sellPrice;//Total * (exchange type who coming in the file) / (dollar price of this day or 1)
+        Float iva = ((values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType)/sellPrice;
+        Float netAmountWI = ((values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType)/sellPrice;        
+
         addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, iva, netAmountWI);
     }
+  
 
     public void addRetention(Withholding r){
         Float ta = (Float) r.getValues().get("totalAmount");
@@ -73,16 +77,12 @@ public class ProfitCalculator {
             }
         }
     }
-    
-    private static void inDollars(boolean dollars, Float exchangeType, DollarPrice price, Float totalAmount, Float iva, Float netAmountWI){
-        if (dollars && exchangeType == 1.0f) {  //if dollars are required and exchange type is pesos
-           
+    private Float inDollars(boolean dollars, Float exchangeType, DollarPrice price){
+        if (dollars && exchangeType == 1.0f) {  //if dollars are required and exchange type is pesos          
             if (price != null) {    //if price was loaded (it may not be in db)
-                Float sellPrice = (Float)price.getValues().get("sell");
-                totalAmount /= sellPrice;
-                iva /= sellPrice;
-                netAmountWI /= sellPrice;
+                return (Float)price.getValues().get("sell");               
             }
         }
-    }
+        return 1.0f;
+    }            
 }
