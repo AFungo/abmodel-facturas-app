@@ -22,10 +22,10 @@ public class ProfitCalculator {
     private Transaction retentionGan;
     
     public ProfitCalculator() {
-        purchases = new Transaction(0.0f, 0.0f, 0.0f);
-        sales = new Transaction(0.0f, 0.0f, 0.0f);
-        retentionIva = new Transaction(0.0f, 0.0f, 0.0f);
-        retentionGan = new Transaction(0.0f, 0.0f, 0.0f);
+        purchases = new Transaction();
+        sales = new Transaction();
+        retentionIva = new Transaction();
+        retentionGan = new Transaction();
     }
     
     public void addTicket(Ticket t, boolean dollars) {
@@ -35,29 +35,8 @@ public class ProfitCalculator {
         Float iva = (values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType;
         Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType;
         
-        if (dollars && exchangeType == 1.0f) {  //if dollars are required and exchange type is pesos
-            DollarPrice price = t.getDollarPrice();
-            if (price != null) {    //if price was loaded (it may not be in db)
-                Float sellPrice = (Float)price.getValues().get("sell");
-                totalAmount /= sellPrice;
-                iva /= sellPrice;
-                netAmountWI /= sellPrice;
-            }
-        }
-
-        if ((boolean)values.get("issuedByMe")) {
-            if (t.isIncome()){
-                sales.addTransaction(-totalAmount, -iva, -netAmountWI);
-            }else{          
-                sales.addTransaction(totalAmount, iva, netAmountWI);
-            }
-        } else {
-            if (t.isIncome()){
-                purchases.addTransaction(totalAmount, iva, netAmountWI);
-            }else{
-                purchases.addTransaction(-totalAmount, -iva, -netAmountWI);
-            }
-        }
+        inDollars(dollars, exchangeType, t.getDollarPrice(), totalAmount, iva, netAmountWI);
+        addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, iva, netAmountWI);
     }
 
     public void addRetention(Withholding r){
@@ -78,4 +57,32 @@ public class ProfitCalculator {
         return ((Float)sales.getTransactions().get("netAmountWI") + (Float)purchases.getTransactions().get("netAmountWI") - (Float) retentionGan.getTransactions().get("totalAmount"));
     }
     
+    private void addTransaction(boolean isIncome, boolean issuedByMe, Float totalAmount, Float iva, Float netAmountWI){
+        
+        if (issuedByMe) {
+            if (isIncome){
+                sales.addTransaction(-totalAmount, -iva, -netAmountWI);
+            }else{          
+                sales.addTransaction(totalAmount, iva, netAmountWI);
+            }
+        } else {
+            if (isIncome){
+                purchases.addTransaction(totalAmount, iva, netAmountWI);
+            }else{
+                purchases.addTransaction(-totalAmount, -iva, -netAmountWI);
+            }
+        }
+    }
+    
+    private static void inDollars(boolean dollars, Float exchangeType, DollarPrice price, Float totalAmount, Float iva, Float netAmountWI){
+        if (dollars && exchangeType == 1.0f) {  //if dollars are required and exchange type is pesos
+           
+            if (price != null) {    //if price was loaded (it may not be in db)
+                Float sellPrice = (Float)price.getValues().get("sell");
+                totalAmount /= sellPrice;
+                iva /= sellPrice;
+                netAmountWI /= sellPrice;
+            }
+        }
+    }
 }

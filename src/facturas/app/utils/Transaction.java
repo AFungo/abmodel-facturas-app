@@ -16,6 +16,12 @@ public class Transaction {
     private Float netAmountWI;
     private Float totalAmount;
     private Float iva;
+
+    public Transaction() {
+        this.totalAmount = 0.0f;
+        this.iva = 0.0f;
+        this.netAmountWI = 0.0f;
+    }
     
     public Transaction(Float totalAmount, Float iva, Float netAmountWI) {
         this.totalAmount = totalAmount;

@@ -12,13 +12,10 @@ import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FormatUtils;
-import facturas.app.utils.Pair;
 import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import java.util.Vector;
-import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -188,12 +185,11 @@ public class ProvidersView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchProviderActionPerformed
-        // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
         cleanTable(model);
         
         SQLFilter filter = new SQLFilter();
-        filter.add(new Pair<>("name", "="), new Pair<>(autoSuggestor.getText(), String.class));
+        filter.add("name", "=", autoSuggestor.getText(), String.class);
         List<Provider> providers = ProviderDAO.getProviders(filter);
         for (Provider p : providers) {
             model.addRow(FormatUtils.providerToForm(p));
@@ -201,7 +197,6 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_searchProviderActionPerformed
 
     private void showAllProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showAllProvidersActionPerformed
-        // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
         cleanTable(model);
         for (Provider p : controller.getProviders()) {
