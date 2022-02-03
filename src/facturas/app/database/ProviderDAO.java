@@ -30,8 +30,8 @@ public class ProviderDAO extends DAO {
         executeQuery(query, true);
     }
     
-    public static boolean providerExist(String cuit) {
-        ResultSet result = executeQuery("SELECT * FROM Provider WHERE cuit='" + cuit + "'", false);
+    public static boolean providerExist(SQLFilter filters) {
+        ResultSet result = executeQuery("SELECT * FROM Provider " + filters.get(), false);
         try {
             return result.next();
         } catch (SQLException e) {
@@ -85,21 +85,13 @@ public class ProviderDAO extends DAO {
         }
     }
     
-    public static void changeDirection(String cuit, String direction) {
-        if (providerExist(cuit)) {
-            String query = "UPDATE Provider SET direction = '" + direction  + "' WHERE cuit = '" + cuit + "'";
+    public static void changeAttribute(SQLFilter filters, String attribute, String value) {
+        if (providerExist(filters)) {
+            String query = "UPDATE Provider SET " + attribute + " = '" + value  + "' " + filters.get();
+            System.out.println("query: " + query);
             executeQuery(query, true);
         } else {
-            System.out.println("The provider of cuit " + cuit + "was not found");
-        }
-    }
-    
-    public static void changeSector(String cuit, String sector) {
-        if (providerExist(cuit)) {
-            String query = "UPDATE Provider SET sector = '" + sector  + "' WHERE cuit = '" + cuit + "'";
-            executeQuery(query, true);
-        } else {
-            System.out.println("The provider of cuit " + cuit + "was not found");
+            System.out.println("A provider with filters (" + filters.get() + ") was not found");
         }
     }
     

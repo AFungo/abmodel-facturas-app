@@ -7,6 +7,7 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.database.DBManager;
+import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.database.TicketDAO;
@@ -381,6 +382,10 @@ public class View extends javax.swing.JFrame {
         for (Ticket t : tickets) {
             model.addRow(FormatUtils.ticketToForm(t));
         }
+        
+        SQLFilter filter = new SQLFilter();
+        filter.add("cuit", "=", "123", String.class);
+        ProviderDAO.changeAttribute(filter, "direction", "alta calle perrix");
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed

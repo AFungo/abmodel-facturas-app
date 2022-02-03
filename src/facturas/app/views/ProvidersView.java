@@ -217,7 +217,9 @@ public class ProvidersView extends javax.swing.JFrame {
     private void directionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionMenuItemActionPerformed
         String userInput = optionPane.showInputDialog(null, "Dirección: ", "");
         if (userInput != null) {
-            ProviderDAO.changeDirection(selectedCuit, userInput);
+            SQLFilter filter = new SQLFilter();
+            filter.add("cuit", "=", selectedCuit, String.class);
+            ProviderDAO.changeAttribute(filter, "direction", userInput);
             int row = providersTable.getSelectedRow();
             providersTable.setValueAt(userInput, row, 3);   //column 3 is for direction
         }
@@ -227,7 +229,9 @@ public class ProvidersView extends javax.swing.JFrame {
         int selection = optionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", optionPane.OK_CANCEL_OPTION);
         if (selection == optionPane.OK_OPTION) {
             String sector = (String)sectorComboBox.getSelectedItem();
-            ProviderDAO.changeSector(selectedCuit, sector);
+            SQLFilter filter = new SQLFilter();
+            filter.add("cuit", "=", selectedCuit, String.class);
+            ProviderDAO.changeAttribute(filter, "sector", sector);
             int row = providersTable.getSelectedRow();
             providersTable.setValueAt(sector, row, 4);   //column 4 is for sector
         }

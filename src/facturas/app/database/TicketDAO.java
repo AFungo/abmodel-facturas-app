@@ -30,7 +30,10 @@ public class TicketDAO extends DAO {
     public static void addTicket(Ticket ticket) {
         Pair<String, String> sqlValues = FormatUtils.ticketToSQL(ticket);
         Provider provider = (Provider)ticket.getValues().get("provider");
-        if (!ProviderDAO.providerExist(provider.getDocNo())) {
+        
+        SQLFilter filter = new SQLFilter();
+        filter.add("cuit", "=", provider.getDocNo(), String.class);
+        if (!ProviderDAO.providerExist(filter)) {
             ProviderDAO.addProvider(provider);
         }
         String query = "INSERT INTO Ticket (" + sqlValues.getFst() + ") "
