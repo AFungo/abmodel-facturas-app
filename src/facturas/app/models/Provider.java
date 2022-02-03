@@ -56,8 +56,8 @@ public class Provider {
         return "Nombre: " + name + ", Cuit: " + docNo + ", direccion: " + direction + ", sector: " + sector; 
     }          
     
-    public Map<String, Object> getValues() {
-        Map<String, Object> values = new HashMap<>();
+    public Map<String, String> getValues() {
+        Map<String, String> values = new HashMap<>();
         values.put("docNo", docNo);
         values.put("name", name);
         values.put("docType", docType);

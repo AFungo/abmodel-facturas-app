@@ -102,7 +102,7 @@ public class FormatUtils {
     }
     
     public static Pair<String, String> providerToSQL(Provider p) {
-        Map<String, Object> dict = p.getValues();
+        Map<String, String> dict = p.getValues();
         String attributes = "", values = "";
         attributes += "cuit, name, documentType";
         values += "'" + dict.get("docNo") + "', '" + dict.get("name") + "', '" + dict.get("docType") + "'";
@@ -114,7 +114,7 @@ public class FormatUtils {
     }
     
     public static Object[] providerToForm(Provider prov) {
-        Map<String, Object> dict = prov.getValues();
+        Map<String, String> dict = prov.getValues();
         Object[] values = new Object[5];
         values[0] = dict.get("docNo");
         values[1] = dict.get("name");
