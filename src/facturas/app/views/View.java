@@ -6,12 +6,9 @@
 package facturas.app.views;
 
 import facturas.app.Controller;
-import facturas.app.database.DBManager;
-import facturas.app.database.ProviderDAO;
+import facturas.app.models.Ticket;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
-import facturas.app.database.TicketDAO;
-import facturas.app.models.Ticket;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.ProfitCalculator;
 import java.awt.event.MouseEvent;
@@ -385,7 +382,6 @@ public class View extends javax.swing.JFrame {
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
-        // TODO add your handling code here:
         filtersView.setVisible(true);
     }//GEN-LAST:event_filtersActionPerformed
 
@@ -419,19 +415,15 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
     private void columnSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectorActionPerformed
-        // TODO add your handling code here:
         columnSelectorView.setVisible(true);
     }//GEN-LAST:event_columnSelectorActionPerformed
 
     private void resetDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDBButtonActionPerformed
-        // TODO add your handling code here:
-        DBManager.deleteDB();
-        DBManager.initializeDB();
+        controller.resetDB();
         cleanTable((DefaultTableModel)ticketsTable.getModel());
     }//GEN-LAST:event_resetDBButtonActionPerformed
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
-        // TODO add your handling code here:
         sectorsView.setVisible(true);
         sectorsView.updateSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
@@ -470,7 +462,7 @@ public class View extends javax.swing.JFrame {
             String cuit = (String)ticketsTable.getValueAt(row, 5); //5 is the cuit column
             filter.add("providerCuit", "=", cuit, String.class);
             
-            TicketDAO.changeSector(filter, sector);
+            controller.changeSector(filter, sector);
             ticketsTable.setValueAt(sector, row, 13);   //column 13 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed

@@ -5,6 +5,7 @@
  */
 package facturas.app;
 
+import facturas.app.database.DBManager;
 import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
@@ -94,7 +95,9 @@ public class Controller {
     public List<Provider> getProviders() {
         return ProviderDAO.getProviders();
     }
-    
+    public void changeSector(SQLFilter filter, String sector){
+        TicketDAO.changeSector(filter, sector);
+    }
     private void getDayPrice(Ticket t) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
@@ -104,7 +107,16 @@ public class Controller {
         
         t.addDollarPrice(price);
     }
-    
+    public void resetDB(){
+            DBManager.deleteDB();
+            DBManager.initializeDB();
+    }
+    public List<Provider> getProviders(SQLFilter filters){
+        return ProviderDAO.getProviders(filters);
+    }
+    public void changeAttributeProviderDAO(SQLFilter filters, String attribute, String value){
+        ProviderDAO.changeAttribute(filters, attribute, value);
+    }
     private List<String> readCsv(File f, String type) {
         if (f == null) {
             throw new IllegalArgumentException("File is null");

@@ -6,7 +6,6 @@
 package facturas.app.views;
 
 import facturas.app.Controller;
-import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
@@ -190,7 +189,7 @@ public class ProvidersView extends javax.swing.JFrame {
         
         SQLFilter filter = new SQLFilter();
         filter.add("name", "=", autoSuggestor.getText(), String.class);
-        List<Provider> providers = ProviderDAO.getProviders(filter);
+        List<Provider> providers = controller.getProviders(filter);
         for (Provider p : providers) {
             model.addRow(FormatUtils.providerToForm(p));
         }
@@ -219,7 +218,7 @@ public class ProvidersView extends javax.swing.JFrame {
         if (userInput != null) {
             SQLFilter filter = new SQLFilter();
             filter.add("cuit", "=", selectedCuit, String.class);
-            ProviderDAO.changeAttribute(filter, "direction", userInput);
+            controller.changeAttributeProviderDAO(filter, "direction", userInput);
             int row = providersTable.getSelectedRow();
             providersTable.setValueAt(userInput, row, 3);   //column 3 is for direction
         }
@@ -231,7 +230,7 @@ public class ProvidersView extends javax.swing.JFrame {
             String sector = (String)sectorComboBox.getSelectedItem();
             SQLFilter filter = new SQLFilter();
             filter.add("cuit", "=", selectedCuit, String.class);
-            ProviderDAO.changeAttribute(filter, "sector", sector);
+            controller.changeAttributeProviderDAO(filter, "sector", sector);
             int row = providersTable.getSelectedRow();
             providersTable.setValueAt(sector, row, 4);   //column 4 is for sector
         }
