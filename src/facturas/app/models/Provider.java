@@ -24,6 +24,8 @@ public class Provider {
         docNo = values.get("docNo");
         name = values.get("name");
         docType = values.get("docType");
+        direction = values.get("direction");    //may be null
+        sector = values.get("provSector");      //may be null
     }
     
     public String getDocType(){
