@@ -26,7 +26,7 @@ public class FormatUtils {
         attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerCuit, issuedByMe";
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
                 + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
-                + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getCuit() + "', " + dict.get("issuedByMe");
+                + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "', " + dict.get("issuedByMe");
 
         if (dict.get("iva") != null) { attributes += ", iva"; values += ", " + dict.get("iva");}
         if (dict.get("netAmountWI") != null) { attributes += ", netAmountWI"; values += ", " + dict.get("netAmountWI");}
@@ -47,7 +47,7 @@ public class FormatUtils {
         }
         
         Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
-            ((Provider)dict.get("provider")).getCuit(), provider.getName(), dict.get("exchangeType"), dict.get("netAmountWI"), 
+            ((Provider)dict.get("provider")).getDocNo(), provider.getName(), dict.get("exchangeType"), dict.get("netAmountWI"), 
             dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector};
 
         return values;
@@ -63,9 +63,9 @@ public class FormatUtils {
         String numberToVar = data[4];
         if (!numberToVar.isEmpty()) dict.put("numberTo", numberToVar);
         dict.put("authCode", data[5]);
-        dict.put("providerDocType", data[6]);
-        dict.put("providerCuit", data[7]);
-        dict.put("providerName", data[8]);
+        dict.put("docType", data[6]);
+        dict.put("docNo", data[7]);
+        dict.put("name", data[8]);
         dict.put("exchangeType", data[9]);
         dict.put("exchangeMoney", data[10]);
         String netAmountWIVar = data[11];
@@ -105,7 +105,7 @@ public class FormatUtils {
         Map<String, Object> dict = p.getValues();
         String attributes = "", values = "";
         attributes += "cuit, name, documentType";
-        values += "'" + dict.get("cuit") + "', '" + dict.get("name") + "', '" + dict.get("documentType") + "'";
+        values += "'" + dict.get("docNo") + "', '" + dict.get("name") + "', '" + dict.get("docType") + "'";
         
         if (dict.get("direction") != null) { attributes += ", direction"; values += ", " + dict.get("direction");}
         if (dict.get("sector") != null) { attributes += ", sector"; values += ", " + dict.get("sector");}
@@ -116,9 +116,9 @@ public class FormatUtils {
     public static Object[] providerToForm(Provider prov) {
         Map<String, Object> dict = prov.getValues();
         Object[] values = new Object[5];
-        values[0] = dict.get("cuit");
+        values[0] = dict.get("docNo");
         values[1] = dict.get("name");
-        values[2] = dict.get("documentType");
+        values[2] = dict.get("docType");
         if (dict.get("direction") != null)
             values[3] = dict.get("direction");
         if (dict.get("sector") != null)

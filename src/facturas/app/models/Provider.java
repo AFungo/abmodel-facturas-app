@@ -14,24 +14,24 @@ import java.util.Map;
  * @author Lenovo
  */
 public class Provider {
-    private String cuit;
+    private String docNo;
     private String name;
-    private String documentType;
+    private String docType;
     private String direction;
     private String sector;
 
-    public Provider(String documentType, String cuit, String name){
-        this.cuit = cuit;
-        this.name = name;
-        this.documentType = documentType;
+    public Provider(Map<String, String> values){
+        docNo = values.get("docNo");
+        name = values.get("name");
+        docType = values.get("docType");
     }
     
     public String getDocType(){
-        return documentType;
+        return docType;
     }
     
-    public String getCuit(){
-        return cuit;
+    public String getDocNo(){
+        return docNo;
     }
     public String getName(){
         return name;
@@ -53,14 +53,14 @@ public class Provider {
     
     @Override
     public String toString(){
-        return "Nombre: " + name + ", Cuit: " + cuit + ", direccion: " + direction + ", sector: " + sector; 
+        return "Nombre: " + name + ", Cuit: " + docNo + ", direccion: " + direction + ", sector: " + sector; 
     }          
     
     public Map<String, Object> getValues() {
         Map<String, Object> values = new HashMap<>();
-        values.put("cuit", cuit);
+        values.put("docNo", docNo);
         values.put("name", name);
-        values.put("documentType", documentType);
+        values.put("docType", docType);
         if (direction != null) values.put("direction", direction);
         if (sector != null) values.put("sector", sector);
         return values;

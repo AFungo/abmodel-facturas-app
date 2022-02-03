@@ -10,8 +10,10 @@ import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,7 +104,11 @@ public class ProviderDAO extends DAO {
     }
     
     private static Provider createProvider(ResultSet result) throws SQLException {
-        Provider prov = new Provider(result.getString(3), result.getString(1), result.getString(2));
+        Map<String, String> values = new HashMap<>();
+        values.put("docNo", result.getString(1));
+        values.put("name", result.getString(2));
+        values.put("docType", result.getString(3));
+        Provider prov = new Provider(values);
         prov.addDirection(result.getString(4));
         prov.addSector(result.getString(5));
         return prov;

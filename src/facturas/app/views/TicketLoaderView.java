@@ -298,7 +298,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
             SQLFilter filter = new SQLFilter();
             filter.add(new Pair<>("name", "="), new Pair<>(providersComboBox.getSelectedItem(), String.class));
             List<Provider> providers = ProviderDAO.getProviders(filter);
-            values.put("providerCuit", providers.get(0).getCuit());
+            values.put("providerCuit", providers.get(0).getDocNo());
             values.put("providerDocType", providers.get(0).getDocType());
             values.put("providerName", providers.get(0).getName());
             values.put("sector", providers.get(0).getSector());

@@ -24,14 +24,14 @@ public class Withholding {
     protected DollarPrice dollarPrice = null;
     
     public Withholding(Map<String, String> data) {
-        this.date = FormatUtils.dateGen(data.get("date"));
-        this.type = data.get("type");
-        this.number = Integer.parseInt(data.get("number"));
-        this.provider = ProviderDAO.getProvider(data.get("providerCuit"));
-        if (this.provider == null) {    //if this provider was not in database
-            this.provider = new Provider(data.get("providerDocType"), data.get("providerCuit"), data.get("providerName"));
+        date = FormatUtils.dateGen(data.get("date"));
+        type = data.get("type");
+        number = Integer.parseInt(data.get("number"));
+        provider = ProviderDAO.getProvider(data.get("docNo"));
+        if (provider == null) { //if this provider was not in database
+            provider = new Provider(data);
         }
-        this.totalAmount = Float.parseFloat(data.get("totalAmount"));
+        totalAmount = Float.parseFloat(data.get("totalAmount"));
     }
 
     public Withholding(Provider provider, int number, Date date, Float totalAmount, String type) {
@@ -55,8 +55,8 @@ public class Withholding {
         Map<String, Object> dict = new HashMap<>();
         dict.put("date", date);
         dict.put("type", type);
-        dict.put("totalAmount", totalAmount); 
-       dict.put("provider", provider);
+        dict.put("totalAmount", totalAmount);
+        dict.put("provider", provider);
         dict.put("number", number);
         return dict;
     }                  

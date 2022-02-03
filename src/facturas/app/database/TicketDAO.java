@@ -30,7 +30,7 @@ public class TicketDAO extends DAO {
     public static void addTicket(Ticket ticket) {
         Pair<String, String> sqlValues = FormatUtils.ticketToSQL(ticket);
         Provider provider = (Provider)ticket.getValues().get("provider");
-        if (!ProviderDAO.providerExist(provider.getCuit())) {
+        if (!ProviderDAO.providerExist(provider.getDocNo())) {
             ProviderDAO.addProvider(provider);
         }
         String query = "INSERT INTO Ticket (" + sqlValues.getFst() + ") "
@@ -69,9 +69,9 @@ public class TicketDAO extends DAO {
                 if (result.getString(5) != null) ticketAttributes.put("numberTo", result.getString(5));
                 ticketAttributes.put("authCode", result.getString(6));
                 Provider prov = ProviderDAO.getProvider(result.getString(7));
-                ticketAttributes.put("providerDocType", prov.getDocType());
-                ticketAttributes.put("providerCuit", prov.getCuit());
-                ticketAttributes.put("providerName", prov.getName());
+                ticketAttributes.put("docType", prov.getDocType());
+                ticketAttributes.put("docNo", prov.getDocNo());
+                ticketAttributes.put("name", prov.getName());
                 ticketAttributes.put("exchangeType", result.getString(8));
                 ticketAttributes.put("exchangeMoney", result.getString(9));
                 if (result.getString(10) != null) ticketAttributes.put("netAmountWI", result.getString(10));
