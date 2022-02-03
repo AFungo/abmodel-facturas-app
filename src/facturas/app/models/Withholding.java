@@ -27,19 +27,8 @@ public class Withholding {
         date = FormatUtils.dateGen(data.get("date"));
         type = data.get("type");
         number = Integer.parseInt(data.get("number"));
-        provider = ProviderDAO.getProvider(data.get("docNo"));
-        if (provider == null) { //if this provider was not in database
-            provider = new Provider(data);
-        }
+        provider = new Provider(data);
         totalAmount = Float.parseFloat(data.get("totalAmount"));
-    }
-
-    public Withholding(Provider provider, int number, Date date, Float totalAmount, String type) {
-        this.provider = provider;
-        this.number = number;
-        this.date = date;
-        this.type = type;
-        this.totalAmount = totalAmount;
     }
 
     public void addDollarPrice(DollarPrice price) {

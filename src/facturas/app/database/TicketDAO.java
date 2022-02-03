@@ -71,10 +71,12 @@ public class TicketDAO extends DAO {
                 ticketAttributes.put("number", result.getString(4));
                 if (result.getString(5) != null) ticketAttributes.put("numberTo", result.getString(5));
                 ticketAttributes.put("authCode", result.getString(6));
-                Provider prov = ProviderDAO.getProvider(result.getString(7));
-                ticketAttributes.put("docType", prov.getDocType());
-                ticketAttributes.put("docNo", prov.getDocNo());
-                ticketAttributes.put("name", prov.getName());
+                Map<String, String> prov = ProviderDAO.getProvider(result.getString(7)).getValues();
+                ticketAttributes.put("docType", prov.get("docType"));
+                ticketAttributes.put("docNo", prov.get("docNo"));
+                ticketAttributes.put("name", prov.get("name"));
+                ticketAttributes.put("direction", prov.get("direction"));
+                ticketAttributes.put("provSector", prov.get("sector"));
                 ticketAttributes.put("exchangeType", result.getString(8));
                 ticketAttributes.put("exchangeMoney", result.getString(9));
                 if (result.getString(10) != null) ticketAttributes.put("netAmountWI", result.getString(10));

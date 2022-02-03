@@ -88,7 +88,6 @@ public class ProviderDAO extends DAO {
     public static void changeAttribute(SQLFilter filters, String attribute, String value) {
         if (providerExist(filters)) {
             String query = "UPDATE Provider SET " + attribute + " = '" + value  + "' " + filters.get();
-            System.out.println("query: " + query);
             executeQuery(query, true);
         } else {
             System.out.println("A provider with filters (" + filters.get() + ") was not found");
