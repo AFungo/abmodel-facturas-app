@@ -151,18 +151,42 @@ public class FormatUtils {
         return vector;
     }
     
+    //FIXME: this should return the boolean[] so in the view you can tell the user each field he has wrongly filled
+    //instead of just the first one
     public static boolean validTicketInput(Map<String, String> values) {
-        try {
-            Float.parseFloat(values.get("amountImpEx"));
-            Float.parseFloat(values.get("exchangeType"));
-            Float.parseFloat(values.get("iva"));
-            Float.parseFloat(values.get("netAmountWI"));
-            Float.parseFloat(values.get("netAmountWOI"));
-            Integer.parseInt(values.get("number"));
-            Float.parseFloat(values.get("providerCuit"));
-            Float.parseFloat(values.get("totalAmount"));
+        boolean[] validations = new boolean[8];
+        validations[0] = tryParse(values.get("amountImpEx"), "Float");
+        validations[1] = tryParse(values.get("exchangeType"), "Float");
+        validations[2] = tryParse(values.get("iva"), "Float");
+        validations[3] = tryParse(values.get("netAmountWI"), "Float");
+        validations[4] = tryParse(values.get("netAmountWOI"), "Float");
+        validations[5] = tryParse(values.get("number"), "Integer");
+        validations[6] = tryParse(values.get("docNo"), "Float");
+        validations[7] = tryParse(values.get("totalAmount"), "Float");
+        //when you change return to boolean[] delete this for
+        int i = 0;
+        for (boolean validation : validations) {
+            if (!validation) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+        //return validations;
+    }
+    
+    private static boolean tryParse(String value, String expectedClass) {
+        try { 
+            if (expectedClass == "Float") {
+                Float.parseFloat(value);
+            } else if (expectedClass == "Integer") {
+                Integer.parseInt(value);
+            } else {
+                System.out.println("class wrongly passed, " + expectedClass + " is not valid");
+                return false;
+            }
             return true;
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return false;
         }
     }
