@@ -48,10 +48,10 @@ public class DBManager {
     }
 
     public static void initializeDB() {
-        boolean sectorTableCreated = createSectorTable();
-        boolean providerTableCreated = createProviderTable();
-        boolean ticketTableCreated = createTicketTable();
-        boolean dollarPriceTableCreated = createDollarPriceTable();
+        boolean sectorTableCreated = createTable("Sector");
+        boolean providerTableCreated = createTable("Provider");
+        boolean ticketTableCreated = createTable("Ticket");
+        boolean dollarPriceTableCreated = createTable("DollarPrice");
         
         System.out.println("sectorTable " + (sectorTableCreated ? "was created" : "already exists"));
         System.out.println("providerTable " + (providerTableCreated ? "was created" : "already exists"));
@@ -59,112 +59,78 @@ public class DBManager {
         System.out.println("dollarPriceTable " + (dollarPriceTableCreated ? "was created" : "already exists"));
     }
     
-    private static boolean createProviderTable() {
+    private static boolean createTable(String tableName) {
         try {
             connection = getConnection();
-            if (tableAlreadyExists("PROVIDER"))
+            if (tableAlreadyExists(tableName.toUpperCase()))
                 return false;
             Statement stm = connection.createStatement();
             
-            String tableProvider = "CREATE TABLE Provider ("
-                    + "cuit VARCHAR(30) PRIMARY KEY,"
-                    + "name VARCHAR(100),"
-                    + "documentType VARCHAR(20),"
-                    + "direction VARCHAR(50),"
-                    + "sector VARCHAR(50),"
-                    + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
-                    + ")";
+            String tableQuery = getTableQuery(tableName);
 
-            stm.executeUpdate(tableProvider);
+            stm.executeUpdate(tableQuery);
             return true;
         } catch (SQLException e) {
             throw new IllegalStateException(e.toString());
         }
     }
     
-    private static boolean createTicketTable() {
-        try {
-            connection = getConnection();
-            if (tableAlreadyExists("TICKET")) {
-                return false;
-            }
-            Statement stm = connection.createStatement();
+    private static String getTableQuery(String tableName) {
+        String query = "";
+        switch (tableName) {
+            case "Provider": query = "CREATE TABLE Provider ("
+                                            + "cuit VARCHAR(30) PRIMARY KEY,"
+                                            + "name VARCHAR(100),"
+                                            + "documentType VARCHAR(20),"
+                                            + "direction VARCHAR(50),"
+                                            + "sector VARCHAR(50),"
+                                            + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
+                                            + ")";
+                                            break;
             
-            String tableTicket = "CREATE TABLE Ticket ("
-                    + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
-                    + "date DATE NOT NULL," //
-                    + "type VARCHAR(50) NOT NULL," //
-                    + "number INTEGER NOT NULL," //
-                    + "numberTo INTEGER," //
-                    + "authCode VARCHAR(30) NOT NULL," //
-                    + "providerCuit VARCHAR(30) NOT NULL," //
-                    + "exchangeType REAL NOT NULL," //
-                    + "exchangeMoney VARCHAR(5) NOT NULL," //
-                    + "netAmountWI REAL," //
-                    + "netAmountWOI REAL," //
-                    + "amountImpEx REAL,"
-                    + "iva REAL," //
-                    + "totalAmount REAL NOT NULL," //
-                    + "issuedByMe BOOLEAN NOT NULL," //
-                    + "sector VARCHAR(50)," //
-                    + "PRIMARY KEY (date, number, providerCuit),"
-                    + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name),"
-                    + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
-                    + ")";    
-
-
-            stm.executeUpdate(tableTicket);
-            return true;
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
-        }
-    }
-    
-    private static boolean createDollarPriceTable() {
-        try {
-            connection = getConnection();
-            if (tableAlreadyExists("DOLLARPRICE")) {
-                return false;
-            }
-            Statement stm = connection.createStatement();
+            case "Ticket": query = "CREATE TABLE Ticket ("
+                                        + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
+                                        + "date DATE NOT NULL," //
+                                        + "type VARCHAR(50) NOT NULL," //
+                                        + "number INTEGER NOT NULL," //
+                                        + "numberTo INTEGER," //
+                                        + "authCode VARCHAR(30) NOT NULL," //
+                                        + "providerCuit VARCHAR(30) NOT NULL," //
+                                        + "exchangeType REAL NOT NULL," //
+                                        + "exchangeMoney VARCHAR(5) NOT NULL," //
+                                        + "netAmountWI REAL," //
+                                        + "netAmountWOI REAL," //
+                                        + "amountImpEx REAL,"
+                                        + "iva REAL," //
+                                        + "totalAmount REAL NOT NULL," //
+                                        + "issuedByMe BOOLEAN NOT NULL," //
+                                        + "sector VARCHAR(50)," //
+                                        + "PRIMARY KEY (date, number, providerCuit),"
+                                        + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name),"
+                                        + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
+                                        + ")";
+                                        break;
             
-            String tableDollarPrice = "CREATE TABLE DollarPrice ("
-                    + "date DATE PRIMARY KEY,"  //maybe ticket date should be fk to this, but dollar price may not exists for some days
-                    + "buy REAL NOT NULL,"
-                    + "sell REAL NOT NULL"
-                    + ")";
-
-            stm.executeUpdate(tableDollarPrice);
-            return true;
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
-        }
-    }
-    
-    private static boolean createSectorTable() {
-        try {
-            connection = getConnection();
-            if (tableAlreadyExists("SECTOR")) {
-                return false;
-            }
-            Statement stm = connection.createStatement();
+            case "DollarPrice": query = "CREATE TABLE DollarPrice ("
+                                                + "date DATE PRIMARY KEY,"  //maybe ticket date should be fk to this, but dollar price may not exists for some days
+                                                + "buy REAL NOT NULL,"
+                                                + "sell REAL NOT NULL"
+                                                + ")";
+                                                break;
             
-            String tableSector = "CREATE TABLE Sector ("
-                    + "name VARCHAR(50) PRIMARY KEY"  //maybe ticket date should be fk to this, but dollar price may not exists for some days
-                    + ")";
-
-            stm.executeUpdate(tableSector);
-            return true;
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
+            case "Sector": query = "CREATE TABLE Sector ("
+                                        + "name VARCHAR(50) PRIMARY KEY"  //maybe ticket date should be fk to this, but dollar price may not exists for some days
+                                        + ")";
+                                        break;
         }
+        return query;
     }
     
     public static void deleteDB() {
-        boolean deletedTicketTable = dropTicketTable();
-        boolean deletedProviderTable = dropProviderTable();
-        boolean deletedDollarPriceTable = dropDollarPriceTable();
-        boolean deletedSectorTable = dropSectorTable();
+        boolean deletedTicketTable = dropTable("Ticket");
+        boolean deletedProviderTable = dropTable("Provider");
+        boolean deletedDollarPriceTable = dropTable("DollarPrice");
+        boolean deletedSectorTable = dropTable("Sector");
         
         System.out.println("providerTable " + (deletedProviderTable ? "was deleted" : "didn't exist"));
         System.out.println("ticketTable " + (deletedTicketTable ? "was deleted" : "didn't exist"));
@@ -172,64 +138,16 @@ public class DBManager {
         System.out.println("sectorTable " + (deletedSectorTable ? "was deleted" : "didn't exist"));
     }
     
-    private static boolean dropTicketTable() {
+    private static boolean dropTable(String table) {
         try {
             connection = getConnection();
-            if (!tableAlreadyExists("TICKET")) {
+            if (!tableAlreadyExists(table.toUpperCase())) {
                 return false;
             }
             Statement stm = connection.createStatement();
 
-            String tableTicket = "DROP TABLE Ticket";
-            stm.executeUpdate(tableTicket);
-            return true;
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
-        }
-    }
-    
-    private static boolean dropProviderTable() {
-        try {
-            connection = getConnection();
-            if (!tableAlreadyExists("PROVIDER")) {
-                return false;
-            }
-            Statement stm = connection.createStatement();
-            
-            String tableProvider = "DROP TABLE Provider";
-            stm.executeUpdate(tableProvider);
-            return true;
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
-        }
-    }
-    
-    private static boolean dropDollarPriceTable() {
-        try {
-            connection = getConnection();
-            if (!tableAlreadyExists("DOLLARPRICE")) {
-                return false;
-            }
-            Statement stm = connection.createStatement();
-
-            String tableDollarPrice = "DROP TABLE DollarPrice";
+            String tableDollarPrice = "DROP TABLE " + table;
             stm.executeUpdate(tableDollarPrice);
-            return true;
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
-        }
-    }
-    
-    private static boolean dropSectorTable() {
-        try {
-            connection = getConnection();
-            if (!tableAlreadyExists("SECTOR")) {
-                return false;
-            }
-            Statement stm = connection.createStatement();
-
-            String tableSector = "DROP TABLE Sector";
-            stm.executeUpdate(tableSector);
             return true;
         } catch (SQLException e) {
             throw new IllegalStateException(e.toString());
