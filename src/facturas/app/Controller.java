@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -59,6 +60,34 @@ public class Controller {
             
         for (DollarPrice p : prices) {
             DollarPriceDAO.addDollarPrice(p);
+        }
+    }
+    
+    public String validateTicketParam(java.util.Date date, JComboBox<String> provider, JComboBox<String> docType
+            , Map<String, String> values) {
+        String message = "<html>Los siguientes datos son invalidos: ", invalidations = "";
+        if (date == null) 
+            invalidations += "<br/>Fecha no introducida, ";
+        if (provider.getSelectedItem() == null) {
+            if (docType.getSelectedItem() == null || values.get("docNo").isEmpty() || values.get("name").isEmpty()) {
+                invalidations += "<br/>No se introdujeron datos sobre el proveedor ";
+            }
+        }
+        
+        if (values.get("type").isEmpty())
+            invalidations += "<br/>No se especifico el tipo de comprobante, ";
+        
+        if (values.get("exchangeMoney").isEmpty())
+            invalidations += "<br/>No se introdujo el tipo de moneda, ";
+        
+        if (!FormatUtils.validTicketInput(values))
+            invalidations += "<br/>Algunos de los valores numericos introducidos estan mal formateados";
+        
+        if (invalidations.isEmpty()) {
+            return null;
+        } else {
+            invalidations += "</html>";
+            return message + invalidations;
         }
     }
     

@@ -278,19 +278,29 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
     private void loadTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketActionPerformed
         Map<String, String> values = new HashMap<>();
+        
         values.put("amountImpEx", amountImpExTextField.getText());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        if (dateDateChooser.getDate() == null) {
-            notificationView.setVisible(true);
-            return;
-        }
-        values.put("date", sdf.format(dateDateChooser.getDate()));
         values.put("exchangeType", exchangeTypeTextField.getText());
-        values.put("exchangeMoney", exchangeMoneyTextField.getText());
         values.put("iva", ivaTextField.getText());
         values.put("netAmountWI", netAmountWITextField.getText());
         values.put("netAmountWOI", netAmountWOITextField.getText());
         values.put("number", numberTextField.getText());
+        values.put("totalAmount", totalAmountTextField.getText());
+        values.put("docNo", providerDocTextField.getText());
+        values.put("name", providerNameTextField.getText());
+        values.put("type", typeTextField.getText());
+        values.put("exchangeMoney", exchangeMoneyTextField.getText());
+        
+        String errorMessage = controller.validateTicketParam(dateDateChooser.getDate(), providersComboBox, providerDocTypeComboBox, values);
+        if (errorMessage != null) {
+            notificationView.changeText(errorMessage);
+            notificationView.setVisible(true);
+            return ;
+        }
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        values.put("date", sdf.format(dateDateChooser.getDate()));
+        values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));
         
         if (providersComboBox.getSelectedItem() != null) {
             SQLFilter filter = new SQLFilter();
@@ -301,27 +311,14 @@ public class TicketLoaderView extends javax.swing.JFrame {
             values.put("name", provider.getName());
             values.put("provSector", provider.getSector());
         } else {
-            values.put("docNo", providerDocTextField.getText());
-            if (providerDocTypeComboBox.getSelectedItem() == null) {
-                notificationView.setVisible(true);
-                return;
-            }
             values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());
-            values.put("name", providerNameTextField.getText());
         }
         
-        values.put("totalAmount", totalAmountTextField.getText());
-        values.put("type", typeTextField.getText());
-        values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));
         if (sectorsComboBox.getSelectedItem() != null) {
             values.put("sector", sectorsComboBox.getSelectedItem().toString());
         }
-        
-        if (FormatUtils.validTicketInput(values)) {
-            controller.loadTicket(values);
-        } else {
-            notificationView.setVisible(true);
-        }
+
+        controller.loadTicket(values);
     }//GEN-LAST:event_loadTicketActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
@@ -334,10 +331,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providerDocTypeComboBox.setEnabled(value);
     }
     
-    //"Fecha","Tipo","Punto de Venta","Número Desde","Número Hasta","Cód. Autorización",
-    //"Tipo Doc. Emisor","Nro. Doc. Emisor","Denominación Emisor","Tipo Cambio","Moneda",
-    //"Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"
-
     Controller controller;
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
