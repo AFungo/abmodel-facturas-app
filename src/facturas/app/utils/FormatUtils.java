@@ -161,7 +161,7 @@ public class FormatUtils {
         validations[3] = tryParse(values.get("netAmountWI"), "Float");
         validations[4] = tryParse(values.get("netAmountWOI"), "Float");
         validations[5] = tryParse(values.get("number"), "Integer");
-        validations[6] = tryParse(values.get("docNo"), "Float");
+        validations[6] = values.get("docNo").isEmpty() ? true : tryParse(values.get("docNo"), "Integer"); //maybe user seleceted an existent provider
         validations[7] = tryParse(values.get("totalAmount"), "Float");
         //when you change return to boolean[] delete this for
         int i = 0;
