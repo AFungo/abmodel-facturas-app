@@ -76,6 +76,8 @@
                               <Component id="cuitCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="nameCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Component id="aliasCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="docTypeCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -130,6 +132,7 @@
                   <Component id="docTypeCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="directionCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="providerSectorCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="aliasCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="85" max="32767" attributes="0"/>
               <Component id="applyButton" min="-2" max="-2" attributes="0"/>
@@ -272,6 +275,12 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="applyButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="aliasCheckBox">
+      <Properties>
+        <Property name="selected" type="boolean" value="true"/>
+        <Property name="text" type="java.lang.String" value="Alias"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

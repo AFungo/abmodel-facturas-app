@@ -124,20 +124,23 @@ public class FormatUtils {
         
         if (dict.get("direction") != null) { attributes += ", direction"; values += ", " + dict.get("direction");}
         if (dict.get("sector") != null) { attributes += ", sector"; values += ", " + dict.get("sector");}
+        if (dict.get("alias") != null) { attributes += ", alias"; values += ", " + dict.get("alias");}
 
         return new Pair<>(attributes, values);
     }
     
     public static Object[] providerToForm(Provider prov) {
         Map<String, String> dict = prov.getValues();
-        Object[] values = new Object[5];
+        Object[] values = new Object[6];
         values[0] = dict.get("docNo");
         values[1] = dict.get("name");
-        values[2] = dict.get("docType");
+        if (dict.get("alias") != null)
+            values[2] = dict.get("alias");
+        values[3] = dict.get("docType");
         if (dict.get("direction") != null)
-            values[3] = dict.get("direction");
+            values[4] = dict.get("direction");
         if (dict.get("sector") != null)
-            values[4] = dict.get("sector");
+            values[5] = dict.get("sector");
 
         return values;
     }

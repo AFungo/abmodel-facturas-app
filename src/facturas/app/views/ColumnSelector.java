@@ -58,6 +58,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         directionCheckBox = new javax.swing.JCheckBox();
         providerSectorCheckBox = new javax.swing.JCheckBox();
         applyButton = new javax.swing.JButton();
+        aliasCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("COLUMNAS");
@@ -136,6 +137,9 @@ public class ColumnSelector extends javax.swing.JFrame {
             }
         });
 
+        aliasCheckBox.setSelected(true);
+        aliasCheckBox.setText("Alias");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,6 +188,8 @@ public class ColumnSelector extends javax.swing.JFrame {
                                 .addComponent(cuitCheckBox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(nameCheckBox)
+                                .addGap(10, 10, 10)
+                                .addComponent(aliasCheckBox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(docTypeCheckBox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -228,7 +234,8 @@ public class ColumnSelector extends javax.swing.JFrame {
                     .addComponent(nameCheckBox)
                     .addComponent(docTypeCheckBox)
                     .addComponent(directionCheckBox)
-                    .addComponent(providerSectorCheckBox))
+                    .addComponent(providerSectorCheckBox)
+                    .addComponent(aliasCheckBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                 .addComponent(applyButton)
                 .addGap(28, 28, 28))
@@ -296,6 +303,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         config.put("docType", docTypeCheckBox.isSelected());
         config.put("direction", directionCheckBox.isSelected());
         config.put("providerSector", providerSectorCheckBox.isSelected());
+        config.put("alias", aliasCheckBox.isSelected());
     }
     
     public boolean[] getTicketSelectedColumns() {
@@ -320,13 +328,14 @@ public class ColumnSelector extends javax.swing.JFrame {
     }
     
     public boolean[] getProviderSelectedColumns() {
-        boolean[] columns = new boolean [5];
+        boolean[] columns = new boolean [6];
         
         columns[0] = cuitCheckBox.isSelected();
         columns[1] = nameCheckBox.isSelected();
-        columns[2] = docTypeCheckBox.isSelected();
-        columns[3] = directionCheckBox.isSelected();
-        columns[4] = providerSectorCheckBox.isSelected();
+        columns[2] = aliasCheckBox.isSelected();
+        columns[3] = docTypeCheckBox.isSelected();
+        columns[4] = directionCheckBox.isSelected();
+        columns[5] = providerSectorCheckBox.isSelected();
         
         return columns;
     }
@@ -335,6 +344,7 @@ public class ColumnSelector extends javax.swing.JFrame {
     private JTable ticketsTable;
     private Map<String, Boolean> config;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox aliasCheckBox;
     private javax.swing.JCheckBox amountImpExCheckBox;
     private javax.swing.JButton applyButton;
     private javax.swing.JCheckBox authCodeCheckBox;

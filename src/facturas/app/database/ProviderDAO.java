@@ -99,9 +99,10 @@ public class ProviderDAO extends DAO {
         values.put("docNo", result.getString(1));
         values.put("name", result.getString(2));
         values.put("docType", result.getString(3));
+        values.put("direction", result.getString(4));
+        values.put("provSector", result.getString(5));
+        values.put("alias", result.getString(6));
         Provider prov = new Provider(values);
-        prov.addDirection(result.getString(4));
-        prov.addSector(result.getString(5));
         return prov;
     }
 }

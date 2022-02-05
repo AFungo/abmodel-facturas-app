@@ -19,6 +19,7 @@ public class Provider {
     private String docType;
     private String direction;
     private String sector;
+    private String alias;
 
     public Provider(Map<String, String> values){
         docNo = values.get("docNo");
@@ -26,6 +27,7 @@ public class Provider {
         docType = values.get("docType");
         direction = values.get("direction");    //may be null
         sector = values.get("provSector");      //may be null
+        alias = values.get("alias");      //may be null
     }
     
     public String getDocType(){
@@ -65,6 +67,7 @@ public class Provider {
         values.put("docType", docType);
         if (direction != null) values.put("direction", direction);
         if (sector != null) values.put("sector", sector);
+        if (alias != null) values.put("alias", alias);
         return values;
     }
 }

@@ -86,6 +86,7 @@ public class DBManager {
                                             + "documentType VARCHAR(20),"
                                             + "direction VARCHAR(50),"
                                             + "sector VARCHAR(50),"
+                                            + "alias VARCHAR(100),"
                                             + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
                                             + ")";
                                             break;

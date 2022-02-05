@@ -15,7 +15,6 @@ import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -99,14 +98,14 @@ public class ProvidersView extends javax.swing.JFrame {
 
             },
             new String [] {
-                "CUIT", "Nombre", "Tipo de documento", "Direccion", "Rubro"
+                "CUIT", "Nombre", "Alias", "Tipo de documento", "Direccion", "Rubro"
             }
         ) {
             Class[] types = new Class [] {
-                Integer.class, String.class, String.class, String.class, String.class
+                Integer.class, String.class, String.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -224,7 +223,7 @@ public class ProvidersView extends javax.swing.JFrame {
             filter.add("cuit", "=", selectedCuit, String.class);
             controller.changeAttributeProviderDAO(filter, "direction", userInput);
             int row = providersTable.getSelectedRow();
-            providersTable.setValueAt(userInput, row, 3);   //column 3 is for direction
+            providersTable.setValueAt(userInput, row, 4);   //column 4 is for direction
         }
     }//GEN-LAST:event_directionMenuItemActionPerformed
 
@@ -236,7 +235,7 @@ public class ProvidersView extends javax.swing.JFrame {
             filter.add("cuit", "=", selectedCuit, String.class);
             controller.changeAttributeProviderDAO(filter, "sector", sector);
             int row = providersTable.getSelectedRow();
-            providersTable.setValueAt(sector, row, 4);   //column 4 is for sector
+            providersTable.setValueAt(sector, row, 5);   //column 5 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 

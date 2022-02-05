@@ -76,6 +76,7 @@ public class TicketDAO extends DAO {
                 ticketAttributes.put("name", prov.get("name"));
                 ticketAttributes.put("direction", prov.get("direction"));
                 ticketAttributes.put("provSector", prov.get("sector"));
+                ticketAttributes.put("alias", prov.get("alias"));
                 ticketAttributes.put("exchangeType", result.getString(8));
                 ticketAttributes.put("exchangeMoney", result.getString(9));
                 if (result.getString(10) != null) ticketAttributes.put("netAmountWI", result.getString(10));
