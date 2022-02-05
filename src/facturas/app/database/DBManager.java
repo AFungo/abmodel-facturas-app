@@ -50,11 +50,13 @@ public class DBManager {
     public static void initializeDB() {
         boolean sectorTableCreated = createTable("Sector");
         boolean providerTableCreated = createTable("Provider");
+        boolean withholdingTableCreated = createTable("Withholding");
         boolean ticketTableCreated = createTable("Ticket");
         boolean dollarPriceTableCreated = createTable("DollarPrice");
         
         System.out.println("sectorTable " + (sectorTableCreated ? "was created" : "already exists"));
         System.out.println("providerTable " + (providerTableCreated ? "was created" : "already exists"));
+        System.out.println("withholdingTable " + (withholdingTableCreated ? "was created" : "already exists"));
         System.out.println("ticketTable " + (ticketTableCreated ? "was created" : "already exists"));
         System.out.println("dollarPriceTable " + (dollarPriceTableCreated ? "was created" : "already exists"));
     }
@@ -112,28 +114,42 @@ public class DBManager {
                                         break;
             
             case "DollarPrice": query = "CREATE TABLE DollarPrice ("
-                                                + "date DATE PRIMARY KEY,"  //maybe ticket date should be fk to this, but dollar price may not exists for some days
+                                                + "date DATE PRIMARY KEY,"
                                                 + "buy REAL NOT NULL,"
                                                 + "sell REAL NOT NULL"
                                                 + ")";
                                                 break;
             
             case "Sector": query = "CREATE TABLE Sector ("
-                                        + "name VARCHAR(50) PRIMARY KEY"  //maybe ticket date should be fk to this, but dollar price may not exists for some days
+                                        + "name VARCHAR(50) PRIMARY KEY"
                                         + ")";
                                         break;
+        
+            case "Withholding": query = "CREATE TABLE Withholding ("
+                                        + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
+                                        + "date DATE NOT NULL,"
+                                        + "providerDoc VARCHAR(50) NOT NULL,"
+                                        + "number INTEGER NOT NULL,"
+                                        + "delivered BOOLEAN NOT NULL,"
+                                        + "totalAmount REAL NOT NULL,"
+                                        + "type VARCHAR(50) NOT NULL"
+                                        + ")";
+                                        break;
+        
         }
         return query;
     }
     
     public static void deleteDB() {
         boolean deletedTicketTable = dropTable("Ticket");
+        boolean deletedWithholdingTable = dropTable("Withholding");
         boolean deletedProviderTable = dropTable("Provider");
         boolean deletedDollarPriceTable = dropTable("DollarPrice");
         boolean deletedSectorTable = dropTable("Sector");
         
-        System.out.println("providerTable " + (deletedProviderTable ? "was deleted" : "didn't exist"));
+        System.out.println("withholding " + (deletedWithholdingTable ? "was deleted" : "didn't exist"));
         System.out.println("ticketTable " + (deletedTicketTable ? "was deleted" : "didn't exist"));
+        System.out.println("providerTable " + (deletedProviderTable ? "was deleted" : "didn't exist"));
         System.out.println("dollarPriceTable " + (deletedDollarPriceTable ? "was deleted" : "didn't exist"));
         System.out.println("sectorTable " + (deletedSectorTable ? "was deleted" : "didn't exist"));
     }
