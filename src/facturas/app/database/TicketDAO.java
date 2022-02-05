@@ -11,7 +11,6 @@ import facturas.app.models.Ticket;
 import facturas.app.models.Provider;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
