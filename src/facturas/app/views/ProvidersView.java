@@ -61,6 +61,7 @@ public class ProvidersView extends javax.swing.JFrame {
         popupMenu = new javax.swing.JPopupMenu();
         directionMenuItem = new javax.swing.JMenuItem();
         sectorMenuItem = new javax.swing.JMenuItem();
+        aliasMenuItem = new javax.swing.JMenuItem();
         optionPane = new javax.swing.JOptionPane();
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -84,6 +85,14 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         });
         popupMenu.add(sectorMenuItem);
+
+        aliasMenuItem.setText("Modificar alias");
+        aliasMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aliasMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(aliasMenuItem);
 
         optionPane.setWantsInput(true);
 
@@ -240,8 +249,21 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
     private void providersTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_providersTableMousePressed
+        //just to make it work on mac
         providersTableMouseReleased(evt);
     }//GEN-LAST:event_providersTableMousePressed
+
+    private void aliasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aliasMenuItemActionPerformed
+        //FIXME: this is the same as for direction, generalize it
+        String userInput = optionPane.showInputDialog(null, "alias: ", "");
+        if (userInput != null) {
+            SQLFilter filter = new SQLFilter();
+            filter.add("cuit", "=", selectedCuit, String.class);
+            controller.changeAttributeProviderDAO(filter, "alias", userInput);
+            int row = providersTable.getSelectedRow();
+            providersTable.setValueAt(userInput, row, 2);   //column 2 is for alias
+        }
+    }//GEN-LAST:event_aliasMenuItemActionPerformed
 
     public void updateProviders(java.awt.event.ActionEvent evt) {
         showAllProvidersActionPerformed(evt);
@@ -257,6 +279,7 @@ public class ProvidersView extends javax.swing.JFrame {
     private AutoSuggestor autoSuggestor;
     private String selectedCuit;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aliasMenuItem;
     private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JMenuItem directionMenuItem;
     private javax.swing.JScrollPane jScrollPane1;
