@@ -128,11 +128,13 @@ public class DBManager {
             case "Withholding": query = "CREATE TABLE Withholding ("
                                         + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
                                         + "date DATE NOT NULL,"
-                                        + "providerDoc VARCHAR(50) NOT NULL,"
+                                        + "type VARCHAR(50) NOT NULL,"
                                         + "number INTEGER NOT NULL,"
+                                        + "providerDoc VARCHAR(30) NOT NULL,"
                                         + "delivered BOOLEAN NOT NULL,"
                                         + "totalAmount REAL NOT NULL,"
-                                        + "type VARCHAR(50) NOT NULL"
+                                        + "PRIMARY KEY (date, number, providerDoc),"
+                                        + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (providerDoc) REFERENCES Provider(cuit)"
                                         + ")";
                                         break;
         
