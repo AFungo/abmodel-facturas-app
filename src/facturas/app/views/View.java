@@ -65,7 +65,7 @@ public class View extends javax.swing.JFrame {
         sectorMenuItem = new javax.swing.JMenuItem();
         optionPane = new javax.swing.JOptionPane();
         sectorComboBox = new javax.swing.JComboBox<>();
-        vouchersTableScroll = new javax.swing.JScrollPane();
+        ticketsTableScroll = new javax.swing.JScrollPane();
         ticketsTable = new javax.swing.JTable();
         total = new javax.swing.JTextField();
         ivaTaxTextField = new javax.swing.JTextField();
@@ -114,7 +114,7 @@ public class View extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                Object.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false, false, false, false, false, false
@@ -135,7 +135,8 @@ public class View extends javax.swing.JFrame {
                 ticketsTableMouseReleased(evt);
             }
         });
-        vouchersTableScroll.setViewportView(ticketsTable);
+        ticketsTableScroll.setViewportView(ticketsTable);
+        ticketsTable.setAutoCreateRowSorter(true);
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         for (Ticket t : controller.getTickets()) {
             model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
@@ -307,14 +308,14 @@ public class View extends javax.swing.JFrame {
                             .addComponent(inDollars)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(vouchersTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE)))
+                        .addComponent(ticketsTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(vouchersTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 32609, Short.MAX_VALUE)
+                .addComponent(ticketsTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 32609, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -498,10 +499,10 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JButton showProviders;
     private javax.swing.JButton showTickets;
     private javax.swing.JTable ticketsTable;
+    private javax.swing.JScrollPane ticketsTableScroll;
     private javax.swing.JMenu tools;
     private javax.swing.JTextField total;
     private javax.swing.JTextField totalLabel;
-    private javax.swing.JScrollPane vouchersTableScroll;
     // End of variables declaration//GEN-END:variables
 
 }

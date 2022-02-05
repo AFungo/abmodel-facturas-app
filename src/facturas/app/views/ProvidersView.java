@@ -103,7 +103,7 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                Integer.class, String.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -134,6 +134,7 @@ public class ProvidersView extends javax.swing.JFrame {
             providersTable.getColumnModel().getColumn(1).setPreferredWidth(3);
         }
 
+        providersTable.setAutoCreateRowSorter(true);
         providersTable.setCellSelectionEnabled(true);
         providersTable.setVisible(true);
 
