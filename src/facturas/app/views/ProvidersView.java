@@ -30,7 +30,7 @@ public class ProvidersView extends javax.swing.JFrame {
     public ProvidersView(Controller controller) {
         this.controller = controller;
         initComponents();
-        autoSuggestor = new AutoSuggestor(comboBox, nameTextField, getProvidersName());
+        autoSuggestor = new AutoSuggestor(comboBox, getProvidersName());
         autoSuggestor.autoSuggest();
     }
     
@@ -255,7 +255,6 @@ public class ProvidersView extends javax.swing.JFrame {
     
     private Controller controller;
     private AutoSuggestor autoSuggestor;
-    private JTextField nameTextField;
     private String selectedCuit;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboBox;

@@ -26,7 +26,8 @@ public class AutoSuggestor {
     private Vector<String> suggestions;
     private boolean hide_Flag = false;
     
-    public AutoSuggestor(JComboBox comboBox, JTextField textField, List<String> suggestions) {
+    @SuppressWarnings("unchecked")
+    public AutoSuggestor(JComboBox comboBox, List<String> suggestions) {
         this.comboBox = comboBox;
         this.textField = (JTextField)comboBox.getEditor().getEditorComponent();
         setSuggestions(suggestions);

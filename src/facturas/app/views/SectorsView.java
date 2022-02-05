@@ -25,7 +25,7 @@ public class SectorsView extends javax.swing.JFrame {
      */
     public SectorsView() {
         initComponents();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, sectorsTextField, getSectors());
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
     }
      
@@ -141,7 +141,6 @@ public class SectorsView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_updateSectorActionPerformed
 
-    JTextField sectorsTextField;
     AutoSuggestor sectorsAutoSuggestor;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addSector;

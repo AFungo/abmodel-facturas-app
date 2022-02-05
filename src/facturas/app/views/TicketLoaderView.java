@@ -11,7 +11,6 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
-import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,9 +30,9 @@ public class TicketLoaderView extends javax.swing.JFrame {
     public TicketLoaderView(Controller controller) {
         this.controller = controller;
         initComponents();
-        providersAutoSuggestor = new AutoSuggestor(providersComboBox, providersTextField, getProvidersName());
+        providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, sectorsTextField, getSectors());
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
         notificationView = new NotificationView();
     }
@@ -334,8 +333,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
     Controller controller;
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
-    JTextField providersTextField;
-    JTextField sectorsTextField;
     NotificationView notificationView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField amountImpExTextField;
