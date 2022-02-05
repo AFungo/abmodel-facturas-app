@@ -28,12 +28,13 @@ public class AutoSuggestor {
     
     public AutoSuggestor(JComboBox comboBox, JTextField textField, List<String> suggestions) {
         this.comboBox = comboBox;
-        this.textField = textField;
+        this.textField = (JTextField)comboBox.getEditor().getEditorComponent();
         setSuggestions(suggestions);
     }
     
     public void setSuggestions(List<String> suggestions) {
         this.suggestions = FormatUtils.listToVector(suggestions);
+        setModel(getSuggestedModel(suggestions, ""), "");
     }
     
     private void setModel(DefaultComboBoxModel model, String str) {
@@ -63,7 +64,6 @@ public class AutoSuggestor {
     // works well but maybe in other context the case sensitive could be important
     public void autoSuggest() {
         comboBox.setEditable(true);
-        textField = (JTextField)comboBox.getEditor().getEditorComponent();
         setModel(getSuggestedModel(suggestions, ""), "");
         textField.addKeyListener(new KeyListener() {
             @Override
