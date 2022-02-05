@@ -118,6 +118,9 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         });
         providersTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                providersTableMousePressed(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 providersTableMouseReleased(evt);
             }
@@ -236,10 +239,13 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
+    private void providersTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_providersTableMousePressed
+        providersTableMouseReleased(evt);
+    }//GEN-LAST:event_providersTableMousePressed
+
     public void updateProviders(java.awt.event.ActionEvent evt) {
         showAllProvidersActionPerformed(evt);
     }
-    
     
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
