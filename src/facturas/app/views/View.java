@@ -12,6 +12,7 @@ import facturas.app.database.SectorDAO;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.ProfitCalculator;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -104,6 +105,11 @@ public class View extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PROGRAMA");
         setSize(new java.awt.Dimension(0, 0));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         ticketsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -467,6 +473,10 @@ public class View extends javax.swing.JFrame {
             ticketsTable.setValueAt(sector, row, 13);   //column 13 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        columnSelectorView.dispatchEvent(new WindowEvent(columnSelectorView, WindowEvent.WINDOW_CLOSING));
+    }//GEN-LAST:event_formWindowClosing
 
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
