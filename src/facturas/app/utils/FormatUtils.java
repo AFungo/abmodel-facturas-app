@@ -8,6 +8,8 @@ package facturas.app.utils;
 import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
+import facturas.app.models.Withholding;
+
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +84,19 @@ public class FormatUtils {
         return dict;
     }
     
+    public static Pair<String, String> withholdingToSQL(Withholding w) { 
+        Map<String, Object> dict = w.getValues();
+        String attributes = "", values = "";
+        attributes += "number, totalAmount, date, type, providerCuit";
+        values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
+        + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "'";
+
+        if (dict.get("id") != null) { attributes += ", id"; values += ", " + dict.get("id");}
+        if (dict.get("delivered") != null) { attributes += ", delivered"; values += ", " + dict.get("delivered");}
+
+        return new Pair<>(attributes, values);
+    }
+
     public static Map<String, String> dollarPriceCsvToDict(String priceStr) {
         String[ ] data = priceStr.replace(",", ".").split(";");
         Map<String, String> dict = new HashMap<>();

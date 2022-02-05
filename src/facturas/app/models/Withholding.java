@@ -5,7 +5,6 @@
  */
 package facturas.app.models;
 
-import facturas.app.database.ProviderDAO;
 import facturas.app.utils.FormatUtils;
 import java.util.Map;
 import java.util.HashMap;
@@ -16,11 +15,13 @@ import java.sql.Date;
  * @author Fungo
  */
 public class Withholding {
-    protected Provider provider; 
+    protected Provider provider;
     protected int number;
     protected Date date;
     protected Float totalAmount;
     protected String type;
+    private Integer id;
+    private Boolean delivered;
     protected DollarPrice dollarPrice = null;
     
     public Withholding(Map<String, String> data) {
@@ -29,6 +30,8 @@ public class Withholding {
         number = Integer.parseInt(data.get("number"));
         provider = new Provider(data);
         totalAmount = Float.parseFloat(data.get("totalAmount"));
+        if (data.get("id") != null) id = Integer.parseInt(data.get("id"));
+        if (data.get("delivered") != null) delivered = Boolean.valueOf(data.get("delivered"));
     }
 
     public void addDollarPrice(DollarPrice price) {
@@ -47,6 +50,8 @@ public class Withholding {
         dict.put("totalAmount", totalAmount);
         dict.put("provider", provider);
         dict.put("number", number);
+        if (id != null) dict.put("id", id);
+        if (delivered != null) dict.put("delivered", delivered);
         return dict;
     }                  
     
