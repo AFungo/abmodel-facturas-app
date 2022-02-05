@@ -26,7 +26,10 @@ public class ConfigManager {
     
     public static Map<String, Boolean> readConfig() {
         File configsFile = new File(configPath);
+        System.out.println("config existe: " + configsFile.exists());
+        System.out.println("longitud del config: " + configsFile.length());
         if ((!configsFile.exists()) || configsFile.length() == 0) {
+            System.out.println("entre al if de inicializacion: ");            
             initializeConfig();
             saveConfig(initialConfig());
         }
@@ -50,7 +53,9 @@ public class ConfigManager {
 
     public static void saveConfig(Map<String, Boolean> configs) {
         String fileContent = "\n[selected columns]";
+        System.out.println("saving the config: ");
         for (Map.Entry<String, Boolean> line : configs.entrySet()) {
+            System.out.println(line.getKey() + "=" + line.getValue());
             fileContent += "\n" + line.getKey() + "=" + line.getValue();
         }
         
@@ -84,7 +89,7 @@ public class ConfigManager {
         configs.put("noTicket", Boolean.TRUE);
         configs.put("numberTo", Boolean.TRUE);
         configs.put("authCode", Boolean.TRUE);
-        configs.put("noCuit", Boolean.TRUE);
+        configs.put("providerDoc", Boolean.TRUE);
         configs.put("providerName", Boolean.TRUE);
         configs.put("changeType", Boolean.TRUE);
         configs.put("netAmountWI", Boolean.TRUE);
@@ -93,11 +98,12 @@ public class ConfigManager {
         configs.put("iva", Boolean.TRUE);
         configs.put("ticketSector", Boolean.TRUE);
         configs.put("totalAmount", Boolean.TRUE);
-        configs.put("cuit", Boolean.TRUE);
+        configs.put("docNo", Boolean.TRUE);
         configs.put("name", Boolean.TRUE);
         configs.put("docType", Boolean.TRUE);
         configs.put("direction", Boolean.TRUE);
         configs.put("providerSector", Boolean.TRUE);
+        configs.put("alias", Boolean.TRUE);
         return configs;
     }
 }

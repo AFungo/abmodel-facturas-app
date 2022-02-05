@@ -70,64 +70,63 @@ public class ColumnSelector extends javax.swing.JFrame {
 
         ticketLabel.setText("Comprobante");
 
-        dateCheckBox.setSelected(config.get("date")
-        );
+        dateCheckBox.setSelected(config.get("date"));
         dateCheckBox.setText("Fecha");
 
-        typeCheckBox.setSelected(true);
+        typeCheckBox.setSelected(config.get("type"));
         typeCheckBox.setText("Tipo");
 
-        noTicketCheckBox.setSelected(true);
+        noTicketCheckBox.setSelected(config.get("noTicket"));
         noTicketCheckBox.setText("Nro factura");
 
-        numberToCheckBox.setSelected(true);
+        numberToCheckBox.setSelected(config.get("numberTo"));
         numberToCheckBox.setText("Numero hasta");
 
-        authCodeCheckBox.setSelected(true);
+        authCodeCheckBox.setSelected(config.get("authCode"));
         authCodeCheckBox.setText("Cód. Autorización");
 
-        noCuitCheckBox.setSelected(true);
+        noCuitCheckBox.setSelected(config.get("providerDoc"));
         noCuitCheckBox.setText("Nro. Doc. Emisor");
 
-        providerNameCheckBox.setSelected(true);
+        providerNameCheckBox.setSelected(config.get("providerName"));
         providerNameCheckBox.setText("Denominación Emisor");
 
-        changeTypeCheckBox.setSelected(true);
+        changeTypeCheckBox.setSelected(config.get("changeType"));
         changeTypeCheckBox.setText("Tipo Cambio");
 
-        netAmountWICheckBox.setSelected(true);
+        netAmountWICheckBox.setSelected(config.get("netAmountWI"));
         netAmountWICheckBox.setText("Imp. Neto Gravado");
 
-        netAmountWOICheckBox.setSelected(true);
+        netAmountWOICheckBox.setSelected(config.get("netAmountWOI"));
         netAmountWOICheckBox.setText("Imp. Neto No Gravado");
 
-        amountImpExCheckBox.setSelected(true);
+        amountImpExCheckBox.setSelected(config.get("amountImpEx"));
         amountImpExCheckBox.setText("Imp. Op. Exentas");
 
-        ivaCheckBox.setSelected(true);
+        ivaCheckBox.setSelected(config.get("iva"));
         ivaCheckBox.setText("IVA");
 
-        ticketSectorCheckBox.setSelected(true);
+        ticketSectorCheckBox.setSelected(config.get("ticketSector"));
         ticketSectorCheckBox.setText("Rubro");
 
-        totalAmountCheckBox.setSelected(true);
+        totalAmountCheckBox.setSelected(config.get("totalAmount"));
         totalAmountCheckBox.setText("Imp. Total");
 
         providerLabel.setText("Proveedor");
 
-        cuitCheckBox.setSelected(true);
-        cuitCheckBox.setText("CUIT");
+        cuitCheckBox.setSelected(config.get("docNo"));
+        cuitCheckBox.setText("Nro. Documento");
 
-        nameCheckBox.setSelected(true);
+        nameCheckBox.setSelected(config.get("name"));
         nameCheckBox.setText("Nombre");
 
-        docTypeCheckBox.setSelected(true);
+        docTypeCheckBox.setSelected(config.get("docType"));
         docTypeCheckBox.setText("Tipo de documento");
 
-        directionCheckBox.setSelected(true);
+        directionCheckBox.setSelected(config.get("direction"));
         directionCheckBox.setText("Dirección");
 
-        providerSectorCheckBox.setSelected(true);
+        providerSectorCheckBox.setSelected(config.get("providerSector"));
         providerSectorCheckBox.setText("Rubro");
 
         applyButton.setText("Aplicar");
@@ -137,7 +136,7 @@ public class ColumnSelector extends javax.swing.JFrame {
             }
         });
 
-        aliasCheckBox.setSelected(true);
+        aliasCheckBox.setSelected(config.get("alias"));
         aliasCheckBox.setText("Alias");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
