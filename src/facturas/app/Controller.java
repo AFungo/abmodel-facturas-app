@@ -10,9 +10,11 @@ import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.TicketDAO;
+import facturas.app.database.WithholdingDAO;
 import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
+import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
@@ -50,6 +52,10 @@ public class Controller {
         TicketDAO.addTicket(new Ticket(values));
     }
     
+    public void loadWithholding(Map<String, String> values) {
+        WithholdingDAO.addWithholding(new Withholding(values));
+    }
+    
     public void loadDollarPrices(File f) {
         List<String> stringPrices = readCsv(f, "price");
 
@@ -63,8 +69,9 @@ public class Controller {
         }
     }
     
-    public String validateTicketParam(java.util.Date date, JComboBox<String> provider, JComboBox<String> docType
-            , Map<String, String> values) {
+    //ticket is a boolean representing if the validation is for ticket or withholding
+    public String validateParam(java.util.Date date, JComboBox<String> provider, JComboBox<String> docType
+            , Map<String, String> values, boolean ticket) {
         String message = "<html>Los siguientes datos son invalidos: ", invalidations = "";
         if (date == null) 
             invalidations += "<br/>Fecha no introducida, ";
@@ -77,10 +84,10 @@ public class Controller {
         if (values.get("type").isEmpty())
             invalidations += "<br/>No se especifico el tipo de comprobante, ";
         
-        if (values.get("exchangeMoney").isEmpty())
+        if (ticket && values.get("exchangeMoney").isEmpty())
             invalidations += "<br/>No se introdujo el tipo de moneda, ";
         
-        if (!FormatUtils.validTicketInput(values))
+        if (!FormatUtils.validTicketInput(values, ticket))
             invalidations += "<br/>Algunos de los valores numericos introducidos estan mal formateados";
         
         if (invalidations.isEmpty()) {

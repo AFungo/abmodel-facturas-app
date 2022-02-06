@@ -290,7 +290,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("type", typeTextField.getText());
         values.put("exchangeMoney", exchangeMoneyTextField.getText());
         
-        String errorMessage = controller.validateTicketParam(dateDateChooser.getDate(), providersComboBox, providerDocTypeComboBox, values);
+        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, 
+                providerDocTypeComboBox, values, true);
         if (errorMessage != null) {
             notificationView.changeText(errorMessage);
             notificationView.setVisible(true);

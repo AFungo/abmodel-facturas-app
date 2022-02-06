@@ -92,7 +92,7 @@ public class FormatUtils {
     public static Pair<String, String> withholdingToSQL(Withholding w) { 
         Map<String, Object> dict = w.getValues();
         String attributes = "", values = "";
-        attributes += "number, totalAmount, date, type, providerCuit";
+        attributes += "number, totalAmount, date, type, providerDoc";
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
         + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "'";
 
@@ -176,23 +176,28 @@ public class FormatUtils {
     
     //FIXME: this should return the boolean[] so in the view you can tell the user each field he has wrongly filled
     //instead of just the first one
-    public static boolean validTicketInput(Map<String, String> values) {
-        boolean[] validations = new boolean[8];
-        validations[0] = tryParse(values.get("amountImpEx"), "Float");
-        validations[1] = tryParse(values.get("exchangeType"), "Float");
-        validations[2] = tryParse(values.get("iva"), "Float");
-        validations[3] = tryParse(values.get("netAmountWI"), "Float");
-        validations[4] = tryParse(values.get("netAmountWOI"), "Float");
-        validations[5] = tryParse(values.get("number"), "Integer");
-        validations[6] = values.get("docNo").isEmpty() ? true : tryParse(values.get("docNo"), "Integer"); //maybe user seleceted an existent provider
-        validations[7] = tryParse(values.get("totalAmount"), "Float");
+    public static boolean validTicketInput(Map<String, String> values, boolean ticket) {
+        boolean[] validations;
+        if (ticket) 
+            validations = new boolean[8];
+        else
+            validations = new boolean[3];
+        
+        validations[0] = tryParse(values.get("number"), "Integer");
+        validations[1] = values.get("docNo").isEmpty() ? true : tryParse(values.get("docNo"), "Integer"); //maybe user seleceted an existent provider
+        validations[2] = tryParse(values.get("totalAmount"), "Float");
+        if (ticket) {
+            validations[3] = tryParse(values.get("amountImpEx"), "Float");
+            validations[4] = tryParse(values.get("exchangeType"), "Float");
+            validations[5] = tryParse(values.get("iva"), "Float");
+            validations[6] = tryParse(values.get("netAmountWI"), "Float");
+            validations[7] = tryParse(values.get("netAmountWOI"), "Float");
+        }
         //when you change return to boolean[] delete this for
-        int i = 0;
         for (boolean validation : validations) {
             if (!validation) {
                 return false;
             }
-            i++;
         }
         return true;
         //return validations;
