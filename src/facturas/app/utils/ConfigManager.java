@@ -26,10 +26,7 @@ public class ConfigManager {
     
     public static Map<String, Boolean> readConfig() {
         File configsFile = new File(configPath);
-        System.out.println("config existe: " + configsFile.exists());
-        System.out.println("longitud del config: " + configsFile.length());
         if ((!configsFile.exists()) || configsFile.length() == 0) {
-            System.out.println("entre al if de inicializacion: ");            
             initializeConfig();
             saveConfig(initialConfig());
         }
@@ -53,7 +50,6 @@ public class ConfigManager {
 
     public static void saveConfig(Map<String, Boolean> configs) {
         String fileContent = "\n[selected columns]";
-        System.out.println("saving the config: ");
         for (Map.Entry<String, Boolean> line : configs.entrySet()) {
             System.out.println(line.getKey() + "=" + line.getValue());
             fileContent += "\n" + line.getKey() + "=" + line.getValue();
