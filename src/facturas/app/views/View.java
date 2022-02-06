@@ -34,6 +34,7 @@ public class View extends javax.swing.JFrame {
     private FiltersView filtersView;
     private ColumnSelector columnSelectorView;
     private TicketLoaderView ticketLoaderView;
+    private WithholdingLoaderView withholdingLoaderView;
     private SectorsView sectorsView;
     private JTable providersTable = new JTable();
 
@@ -50,6 +51,7 @@ public class View extends javax.swing.JFrame {
         filtersView = new FiltersView(controller, ticketsTable);
         columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
         ticketLoaderView = new TicketLoaderView(controller);
+        withholdingLoaderView = new WithholdingLoaderView(controller);
         sectorsView = new SectorsView();
     }
 
@@ -87,6 +89,7 @@ public class View extends javax.swing.JFrame {
         loadTicketsEmitedByO = new javax.swing.JMenuItem();
         loadDollarValue = new javax.swing.JMenuItem();
         loadTicketManually = new javax.swing.JMenuItem();
+        loadWithholdingManually = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
         sectorsViewItem = new javax.swing.JMenuItem();
         tools = new javax.swing.JMenu();
@@ -254,6 +257,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         files.add(loadTicketManually);
+
+        loadWithholdingManually.setText("Cargar retencion");
+        loadWithholdingManually.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadWithholdingManuallyActionPerformed(evt);
+            }
+        });
+        files.add(loadWithholdingManually);
 
         menuBar.add(files);
 
@@ -502,6 +513,11 @@ public class View extends javax.swing.JFrame {
         ticketsTable.setValueAt(deliveredValue, row, 15);   //column 13 is for sector
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
+    private void loadWithholdingManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingManuallyActionPerformed
+        withholdingLoaderView.setVisible(true);
+        withholdingLoaderView.updateSuggestions();
+    }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
@@ -521,6 +537,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem loadTicketManually;
     private javax.swing.JMenuItem loadTicketsEmitedByMy;
     private javax.swing.JMenuItem loadTicketsEmitedByO;
+    private javax.swing.JMenuItem loadWithholdingManually;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu multipleLoad;
     private javax.swing.JOptionPane optionPane;
