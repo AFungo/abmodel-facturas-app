@@ -108,6 +108,7 @@ public class DBManager {
                                         + "totalAmount REAL NOT NULL," //
                                         + "issuedByMe BOOLEAN NOT NULL," //
                                         + "sector VARCHAR(50)," //
+                                        + "delivered BOOLEAN DEFAULT false," //
                                         + "PRIMARY KEY (date, number, providerCuit),"
                                         + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name),"
                                         + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
