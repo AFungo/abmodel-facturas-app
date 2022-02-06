@@ -312,6 +312,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         config.put("totalAmount", totalAmountCheckBox.isSelected());
         config.put("ticketSector", ticketSectorCheckBox.isSelected());
         config.put("buyNSell", purchaseNSalesCheckBox.isSelected());
+        config.put("delivered", deliveredCheckBox.isSelected());
     }
     
     private void updateProviderConfig() {
@@ -324,7 +325,7 @@ public class ColumnSelector extends javax.swing.JFrame {
     }
     
     public boolean[] getTicketSelectedColumns() {
-        boolean[] columns = new boolean [15];
+        boolean[] columns = new boolean [16];
         
         columns[0] = dateCheckBox.isSelected();
         columns[1] = typeCheckBox.isSelected();
@@ -341,6 +342,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         columns[12] = totalAmountCheckBox.isSelected();
         columns[13] = ticketSectorCheckBox.isSelected();
         columns[14] = purchaseNSalesCheckBox.isSelected();
+        columns[15] = deliveredCheckBox.isSelected();
         
         return columns;
     }
