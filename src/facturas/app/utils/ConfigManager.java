@@ -20,9 +20,10 @@ import java.util.Map;
  * @author nacho
  */
 public class ConfigManager {
- 
-    final static String configFolderPath = System.getenv("APPDATA") + "\\Facturas App\\";
-    final static String configPath = System.getenv("APPDATA") + "\\Facturas App\\" + "config.txt";
+    
+    private static boolean isMac = System.getProperty("os.name").contains("Mac OS");
+    private static String configFolderPath = System.getenv("APPDATA") + "\\Facturas App\\";
+    private static String configPath = isMac ? "config.txt" : System.getenv("APPDATA") + "\\Facturas App\\" + "config.txt";
     
     public static Map<String, Boolean> readConfig() {
         File configsFile = new File(configPath);
@@ -66,7 +67,7 @@ public class ConfigManager {
     
     private static void initializeConfig() {
         File configsFolder = new File(configFolderPath);
-        if (!configsFolder.exists()) {    //creating directory if not exists
+        if (!configsFolder.exists() && !isMac) {    //creating directory if not exists
             configsFolder.mkdir();
         }
         
@@ -100,8 +101,8 @@ public class ConfigManager {
         configs.put("direction", Boolean.TRUE);
         configs.put("providerSector", Boolean.TRUE);
         configs.put("alias", Boolean.TRUE);
-        configs.put("delivered", Boolean.TRUE);
         configs.put("purchaseNSales", Boolean.TRUE);
+        configs.put("delivered", Boolean.TRUE);
         return configs;
     }
 }

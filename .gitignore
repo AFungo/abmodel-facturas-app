@@ -58,3 +58,6 @@ pom.xml.tag
 # db
 db/
 derby.log
+
+# config
+config.txt

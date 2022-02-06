@@ -311,7 +311,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         config.put("iva", ivaCheckBox.isSelected());
         config.put("totalAmount", totalAmountCheckBox.isSelected());
         config.put("ticketSector", ticketSectorCheckBox.isSelected());
-        config.put("buyNSell", purchaseNSalesCheckBox.isSelected());
+        config.put("purchaseNSales", purchaseNSalesCheckBox.isSelected());
         config.put("delivered", deliveredCheckBox.isSelected());
     }
     
