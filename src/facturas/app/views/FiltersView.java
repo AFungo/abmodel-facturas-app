@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -99,6 +100,20 @@ public class FiltersView extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+
+        ticketTypesList.setSelectionModel(new DefaultListSelectionModel() {
+            @Override
+            public void setSelectionInterval(int index0, int index1) {
+                if(super.isSelectedIndex(index0)) {
+                    super.removeSelectionInterval(index0, index1);
+                }
+                else {
+                    super.addSelectionInterval(index0, index1);
+                }
+                fireValueChanged(index0, index1);
+            }
+        });
+
         ticketTypesScrollPane.setViewportView(ticketTypesList);
 
         minDateChooser.setDateFormatString("dd-MM-yyyy");
