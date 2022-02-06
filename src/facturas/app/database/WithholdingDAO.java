@@ -9,6 +9,7 @@ import facturas.app.Controller;
 import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.Withholding;
 import facturas.app.models.Provider;
+import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
@@ -28,8 +29,8 @@ import java.util.logging.Logger;
 public class WithholdingDAO {
 
     public static void addWithholding(Withholding withholding) {
-        if (withholding instanceof Withholding)
-            throw new IllegalArgumentException("Unable to add as withholding, Withholdings must be added to Withholding table");
+        if (withholding instanceof Ticket)
+            throw new IllegalArgumentException("Unable to add as withholding, Tickets must be added to Ticket table");
         Pair<String, String> sqlValues = FormatUtils.withholdingToSQL(withholding);
         Provider provider = (Provider)withholding.getValues().get("provider");
         
