@@ -86,6 +86,7 @@ public class TicketDAO extends DAO {
                 ticketAttributes.put("totalAmount", result.getString(14));
                 ticketAttributes.put("issuedByMe", result.getString(15));
                 ticketAttributes.put("sector", result.getString(16));
+                ticketAttributes.put("delivered", result.getString(17));
                 ticketsList.add(new Ticket(ticketAttributes));
             }
         } catch (SQLException ex) {

@@ -21,7 +21,7 @@ public class Withholding {
     protected Float totalAmount;
     protected String type;
     private Integer id;
-    private Boolean delivered;
+    protected Boolean delivered;
     protected DollarPrice dollarPrice = null;
     
     public Withholding(Map<String, String> data) {

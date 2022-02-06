@@ -116,14 +116,14 @@ public class View extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro"
+                "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro", "Env. Contador"
             }
         ) {
             Class[] types = new Class [] {
-                Object.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class
+                Object.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false,false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -371,7 +371,6 @@ public class View extends javax.swing.JFrame {
 
     //show providers if any
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
-        // TODO add your handling code here:
         providersView.setVisible(true);
         // FIXME: search a better option (optimized)
         providersView.updateProviders(evt);
@@ -406,13 +405,11 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_loadTicketsEmitedByMyActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
-        // TODO add your handling code here:
         ticketLoaderView.setVisible(true);
         ticketLoaderView.updateSuggestions();
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
     private void loadDollarValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarValueActionPerformed
-        // TODO add your handling code here:                                   
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);

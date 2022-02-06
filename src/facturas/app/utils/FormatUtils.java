@@ -36,6 +36,7 @@ public class FormatUtils {
         if (dict.get("numberTo") != null) { attributes += ", numberTo"; values += ", " + dict.get("numberTo");}
         if (dict.get("amountImpEx") != null) { attributes += ", amountImpEx"; values += ", " + dict.get("amountImpEx");}
         if (dict.get("sector") != null) { attributes += ", sector"; values += ", '" + dict.get("sector") + "'"; }
+        if (dict.get("delivered") != null) { attributes += ", delivered"; values += ", " + dict.get("delivered") + ""; }
 
         return new Pair<>(attributes, values);
     }
@@ -47,10 +48,15 @@ public class FormatUtils {
         if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
             sector = provider.getSector();
         }
+        Boolean delivered = (Boolean) (dict.get("delivered"));
+        String deliveredValue = null;
+        if (delivered != null) {
+            deliveredValue = delivered ?  "SI" : "NO";
+        }
         
         Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
             ((Provider)dict.get("provider")).getDocNo(), provider.getName(), dict.get("exchangeType"), dict.get("netAmountWI"), 
-            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector};
+            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector, deliveredValue};
 
         return values;
     }
