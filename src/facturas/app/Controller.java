@@ -124,8 +124,8 @@ public class Controller {
     public List<Provider> getProviders() {
         return ProviderDAO.getProviders();
     }
-    public void changeSector(SQLFilter filter, String sector){
-        TicketDAO.changeSector(filter, sector);
+    public void changeAttribute(SQLFilter filter, String attribute, String value){
+        TicketDAO.changeAttribute(filter, attribute, value);
     }
     private void getDayPrice(Ticket t) {
         Date ticketDate = (Date)t.getValues().get("date");

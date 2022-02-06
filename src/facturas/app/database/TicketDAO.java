@@ -54,12 +54,12 @@ public class TicketDAO extends DAO {
         List<Ticket> ticketsList = getTicketsList(result);
         return ticketsList;
     }
-    
-    public static void changeSector(SQLFilter filter, String sector) {
-        String query = "UPDATE Ticket SET sector = '" + sector  + "'" + filter.get();
+
+    public static void changeAttribute(SQLFilter filters, String attribute, String value) {
+        String query = "UPDATE Ticket SET " + attribute + " = '" + value  + "' " + filters.get();
         executeQuery(query, true);
     }
-
+    
     private static List<Ticket> getTicketsList(ResultSet result) {
         List<Ticket> ticketsList = new LinkedList<>();
         try {
