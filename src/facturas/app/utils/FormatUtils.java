@@ -48,9 +48,11 @@ public class FormatUtils {
             sector = provider.getSector();
         }
         
+        String buyNSell = (boolean)dict.get("issuedByMe") ? "VENTA" : "COMPRA";
+        
         Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
             ((Provider)dict.get("provider")).getDocNo(), provider.getName(), dict.get("exchangeType"), dict.get("netAmountWI"), 
-            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector};
+            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector, buyNSell};
 
         return values;
     }
