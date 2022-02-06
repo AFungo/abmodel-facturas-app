@@ -64,6 +64,7 @@ public class View extends javax.swing.JFrame {
 
         popupMenu = new javax.swing.JPopupMenu();
         sectorMenuItem = new javax.swing.JMenuItem();
+        deliveredMenuItem = new javax.swing.JMenuItem();
         optionPane = new javax.swing.JOptionPane();
         sectorComboBox = new javax.swing.JComboBox<>();
         ticketsTableScroll = new javax.swing.JScrollPane();
@@ -99,6 +100,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         popupMenu.add(sectorMenuItem);
+
+        deliveredMenuItem.setText("jMenuItem1");
+        deliveredMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deliveredMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(deliveredMenuItem);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
 
@@ -448,6 +457,9 @@ public class View extends javax.swing.JFrame {
     private void ticketsTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
         if (evt.getButton() == MouseEvent.BUTTON3) {//right click
             if (evt.isPopupTrigger() && ticketsTable.getSelectedRowCount() != 0) {
+                int row = ticketsTable.getSelectedRow();
+                String deliveredValue = (String)ticketsTable.getValueAt(row, 15); //15 is the delivered column
+                deliveredMenuItem.setText(deliveredValue == "NO" ? "Marcar como enviado" : "Marcar como no enviado");
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
@@ -466,7 +478,7 @@ public class View extends javax.swing.JFrame {
             String cuit = (String)ticketsTable.getValueAt(row, 5); //5 is the cuit column
             filter.add("providerCuit", "=", cuit, String.class);
             
-            controller.changeSector(filter, sector);
+            controller.changeAttribute(filter, "sector", sector);
             ticketsTable.setValueAt(sector, row, 13);   //column 13 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
@@ -474,6 +486,21 @@ public class View extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         columnSelectorView.dispatchEvent(new WindowEvent(columnSelectorView, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_formWindowClosing
+
+    private void deliveredMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveredMenuItemActionPerformed
+        int row = ticketsTable.getSelectedRow();
+        SQLFilter filter = new SQLFilter();
+        Date date = (Date)ticketsTable.getValueAt(row, 0); //0 is the date column
+        filter.add("date", "=", date, Date.class);
+        Integer noTicket = (Integer)ticketsTable.getValueAt(row, 2); //2 is the noTicket column
+        filter.add("number", "=", noTicket, Integer.class);
+        String cuit = (String)ticketsTable.getValueAt(row, 5); //5 is the cuit column
+        filter.add("providerCuit", "=", cuit, String.class);
+        
+        String deliveredValue = (String)ticketsTable.getValueAt(row, 15) == "NO" ? "SI" : "NO";
+        controller.changeAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
+        ticketsTable.setValueAt(deliveredValue, row, 15);   //column 13 is for sector
+    }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
@@ -483,6 +510,7 @@ public class View extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
+    private javax.swing.JMenuItem deliveredMenuItem;
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;
     private javax.swing.JMenuItem filters;
