@@ -38,7 +38,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                              <Component id="cuitCheckBox" min="-2" max="-2" attributes="0"/>
+                              <Component id="docNoCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="nameCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
@@ -56,7 +56,11 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="buyNSellCheckBox" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="purchaseNSalesCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="deliveredCheckBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="changeTypeCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -83,7 +87,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="authCodeCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="noCuitCheckBox" min="-2" max="-2" attributes="0"/>
+                              <Component id="providerDocCheckBox" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="providerNameCheckBox" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -111,7 +115,7 @@
                   <Component id="noTicketCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="numberToCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="authCodeCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="noCuitCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="providerDocCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="providerNameCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -125,19 +129,22 @@
                   <Component id="ticketSectorCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-              <Component id="buyNSellCheckBox" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="purchaseNSalesCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deliveredCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="providerLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cuitCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="docNoCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="nameCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="docTypeCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="directionCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="providerSectorCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="aliasCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="85" max="32767" attributes="0"/>
+              <EmptySpace pref="73" max="32767" attributes="0"/>
               <Component id="applyButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
           </Group>
@@ -182,7 +189,7 @@
         <Property name="text" type="java.lang.String" value="C&#xf3;d. Autorizaci&#xf3;n"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="noCuitCheckBox">
+    <Component class="javax.swing.JCheckBox" name="providerDocCheckBox">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Nro. Doc. Emisor"/>
@@ -241,7 +248,7 @@
         <Property name="text" type="java.lang.String" value="Proveedor"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="cuitCheckBox">
+    <Component class="javax.swing.JCheckBox" name="docNoCheckBox">
       <Properties>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="CUIT"/>
@@ -285,9 +292,14 @@
         <Property name="text" type="java.lang.String" value="Alias"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="buyNSellCheckBox">
+    <Component class="javax.swing.JCheckBox" name="purchaseNSalesCheckBox">
       <Properties>
         <Property name="text" type="java.lang.String" value="Compra/Venta"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="deliveredCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Env. contador"/>
       </Properties>
     </Component>
   </SubComponents>
