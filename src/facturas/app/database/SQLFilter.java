@@ -9,6 +9,7 @@ import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,13 @@ public class SQLFilter {
         
         List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
         if (!typesList.isEmpty()) { filters.put(new Pair<> ("type", "="), new Pair(typesList, List.class)); }
+        
+        if ((boolean)selectedFilters.get("sale")) {
+            add("issuedByMe", "=", true, Boolean.class);
+        } else if ((boolean)selectedFilters.get("purchase")) {
+            add("issuedByMe", "=", false, Boolean.class);
+        }
+        
     }
     
     public void add(String attribute, String comparison, Object value, Class<?> valueClass) {
