@@ -133,7 +133,7 @@ public class DBManager {
                                         + "type VARCHAR(50) NOT NULL,"
                                         + "number INTEGER NOT NULL,"
                                         + "providerDoc VARCHAR(30) NOT NULL,"
-                                        + "delivered BOOLEAN NOT NULL,"
+                                        + "delivered BOOLEAN DEFAULT false,"
                                         + "totalAmount REAL NOT NULL,"
                                         + "PRIMARY KEY (date, number, providerDoc),"
                                         + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (providerDoc) REFERENCES Provider(cuit)"
