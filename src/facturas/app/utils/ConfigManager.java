@@ -100,6 +100,7 @@ public class ConfigManager {
         configs.put("direction", Boolean.TRUE);
         configs.put("providerSector", Boolean.TRUE);
         configs.put("alias", Boolean.TRUE);
+        configs.put("buyNSell", Boolean.TRUE);
         return configs;
     }
 }

@@ -130,17 +130,18 @@ public class ColumnSelector extends javax.swing.JFrame {
         providerSectorCheckBox.setSelected(config.get("providerSector"));
         providerSectorCheckBox.setText("Rubro");
 
+        aliasCheckBox.setSelected(config.get("alias"));
+        aliasCheckBox.setText("Alias");
+
+        buyNSellCheckBox.setSelected(config.get("buyNSell"));
+        buyNSellCheckBox.setText("Compra/Venta");
+
         applyButton.setText("Aplicar");
         applyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 applyButtonActionPerformed(evt);
             }
         });
-
-        aliasCheckBox.setSelected(config.get("alias"));
-        aliasCheckBox.setText("Alias");
-
-        buyNSellCheckBox.setText("Compra/Venta");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -291,7 +292,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         config.put("noTicket", noTicketCheckBox.isSelected());
         config.put("numberTo", numberToCheckBox.isSelected());
         config.put("authCode", authCodeCheckBox.isSelected());
-        config.put("noCuit", noCuitCheckBox.isSelected());
+        config.put("providerDoc", noCuitCheckBox.isSelected());
         config.put("providerName", providerNameCheckBox.isSelected());
         config.put("changeType", changeTypeCheckBox.isSelected());
         config.put("netAmountWI", netAmountWICheckBox.isSelected());
@@ -304,7 +305,7 @@ public class ColumnSelector extends javax.swing.JFrame {
     }
     
     private void updateProviderConfig() {
-        config.put("cuit", cuitCheckBox.isSelected());
+        config.put("providerDoc", cuitCheckBox.isSelected());
         config.put("name", nameCheckBox.isSelected());
         config.put("docType", docTypeCheckBox.isSelected());
         config.put("direction", directionCheckBox.isSelected());
