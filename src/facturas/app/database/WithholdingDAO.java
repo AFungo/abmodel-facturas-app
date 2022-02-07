@@ -74,8 +74,10 @@ public class WithholdingDAO {
                 WithholdingAttributes.put("name", prov.get("name"));
                 WithholdingAttributes.put("direction", prov.get("direction"));
                 WithholdingAttributes.put("provSector", prov.get("sector"));
+                WithholdingAttributes.put("alias", prov.get("alias"));
                 WithholdingAttributes.put("delivered", result.getString(6));
                 WithholdingAttributes.put("totalAmount", result.getString(7));
+                WithholdingAttributes.put("sector", result.getString(8));
                 whithholdingList.add(new Withholding(WithholdingAttributes));
             }
         } catch (SQLException ex) {
