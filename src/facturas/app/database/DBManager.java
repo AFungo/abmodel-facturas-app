@@ -88,6 +88,7 @@ public class DBManager {
                                             + "sector VARCHAR(50),"
                                             + "alias VARCHAR(100),"
                                             + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
+                                            + "ON DELETE SET NULL"
                                             + ")";
                                             break;
             
@@ -110,7 +111,8 @@ public class DBManager {
                                         + "sector VARCHAR(50)," //
                                         + "delivered BOOLEAN DEFAULT false," //
                                         + "PRIMARY KEY (date, number, providerCuit),"
-                                        + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name),"
+                                        + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name)"
+                                        + "ON DELETE SET NULL,"
                                         + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
                                         + ")";
                                         break;
