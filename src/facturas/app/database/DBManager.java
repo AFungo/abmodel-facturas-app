@@ -137,6 +137,9 @@ public class DBManager {
                                         + "providerDoc VARCHAR(30) NOT NULL,"
                                         + "delivered BOOLEAN DEFAULT false,"
                                         + "totalAmount REAL NOT NULL,"
+                                        + "sector VARCHAR(50),"
+                                        + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(name)"
+                                        + "ON DELETE SET NULL,"
                                         + "PRIMARY KEY (date, number, providerDoc),"
                                         + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (providerDoc) REFERENCES Provider(cuit)"
                                         + ")";

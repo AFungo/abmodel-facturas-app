@@ -22,6 +22,7 @@ public class Withholding {
     protected String type;
     private Integer id;
     protected Boolean delivered;
+    protected String sector;
     protected DollarPrice dollarPrice = null;
     
     public Withholding(Map<String, String> data) {
@@ -30,6 +31,7 @@ public class Withholding {
         number = Integer.parseInt(data.get("number"));
         provider = new Provider(data);
         totalAmount = Float.parseFloat(data.get("totalAmount"));
+        sector = data.get("sector");
         if (data.get("id") != null) id = Integer.parseInt(data.get("id"));
         if (data.get("delivered") != null) delivered = Boolean.valueOf(data.get("delivered"));
     }
@@ -50,6 +52,7 @@ public class Withholding {
         dict.put("totalAmount", totalAmount);
         dict.put("provider", provider);
         dict.put("number", number);
+        dict.put("sector", sector);
         if (id != null) dict.put("id", id);
         if (delivered != null) dict.put("delivered", delivered);
         return dict;
