@@ -438,7 +438,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("docNo", providerDocTextField.getText());
         values.put("name", providerNameTextField.getText());
         values.put("direction, ", providerAddress.getText()); // may be null
-        values.put("provSector", (String) providersComboBox.getSelectedItem());      //may be null
+        values.put("provSector", (String) providerSector.getSelectedItem());//may be null
         values.put("alias", providerAliasTextField.getText());      //may be null
 
         String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, providerDocTypeComboBox, values, true);
