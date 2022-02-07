@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
 /**
  *
@@ -158,6 +159,9 @@ public class Controller {
     }
     public void changeAttributeProviderDAO(SQLFilter filters, String attribute, String value){
         ProviderDAO.changeAttribute(filters, attribute, value);
+    }
+    public void cleanTextField(List<JTextField> textField){
+            for(JTextField t : textField) t.setText("");
     }
     private List<String> readCsv(File f, String type) {
         if (f == null) {
