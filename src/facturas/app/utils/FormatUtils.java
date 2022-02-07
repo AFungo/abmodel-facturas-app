@@ -41,7 +41,10 @@ public class FormatUtils {
         return new Pair<>(attributes, values);
     }
      
-    public static Object[] ticketToForm(Ticket t) {
+    public static Object[] ticketToForm(Withholding t) {
+        if (!(t instanceof Ticket))
+            return withholdingToForm(t);
+
         Map<String, Object> dict = t.getValues();
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
@@ -100,6 +103,21 @@ public class FormatUtils {
         if (dict.get("delivered") != null) { attributes += ", delivered"; values += ", " + dict.get("delivered");}
 
         return new Pair<>(attributes, values);
+    }
+
+    private static Object[] withholdingToForm(Withholding w) {
+        Map<String, Object> dict = w.getValues();
+        Provider provider = (Provider)dict.get("provider");
+        String sector = (String)dict.get("sector");
+        if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
+            sector = provider.getSector();
+        }
+        Boolean delivered = (Boolean) (dict.get("delivered"));
+        
+        Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), null, null, provider.getDocNo(), 
+        provider.getName(), null, null, null, null, null, dict.get("totalAmount"), sector, null, delivered ? "SI" : "NO"};
+        //null values are necessary so the array fits in the table of the view
+        return values;
     }
 
     public static Map<String, String> dollarPriceCsvToDict(String priceStr) {
