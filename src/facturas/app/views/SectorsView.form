@@ -4,6 +4,8 @@
   <NonVisualComponents>
     <Component class="javax.swing.JOptionPane" name="updateSectorOptionPane">
     </Component>
+    <Component class="javax.swing.JOptionPane" name="confirmDeleteOptionPane">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>

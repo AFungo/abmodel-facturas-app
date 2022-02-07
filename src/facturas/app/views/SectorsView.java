@@ -48,6 +48,7 @@ public class SectorsView extends javax.swing.JFrame {
     private void initComponents() {
 
         updateSectorOptionPane = new javax.swing.JOptionPane();
+        confirmDeleteOptionPane = new javax.swing.JOptionPane();
         addSector = new javax.swing.JButton();
         deleteSector = new javax.swing.JButton();
         sectorsComboBox = new javax.swing.JComboBox<>();
@@ -119,13 +120,18 @@ public class SectorsView extends javax.swing.JFrame {
     }//GEN-LAST:event_addSectorActionPerformed
 
     private void deleteSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorActionPerformed
-        if (SectorDAO.sectorExist(sectorsAutoSuggestor.getText())) {
-            SectorDAO.deleteSector(sectorsAutoSuggestor.getText());
-            updateSuggestions();
-            sectorsAutoSuggestor.setText("");
-        } // TODO: Maybe if the sector is deleted then show a massage
-        // FIXME: If a sector is related with a ticket or provider then it cant
-        // be removed
+        String sector = sectorsAutoSuggestor.getText();
+        if (sector != null && SectorDAO.sectorExist(sector)) {
+            int userInput = confirmDeleteOptionPane.showConfirmDialog(this, 
+                    "¿Seguro que desea eliminar el rubro " + sector + "?", 
+                    "Confirmacion", 0, 2
+            );
+            if (userInput == 0) {
+                SectorDAO.deleteSector(sectorsAutoSuggestor.getText());
+                updateSuggestions();
+                sectorsAutoSuggestor.setText("");
+            }
+        }
     }//GEN-LAST:event_deleteSectorActionPerformed
 
     private void updateSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSectorActionPerformed
@@ -144,6 +150,7 @@ public class SectorsView extends javax.swing.JFrame {
     AutoSuggestor sectorsAutoSuggestor;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addSector;
+    private javax.swing.JOptionPane confirmDeleteOptionPane;
     private javax.swing.JButton deleteSector;
     private javax.swing.JComboBox<String> sectorsComboBox;
     private javax.swing.JButton updateSector;
