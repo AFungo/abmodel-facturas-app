@@ -6,8 +6,8 @@
 package facturas.app.database;
 
 import facturas.app.Controller;
-import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.Ticket;
+import facturas.app.models.Withholding;
 import facturas.app.models.Provider;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
@@ -40,18 +40,18 @@ public class TicketDAO extends DAO {
         executeQuery(query, true);
     }
         
-    public static List<Ticket> getTickets() {
+    public static List<Withholding> getTickets() {
         ResultSet result = executeQuery("SELECT * FROM Ticket", false);
-        List<Ticket> ticketsList = getTicketsList(result);
+        List<Withholding> ticketsList = getTicketsList(result);
         return ticketsList;
     }
     
-    public static List<Ticket> getTickets(SQLFilter filters) {
+    public static List<Withholding> getTickets(SQLFilter filters) {
         if (filters == null) {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
         ResultSet result = executeQuery("SELECT * FROM Ticket" + filters.get(), false);
-        List<Ticket> ticketsList = getTicketsList(result);
+        List<Withholding> ticketsList = getTicketsList(result);
         return ticketsList;
     }
 
@@ -60,8 +60,8 @@ public class TicketDAO extends DAO {
         executeQuery(query, true);
     }
     
-    private static List<Ticket> getTicketsList(ResultSet result) {
-        List<Ticket> ticketsList = new LinkedList<>();
+    private static List<Withholding> getTicketsList(ResultSet result) {
+        List<Withholding> ticketsList = new LinkedList<>();
         try {
             while(result.next()) {
                 Map<String, String> ticketAttributes = new HashMap<>();

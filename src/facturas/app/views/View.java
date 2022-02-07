@@ -7,6 +7,7 @@ package facturas.app.views;
 
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
+import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.utils.FormatUtils;
@@ -36,7 +37,6 @@ public class View extends javax.swing.JFrame {
     private TicketLoaderView ticketLoaderView;
     private WithholdingLoaderView withholdingLoaderView;
     private SectorsView sectorsView;
-    private JTable providersTable = new JTable();
 
     /**
      * Creates new form MainWindow
@@ -156,8 +156,8 @@ public class View extends javax.swing.JFrame {
         ticketsTableScroll.setViewportView(ticketsTable);
         ticketsTable.setAutoCreateRowSorter(true);
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
-        for (Ticket t : controller.getTickets()) {
-            model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
+        for (Withholding w : controller.getTickets()) {
+            model.addRow(facturas.app.utils.FormatUtils.ticketToForm(w));
         }
 
         ticketsTable.setCellSelectionEnabled(true);
@@ -398,11 +398,11 @@ public class View extends javax.swing.JFrame {
 
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        List<Ticket> tickets = controller.getTickets();
+        List<Withholding> tickets = controller.getTickets();
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
-        for (Ticket t : tickets) {
+        for (Withholding t : tickets) {
             model.addRow(FormatUtils.ticketToForm(t));
         }
     }                                            

@@ -100,11 +100,13 @@ public class Controller {
     
     public ProfitCalculator getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
         ProfitCalculator profit = new ProfitCalculator();
-        for(Ticket t : getTickets(selectedFilters)) {
-            if (inDollars) {
-                getDayPrice(t); 
+        for(Withholding t : getTickets(selectedFilters)) {
+            if (t instanceof Ticket) {
+                if (inDollars) {
+                    getDayPrice((Ticket)t); 
+                }
+                profit.addTicket((Ticket)t, inDollars);
             }
-            profit.addTicket(t, inDollars);
         }
         return profit;
     }
@@ -115,16 +117,20 @@ public class Controller {
         TicketDAO.addTicket(ticket);
     }
     
-    public List<Ticket> getTickets() {
-        return TicketDAO.getTickets();
+    public List<Withholding> getTickets() {
+        List<Withholding> tickets = TicketDAO.getTickets();
+        tickets.addAll(WithholdingDAO.getWithholdings());
+        return tickets;
     }
     
-    public List<Ticket> getTickets(Map<String, Object> selectedFilters) {
+    public List<Withholding> getTickets(Map<String, Object> selectedFilters) {
         SQLFilter filters = new SQLFilter(selectedFilters);
         if (filters.isEmpty()) {
             return getTickets();
         } else {
-            return TicketDAO.getTickets(filters);
+            List<Withholding> tickets = TicketDAO.getTickets(filters);
+            tickets.addAll(WithholdingDAO.getWithholdings());
+            return tickets;
         }
     }
     
