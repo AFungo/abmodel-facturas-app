@@ -59,6 +59,11 @@ public class WithholdingDAO {
         return withholdingsList;
     }
 
+    public static void changeAttribute(SQLFilter filters, String attribute, String value) {
+        String query = "UPDATE Withholding SET " + attribute + " = '" + value  + "' " + filters.get();
+        executeQuery(query, true);
+    }
+    
     private static List<Withholding> getWithholdingsList(ResultSet result) {
         List<Withholding> whithholdingList = new LinkedList<>();
         try {

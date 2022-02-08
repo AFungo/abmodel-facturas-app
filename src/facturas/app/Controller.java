@@ -138,9 +138,14 @@ public class Controller {
     public List<Provider> getProviders() {
         return ProviderDAO.getProviders();
     }
-    public void changeAttribute(SQLFilter filter, String attribute, String value){
+    public void changeTicketAttribute(SQLFilter filter, String attribute, String value){
         TicketDAO.changeAttribute(filter, attribute, value);
     }
+    
+    public void changeWithholdingAttribute(SQLFilter filter, String attribute, String value){
+        WithholdingDAO.changeAttribute(filter, attribute, value);
+    }
+    
     private void getDayPrice(Ticket t) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
