@@ -95,12 +95,13 @@ public class FormatUtils {
     public static Pair<String, String> withholdingToSQL(Withholding w) { 
         Map<String, Object> dict = w.getValues();
         String attributes = "", values = "";
-        attributes += "number, totalAmount, date, type, providerDoc, sector";
+        attributes += "number, totalAmount, date, type, providerDoc";
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
-        + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "', '" + dict.get("sector") + "'";
+        + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "'";
 
         if (dict.get("id") != null) { attributes += ", id"; values += ", " + dict.get("id");}
         if (dict.get("delivered") != null) { attributes += ", delivered"; values += ", " + dict.get("delivered");}
+        if (dict.get("sector") != null) { attributes += ", sector"; values += ", '" + dict.get("sector") + "'";}
 
         return new Pair<>(attributes, values);
     }
