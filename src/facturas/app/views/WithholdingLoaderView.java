@@ -11,6 +11,7 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.Enabler;
 import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -36,6 +37,11 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
         notificationView = new NotificationView();
+        
+        Enabler e = providersAutoSuggestor.getEnabler();
+        e.addComboBox(providerDocTypeComboBox);
+        e.addTextField(providerNameTextField);
+        e.addTextField(providerDocTextField);
     }
     
     public void updateSuggestions() {
@@ -114,21 +120,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
         providerDocTypeComboBox.setSelectedIndex(-1);
 
-        providersComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                providersComboBoxItemStateChanged(evt);
-            }
-        });
-
         jLabel4.setText("Proveedores existentes");
 
         jLabel5.setText("Rubro");
 
-        typeComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                typeComboBoxItemStateChanged(evt);
-            }
-        });
         typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Retencion iva", "Retencion ganancias" }));
         typeComboBox.setSelectedIndex(-1);
 
@@ -273,23 +268,9 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
         controller.loadWithholding(values);
     }//GEN-LAST:event_loadWithholdingActionPerformed
-
-    private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
-        setEnabledProvidersDataLoader(providersComboBox.getSelectedItem() == null);
-    }//GEN-LAST:event_providersComboBoxItemStateChanged
-
-    private void typeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typeComboBoxItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_typeComboBoxItemStateChanged
     
     public void updateSectors(List<String> sectors) {
         sectorsComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
-    }
-    
-    private void setEnabledProvidersDataLoader(boolean value) {
-        providerDocTextField.setEnabled(value);
-        providerNameTextField.setEnabled(value);
-        providerDocTypeComboBox.setEnabled(value);
     }
     
     Controller controller;
