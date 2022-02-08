@@ -8,11 +8,9 @@ import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.database.TicketDAO;
-import facturas.app.models.Ticket;
+import facturas.app.database.WithholdingDAO;
 import facturas.app.utils.AutoSuggestor;
 import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 /**
  *
@@ -144,6 +142,8 @@ public class SectorsView extends javax.swing.JFrame {
             filter.add("sector", "=", sectorsAutoSuggestor.getText(), String.class);
             SectorDAO.addSector(userInput);
             TicketDAO.changeAttribute(filter, "sector", userInput);
+            WithholdingDAO.changeAttribute(filter, "sector", userInput);
+            ProviderDAO.changeAttribute(filter, "sector", userInput);
             SectorDAO.deleteSector(sectorsAutoSuggestor.getText());
             sectorsAutoSuggestor.setText("");
             updateSuggestions();
