@@ -75,21 +75,21 @@ public class Controller {
             , Map<String, String> values, boolean ticket) {
         String message = "<html>", invalidations = "";
         if (date == null) 
-            invalidations += "<br/>Fecha no introducida, ";
+            invalidations += "<br/>Fecha no introducida";
         if (provider.getSelectedItem() == null) {
             if (docType.getSelectedItem() == null || values.get("docNo").isEmpty() || values.get("name").isEmpty()) {
-                invalidations += "<br/>No se introdujeron datos sobre el proveedor ";
+                invalidations += "<br/>No se introdujeron datos sobre el proveedor";
             }
         }
         
         if (values.get("type").isEmpty())
-            invalidations += "<br/>No se especifico el tipo de comprobante, ";
+            invalidations += "<br/>No se especifico el tipo de comprobante";
         
         if (ticket && values.get("exchangeMoney").isEmpty())
-            invalidations += "<br/>No se introdujo el tipo de moneda, ";
+            invalidations += "<br/>No se introdujo el tipo de moneda";
         
-        if (!FormatUtils.validTicketInput(values, ticket))
-            invalidations += "<br/>Algunos de los valores numericos introducidos estan mal formateados";
+        boolean[] numerics = FormatUtils.validTicketInput(values, ticket);
+        invalidations += addInvalidNumerics(numerics);
         
         if (invalidations.isEmpty()) {
             return null;
@@ -97,6 +97,31 @@ public class Controller {
             invalidations += "</html>";
             return message + invalidations;
         }
+    }
+    
+    private String addInvalidNumerics(boolean[] numerics) {
+        String invalidations = "";
+        if (!numerics[0])
+            invalidations += "<br/>Numero de ticket mal escrito";
+        if (!numerics[1])
+            invalidations += "<br/>Numero de documento del proveedor mal escrito";
+        if (!numerics[2])
+            invalidations += "<br/>Importe total mal escrito";
+        if (numerics.length == 3) //case of withholding
+            return invalidations;
+        //otherwise check for ticket inputs
+        if (!numerics[3])
+            invalidations += "<br/>Importe Op. Exentas mal escrito";
+        if (!numerics[4])
+            invalidations += "<br/>Tipo de cambio mal escrito";
+        if (!numerics[5])
+            invalidations += "<br/>Iva mal escrito";
+        if (!numerics[6])
+            invalidations += "<br/>Importe neto gravado mal escrito";
+        if (!numerics[7])
+            invalidations += "<br/>Importe neto no gravado mal escrito";
+        
+        return invalidations;
     }
     
     public Map<String, Float> getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
