@@ -38,7 +38,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         sectorsAutoSuggestor.autoSuggest();
         notificationView = new NotificationView();
         
-        Enabler e = providersAutoSuggestor.getEnabler();
+        e = providersAutoSuggestor.getEnabler();
         e.addComboBox(providerDocTypeComboBox);
         e.addTextField(providerNameTextField);
         e.addTextField(providerDocTextField);
@@ -119,6 +119,12 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
         providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
         providerDocTypeComboBox.setSelectedIndex(-1);
+
+        providersComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                providersComboBoxItemStateChanged(evt);
+            }
+        });
 
         jLabel4.setText("Proveedores existentes");
 
@@ -268,6 +274,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
         controller.loadWithholding(values);
     }//GEN-LAST:event_loadWithholdingActionPerformed
+
+    private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
+        e.setEnabled(providersComboBox.getSelectedItem() == null);
+    }//GEN-LAST:event_providersComboBoxItemStateChanged
     
     public void updateSectors(List<String> sectors) {
         sectorsComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
@@ -277,6 +287,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
     NotificationView notificationView;
+    Enabler e;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dateDateChooser;
     private javax.swing.JLabel jLabel1;

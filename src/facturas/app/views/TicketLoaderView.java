@@ -43,7 +43,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         notificationView = new NotificationView();
         exchangeTypeTextField.setEditable(false);
         
-        Enabler e = providersAutoSuggestor.getEnabler();
+        e = providersAutoSuggestor.getEnabler();
         e.addComboBox(providerDocTypeComboBox);
         e.addComboBox(providerSectorComboBox);
         e.addTextField(providerDocTextField);
@@ -174,6 +174,12 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
         providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
         providerDocTypeComboBox.setSelectedIndex(-1);
+
+        providersComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                providersComboBoxItemStateChanged(evt);
+            }
+        });
 
         jLabel4.setText("Proveedores existentes");
 
@@ -518,6 +524,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
         }
         else exchangeTypeTextField.setEditable(true);
     }//GEN-LAST:event_exchangeMoneyComboBoxActionPerformed
+
+    private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
+        e.setEnabled(providersComboBox.getSelectedItem() == null);
+    }//GEN-LAST:event_providersComboBoxItemStateChanged
     
     public void updateSectors(List<String> sectors) {
         Vector<String> sectorsVector = FormatUtils.listToVector(sectors);
@@ -530,6 +540,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     AutoSuggestor sectorsAutoSuggestor;
     AutoSuggestor providerSectorsAutoSuggestor;    
     NotificationView notificationView;
+    Enabler e;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addNewProvider;
     private javax.swing.JLabel addNewProvider1;
