@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import java.util.Map;
 
 /**
  *
@@ -82,6 +83,7 @@ public class View extends javax.swing.JFrame {
         totalLabel = new javax.swing.JTextField();
         inDollars = new javax.swing.JCheckBox();
         resetDBButton = new javax.swing.JButton();
+        viewMoreCalculusButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         multipleLoad = new javax.swing.JMenu();
@@ -156,8 +158,8 @@ public class View extends javax.swing.JFrame {
         ticketsTableScroll.setViewportView(ticketsTable);
         ticketsTable.setAutoCreateRowSorter(true);
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
-        for (Withholding w : controller.getTickets()) {
-            model.addRow(facturas.app.utils.FormatUtils.ticketToForm(w));
+        for (Withholding t : controller.getTickets()) {
+            model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
         }
 
         ticketsTable.setCellSelectionEnabled(true);
@@ -212,11 +214,23 @@ public class View extends javax.swing.JFrame {
         totalLabel.setBorder(null);
 
         inDollars.setText("Precio en dolares");
+        inDollars.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inDollarsActionPerformed(evt);
+            }
+        });
 
         resetDBButton.setText("Reset DB");
         resetDBButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetDBButtonActionPerformed(evt);
+            }
+        });
+
+        viewMoreCalculusButton.setText("Ver mas");
+        viewMoreCalculusButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewMoreCalculusButtonActionPerformed(evt);
             }
         });
 
@@ -313,61 +327,70 @@ public class View extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(showProviders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(82, 82, 82)
+                        .addGap(57, 57, 57)
+                        .addComponent(calculateButton)
+                        .addGap(205, 205, 205)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(calculateButton)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(ivaTaxLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(totalLabel)
-                                        .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(94, 94, 94)
-                                        .addComponent(resetDBButton))))
-                            .addComponent(inDollars)))
+                                .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(inDollars))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(146, 146, 146)
+                                .addComponent(resetDBButton))
+                            .addComponent(viewMoreCalculusButton)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(ticketsTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 1286, Short.MAX_VALUE)))
+                        .addComponent(ticketsTableScroll)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ticketsTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 32609, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ticketsTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 32615, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(calculateButton)
-                        .addGap(33, 33, 33)
+                        .addGap(56, 56, 56)
                         .addComponent(showTickets)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(showProviders)
-                            .addComponent(inDollars)))
+                        .addComponent(showProviders))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(5, 5, 5))
-                            .addComponent(ivaTaxTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(5, 5, 5)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(resetDBButton))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(resetDBButton)
+                                    .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(5, 5, 5)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(calculateButton)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(inDollars))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(viewMoreCalculusButton)))))
                 .addGap(33, 33, 33))
         );
 
@@ -381,12 +404,12 @@ public class View extends javax.swing.JFrame {
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         
 
-        ProfitCalculator profit = controller.getProfit(filtersView.getFilters(), dollar);
+        Map<String, Float> values = controller.getProfit(filtersView.getFilters(), dollar);
         
         String money = dollar ? " USD" : " ARS";
-        profitTax.setText(numberFormat.format(profit.getGanancia()) + money);
-        ivaTaxTextField.setText(numberFormat.format(profit.getIva())+ money);
-        total.setText(numberFormat.format(profit.getProfit()) + money);
+        profitTax.setText(numberFormat.format(values.get("totalProfitTax")) + money);
+        ivaTaxTextField.setText(numberFormat.format(values.get("totalIva"))+ money);
+        total.setText(numberFormat.format(values.get("profitWTax")) + money);
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any
@@ -518,6 +541,15 @@ public class View extends javax.swing.JFrame {
         withholdingLoaderView.updateSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
 
+    private void inDollarsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inDollarsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inDollarsActionPerformed
+
+    private void viewMoreCalculusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMoreCalculusButtonActionPerformed
+        CalculusView calculusView = new CalculusView(filtersView);
+        calculusView.setVisible(true);
+    }//GEN-LAST:event_viewMoreCalculusButtonActionPerformed
+
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -563,6 +595,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenu tools;
     private javax.swing.JTextField total;
     private javax.swing.JTextField totalLabel;
+    private javax.swing.JButton viewMoreCalculusButton;
     // End of variables declaration//GEN-END:variables
 
 }

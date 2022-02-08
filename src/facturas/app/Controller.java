@@ -99,7 +99,7 @@ public class Controller {
         }
     }
     
-    public ProfitCalculator getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
+    public Map<String, Float> getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
         ProfitCalculator profit = new ProfitCalculator();
         for(Withholding t : getTickets(selectedFilters)) {
             if (t instanceof Ticket) {
@@ -109,7 +109,7 @@ public class Controller {
                 profit.addTicket((Ticket)t, inDollars);
             }
         }
-        return profit;
+        return profit.getValues();
     }
     
     public void createTicket(String ticketData) {

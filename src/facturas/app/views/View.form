@@ -173,35 +173,39 @@
                           <Component id="showProviders" max="32767" attributes="0"/>
                           <Component id="showTickets" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
+                      <Component id="calculateButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="205" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="ivaTaxLabel" min="-2" pref="63" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="ivaTaxTextField" min="-2" pref="128" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="profitTaxLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="profitTax" min="-2" pref="128" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="totalLabel" min="-2" pref="63" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="total" min="-2" pref="128" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="inDollars" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="calculateButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="ivaTaxLabel" alignment="1" min="-2" pref="63" max="-2" attributes="0"/>
-                                  <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="totalLabel" max="32767" attributes="0"/>
-                                      <Component id="profitTaxLabel" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="profitTax" min="-2" pref="128" max="-2" attributes="0"/>
-                                  <Component id="ivaTaxTextField" min="-2" pref="128" max="-2" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Component id="total" min="-2" pref="128" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="94" max="-2" attributes="0"/>
-                                      <Component id="resetDBButton" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                              <EmptySpace min="-2" pref="146" max="-2" attributes="0"/>
+                              <Component id="resetDBButton" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="inDollars" min="-2" max="-2" attributes="0"/>
+                          <Component id="viewMoreCalculusButton" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="ticketsTableScroll" pref="1286" max="32767" attributes="0"/>
+                      <Component id="ticketsTableScroll" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -210,40 +214,49 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="ticketsTableScroll" pref="32609" max="32767" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="ticketsTableScroll" pref="32615" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="calculateButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
                       <Component id="showTickets" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="showProviders" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="inDollars" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="showProviders" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="ivaTaxLabel" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="resetDBButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ivaTaxTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ivaTaxLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="profitTax" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="profitTaxLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <Component id="ivaTaxTextField" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                              <Component id="calculateButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="profitTax" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="profitTaxLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="totalLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="total" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
-                          <Component id="resetDBButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="totalLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="total" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="inDollars" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Component id="viewMoreCalculusButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
@@ -265,7 +278,7 @@
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;&#xa;    },&#xa;    new String [] {&#xa;        &quot;Fecha&quot;, &quot;Tipo&quot;, &quot;Nro factura&quot;, &quot;Numero hasta&quot;, &quot;C&#xf3;d. Autorizaci&#xf3;n&quot;, &quot;Nro. Doc. Emisor&quot;, &quot;Denominaci&#xf3;n Emisor&quot;, &quot;Tipo Cambio&quot;, &quot;Imp. Neto Gravado&quot;, &quot;Imp. Neto No Gravado&quot;, &quot;Imp. Op. Exentas&quot;, &quot;IVA&quot;, &quot;Imp. Total&quot;, &quot;Rubro&quot;, &quot;COMPRA/VENTA&quot;, &quot;Env. Contador&quot;&#xa;    }&#xa;) {&#xa;    Class[] types = new Class [] {&#xa;        Object.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class, String.class&#xa;    };&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false&#xa;    };&#xa;&#xa;    public Class getColumnClass(int columnIndex) {&#xa;        return types [columnIndex];&#xa;    }&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        return canEdit [columnIndex];&#xa;    }&#xa;}" type="code"/>
             </Property>
-            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="ticketsTable.setAutoCreateRowSorter(true);" postCode="DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();&#xa;for (Ticket t : controller.getTickets()) {&#xa;    model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));&#xa;}&#xa;&#xa;ticketsTable.setCellSelectionEnabled(true);&#xa;ticketsTable.setVisible(true);">
+            <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor" preCode="ticketsTable.setAutoCreateRowSorter(true);" postCode="DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();&#xa;for (Withholding t : controller.getTickets()) {&#xa;    model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));&#xa;}&#xa;&#xa;ticketsTable.setCellSelectionEnabled(true);&#xa;ticketsTable.setVisible(true);">
               <TableColumnModel selectionModel="0"/>
             </Property>
             <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
@@ -384,6 +397,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Precio en dolares"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inDollarsActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="resetDBButton">
       <Properties>
@@ -391,6 +407,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetDBButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="viewMoreCalculusButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ver mas"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewMoreCalculusButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
