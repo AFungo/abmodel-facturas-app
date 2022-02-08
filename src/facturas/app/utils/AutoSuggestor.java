@@ -25,7 +25,8 @@ public class AutoSuggestor {
     private JTextField textField;
     private Vector<String> suggestions;
     private boolean hide_Flag = false;
-    
+    private Enabler enabler = new Enabler();
+            
     @SuppressWarnings("unchecked")
     public AutoSuggestor(JComboBox comboBox, List<String> suggestions) {
         this.comboBox = comboBox;
@@ -61,6 +62,10 @@ public class AutoSuggestor {
         textField.setText(t);
     }
     
+    public Enabler getEnabler() {
+        return enabler;
+    }
+    
     // FIXME: The suggestion is not case sensitive, for the providers problem
     // works well but maybe in other context the case sensitive could be important
     public void autoSuggest() {
@@ -74,9 +79,11 @@ public class AutoSuggestor {
                     public void run() {
                         String text = textField.getText();
                         if (text.length() == 0) {
+                            enabler.setEnabled(true);
                             comboBox.hidePopup();
                             setModel(new DefaultComboBoxModel(suggestions), text);
                         } else {
+                            enabler.setEnabled(false);
                             DefaultComboBoxModel m = getSuggestedModel(suggestions, text.toUpperCase());
                             if (m.getSize() == 0 || hide_Flag) {
                                 comboBox.hidePopup();
