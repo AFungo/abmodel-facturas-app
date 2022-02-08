@@ -538,7 +538,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
     AutoSuggestor providerSectorsAutoSuggestor;    
-    NotificationView notificationView;
     Enabler e;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addNewProvider;

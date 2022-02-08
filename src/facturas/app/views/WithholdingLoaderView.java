@@ -285,7 +285,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     Controller controller;
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
-    NotificationView notificationView;
     Enabler e;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dateDateChooser;
