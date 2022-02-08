@@ -46,7 +46,7 @@ public class SQLFilter {
         if (!text.isEmpty()) { filters.put(new Pair<> ("iva", "<="), new Pair(Float.parseFloat(text), Float.class)); }
 
         text = (String)selectedFilters.get("companyCuit");
-        if (!text.isEmpty()) { filters.put(new Pair<> ("providerCuit", "="), new Pair(text, String.class)); }
+        if (!text.isEmpty()) { filters.put(new Pair<> ("providerDoc", "="), new Pair(text, String.class)); }
         
         List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
         if (!typesList.isEmpty()) { filters.put(new Pair<> ("type", "="), new Pair(typesList, List.class)); }

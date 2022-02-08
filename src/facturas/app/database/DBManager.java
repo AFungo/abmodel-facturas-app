@@ -99,7 +99,7 @@ public class DBManager {
                                         + "number INTEGER NOT NULL," //
                                         + "numberTo INTEGER," //
                                         + "authCode VARCHAR(30) NOT NULL," //
-                                        + "providerCuit VARCHAR(30) NOT NULL," //
+                                        + "providerDoc VARCHAR(30) NOT NULL," //
                                         + "exchangeType REAL NOT NULL," //
                                         + "exchangeMoney VARCHAR(5) NOT NULL," //
                                         + "netAmountWI REAL," //
@@ -110,10 +110,10 @@ public class DBManager {
                                         + "issuedByMe BOOLEAN NOT NULL," //
                                         + "sector VARCHAR(50)," //
                                         + "delivered BOOLEAN DEFAULT false," //
-                                        + "PRIMARY KEY (date, number, providerCuit),"
+                                        + "PRIMARY KEY (date, number, providerDoc),"
                                         + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name)"
                                         + "ON DELETE SET NULL,"
-                                        + "CONSTRAINT fk_Provider FOREIGN KEY (providerCuit) REFERENCES Provider(cuit)"
+                                        + "CONSTRAINT fk_Provider FOREIGN KEY (providerDoc) REFERENCES Provider(cuit)"
                                         + ")";
                                         break;
             

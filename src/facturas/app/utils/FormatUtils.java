@@ -25,7 +25,7 @@ public class FormatUtils {
      public static Pair<String, String> ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
-        attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerCuit, issuedByMe";
+        attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerDoc, issuedByMe";
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
                 + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
                 + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "', " + dict.get("issuedByMe");
