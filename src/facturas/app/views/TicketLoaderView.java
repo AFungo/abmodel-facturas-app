@@ -11,6 +11,7 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.Enabler;
 import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -37,10 +38,18 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
-        providerSectorsAutoSuggestor = new AutoSuggestor(providerSector, getSectors());
+        providerSectorsAutoSuggestor = new AutoSuggestor(providerSectorComboBox, getSectors());
         providersAutoSuggestor.autoSuggest();
         notificationView = new NotificationView();
         exchangeTypeTextField.setEditable(false);
+        
+        Enabler e = providersAutoSuggestor.getEnabler();
+        e.addComboBox(providerDocTypeComboBox);
+        e.addComboBox(providerSectorComboBox);
+        e.addTextField(providerDocTextField);
+        e.addTextField(providerNameTextField);
+        e.addTextField(providerAddressTextField);
+        e.addTextField(providerAliasTextField);
     }
     
     public void updateSuggestions() {
@@ -103,8 +112,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         addNewProvider = new javax.swing.JLabel();
         ticketType = new javax.swing.JComboBox<>();
-        providerSector = new javax.swing.JComboBox<>();
-        providerAddress = new javax.swing.JTextField();
+        providerSectorComboBox = new javax.swing.JComboBox<>();
+        providerAddressTextField = new javax.swing.JTextField();
         rubroLabel = new javax.swing.JLabel();
         addressLabel = new javax.swing.JLabel();
         exchangeMoneyComboBox = new javax.swing.JComboBox<>();
@@ -166,12 +175,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
         providerDocTypeComboBox.setSelectedIndex(-1);
 
-        providersComboBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                providersComboBoxItemStateChanged(evt);
-            }
-        });
-
         jLabel4.setText("Proveedores existentes");
 
         sectorsComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -192,16 +195,16 @@ public class TicketLoaderView extends javax.swing.JFrame {
             }
         });
 
-        providerSector.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        providerSector.addActionListener(new java.awt.event.ActionListener() {
+        providerSectorComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        providerSectorComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                providerSectorActionPerformed(evt);
+                providerSectorComboBoxActionPerformed(evt);
             }
         });
 
-        providerAddress.addActionListener(new java.awt.event.ActionListener() {
+        providerAddressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                providerAddressActionPerformed(evt);
+                providerAddressTextFieldActionPerformed(evt);
             }
         });
 
@@ -250,15 +253,15 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(providerNameTextField)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(rubroLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(providerSector, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(providerSectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(addressLabel)
-                                    .addComponent(providerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(providerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap())
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -403,8 +406,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
                     .addComponent(providerDocTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(providerDocTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(providerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(providerSector, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(providerAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(providerSectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(providerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -440,8 +443,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
         //provider attributes
         values.put("docNo", providerDocTextField.getText());
         values.put("name", providerNameTextField.getText());
-        values.put("direction, ", providerAddress.getText()); // may be null
-        values.put("provSector", (String) providerSector.getSelectedItem());//may be null
+        values.put("direction, ", providerAddressTextField.getText()); // may be null
+        values.put("provSector", (String) providerSectorComboBox.getSelectedItem());//may be null
         values.put("alias", providerAliasTextField.getText());      //may be null
 
         String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, providerDocTypeComboBox, values, true);
@@ -479,13 +482,9 @@ public class TicketLoaderView extends javax.swing.JFrame {
         forClean.add(providerDocTextField);
         forClean.add(providerNameTextField);
         forClean.add(providerAliasTextField);
-        forClean.add(providerAddress);
+        forClean.add(providerAddressTextField);
         controller.cleanTextField(forClean);
     }//GEN-LAST:event_loadTicketActionPerformed
-
-    private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
-        setEnabledProvidersDataLoader(providersComboBox.getSelectedItem() == null);
-    }//GEN-LAST:event_providersComboBoxItemStateChanged
 
     private void exchangeTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeTypeTextFieldActionPerformed
         // TODO add your handling code here:
@@ -500,13 +499,13 @@ public class TicketLoaderView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_sectorsComboBoxActionPerformed
 
-    private void providerAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerAddressActionPerformed
+    private void providerAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerAddressTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_providerAddressActionPerformed
+    }//GEN-LAST:event_providerAddressTextFieldActionPerformed
 
-    private void providerSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerSectorActionPerformed
+    private void providerSectorComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerSectorComboBoxActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_providerSectorActionPerformed
+    }//GEN-LAST:event_providerSectorComboBoxActionPerformed
 
     private void providerAliasTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerAliasTextFieldActionPerformed
         // TODO add your handling code here:
@@ -523,18 +522,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
     public void updateSectors(List<String> sectors) {
         Vector<String> sectorsVector = FormatUtils.listToVector(sectors);
         sectorsComboBox.setModel(new DefaultComboBoxModel(sectorsVector));
-        providerSector.setModel(new DefaultComboBoxModel(sectorsVector));
+        providerSectorComboBox.setModel(new DefaultComboBoxModel(sectorsVector));
     }
-    
-    private void setEnabledProvidersDataLoader(boolean value) {
-        providerDocTextField.setEnabled(value);
-        providerNameTextField.setEnabled(value);
-        providerDocTypeComboBox.setEnabled(value);
-        providerAddress.setEnabled(value);
-        providerAliasTextField.setEnabled(value);
-        providerSector.setEnabled(value);
-    }
-    
     
     Controller controller;
     AutoSuggestor providersAutoSuggestor;
@@ -572,12 +561,12 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private javax.swing.JTextField netAmountWITextField;
     private javax.swing.JTextField netAmountWOITextField;
     private javax.swing.JTextField numberTextField;
-    private javax.swing.JTextField providerAddress;
+    private javax.swing.JTextField providerAddressTextField;
     private javax.swing.JTextField providerAliasTextField;
     private javax.swing.JTextField providerDocTextField;
     private javax.swing.JComboBox<String> providerDocTypeComboBox;
     private javax.swing.JTextField providerNameTextField;
-    private javax.swing.JComboBox<String> providerSector;
+    private javax.swing.JComboBox<String> providerSectorComboBox;
     private javax.swing.JComboBox<String> providersComboBox;
     private javax.swing.JLabel rubroLabel;
     private javax.swing.JComboBox<String> sectorsComboBox;

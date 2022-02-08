@@ -47,12 +47,12 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="rubroLabel" min="-2" pref="96" max="-2" attributes="0"/>
-                                  <Component id="providerSector" min="-2" pref="126" max="-2" attributes="0"/>
+                                  <Component id="providerSectorComboBox" min="-2" pref="126" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="addressLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="providerAddress" min="-2" pref="161" max="-2" attributes="0"/>
+                                  <Component id="providerAddressTextField" min="-2" pref="161" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -242,8 +242,8 @@
                   <Component id="providerDocTypeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="providerDocTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="providerNameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="providerSector" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="providerAddress" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="providerSectorComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="providerAddressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -388,9 +388,6 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="providersComboBoxItemStateChanged"/>
-      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -454,7 +451,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JComboBox" name="providerSector">
+    <Component class="javax.swing.JComboBox" name="providerSectorComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
@@ -466,15 +463,15 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="providerSectorActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="providerSectorComboBoxActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JTextField" name="providerAddress">
+    <Component class="javax.swing.JTextField" name="providerAddressTextField">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="providerAddressActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="providerAddressTextFieldActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="rubroLabel">

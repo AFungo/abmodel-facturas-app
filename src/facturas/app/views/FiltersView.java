@@ -45,7 +45,8 @@ public class FiltersView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
+        purchaseNSellButtonGroup = new javax.swing.ButtonGroup();
+        withholdingGroupButton = new javax.swing.ButtonGroup();
         minTotalAmountTextField = new javax.swing.JTextField();
         maxTotalAmountTextField = new javax.swing.JTextField();
         minIvaTextField = new javax.swing.JTextField();
@@ -66,10 +67,17 @@ public class FiltersView extends javax.swing.JFrame {
         purchaseRadioButton = new javax.swing.JRadioButton();
         saleRadioButton = new javax.swing.JRadioButton();
         bothRadioButton = new javax.swing.JRadioButton();
+        withholdingRadioButton = new javax.swing.JRadioButton();
+        ticketRadioButton = new javax.swing.JRadioButton();
+        bothRadioButton2 = new javax.swing.JRadioButton();
 
-        buttonGroup1.add(purchaseRadioButton);
-        buttonGroup1.add(saleRadioButton);
-        buttonGroup1.add(bothRadioButton);
+        purchaseNSellButtonGroup.add(purchaseRadioButton);
+        purchaseNSellButtonGroup.add(saleRadioButton);
+        purchaseNSellButtonGroup.add(bothRadioButton);
+
+        withholdingGroupButton.add(withholdingRadioButton);
+        withholdingGroupButton.add(ticketRadioButton);
+        withholdingGroupButton.add(bothRadioButton2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("FILTROS");
@@ -101,20 +109,6 @@ public class FiltersView extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-
-        ticketTypesList.setSelectionModel(new DefaultListSelectionModel() {
-            @Override
-            public void setSelectionInterval(int index0, int index1) {
-                if(super.isSelectedIndex(index0)) {
-                    super.removeSelectionInterval(index0, index1);
-                }
-                else {
-                    super.addSelectionInterval(index0, index1);
-                }
-                fireValueChanged(index0, index1);
-            }
-        });
-
         ticketTypesScrollPane.setViewportView(ticketTypesList);
 
         minDateChooser.setDateFormatString("dd-MM-yyyy");
@@ -132,6 +126,13 @@ public class FiltersView extends javax.swing.JFrame {
         bothRadioButton.setSelected(true);
         bothRadioButton.setText("Ambos");
 
+        withholdingRadioButton.setText("Retenciones");
+
+        ticketRadioButton.setText("Facturas");
+
+        bothRadioButton2.setSelected(true);
+        bothRadioButton2.setText("Ambos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,31 +140,31 @@ public class FiltersView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(minDateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(minTotalAmountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(minIvaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cuitLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(minDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(minTotalAmountTextField)
-                            .addComponent(minIvaTextField)
-                            .addComponent(cuitTextField))
-                        .addGap(18, 18, Short.MAX_VALUE))
+                        .addGap(92, 92, 92)
+                        .addComponent(appyFilters)
+                        .addGap(96, 96, 96))
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(92, 92, 92)
-                                .addComponent(appyFilters))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(saleRadioButton)
-                                    .addComponent(purchaseRadioButton)
-                                    .addComponent(bothRadioButton))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(minDateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(minTotalAmountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                .addComponent(minIvaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cuitLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(saleRadioButton)
+                            .addComponent(bothRadioButton)
+                            .addComponent(purchaseRadioButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(withholdingRadioButton)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(minDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                .addComponent(minTotalAmountTextField)
+                                .addComponent(minIvaTextField)
+                                .addComponent(cuitTextField))
+                            .addComponent(ticketRadioButton)
+                            .addComponent(bothRadioButton2))
+                        .addGap(18, 18, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ticketTypesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -207,19 +208,25 @@ public class FiltersView extends javax.swing.JFrame {
                     .addComponent(cuitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(ticketTypesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(purchaseRadioButton)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(purchaseRadioButton)
+                            .addComponent(withholdingRadioButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saleRadioButton)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(saleRadioButton)
+                            .addComponent(ticketRadioButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bothRadioButton)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bothRadioButton)
+                            .addComponent(bothRadioButton2))
                         .addGap(35, 35, 35)
                         .addComponent(appyFilters)
-                        .addGap(23, 23, 23))))
+                        .addGap(23, 23, 23))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(ticketTypesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -234,7 +241,13 @@ public class FiltersView extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
         for (Withholding t : tickets) {
-            model.addRow(FormatUtils.ticketToForm(t));
+            if (withholdingRadioButton.isSelected() && !(t instanceof Ticket)) {
+                model.addRow(FormatUtils.ticketToForm(t));
+            } else if (ticketRadioButton.isSelected() && t instanceof Ticket) {
+                model.addRow(FormatUtils.ticketToForm(t));
+            } else if (bothRadioButton2.isSelected()) {
+                model.addRow(FormatUtils.ticketToForm(t));
+            }
         }
     }//GEN-LAST:event_appyFiltersActionPerformed
 
@@ -267,7 +280,7 @@ public class FiltersView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton appyFilters;
     private javax.swing.JRadioButton bothRadioButton;
-    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JRadioButton bothRadioButton2;
     private javax.swing.JLabel cuitLabel;
     private javax.swing.JTextField cuitTextField;
     private com.toedter.calendar.JDateChooser maxDateChooser;
@@ -282,9 +295,13 @@ public class FiltersView extends javax.swing.JFrame {
     private javax.swing.JTextField minIvaTextField;
     private javax.swing.JLabel minTotalAmountLabel;
     private javax.swing.JTextField minTotalAmountTextField;
+    private javax.swing.ButtonGroup purchaseNSellButtonGroup;
     private javax.swing.JRadioButton purchaseRadioButton;
     private javax.swing.JRadioButton saleRadioButton;
+    private javax.swing.JRadioButton ticketRadioButton;
     private javax.swing.JList<String> ticketTypesList;
     private javax.swing.JScrollPane ticketTypesScrollPane;
+    private javax.swing.ButtonGroup withholdingGroupButton;
+    private javax.swing.JRadioButton withholdingRadioButton;
     // End of variables declaration//GEN-END:variables
 }
