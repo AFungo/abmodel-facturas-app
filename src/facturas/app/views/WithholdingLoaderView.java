@@ -11,12 +11,13 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -280,6 +281,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     private void typeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_typeComboBoxItemStateChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_typeComboBoxItemStateChanged
+    
+    public void updateSectors(List<String> sectors) {
+        sectorsComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
+    }
     
     private void setEnabledProvidersDataLoader(boolean value) {
         providerDocTextField.setEnabled(value);

@@ -23,14 +23,17 @@ public class SectorsView extends javax.swing.JFrame {
     /**
      * Creates new form SectorsView
      */
-    public SectorsView() {
+    public SectorsView(View mainView) {
         initComponents();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
+        this.mainView = mainView;
     }
      
     public void updateSuggestions() {
-        sectorsAutoSuggestor.setSuggestions(getSectors());
+        List<String> sectors = getSectors();
+        sectorsAutoSuggestor.setSuggestions(sectors);
+        mainView.updateSectors(sectors);
     }
     
     // FIXME: Maybe we should use the controller here
@@ -148,6 +151,7 @@ public class SectorsView extends javax.swing.JFrame {
     }//GEN-LAST:event_updateSectorActionPerformed
 
     AutoSuggestor sectorsAutoSuggestor;
+    View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addSector;
     private javax.swing.JOptionPane confirmDeleteOptionPane;

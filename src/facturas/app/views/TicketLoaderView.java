@@ -11,11 +11,14 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 
 /**
@@ -516,6 +519,12 @@ public class TicketLoaderView extends javax.swing.JFrame {
         }
         else exchangeTypeTextField.setEditable(true);
     }//GEN-LAST:event_exchangeMoneyComboBoxActionPerformed
+    
+    public void updateSectors(List<String> sectors) {
+        Vector<String> sectorsVector = FormatUtils.listToVector(sectors);
+        sectorsComboBox.setModel(new DefaultComboBoxModel(sectorsVector));
+        providerSector.setModel(new DefaultComboBoxModel(sectorsVector));
+    }
     
     private void setEnabledProvidersDataLoader(boolean value) {
         providerDocTextField.setEnabled(value);

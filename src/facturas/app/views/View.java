@@ -52,7 +52,7 @@ public class View extends javax.swing.JFrame {
         columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
         ticketLoaderView = new TicketLoaderView(controller);
         withholdingLoaderView = new WithholdingLoaderView(controller);
-        sectorsView = new SectorsView();
+        sectorsView = new SectorsView(this);
     }
 
     /**
@@ -518,6 +518,14 @@ public class View extends javax.swing.JFrame {
         withholdingLoaderView.updateSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
 
+    public void updateSectors(List<String> sectors) {
+        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
+        providersView.updateSectors(sectors);
+        //filtersView.updateSectors(sectors);
+        ticketLoaderView.updateSectors(sectors);
+        withholdingLoaderView.updateSectors(sectors);
+    }
+    
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);

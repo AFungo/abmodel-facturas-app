@@ -265,6 +265,10 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_aliasMenuItemActionPerformed
 
+    public void updateSectors(List<String> sectors) {
+        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
+    }
+    
     public void updateProviders(java.awt.event.ActionEvent evt) {
         showAllProvidersActionPerformed(evt);
     }
