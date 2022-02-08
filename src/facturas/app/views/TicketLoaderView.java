@@ -40,7 +40,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         sectorsAutoSuggestor.autoSuggest();
         providerSectorsAutoSuggestor = new AutoSuggestor(providerSectorComboBox, getSectors());
         providersAutoSuggestor.autoSuggest();
-        notificationView = new NotificationView();
         exchangeTypeTextField.setEditable(false);
         
         e = providersAutoSuggestor.getEnabler();
@@ -80,6 +79,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        invalidParamDialog = new javax.swing.JOptionPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -259,7 +259,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(providerNameTextField)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, Short.MAX_VALUE))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(rubroLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -443,7 +443,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         //ticket data
         values.put("number", numberTextField.getText());
         values.put("type", (String) ticketType.getSelectedItem());
-        values.put("date", sdf.format(dateDateChooser.getDate()));
         values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));        
         
         //provider attributes
@@ -455,11 +454,11 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
         String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, providerDocTypeComboBox, values, true);
         if (errorMessage != null) {
-            notificationView.changeText(errorMessage);
-            notificationView.setVisible(true);
+            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
             return ;
         }
                
+        values.put("date", sdf.format(dateDateChooser.getDate()));
         if (providersComboBox.getSelectedItem() != null) {
             SQLFilter filter = new SQLFilter();
             filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
@@ -550,6 +549,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dateDateChooser;
     private javax.swing.JComboBox<String> exchangeMoneyComboBox;
     private javax.swing.JTextField exchangeTypeTextField;
+    private javax.swing.JOptionPane invalidParamDialog;
     private javax.swing.JCheckBox issuedByMeCheckBox;
     private javax.swing.JTextField ivaTextField;
     private javax.swing.JLabel jLabel1;

@@ -52,7 +52,6 @@ public class ConfigManager {
     public static void saveConfig(Map<String, Boolean> configs) {
         String fileContent = "\n[selected columns]";
         for (Map.Entry<String, Boolean> line : configs.entrySet()) {
-            System.out.println(line.getKey() + "=" + line.getValue());
             fileContent += "\n" + line.getKey() + "=" + line.getValue();
         }
         

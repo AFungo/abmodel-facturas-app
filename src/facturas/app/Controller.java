@@ -73,7 +73,7 @@ public class Controller {
     //ticket is a boolean representing if the validation is for ticket or withholding
     public String validateParam(java.util.Date date, JComboBox<String> provider, JComboBox<String> docType
             , Map<String, String> values, boolean ticket) {
-        String message = "<html>Los siguientes datos son invalidos: ", invalidations = "";
+        String message = "<html>", invalidations = "";
         if (date == null) 
             invalidations += "<br/>Fecha no introducida, ";
         if (provider.getSelectedItem() == null) {
