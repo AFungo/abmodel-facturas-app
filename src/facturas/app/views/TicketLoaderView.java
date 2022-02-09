@@ -61,7 +61,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
-            names.add(p.getName());
+            names.add(p.getValues().get("name"));
         }
         return names;
     }
@@ -431,10 +431,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
             SQLFilter filter = new SQLFilter();
             filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
             Provider provider = ProviderDAO.getProviders(filter).get(0);
-            values.put("docNo", provider.getDocNo());
-            values.put("docType", provider.getDocType());
-            values.put("name", provider.getName());
-            values.put("provSector", provider.getSector());
+            values.put("docNo", provider.getValues().get("docNo"));
+            values.put("docType", provider.getValues().get("docType"));
+            values.put("name", provider.getValues().get("name"));
+            values.put("provSector", provider.getValues().get("provSector"));
             values.put("alias", (String) provider.getValues().get("alias"));
         } else {
             values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());

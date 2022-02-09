@@ -46,7 +46,7 @@ public class ProvidersView extends javax.swing.JFrame {
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
-            names.add(p.getName());
+            names.add(p.getValues().get("name"));
         }
         return names;
     }

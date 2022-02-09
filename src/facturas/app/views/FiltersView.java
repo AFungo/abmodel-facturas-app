@@ -7,6 +7,7 @@ package facturas.app.views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import facturas.app.Controller;
+import facturas.app.database.WithholdingDAO;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
@@ -235,6 +236,7 @@ public class FiltersView extends javax.swing.JFrame {
         //ticketTypesScrollPane.setViewportView(ticketsTable);
         Map<String, Object> selectedFilters = getFilters();
         List<Withholding> tickets = controller.getTickets(selectedFilters);
+        tickets.addAll(controller.getWithholdings());
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);

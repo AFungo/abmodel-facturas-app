@@ -28,7 +28,7 @@ public class FormatUtils {
         attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerDoc, issuedByMe";
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
                 + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
-                + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "', " + dict.get("issuedByMe");
+                + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getValues().get("docNo") + "', " + dict.get("issuedByMe");
 
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"iva", "netAmountWI", "netAmountWOI", 
             "numberTo", "amountImpEx"}, new String[] {"sector", "delivered"});
@@ -46,14 +46,14 @@ public class FormatUtils {
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
         if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
-            sector = provider.getSector();
+            sector = provider.getValues().get("provSector");
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         
         String buyNSell = (boolean)dict.get("issuedByMe") ? "VENTA" : "COMPRA";
         
         Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
-            ((Provider)dict.get("provider")).getDocNo(), provider.getName(), dict.get("exchangeType"), dict.get("netAmountWI"), 
+            ((Provider)dict.get("provider")).getValues().get("docNo"), provider.getValues().get("name"), dict.get("exchangeType"), dict.get("netAmountWI"), 
             dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector, 
             buyNSell, delivered ? "SI" : "NO"};
 
@@ -94,7 +94,7 @@ public class FormatUtils {
         String attributes = "", values = "";
         attributes += "number, totalAmount, date, type, providerDoc";
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
-        + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "'";
+        + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getValues().get("docNo") + "'";
 
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"id", "delivered"}, new String[] {"sector"});
         attributes += optionals.getFst();
@@ -108,12 +108,12 @@ public class FormatUtils {
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
         if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
-            sector = provider.getSector();
+            sector = provider.getValues().get("provSector");
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         
-        Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), null, null, provider.getDocNo(), 
-        provider.getName(), null, null, null, null, null, dict.get("totalAmount"), sector, null, delivered ? "SI" : "NO"};
+        Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), null, null, provider.getValues().get("docNo"), 
+        provider.getValues().get("name"), null, null, null, null, null, dict.get("totalAmount"), sector, null, delivered ? "SI" : "NO"};
         //null values are necessary so the array fits in the table of the view
         return values;
     }
