@@ -30,6 +30,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
     /**
      * Creates new form TicketLoaderView
+     * @param controller
      */
     public TicketLoaderView(Controller controller) {
         this.controller = controller;
@@ -152,11 +153,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         jLabel16.setText("Imp. Total");
 
         exchangeTypeTextField.setText("1");
-        exchangeTypeTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exchangeTypeTextFieldActionPerformed(evt);
-            }
-        });
 
         loadTicket.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         loadTicket.setText("Agregar comprobante");
@@ -183,36 +179,14 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
         jLabel4.setText("Proveedores existentes");
 
-        sectorsComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sectorsComboBoxActionPerformed(evt);
-            }
-        });
-
         jLabel5.setText("Rubro");
 
         addNewProvider.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         addNewProvider.setText("Comprobante");
 
         ticketType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Factura A", "Factura B", "Factura C", "Nota de credito A", "Nota de credito B ", "Nota de credito C", "Nota de debito A", "Nota de debito B ", "Nota de debito C", "Liquidacion", " " }));
-        ticketType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ticketTypeActionPerformed(evt);
-            }
-        });
 
         providerSectorComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        providerSectorComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                providerSectorComboBoxActionPerformed(evt);
-            }
-        });
-
-        providerAddressTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                providerAddressTextFieldActionPerformed(evt);
-            }
-        });
 
         rubroLabel.setText("Rubro");
 
@@ -226,12 +200,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         });
 
         jLabel6.setText("Alias Proveedor");
-
-        providerAliasTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                providerAliasTextFieldActionPerformed(evt);
-            }
-        });
 
         addNewProvider1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         addNewProvider1.setText("Importes");
@@ -259,7 +227,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(providerNameTextField)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 144, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(rubroLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -490,31 +458,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         forClean.add(providerAddressTextField);
         controller.cleanTextField(forClean);
     }//GEN-LAST:event_loadTicketActionPerformed
-
-    private void exchangeTypeTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeTypeTextFieldActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_exchangeTypeTextFieldActionPerformed
-
-    private void ticketTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticketTypeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ticketTypeActionPerformed
-
-    private void sectorsComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sectorsComboBoxActionPerformed
-
-    private void providerAddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerAddressTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_providerAddressTextFieldActionPerformed
-
-    private void providerSectorComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerSectorComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_providerSectorComboBoxActionPerformed
-
-    private void providerAliasTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_providerAliasTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_providerAliasTextFieldActionPerformed
 
     private void exchangeMoneyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeMoneyComboBoxActionPerformed
         if(exchangeMoneyComboBox.getSelectedItem().equals("Pesos")){

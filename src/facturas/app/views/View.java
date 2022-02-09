@@ -6,12 +6,10 @@
 package facturas.app.views;
 
 import facturas.app.Controller;
-import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.utils.FormatUtils;
-import facturas.app.utils.ProfitCalculator;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.sql.Date;
@@ -20,7 +18,6 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JTable;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
@@ -214,11 +211,6 @@ public class View extends javax.swing.JFrame {
         totalLabel.setBorder(null);
 
         inDollars.setText("Precio en dolares");
-        inDollars.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inDollarsActionPerformed(evt);
-            }
-        });
 
         resetDBButton.setText("Reset DB");
         resetDBButton.addActionListener(new java.awt.event.ActionListener() {
@@ -550,10 +542,6 @@ public class View extends javax.swing.JFrame {
         withholdingLoaderView.setVisible(true);
         withholdingLoaderView.updateSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
-
-    private void inDollarsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inDollarsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_inDollarsActionPerformed
 
     private void viewMoreCalculusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMoreCalculusButtonActionPerformed
         CalculusView calculusView = new CalculusView(filtersView);

@@ -17,6 +17,8 @@ public class ColumnSelector extends javax.swing.JFrame {
 
     /**
      * Creates new form ColumnSelector
+     * @param ticketsTable
+     * @param providersTable
      */
     public ColumnSelector(JTable ticketsTable, JTable providersTable) {
          

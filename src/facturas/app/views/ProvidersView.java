@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,6 +26,7 @@ public class ProvidersView extends javax.swing.JFrame {
 
     /**
      * Creates new form ProvidersView
+     * @param controller
      */
     public ProvidersView(Controller controller) {
         this.controller = controller;
@@ -62,7 +64,6 @@ public class ProvidersView extends javax.swing.JFrame {
         directionMenuItem = new javax.swing.JMenuItem();
         sectorMenuItem = new javax.swing.JMenuItem();
         aliasMenuItem = new javax.swing.JMenuItem();
-        optionPane = new javax.swing.JOptionPane();
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         providersTable = new javax.swing.JTable();
@@ -93,8 +94,6 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         });
         popupMenu.add(aliasMenuItem);
-
-        optionPane.setWantsInput(true);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
 
@@ -225,32 +224,32 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_providersTableMouseReleased
 
-    private void directionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionMenuItemActionPerformed
-        String userInput = optionPane.showInputDialog(null, "Dirección: ", "");
-        if (userInput != null) {
-            updateAttribute("direction", userInput, 4); //column 4 is for direction
-        }
-    }//GEN-LAST:event_directionMenuItemActionPerformed
-
-    private void sectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorMenuItemActionPerformed
-        int selection = optionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", optionPane.OK_CANCEL_OPTION);
-        if (selection == optionPane.OK_OPTION) {
-            String sector = (String)sectorComboBox.getSelectedItem();
-            updateAttribute("sector", sector, 5);   //column 5 is for sector
-        }
-    }//GEN-LAST:event_sectorMenuItemActionPerformed
-
     private void providersTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_providersTableMousePressed
         //just to make it work on mac
         providersTableMouseReleased(evt);
     }//GEN-LAST:event_providersTableMousePressed
 
     private void aliasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aliasMenuItemActionPerformed
-        String userInput = optionPane.showInputDialog(null, "alias: ", "");
+        String userInput = JOptionPane.showInputDialog(null, "alias: ", "");
         if (userInput != null) {
             updateAttribute("alias", userInput, 2); //column 2 is for alias
         }
     }//GEN-LAST:event_aliasMenuItemActionPerformed
+
+    private void sectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorMenuItemActionPerformed
+        int selection = JOptionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
+        if (selection == JOptionPane.OK_OPTION) {
+            String sector = (String)sectorComboBox.getSelectedItem();
+            updateAttribute("sector", sector, 5);   //column 5 is for sector
+        }
+    }//GEN-LAST:event_sectorMenuItemActionPerformed
+
+    private void directionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionMenuItemActionPerformed
+        String userInput = JOptionPane.showInputDialog(null, "Dirección: ", "");
+        if (userInput != null) {
+            updateAttribute("direction", userInput, 4); //column 4 is for direction
+        }
+    }//GEN-LAST:event_directionMenuItemActionPerformed
 
     private void updateAttribute(String attribute, String value, int column) {
          SQLFilter filter = new SQLFilter();
@@ -282,7 +281,6 @@ public class ProvidersView extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JMenuItem directionMenuItem;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JOptionPane optionPane;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable providersTable;
     private javax.swing.JButton searchProvider;

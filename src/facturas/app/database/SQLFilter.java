@@ -6,7 +6,6 @@
 package facturas.app.database;
 
 import facturas.app.utils.FormatUtils;
-import facturas.app.utils.Pair;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;

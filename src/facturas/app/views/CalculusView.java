@@ -5,12 +5,10 @@
  */
 package facturas.app.views;
 
-import facturas.app.utils.ProfitCalculator;
 import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import facturas.app.Controller;
-import facturas.app.views.FiltersView;
 import java.util.Map;
 
 /**
@@ -22,9 +20,8 @@ public class CalculusView extends javax.swing.JFrame {
     /**
      * Creates new form CalculusView
      */
-    private Controller controller =new Controller();
-    private FiltersView filtersView;
     public CalculusView(FiltersView filtersView) {
+        controller = new Controller();
         this.filtersView = filtersView;
         initComponents();
     }
@@ -107,19 +104,9 @@ public class CalculusView extends javax.swing.JFrame {
 
         issuedNetAmountTextField.setEditable(false);
         issuedNetAmountTextField.setBorder(null);
-        issuedNetAmountTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                issuedNetAmountTextFieldActionPerformed(evt);
-            }
-        });
 
         receivedNetAmountTextField.setEditable(false);
         receivedNetAmountTextField.setBorder(null);
-        receivedNetAmountTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                receivedNetAmountTextFieldActionPerformed(evt);
-            }
-        });
 
         totalProfitTaxTextField.setEditable(false);
         totalProfitTaxTextField.setBorder(null);
@@ -239,7 +226,6 @@ public class CalculusView extends javax.swing.JFrame {
                                 .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(46, 46, 46))
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(receivedNetAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(totalProfitTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -340,14 +326,6 @@ public class CalculusView extends javax.swing.JFrame {
         controller.loadDollarPrices(chooser.getSelectedFile());
     }//GEN-LAST:event_loadDollarPricesButtonActionPerformed
 
-    private void issuedNetAmountTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_issuedNetAmountTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_issuedNetAmountTextFieldActionPerformed
-
-    private void receivedNetAmountTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_receivedNetAmountTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_receivedNetAmountTextFieldActionPerformed
-
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
@@ -401,6 +379,9 @@ public class CalculusView extends javax.swing.JFrame {
         /* Create and display the form */
     }
 
+    
+    private Controller controller;
+    private FiltersView filtersView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
     private javax.swing.JTextField issuedIvaTextField;

@@ -11,6 +11,7 @@ import facturas.app.database.TicketDAO;
 import facturas.app.database.WithholdingDAO;
 import facturas.app.utils.AutoSuggestor;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,6 +21,7 @@ public class SectorsView extends javax.swing.JFrame {
 
     /**
      * Creates new form SectorsView
+     * @param mainView
      */
     public SectorsView(View mainView) {
         initComponents();
@@ -48,8 +50,6 @@ public class SectorsView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        updateSectorOptionPane = new javax.swing.JOptionPane();
-        confirmDeleteOptionPane = new javax.swing.JOptionPane();
         addSector = new javax.swing.JButton();
         deleteSector = new javax.swing.JButton();
         sectorsComboBox = new javax.swing.JComboBox<>();
@@ -123,7 +123,7 @@ public class SectorsView extends javax.swing.JFrame {
     private void deleteSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorActionPerformed
         String sector = sectorsAutoSuggestor.getText();
         if (sector != null && SectorDAO.sectorExist(sector)) {
-            int userInput = confirmDeleteOptionPane.showConfirmDialog(this, 
+            int userInput = JOptionPane.showConfirmDialog(this, 
                     "¿Seguro que desea eliminar el rubro " + sector + "?", 
                     "Confirmacion", 0, 2
             );
@@ -136,7 +136,7 @@ public class SectorsView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteSectorActionPerformed
 
     private void updateSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSectorActionPerformed
-        String userInput = updateSectorOptionPane.showInputDialog(null, "Nuevo nombre: ", "");
+        String userInput = JOptionPane.showInputDialog(null, "Nuevo nombre: ", "");
         if (userInput != null && sectorsAutoSuggestor.getText() != null) {
             SQLFilter filter = new SQLFilter();
             filter.add("sector", "=", sectorsAutoSuggestor.getText(), String.class);
@@ -150,14 +150,12 @@ public class SectorsView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_updateSectorActionPerformed
 
-    AutoSuggestor sectorsAutoSuggestor;
-    View mainView;
+    private AutoSuggestor sectorsAutoSuggestor;
+    private View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addSector;
-    private javax.swing.JOptionPane confirmDeleteOptionPane;
     private javax.swing.JButton deleteSector;
     private javax.swing.JComboBox<String> sectorsComboBox;
     private javax.swing.JButton updateSector;
-    private javax.swing.JOptionPane updateSectorOptionPane;
     // End of variables declaration//GEN-END:variables
 }
