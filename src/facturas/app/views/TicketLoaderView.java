@@ -525,7 +525,9 @@ public class TicketLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_exchangeMoneyComboBoxActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
-        e.setEnabled(providersComboBox.getSelectedItem() == null);
+        if (e != null) {
+            e.setEnabled(providersComboBox.getSelectedItem() == null);
+        }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
     
     public void updateSectors(List<String> sectors) {
