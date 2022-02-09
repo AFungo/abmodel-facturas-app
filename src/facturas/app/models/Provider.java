@@ -30,17 +30,6 @@ public class Provider {
         alias = values.get("alias");      //may be null
     }
     
-    public String getDocType(){
-        return docType;
-    }
-    
-    public String getDocNo(){
-        return docNo;
-    }
-    public String getName(){
-        return name;
-    }
-    
     public void addDirection(String direction) {
         if (direction != null)
             this.direction = direction;
@@ -49,10 +38,6 @@ public class Provider {
     public void addSector(String sector) {
         if (sector != null)
             this.sector = sector;
-    }
-    
-    public String getSector() {
-        return sector;
     }
     
     @Override
