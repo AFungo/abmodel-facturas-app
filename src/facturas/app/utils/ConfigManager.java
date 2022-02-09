@@ -80,28 +80,28 @@ public class ConfigManager {
     
     private static Map<String, Boolean> initialConfig() {
         Map<String, Boolean> configs = new HashMap<String, Boolean>();
-        configs.put("date", Boolean.TRUE);
-        configs.put("type", Boolean.TRUE);
-        configs.put("noTicket", Boolean.TRUE);
-        configs.put("numberTo", Boolean.TRUE);
-        configs.put("authCode", Boolean.TRUE);
-        configs.put("providerDoc", Boolean.TRUE);
-        configs.put("providerName", Boolean.TRUE);
-        configs.put("changeType", Boolean.TRUE);
-        configs.put("netAmountWI", Boolean.TRUE);
-        configs.put("netAmountWOI", Boolean.TRUE);
-        configs.put("amountImpEx", Boolean.TRUE);
-        configs.put("iva", Boolean.TRUE);
-        configs.put("ticketSector", Boolean.TRUE);
-        configs.put("totalAmount", Boolean.TRUE);
-        configs.put("docNo", Boolean.TRUE);
-        configs.put("name", Boolean.TRUE);
-        configs.put("docType", Boolean.TRUE);
-        configs.put("direction", Boolean.TRUE);
-        configs.put("providerSector", Boolean.TRUE);
-        configs.put("alias", Boolean.TRUE);
-        configs.put("purchaseNSales", Boolean.TRUE);
-        configs.put("delivered", Boolean.TRUE);
+        configs.put("date", true);
+        configs.put("type", true);
+        configs.put("noTicket", true);
+        configs.put("numberTo", true);
+        configs.put("authCode", true);
+        configs.put("providerDoc", true);
+        configs.put("providerName", true);
+        configs.put("changeType", true);
+        configs.put("netAmountWI", true);
+        configs.put("netAmountWOI", true);
+        configs.put("amountImpEx", true);
+        configs.put("iva", true);
+        configs.put("ticketSector", true);
+        configs.put("totalAmount", true);
+        configs.put("docNo", true);
+        configs.put("name", true);
+        configs.put("docType", true);
+        configs.put("direction", true);
+        configs.put("providerSector", true);
+        configs.put("alias", true);
+        configs.put("purchaseNSales", true);
+        configs.put("delivered", true);
         return configs;
     }
 }
