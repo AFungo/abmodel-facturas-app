@@ -44,11 +44,14 @@ public class ProfitCalculator {
     }
   
 
-    public void addRetention(Withholding r){
-        Float ta = (Float) r.getValues().get("totalAmount");
-        if(r.getValues().get("type").equals("retIva")) retentionIva.addTransaction(ta, 0.0f, 0.0f);
-        if(r.getValues().get("type").equals("retGan")) retentionGan.addTransaction(ta, 0.0f, 0.0f);
+    public void addRetention(Withholding r, boolean dollars){
+        Float sellPrice = inDollars(dollars, 1.0f, r.getDollarPrice());//le pongo 1 en exchangetype pq no se carga en ret
+        Float ta = (Float) r.getValues().get("totalAmount") / sellPrice;
+
+        if(r.getValues().get("type").equals("Retencion iva")) retentionIva.addTransaction(ta, 0.0f, 0.0f);
+        if(r.getValues().get("type").equals("Retencion ganancias")) retentionGan.addTransaction(ta, 0.0f, 0.0f);
     }
+    
     public Map<String, Float> getValues(){
         Map<String, Float> values= new HashMap();
         values.put("profitWOTax", this.getProfitWOTax());

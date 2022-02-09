@@ -126,13 +126,15 @@ public class Controller {
     
     public Map<String, Float> getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
         ProfitCalculator profit = new ProfitCalculator();
-        for(Withholding t : getTickets(selectedFilters)) {
-            if (t instanceof Ticket) {
-                if (inDollars) {
-                    getDayPrice((Ticket)t); 
+        List<Withholding> tickWi= getTickets(selectedFilters);
+        tickWi.addAll(getWithholdings(selectedFilters));
+        for(Withholding t : tickWi) {
+            //if (t instanceof Ticket) {
+            if (inDollars) {
+                getDayPrice(t); 
                 }
-                profit.addTicket((Ticket)t, inDollars);
-            }
+            if (t instanceof Ticket) profit.addTicket((Ticket)t, inDollars);
+            else profit.addRetention(t, inDollars);
         }
         return profit.getValues();
     }
@@ -144,20 +146,22 @@ public class Controller {
     }
     
     public List<Withholding> getTickets() {
-        List<Withholding> tickets = TicketDAO.getTickets();
-        tickets.addAll(WithholdingDAO.getWithholdings());
-        return tickets;
+        return TicketDAO.getTickets();
+    }
+
+    public List<Withholding> getWithholdings() {
+        return WithholdingDAO.getWithholdings();
     }
     
     public List<Withholding> getTickets(Map<String, Object> selectedFilters) {
         SQLFilter filters = new SQLFilter(selectedFilters);
-        if (filters.isEmpty()) {
-            return getTickets();
-        } else {
-            List<Withholding> tickets = TicketDAO.getTickets(filters);
-            tickets.addAll(WithholdingDAO.getWithholdings());
-            return tickets;
-        }
+        if (filters.isEmpty()) return getTickets();
+        else return TicketDAO.getTickets(filters);            
+    }
+    public List<Withholding> getWithholdings(Map<String, Object> selectedFilters) {
+        SQLFilter filters = new SQLFilter(selectedFilters);
+        if(filters.isEmpty()) return WithholdingDAO.getWithholdings();
+        else return WithholdingDAO.getWithholdings(filters);
     }
     
     public List<Provider> getProviders() {
@@ -171,7 +175,7 @@ public class Controller {
         WithholdingDAO.changeAttribute(filter, attribute, value);
     }
     
-    private void getDayPrice(Ticket t) {
+    private void getDayPrice(Withholding t) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
         if (price == null) {

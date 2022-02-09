@@ -395,7 +395,6 @@ public class View extends javax.swing.JFrame {
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         
-
         Map<String, Float> values = controller.getProfit(filtersView.getFilters(), dollar);
         
         String money = dollar ? " USD" : " ARS";
@@ -414,7 +413,8 @@ public class View extends javax.swing.JFrame {
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
         List<Withholding> tickets = controller.getTickets();
-        
+        tickets.addAll(controller.getWithholdings());
+
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
         for (Withholding t : tickets) {
