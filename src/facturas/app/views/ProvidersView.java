@@ -228,11 +228,7 @@ public class ProvidersView extends javax.swing.JFrame {
     private void directionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionMenuItemActionPerformed
         String userInput = optionPane.showInputDialog(null, "Dirección: ", "");
         if (userInput != null) {
-            SQLFilter filter = new SQLFilter();
-            filter.add("cuit", "=", selectedCuit, String.class);
-            controller.changeAttributeProviderDAO(filter, "direction", userInput);
-            int row = providersTable.getSelectedRow();
-            providersTable.setValueAt(userInput, row, 4);   //column 4 is for direction
+            updateAttribute("direction", userInput, 4); //column 4 is for direction
         }
     }//GEN-LAST:event_directionMenuItemActionPerformed
 
@@ -240,11 +236,7 @@ public class ProvidersView extends javax.swing.JFrame {
         int selection = optionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", optionPane.OK_CANCEL_OPTION);
         if (selection == optionPane.OK_OPTION) {
             String sector = (String)sectorComboBox.getSelectedItem();
-            SQLFilter filter = new SQLFilter();
-            filter.add("cuit", "=", selectedCuit, String.class);
-            controller.changeAttributeProviderDAO(filter, "sector", sector);
-            int row = providersTable.getSelectedRow();
-            providersTable.setValueAt(sector, row, 5);   //column 5 is for sector
+            updateAttribute("sector", sector, 5);   //column 5 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
@@ -254,17 +246,20 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_providersTableMousePressed
 
     private void aliasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aliasMenuItemActionPerformed
-        //FIXME: this is the same as for direction, generalize it
         String userInput = optionPane.showInputDialog(null, "alias: ", "");
         if (userInput != null) {
-            SQLFilter filter = new SQLFilter();
-            filter.add("cuit", "=", selectedCuit, String.class);
-            controller.changeAttributeProviderDAO(filter, "alias", userInput);
-            int row = providersTable.getSelectedRow();
-            providersTable.setValueAt(userInput, row, 2);   //column 2 is for alias
+            updateAttribute("alias", userInput, 2); //column 2 is for alias
         }
     }//GEN-LAST:event_aliasMenuItemActionPerformed
 
+    private void updateAttribute(String attribute, String value, int column) {
+         SQLFilter filter = new SQLFilter();
+        filter.add("cuit", "=", selectedCuit, String.class);
+        controller.changeAttributeProviderDAO(filter, attribute, value);    //update db
+        int row = providersTable.getSelectedRow();
+        providersTable.setValueAt(value, row, column);  //update view
+    }
+    
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
     }
