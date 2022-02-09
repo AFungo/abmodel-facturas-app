@@ -195,7 +195,7 @@ public class FormatUtils {
     
     //FIXME: this should return the boolean[] so in the view you can tell the user each field he has wrongly filled
     //instead of just the first one
-    public static boolean validTicketInput(Map<String, String> values, boolean ticket) {
+    public static boolean[] validTicketInput(Map<String, String> values, boolean ticket) {
         boolean[] validations;
         if (ticket) 
             validations = new boolean[8];
@@ -206,20 +206,14 @@ public class FormatUtils {
         validations[1] = values.get("docNo").isEmpty() ? true : tryParse(values.get("docNo"), "Integer"); //maybe user seleceted an existent provider
         validations[2] = tryParse(values.get("totalAmount"), "Float");
         if (ticket) {
-            validations[3] = tryParse(values.get("amountImpEx"), "Float");
-            validations[4] = tryParse(values.get("exchangeType"), "Float");
-            validations[5] = tryParse(values.get("iva"), "Float");
-            validations[6] = tryParse(values.get("netAmountWI"), "Float");
-            validations[7] = tryParse(values.get("netAmountWOI"), "Float");
+            validations[3] = values.get("amountImpEx").isEmpty() ? true : tryParse(values.get("amountImpEx"), "Float");
+            validations[4] = values.get("exchangeType").isEmpty() ? true : tryParse(values.get("exchangeType"), "Float");
+            validations[5] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), "Float");
+            validations[6] = values.get("netAmountWI").isEmpty() ? true : tryParse(values.get("netAmountWI"), "Float");
+            validations[7] = values.get("netAmountWOI").isEmpty() ? true : tryParse(values.get("netAmountWOI"), "Float");
         }
-        //when you change return to boolean[] delete this for
-        for (boolean validation : validations) {
-            if (!validation) {
-                return false;
-            }
-        }
-        return true;
-        //return validations;
+
+        return validations;
     }
     
     private static boolean tryParse(String value, String expectedClass) {
