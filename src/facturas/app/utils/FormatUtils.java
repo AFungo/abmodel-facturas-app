@@ -30,14 +30,11 @@ public class FormatUtils {
                 + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
                 + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "', " + dict.get("issuedByMe");
 
-        if (dict.get("iva") != null) { attributes += ", iva"; values += ", " + dict.get("iva");}
-        if (dict.get("netAmountWI") != null) { attributes += ", netAmountWI"; values += ", " + dict.get("netAmountWI");}
-        if (dict.get("netAmountWOI") != null) { attributes += ", netAmountWOI"; values += ", " + dict.get("netAmountWOI");}
-        if (dict.get("numberTo") != null) { attributes += ", numberTo"; values += ", " + dict.get("numberTo");}
-        if (dict.get("amountImpEx") != null) { attributes += ", amountImpEx"; values += ", " + dict.get("amountImpEx");}
-        if (dict.get("sector") != null) { attributes += ", sector"; values += ", '" + dict.get("sector") + "'"; }
-        if (dict.get("delivered") != null) { attributes += ", delivered"; values += ", " + dict.get("delivered") + ""; }
-
+        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"iva", "netAmountWI", "netAmountWOI", 
+            "numberTo", "amountImpEx"}, new String[] {"sector", "delivered"});
+        attributes += optionals.getFst();
+        values += optionals.getSnd();
+        
         return new Pair<>(attributes, values);
     }
      
@@ -99,9 +96,9 @@ public class FormatUtils {
         values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
         + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getDocNo() + "'";
 
-        if (dict.get("id") != null) { attributes += ", id"; values += ", " + dict.get("id");}
-        if (dict.get("delivered") != null) { attributes += ", delivered"; values += ", " + dict.get("delivered");}
-        if (dict.get("sector") != null) { attributes += ", sector"; values += ", '" + dict.get("sector") + "'";}
+        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"id", "delivered"}, new String[] {"sector"});
+        attributes += optionals.getFst();
+        values += optionals.getSnd();
 
         return new Pair<>(attributes, values);
     }
@@ -146,10 +143,10 @@ public class FormatUtils {
         attributes += "cuit, name, documentType";
         values += "'" + dict.get("docNo") + "', '" + dict.get("name") + "', '" + dict.get("docType") + "'";
         
-        if (dict.get("direction") != null) { attributes += ", direction"; values += ", '" + dict.get("direction") + "'";}
-        if (dict.get("sector") != null) { attributes += ", sector"; values += ", '" + dict.get("sector") + "'";}
-        if (dict.get("alias") != null) { attributes += ", alias"; values += ", '" + dict.get("alias") + "'";}
-
+        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {}, new String[] {"direction", "sector", "alias"});
+        attributes += optionals.getFst();
+        values += optionals.getSnd();
+        
         return new Pair<>(attributes, values);
     }
     
@@ -169,6 +166,25 @@ public class FormatUtils {
         return values;
     }
 
+    private static Pair<String, String> addOptionalAttributes(Map<String, ? extends Object> dict, String[] keys, String[] commaKeys) {
+        String attributes = "", values = "";
+        for (String key : keys) {
+            if (dict.get(key) != null) { 
+                attributes += ", " + key;
+                values += ", " + dict.get(key);
+            }
+        }
+        
+        for (String key : commaKeys) {
+            if (dict.get(key) != null) { 
+                attributes += ", " + key;
+                values += ", '" + dict.get(key) + "'";
+            }
+        }
+        
+        return new Pair<String, String> (attributes, values);
+    }
+    
     public static boolean validFormat(String initialLine, String mode) {
         String expectedLine = "";
         if ("ticket".equals(mode)) {
@@ -193,8 +209,6 @@ public class FormatUtils {
         return vector;
     }
     
-    //FIXME: this should return the boolean[] so in the view you can tell the user each field he has wrongly filled
-    //instead of just the first one
     public static boolean[] validTicketInput(Map<String, String> values, boolean ticket) {
         boolean[] validations;
         if (ticket) 

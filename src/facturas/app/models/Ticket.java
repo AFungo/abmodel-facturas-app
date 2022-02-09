@@ -26,13 +26,17 @@ public class Ticket extends Withholding{
    public Ticket(Map<String, String> data){
         super(data);
         this.numberTo = data.get("numberTo") != null ? Integer.parseInt(data.get("numberTo")) : null ;
-        this.authCode =  data.get("authCode");
+        this.authCode =  data.get("authCode") != null ? data.get("authCode") : null;
         this.exchangeType = Float.parseFloat(data.get("exchangeType"));
         this.exchangeMoney = data.get("exchangeMoney");
-        this.netAmountWI = data.get("netAmountWI") != null ? Float.parseFloat(data.get("netAmountWI")) : null ;
-        this.netAmountWOI = data.get("netAmountWOI") != null ? Float.parseFloat(data.get("netAmountWOI")) : null ;
-        this.amountImpEx = data.get("amountImpEx") != null ? Float.parseFloat(data.get("amountImpEx")) : null ;
-        this.iva = data.get("iva") != null ? Float.parseFloat(data.get("iva")) : null ;
+        String netAmountWI = data.get("netAmountWI");
+        this.netAmountWI = netAmountWI != null && !netAmountWI.isEmpty() ? Float.parseFloat(netAmountWI) : null ;
+        String netAmountWOI = data.get("netAmountWOI");
+        this.netAmountWOI = netAmountWOI != null && !netAmountWOI.isEmpty() ? Float.parseFloat(netAmountWOI) : null ;
+        String amountImpEx = data.get("amountImpEx");
+        this.amountImpEx = amountImpEx != null && !amountImpEx.isEmpty() ? Float.parseFloat(amountImpEx) : null ;
+        String iva = data.get("iva");
+        this.iva = iva != null && !iva.isEmpty() ? Float.parseFloat(iva) : null ;
         this.issuedByMe =  data.get("issuedByMe").equals("true");
   }
 
