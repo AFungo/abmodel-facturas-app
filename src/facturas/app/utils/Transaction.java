@@ -28,6 +28,7 @@ public class Transaction {
         this.iva = iva;
         this.netAmountWI = netAmountWI;
     }
+    
     public void addTransaction(Float amount, Float iva, Float netAmountWI) {
         this.totalAmount += amount;
         this.iva += iva;

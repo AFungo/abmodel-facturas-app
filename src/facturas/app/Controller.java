@@ -158,6 +158,7 @@ public class Controller {
         if (filters.isEmpty()) return getTickets();
         else return TicketDAO.getTickets(filters);            
     }
+
     public List<Withholding> getWithholdings(Map<String, Object> selectedFilters) {
         SQLFilter filters = new SQLFilter(selectedFilters);
         if(filters.isEmpty()) return WithholdingDAO.getWithholdings();
@@ -167,6 +168,7 @@ public class Controller {
     public List<Provider> getProviders() {
         return ProviderDAO.getProviders();
     }
+
     public void changeTicketAttribute(SQLFilter filter, String attribute, String value){
         TicketDAO.changeAttribute(filter, attribute, value);
     }
@@ -184,19 +186,24 @@ public class Controller {
         
         t.addDollarPrice(price);
     }
+
     public void resetDB(){
             DBManager.deleteDB();
             DBManager.initializeDB();
     }
+
     public List<Provider> getProviders(SQLFilter filters){
         return ProviderDAO.getProviders(filters);
     }
+
     public void changeAttributeProviderDAO(SQLFilter filters, String attribute, String value){
         ProviderDAO.changeAttribute(filters, attribute, value);
     }
-    public void cleanTextField(List<JTextField> textField){
+    
+    public void cleanTextField(JTextField[] textField){
             for(JTextField t : textField) t.setText("");
     }
+    
     private List<String> readCsv(File f, String type) {
         if (f == null) {
             throw new IllegalArgumentException("File is null");
