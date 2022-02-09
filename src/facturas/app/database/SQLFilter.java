@@ -18,7 +18,8 @@ import java.util.Map;
  */
 public class SQLFilter {
     
-    List<Condition> filters = new LinkedList<>();
+    List<Condition> conditions = new LinkedList<>();
+    List<List<Condition>> orConditions = new LinkedList<>();
     
     public SQLFilter() { }
        
@@ -40,8 +41,8 @@ public class SQLFilter {
         text = (String)selectedFilters.get("companyCuit");
         if (!text.isEmpty()) { add("providerDoc", "=", text, String.class); }
         
-        List<String> typesList = (List<String>)selectedFilters.get("ticketTypesList");
-        if (!typesList.isEmpty()) { add("type", "=", typesList, List.class); }
+        List<Object> typesList = (List<Object>)selectedFilters.get("ticketTypesList");
+        if (!typesList.isEmpty()) { addDisjunction("type", "=", typesList, String.class); }
         
         if ((boolean)selectedFilters.get("sale")) {
             add("issuedByMe", "=", true, Boolean.class);
@@ -52,54 +53,72 @@ public class SQLFilter {
     }
     
     public final void add(String attr, String comparison, Object val, Class<?> valClass) {
-        filters.add(new Condition(attr, comparison, val, valClass));
+        conditions.add(new Condition(attr, comparison, val, valClass));
     }
     
-    public void addDisjunction(String attribute, String comparison, List<Object> values, Class<?> valueClass) {    
+    public void addDisjunction(String attr, String comparison, List<Object> vals, Class<?> valClass) {    
+        List<Condition> orFilter = new LinkedList<>();
+        for (Object v : vals) {
+            orFilter.add(new Condition(attr, comparison, v, valClass));
+        }
+        orConditions.add(orFilter);
     }
-    
     
     /**
      * @return the string corresponding to "CONDITION" of WHERE clause of SQL
      */
     public String get() {
-        String sqlCode = " WHERE";
+        String sqlCode = " WHERE ";
         boolean firstOne = true; // The first iteration should not add the AND connector
-        for (Condition f : filters) {
+        for (List<Condition> orCondition : orConditions) {
             if (!firstOne) {
-                sqlCode +=  " AND";
+                sqlCode += " AND ";
             }
-     
-            Class<?> valueClass = f.getValClass();
             
-            if (valueClass == List.class) {
-                List<String> values = (List<String>)f.getVal(); // when the type is a list, operator will be a =
-                sqlCode += loadList(values, f.getAttr(), f.getComparison());
-            } else {
-                sqlCode += " " + f.getAttr() + " " + f.getComparison() + " ";
-            
-                if (valueClass == String.class) 
-                    sqlCode += "'" + valueClass.cast(f.getVal()) + "'" ;
-                else if (valueClass == Date.class) 
-                    sqlCode += "'" + (Date)f.getVal() + "'";
-                else
-                    sqlCode += valueClass.cast(f.getVal());
-            }
+            sqlCode += "(" + getComplexCondition(orCondition, "OR") + ")";
+
             firstOne = false;
         }
+        
+        
+        String lastConjunction = getComplexCondition(conditions, "AND");
+        if (!lastConjunction.equals("")) {
+            if (!firstOne) {
+                sqlCode += " AND ";
+            }
+            sqlCode += lastConjunction;
+        }
+        
         return sqlCode;
     }
     
-    private String loadList(List<String> list, String attr, String comparison) {
-        String result = " (";
-        for (String value : list) 
-            result += attr + " " + comparison + " '" + value + "' OR ";
+    private String getComplexCondition(List<Condition> conditions, String connectorOp) {
+        String sqlCode = "";
+        boolean firstOne = true;
+        
+        for (Condition c : conditions) {
+            if (!firstOne) {
+                sqlCode +=  " " + connectorOp + " ";
+            }
+            
+            sqlCode += c.getAttr() + " " + c.getComparison() + " ";
 
-        result = result.substring(0, result.length() - 4);  //remove the last " OR "
-        return result + ")";
+            if (c.getValClass() == String.class) {
+                sqlCode += "'" + c.getValClass().cast(c.getVal()) + "'" ;
+            } else if (c.getValClass() == Date.class) {
+                sqlCode += "'" + (Date)c.getVal() + "'";
+            } else {
+                sqlCode += c.getValClass().cast(c.getVal());
+            }
+            
+            firstOne = false;
+        }
+        
+        return sqlCode;
     }
     
     public boolean isEmpty() {
-        return filters.isEmpty();
+        return conditions.isEmpty();
     }
+    
 }
