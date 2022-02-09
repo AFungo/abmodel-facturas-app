@@ -445,20 +445,17 @@ public class TicketLoaderView extends javax.swing.JFrame {
         }
 
         controller.loadTicket(values);
-        List<JTextField> forClean = new LinkedList();
-        forClean.add(numberTextField);
-        forClean.add(netAmountWITextField);
-        forClean.add(netAmountWOITextField);
-        forClean.add(amountImpExTextField);
-        forClean.add(ivaTextField);
-        forClean.add(totalAmountTextField);
-        forClean.add(providerDocTextField);
-        forClean.add(providerNameTextField);
-        forClean.add(providerAliasTextField);
-        forClean.add(providerAddressTextField);
-        controller.cleanTextField(forClean);
+        cleanTextFields();
     }//GEN-LAST:event_loadTicketActionPerformed
 
+    private void cleanTextFields() {
+        JTextField[] forClean = new JTextField[] {numberTextField, netAmountWITextField, netAmountWOITextField, 
+            amountImpExTextField, ivaTextField, totalAmountTextField, providerDocTextField, providerNameTextField, 
+            providerAliasTextField, providerAddressTextField};
+        
+        controller.cleanTextField(forClean);
+    }
+    
     private void exchangeMoneyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeMoneyComboBoxActionPerformed
         if(exchangeMoneyComboBox.getSelectedItem().equals("Pesos")){
             exchangeTypeTextField.setEditable(false);
