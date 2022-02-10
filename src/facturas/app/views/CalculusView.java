@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  *
- * @author Lenovo
+ * @author Fungo
  */
 public class CalculusView extends javax.swing.JFrame {
 
@@ -113,42 +113,17 @@ public class CalculusView extends javax.swing.JFrame {
 
         totalSalesTextField.setEditable(false);
         totalSalesTextField.setBorder(null);
-        totalSalesTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                totalSalesTextFieldActionPerformed(evt);
-            }
-        });
 
         totalBuysTextField.setEditable(false);
         totalBuysTextField.setBorder(null);
-        totalBuysTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                totalBuysTextFieldActionPerformed(evt);
-            }
-        });
 
         totalProfitWOTaxTextField.setEditable(false);
         totalProfitWOTaxTextField.setBorder(null);
-        totalProfitWOTaxTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                totalProfitWOTaxTextFieldActionPerformed(evt);
-            }
-        });
 
         totalProfitWTaxTextField.setEditable(false);
         totalProfitWTaxTextField.setBorder(null);
-        totalProfitWTaxTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                totalProfitWTaxTextFieldActionPerformed(evt);
-            }
-        });
 
         showInDollarsCheckBox.setText("Ver en dolares");
-        showInDollarsCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showInDollarsCheckBoxActionPerformed(evt);
-            }
-        });
 
         loadDollarPricesButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         loadDollarPricesButton.setText("Cargar cotizacion");
@@ -298,26 +273,9 @@ public class CalculusView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void totalSalesTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalSalesTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_totalSalesTextFieldActionPerformed
-
-    private void totalBuysTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalBuysTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_totalBuysTextFieldActionPerformed
-
-    private void totalProfitWOTaxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalProfitWOTaxTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_totalProfitWOTaxTextFieldActionPerformed
-
-    private void totalProfitWTaxTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalProfitWTaxTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_totalProfitWTaxTextFieldActionPerformed
-
-    private void showInDollarsCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showInDollarsCheckBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_showInDollarsCheckBoxActionPerformed
-
+    /*
+    * this method open a window where you can load a dollar prices in the program
+    */
     private void loadDollarPricesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarPricesButtonActionPerformed
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
@@ -325,24 +283,27 @@ public class CalculusView extends javax.swing.JFrame {
         chooser.showOpenDialog(this);
         controller.loadDollarPrices(chooser.getSelectedFile());
     }//GEN-LAST:event_loadDollarPricesButtonActionPerformed
-
+    /*
+     * This method show all the calculus and data who bring profit calculator
+     */
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
 
         Map<String, Float> values = controller.getProfit(filtersView.getFilters(), dollar);
         String money = dollar ? " USD" : " ARS";
+        
         //iva
         issuedIvaTextField.setText(numberFormat.format(values.get("issuedIva")) + money);
         receivedIvaTextField.setText(numberFormat.format(values.get("receivedIva")) + money);
         totalIvaTaxTextField.setText(numberFormat.format(values.get("totalIva")) + money);
         
-        //ganancias
+        //withholding
         issuedNetAmountTextField.setText(numberFormat.format(values.get("issuedNetAmount")) + money);
         receivedNetAmountTextField.setText(numberFormat.format(values.get("receivedNetAmount")) + money);
         totalProfitTaxTextField.setText(numberFormat.format(values.get("totalProfitTax")) + money);
         
-        //totales
+        //total
         totalSalesTextField.setText(numberFormat.format(values.get("totlSell")) + money);
         totalBuysTextField.setText(numberFormat.format(values.get("totalBuy")) + money);
         totalProfitWOTaxTextField.setText(numberFormat.format(values.get("profitWOTax")) + money);

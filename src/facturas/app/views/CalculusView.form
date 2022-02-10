@@ -318,9 +318,6 @@
           <Border info="null"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="totalSalesTextFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="totalBuysTextField">
       <Properties>
@@ -329,9 +326,6 @@
           <Border info="null"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="totalBuysTextFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="totalProfitWOTaxTextField">
       <Properties>
@@ -340,9 +334,6 @@
           <Border info="null"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="totalProfitWOTaxTextFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="totalProfitWTaxTextField">
       <Properties>
@@ -351,17 +342,11 @@
           <Border info="null"/>
         </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="totalProfitWTaxTextFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="showInDollarsCheckBox">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ver en dolares"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showInDollarsCheckBoxActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="loadDollarPricesButton">
       <Properties>
