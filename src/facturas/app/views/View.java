@@ -482,8 +482,11 @@ public class View extends javax.swing.JFrame {
 
     private void ticketsTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
         if (evt.getButton() == MouseEvent.BUTTON3) {//right click
+            int rowPoint = ticketsTable.rowAtPoint(evt.getPoint());
+            ticketsTable.clearSelection();
+            ticketsTable.addRowSelectionInterval(rowPoint, rowPoint);
+            int row = ticketsTable.getSelectedRow();
             if (evt.isPopupTrigger() && ticketsTable.getSelectedRowCount() != 0) {
-                int row = ticketsTable.getSelectedRow();
                 String deliveredValue = (String)ticketsTable.getValueAt(row, 15); //15 is the delivered column
                 deliveredMenuItem.setText(deliveredValue == "NO" ? "Marcar como enviado" : "Marcar como no enviado");
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
