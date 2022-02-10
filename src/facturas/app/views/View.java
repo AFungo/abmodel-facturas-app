@@ -84,8 +84,7 @@ public class View extends javax.swing.JFrame {
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         multipleLoad = new javax.swing.JMenu();
-        loadTicketsEmitedByMy = new javax.swing.JMenuItem();
-        loadTicketsEmitedByO = new javax.swing.JMenuItem();
+        loadTickets = new javax.swing.JMenuItem();
         loadDollarValue = new javax.swing.JMenuItem();
         loadTicketManually = new javax.swing.JMenuItem();
         loadWithholdingManually = new javax.swing.JMenuItem();
@@ -230,21 +229,13 @@ public class View extends javax.swing.JFrame {
 
         multipleLoad.setText("Cargar (.csv)...");
 
-        loadTicketsEmitedByMy.setText("Emitidos por mi");
-        loadTicketsEmitedByMy.addActionListener(new java.awt.event.ActionListener() {
+        loadTickets.setText("Cargar Comprobante");
+        loadTickets.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadTicketsEmitedByMyActionPerformed(evt);
+                loadTicketsActionPerformed(evt);
             }
         });
-        multipleLoad.add(loadTicketsEmitedByMy);
-
-        loadTicketsEmitedByO.setText("Emitidos por terceros");
-        loadTicketsEmitedByO.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadTicketsEmitedByOActionPerformed(evt);
-            }
-        });
-        multipleLoad.add(loadTicketsEmitedByO);
+        multipleLoad.add(loadTickets);
 
         loadDollarValue.setText("Cargar valor dolar");
         loadDollarValue.addActionListener(new java.awt.event.ActionListener() {
@@ -426,18 +417,18 @@ public class View extends javax.swing.JFrame {
         filtersView.setVisible(true);
     }//GEN-LAST:event_filtersActionPerformed
 
-    private void loadTicketsEmitedByMyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsEmitedByMyActionPerformed
+    private void loadTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsActionPerformed
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
 
-        controller.loadTickets(chooser.getSelectedFile(), true);
+        controller.loadTickets(chooser.getSelectedFile());
         // FIXME: Maybe we can update the suggestions only 
         // when we know that a providers was added
         providersView.updateSuggestions();
         showTicketsActionPerformed(evt);
-    }//GEN-LAST:event_loadTicketsEmitedByMyActionPerformed
+    }//GEN-LAST:event_loadTicketsActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
         ticketLoaderView.setVisible(true);
@@ -466,19 +457,6 @@ public class View extends javax.swing.JFrame {
         sectorsView.setVisible(true);
         sectorsView.updateSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
-
-    private void loadTicketsEmitedByOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsEmitedByOActionPerformed
-        JFileChooser chooser = new JFileChooser();
-        FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
-        chooser.setFileFilter(fileTypes);
-        chooser.showOpenDialog(this);
-
-        controller.loadTickets(chooser.getSelectedFile(), false);
-        // FIXME: Maybe we can update the suggestions only 
-        // when we know that a providers was added
-        providersView.updateSuggestions();
-        showTicketsActionPerformed(evt);
-    }//GEN-LAST:event_loadTicketsEmitedByOActionPerformed
 
     private void ticketsTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
         if (evt.getButton() == MouseEvent.BUTTON3) {//right click
@@ -576,8 +554,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JTextField ivaTaxTextField;
     private javax.swing.JMenuItem loadDollarValue;
     private javax.swing.JMenuItem loadTicketManually;
-    private javax.swing.JMenuItem loadTicketsEmitedByMy;
-    private javax.swing.JMenuItem loadTicketsEmitedByO;
+    private javax.swing.JMenuItem loadTickets;
     private javax.swing.JMenuItem loadWithholdingManually;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu multipleLoad;

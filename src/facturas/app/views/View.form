@@ -50,20 +50,12 @@
                 <Property name="text" type="java.lang.String" value="Cargar (.csv)..."/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="loadTicketsEmitedByMy">
+                <MenuItem class="javax.swing.JMenuItem" name="loadTickets">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Emitidos por mi"/>
+                    <Property name="text" type="java.lang.String" value="Cargar Comprobante"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadTicketsEmitedByMyActionPerformed"/>
-                  </Events>
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="loadTicketsEmitedByO">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Emitidos por terceros"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadTicketsEmitedByOActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadTicketsActionPerformed"/>
                   </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="loadDollarValue">
