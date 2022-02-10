@@ -186,19 +186,21 @@ public class FormatUtils {
     }
     
     public static boolean validFormat(String initialLine, String mode) {
-        String expectedLine = "";
-        if ("ticket".equals(mode)) {
-            expectedLine = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
-        } else if ("price".equals(mode)) {
-            expectedLine = "Fecha cotizacion;Compra;Venta;";
-        }
-        
         char initialChar = initialLine.charAt(0);
         if ((int)initialChar == 65279) {  //special char that may come with utf-8 files
             initialLine = initialLine.substring(1); //remove special char
         }
-
-        return initialLine.contentEquals(expectedLine);
+        
+        if ("ticket".equals(mode)) {
+            String expectedLineEmitter = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+            String expectedLineReceptor = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Receptor\",\"Nro. Doc. Receptor\",\"Denominación Receptor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+            return initialLine.contentEquals(expectedLineEmitter) || initialLine.contentEquals(expectedLineReceptor);
+        } else if ("price".equals(mode)) {
+            String expectedLine = "Fecha cotizacion;Compra;Venta;";
+            return initialLine.contentEquals(expectedLine);
+        }
+        
+        return false;
     }
 
     public static Vector<String> listToVector(List<String> list) {
