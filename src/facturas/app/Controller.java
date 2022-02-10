@@ -224,7 +224,7 @@ public class Controller {
             throw new IllegalArgumentException("File does not have a valid format to be loaded\nFile: " + f.getPath());
         }
         
-        Boolean issuedByMe = initialLine.contains("Receptor") ? true : false;
+        Boolean issuedByMe = initialLine.contains("Receptor");
         return new Pair<List<String>,Boolean>(stringItems, issuedByMe);
     }
 }
