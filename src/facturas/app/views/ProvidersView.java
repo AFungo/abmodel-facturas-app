@@ -216,8 +216,11 @@ public class ProvidersView extends javax.swing.JFrame {
 
     private void providersTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_providersTableMouseReleased
         if (evt.getButton() == MouseEvent.BUTTON3) {//right click
+            int rowPoint = providersTable.rowAtPoint(evt.getPoint());
+            providersTable.clearSelection();
+            providersTable.addRowSelectionInterval(rowPoint, rowPoint);
+            int row = providersTable.getSelectedRow();
             if (evt.isPopupTrigger() && providersTable.getSelectedRowCount() != 0) {
-                int row = providersTable.getSelectedRow();
                 selectedCuit = (String)providersTable.getValueAt(row, 0); //0 is the cuit column
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
