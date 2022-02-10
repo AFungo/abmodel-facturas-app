@@ -16,6 +16,7 @@ import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
+import facturas.app.utils.Pair;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
 import java.io.IOException;
@@ -36,9 +37,11 @@ import javax.swing.JTextField;
  */
 public class Controller {
     
-    public void loadTickets(File f, boolean issuedByMe) {
-        List<String> stringTickets = readCsv(f, "ticket");
-            
+    public void loadTickets(File f) {
+        Pair<List<String>,Boolean> csvContent = readCsv(f, "ticket");
+        List<String> stringTickets = csvContent.getFst();
+        boolean issuedByMe = csvContent.getSnd();
+        
         List<Ticket> tickets = new LinkedList<>();
         for (String strTicket : stringTickets) {
             tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket, issuedByMe)));
@@ -58,7 +61,7 @@ public class Controller {
     }
     
     public void loadDollarPrices(File f) {
-        List<String> stringPrices = readCsv(f, "price");
+        List<String> stringPrices = readCsv(f, "price").getFst();
 
         List<DollarPrice> prices = new LinkedList<>();
         for (String priceStr : stringPrices) {
@@ -204,7 +207,7 @@ public class Controller {
             for(JTextField t : textField) t.setText("");
     }
     
-    private List<String> readCsv(File f, String type) {
+    private Pair<List<String>,Boolean> readCsv(File f, String type) {
         if (f == null) {
             throw new IllegalArgumentException("File is null");
         }
@@ -221,6 +224,7 @@ public class Controller {
             throw new IllegalArgumentException("File does not have a valid format to be loaded\nFile: " + f.getPath());
         }
         
-        return stringItems;
+        Boolean issuedByMe = initialLine.contains("Receptor") ? true : false;
+        return new Pair<List<String>,Boolean>(stringItems, issuedByMe);
     }
 }
