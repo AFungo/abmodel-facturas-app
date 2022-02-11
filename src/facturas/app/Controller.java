@@ -75,7 +75,9 @@ public class Controller {
     
     //ticket is a boolean representing if the validation is for ticket or withholding
     public String validateParam(java.util.Date date, JComboBox<String> provider, JComboBox<String> docType
-            , Map<String, String> values, boolean ticket) {
+            , Map<String, String> values, boolean ticket, JComboBox<String> sectorsComboBox) {
+        
+        List<String> sectors = getItemsFromComboBox(sectorsComboBox);
         String message = "<html>", invalidations = "";
         if (date == null) 
             invalidations += "<br/>Fecha no introducida";
@@ -83,7 +85,15 @@ public class Controller {
             if (docType.getSelectedItem() == null || values.get("docNo").isEmpty() || values.get("name").isEmpty()) {
                 invalidations += "<br/>No se introdujeron datos sobre el proveedor";
             }
+            String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
+            if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
+                invalidations += "<br/>El rubro del proveedor no existe";
+            }
         }
+        
+        String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
+        if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector)))
+            invalidations += "<br/>El rubro del comprobante no existe";
         
         if (values.get("type").isEmpty())
             invalidations += "<br/>No se especifico el tipo de comprobante";
@@ -125,6 +135,14 @@ public class Controller {
             invalidations += "<br/>Importe neto no gravado mal escrito";
         
         return invalidations;
+    }
+    
+    private List<String> getItemsFromComboBox(JComboBox<String> sectorsComboBox) {
+        List<String> items = new LinkedList<>();
+        for (int i = 0; i < sectorsComboBox.getItemCount(); i++) {
+            items.add(sectorsComboBox.getItemAt(i));
+        }
+        return items;
     }
     
     public Map<String, Float> getProfit(Map<String, Object> selectedFilters, boolean inDollars) {

@@ -240,13 +240,15 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         values.put("totalAmount", totalAmountTextField.getText());
         values.put("docNo", providerDocTextField.getText());
         values.put("name", providerNameTextField.getText());
+        values.put("sector", (String) sectorsComboBox.getSelectedItem());
+
         if (typeComboBox.getSelectedItem() != null)
             values.put("type", typeComboBox.getSelectedItem().toString());
         else
             values.put("type", "");
         
         String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, 
-                providerDocTypeComboBox, values, false);
+                providerDocTypeComboBox, values, false, sectorsComboBox);
         if (errorMessage != null) {
             invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
             return ;
@@ -267,10 +269,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
             values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());
         }
         
-        if (sectorsComboBox.getSelectedItem() != null) {
-            values.put("sector", sectorsComboBox.getSelectedItem().toString());
-        }
-
         controller.loadWithholding(values);
     }//GEN-LAST:event_loadWithholdingActionPerformed
 
