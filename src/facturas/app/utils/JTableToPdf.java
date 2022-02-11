@@ -33,14 +33,16 @@ public class JTableToPdf {
     private Document document;
     private PdfWriter writer;
     private JScrollPane scrollPane;
+    private String pathToFile;
 
-    public JTableToPdf (JTable table) {
+    public JTableToPdf (String pathToFile, JTable table) {
+        this.pathToFile = pathToFile;
         this.table = table;
     }
 
     public void openPdf() throws FileNotFoundException, DocumentException {
         document = new Document(PageSize.A4, 0f, 0f, 30, 30);
-        writer = PdfWriter.getInstance(document, new FileOutputStream("Tabla-Proveedores.pdf"));
+        writer = PdfWriter.getInstance(document, new FileOutputStream(pathToFile));
         document.open();
     }
 
@@ -76,46 +78,16 @@ public class JTableToPdf {
         document.add(pdfTable);
     }
 
-    public void createAndShowGui() {
-        frame = new JFrame("PDF creator");
-
-        int rows = 100;
-        int cols = 3;
-
-        String data [][] = new String[rows][cols];
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                data[i][j] = i + "-" + j;
-            }
+    public void createPDF() {
+        try {
+            PdfPTable pdfTable = new PdfPTable(table.getColumnCount());
+            openPdf();
+            addData(pdfTable);
+            closePdf();
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (DocumentException e1) {
+            e1.printStackTrace();
         }
-
-        button = new JButton("Create PDF");
-
-        scrollPane = new JScrollPane(table);
-
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    PdfPTable pdfTable = new PdfPTable(table.getColumnCount());
-                    openPdf();
-                    addData(pdfTable);
-                    closePdf();
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (DocumentException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-
-//      frame.add(table.getTableHeader(), BorderLayout.NORTH);
-        frame.add(scrollPane, BorderLayout.CENTER);
-        frame.add(button, BorderLayout.SOUTH);
-
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 }
