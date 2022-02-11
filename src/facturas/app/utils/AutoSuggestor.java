@@ -52,9 +52,6 @@ public class AutoSuggestor {
                 m.addElement(s);
             }
         }
-        //list.stream().filter((s) -> (s.startsWith(text))).forEachOrdered((s) -> {
-        //    m.addElement(s);
-        //});
         
         return m;
     }
