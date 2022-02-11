@@ -13,11 +13,16 @@ import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.JTableToPdf;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -271,8 +276,24 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_directionMenuItemActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JTableToPdf pdfCreator = new JTableToPdf(providersTable);
-        pdfCreator.createAndShowGui();
+        JFrame parentFrame = new JFrame();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("pdf")) {
+                file = new File(file.toString() + ".pdf");
+                file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".pdf");
+            }
+                   
+            JTableToPdf pdfCreator = new JTableToPdf(file.getAbsolutePath(), providersTable);
+            pdfCreator.createPDF();
+        }
+ 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void updateAttribute(String attribute, String value, int column) {
