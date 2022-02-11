@@ -47,9 +47,14 @@ public class AutoSuggestor {
     
     private static DefaultComboBoxModel getSuggestedModel(List<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
-        list.stream().filter((s) -> (s.startsWith(text))).forEachOrdered((s) -> {
-            m.addElement(s);
-        });
+        for (String s : list) {
+            if (s.toUpperCase().startsWith(text.toUpperCase())) {
+                m.addElement(s);
+            }
+        }
+        //list.stream().filter((s) -> (s.startsWith(text))).forEachOrdered((s) -> {
+        //    m.addElement(s);
+        //});
         
         return m;
     }
@@ -84,7 +89,7 @@ public class AutoSuggestor {
                             setModel(new DefaultComboBoxModel(suggestions), text);
                         } else {
                             enabler.setEnabled(false);
-                            DefaultComboBoxModel m = getSuggestedModel(suggestions, text.toUpperCase());
+                            DefaultComboBoxModel m = getSuggestedModel(suggestions, text);
                             if (m.getSize() == 0 || hide_Flag) {
                                 comboBox.hidePopup();
                                 hide_Flag = false;
@@ -100,7 +105,7 @@ public class AutoSuggestor {
             
             @Override
             public void keyPressed(KeyEvent e) {
-                String text = textField.getText().toUpperCase();
+                String text = textField.getText();
                 int code = e.getKeyCode();
                 switch (code) {
                     case KeyEvent.VK_ENTER:
