@@ -399,9 +399,10 @@ public class View extends javax.swing.JFrame {
 
     //show providers if any
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
-        providersView.setVisible(true);
-        // FIXME: search a better option (optimized)
         providersView.updateProviders(evt);
+        providersView.updateSuggestions();
+        providersView.setVisible(true);
+        
     }//GEN-LAST:event_showProvidersActionPerformed
 
     //show tickets
