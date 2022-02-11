@@ -147,6 +147,9 @@ public class View extends javax.swing.JFrame {
         ticketsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         ticketsTable.getTableHeader().setReorderingAllowed(false);
         ticketsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ticketsTableMousePressed(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 ticketsTableMouseReleased(evt);
             }
@@ -528,6 +531,11 @@ public class View extends javax.swing.JFrame {
         CalculusView calculusView = new CalculusView(filtersView);
         calculusView.setVisible(true);
     }//GEN-LAST:event_viewMoreCalculusButtonActionPerformed
+
+    private void ticketsTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ticketsTableMousePressed
+        //just to make it work on mac
+        ticketsTableMouseReleased(evt);
+    }//GEN-LAST:event_ticketsTableMousePressed
 
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
