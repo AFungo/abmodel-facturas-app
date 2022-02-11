@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -154,8 +155,8 @@ public class Controller {
         for(Withholding t : tickWi) {
             //if (t instanceof Ticket) {
             if (inDollars) {
-                getDayPrice(t); 
-                }
+                getDayPrice(t);
+            }
             if (t instanceof Ticket) profit.addTicket((Ticket)t, inDollars);
             else profit.addRetention(t, inDollars);
         }
@@ -207,11 +208,11 @@ public class Controller {
             price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
         }
         
-        long limit = 86400000 * (daysLimit + 1);   //the limit will be 4 days
+        long limit = 86400000 * (daysLimit + 1);
         long currentTime = ticketDate.getTime();
         long nearestTime = price.getDate().getTime();
         long timeDiference = Math.abs(nearestTime - currentTime);
-        if (timeDiference >= limit) {     //
+        if (timeDiference >= limit) {
             System.out.println("Dollar price is too far away from the limit by " + (timeDiference / 86400000) + " days");
         }
         t.addDollarPrice(price);
@@ -228,6 +229,13 @@ public class Controller {
 
     public void changeAttributeProviderDAO(SQLFilter filters, String attribute, String value){
         ProviderDAO.changeAttribute(filters, attribute, value);
+    }
+    
+    public JTable getMissingPricesTable() {
+        Object[][] rows = {{}};
+        Object[] cols = {"Fecha","Dias hasta el precio mas cercano"};
+        JTable table = new JTable(rows, cols);
+        return table;
     }
     
     public void cleanTextField(JTextField[] textField){
