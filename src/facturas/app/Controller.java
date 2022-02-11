@@ -205,6 +205,14 @@ public class Controller {
             price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
         }
         
+        int days = 4;
+        long limit = 86400000 * days + 1;   //the limit will be 4 days
+        long currentTime = ticketDate.getTime();
+        long nearestTime = price.getDate().getTime();
+        long timeDiference = Math.abs(nearestTime - currentTime);
+        if (timeDiference < limit) {     //
+            System.out.println("Dollar price is too far away from the limit by " + (timeDiference / 86400000) + "days");
+        }
         t.addDollarPrice(price);
     }
 
