@@ -412,6 +412,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("number", numberTextField.getText());
         values.put("type", (String) ticketType.getSelectedItem());
         values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));        
+        values.put("sector", (String) sectorsComboBox.getSelectedItem());
         
         //provider attributes
         values.put("docNo", providerDocTextField.getText());
@@ -420,7 +421,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("provSector", (String) providerSectorComboBox.getSelectedItem());//may be null
         values.put("alias", providerAliasTextField.getText());      //may be null
 
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, providerDocTypeComboBox, values, true);
+        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, 
+                providerDocTypeComboBox, values, true, sectorsComboBox);
         if (errorMessage != null) {
             invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
             return ;
@@ -438,10 +440,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
             values.put("alias", (String) provider.getValues().get("alias"));
         } else {
             values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());
-        }
-        
-        if (sectorsComboBox.getSelectedItem() != null) {
-            values.put("sector", sectorsComboBox.getSelectedItem().toString());
         }
 
         controller.loadTicket(values);
