@@ -25,7 +25,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class JTableToPdf {
+public class PdfCreator {
 
     private JFrame frame;
     private JTable table;
@@ -34,12 +34,17 @@ public class JTableToPdf {
     private PdfWriter writer;
     private JScrollPane scrollPane;
     private String pathToFile;
+    private boolean[] selectedColumns;
 
-    public JTableToPdf (String pathToFile, JTable table) {
+    public PdfCreator (String pathToFile, JTable table) {
         this.pathToFile = pathToFile;
         this.table = table;
     }
 
+    public void setSelectedColumns(boolean[] selectedColumns) {
+        this.selectedColumns = selectedColumns;
+    }
+    
     public void openPdf() throws FileNotFoundException, DocumentException {
         document = new Document(PageSize.A4, 0f, 0f, 30, 30);
         writer = PdfWriter.getInstance(document, new FileOutputStream(pathToFile));
@@ -59,18 +64,28 @@ public class JTableToPdf {
         
         PdfPCell cell;
         for (int i = 0; i < table.getColumnCount(); i++) {
-            cell = new PdfPCell(new Paragraph(new Phrase(lineSpacing, table.getColumnName(i), FontFactory.getFont(FontFactory.COURIER, fntSize))));
-            cell.setBackgroundColor(new GrayColor(0.7f));
-            pdfTable.addCell(cell);
+            if (selectedColumns == null || selectedColumns[i]) {
+                cell = new PdfPCell(new Paragraph(new Phrase(lineSpacing, 
+                        table.getColumnName(i), 
+                        FontFactory.getFont(FontFactory.COURIER, fntSize)
+                )));
+                cell.setBackgroundColor(new GrayColor(0.7f));
+                pdfTable.addCell(cell);
+            }
         }
 
         for (int i = 0; i < table.getRowCount(); i++) {
             for (int j = 0; j < table.getColumnCount(); j++) {
-                Object value = table.getModel().getValueAt(i, j);
-                if (value != null) {
-                    pdfTable.addCell(new Phrase(lineSpacing, table.getModel().getValueAt(i, j).toString(), FontFactory.getFont(FontFactory.COURIER, fntSize)));
-                } else {
-                    pdfTable.addCell("");
+                if (selectedColumns == null || selectedColumns[j]) {
+                    Object value = table.getModel().getValueAt(i, j);
+                    if (value != null) {
+                        pdfTable.addCell(new Phrase(lineSpacing, 
+                                table.getModel().getValueAt(i, j).toString(), 
+                                FontFactory.getFont(FontFactory.COURIER, fntSize)
+                        ));
+                    } else {
+                        pdfTable.addCell("");
+                    }
                 }
             }
         }
@@ -78,9 +93,23 @@ public class JTableToPdf {
         document.add(pdfTable);
     }
 
+    private int getColumnCount() {
+        if (selectedColumns == null) {
+            return table.getColumnCount();
+        } else {
+            int columnCount = 0;
+            for (int i = 0; i < selectedColumns.length; i++) {
+                if (selectedColumns[i]) {
+                    columnCount++;
+                }
+            }
+            return columnCount;
+        }
+    }
+    
     public void createPDF() {
         try {
-            PdfPTable pdfTable = new PdfPTable(table.getColumnCount());
+            PdfPTable pdfTable = new PdfPTable(getColumnCount());
             openPdf();
             addData(pdfTable);
             closePdf();
