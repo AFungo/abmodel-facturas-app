@@ -203,10 +203,10 @@ public class FormatUtils {
         return false;
     }
 
-    public static Vector<String> listToVector(List<String> list) {
-        Vector<String> vector = new Vector<>();
-        for (String s : list) {
-            vector.addElement(s);
+    public static <E> Vector<E> listToVector(List<E> list) {
+        Vector<E> vector = new Vector<>();
+        for (E e : list) {
+            vector.addElement(e);
         }
         return vector;
     }
