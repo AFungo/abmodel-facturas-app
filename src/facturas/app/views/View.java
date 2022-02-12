@@ -22,7 +22,6 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
-import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -130,14 +129,14 @@ public class View extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro", "COMPRA/VENTA", "Env. Contador"
+                "id", "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro", "COMPRA/VENTA", "Env. Contador"
             }
         ) {
             Class[] types = new Class [] {
-                Object.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class, String.class
+                String.class, Object.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -313,21 +312,21 @@ public class View extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(472, 472, 472)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(showProviders)
-                            .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(244, 244, 244)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(viewMoreCalculusButton)
-                            .addComponent(calculateButton))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(resetDBButton)
-                        .addGap(371, 371, 371)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(472, 472, 472)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(showProviders)
+                                    .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(244, 244, 244)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(viewMoreCalculusButton)
+                                    .addComponent(calculateButton))
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(resetDBButton)
+                                .addGap(371, 371, 371)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -337,16 +336,15 @@ public class View extends javax.swing.JFrame {
                                 .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(inDollars))
-                        .addGap(162, 239, Short.MAX_VALUE))
+                            .addComponent(inDollars)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ticketsTableScroll)
+                        .addContainerGap()
+                        .addComponent(ticketsTableScroll)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -482,7 +480,7 @@ public class View extends javax.swing.JFrame {
             ticketsTable.addRowSelectionInterval(rowPoint, rowPoint);
             int row = ticketsTable.getSelectedRow();
             if (evt.isPopupTrigger() && ticketsTable.getSelectedRowCount() != 0) {
-                String deliveredValue = (String)ticketsTable.getValueAt(row, 15); //15 is the delivered column
+                String deliveredValue = (String)ticketsTable.getValueAt(row, 16); //16 is the delivered column
                 deliveredMenuItem.setText(deliveredValue == "NO" ? "Marcar como enviado" : "Marcar como no enviado");
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
@@ -496,13 +494,13 @@ public class View extends javax.swing.JFrame {
             SQLFilter filter = createTicketFilter(row);
             
             String sector = (String)sectorComboBox.getSelectedItem();
-            String type = (String)ticketsTable.getValueAt(row, 1);
+            String type = (String)ticketsTable.getValueAt(row, 2);
             if (type.contains("Retencion"))
                 controller.changeWithholdingAttribute(filter, "sector", sector);
             else
                 controller.changeTicketAttribute(filter, "sector", sector);
         
-            ticketsTable.setValueAt(sector, row, 13);   //column 13 is for sector
+            ticketsTable.setValueAt(sector, row, 14);   //column 14 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
@@ -514,23 +512,23 @@ public class View extends javax.swing.JFrame {
         int row = ticketsTable.getSelectedRow();
         SQLFilter filter = createTicketFilter(row);
         
-        String deliveredValue = (String)ticketsTable.getValueAt(row, 15) == "NO" ? "SI" : "NO";
-        String type = (String)ticketsTable.getValueAt(row, 1);
+        String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
+        String type = (String)ticketsTable.getValueAt(row, 2);
         if (type.contains("Retencion"))
             controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
         else
             controller.changeTicketAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
         
-        ticketsTable.setValueAt(deliveredValue, row, 15);   //column 13 is for sector
+        ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
     private SQLFilter createTicketFilter(int row) {
         SQLFilter filter = new SQLFilter();
-        Date date = (Date)ticketsTable.getValueAt(row, 0); //0 is the date column
+        Date date = (Date)ticketsTable.getValueAt(row, 1); //1 is the date column
         filter.add("date", "=", date, Date.class);
-        Integer noTicket = (Integer)ticketsTable.getValueAt(row, 2); //2 is the noTicket column
+        Integer noTicket = (Integer)ticketsTable.getValueAt(row, 3); //3 is the noTicket column
         filter.add("number", "=", noTicket, Integer.class);
-        String cuit = (String)ticketsTable.getValueAt(row, 5); //5 is the cuit column
+        String cuit = (String)ticketsTable.getValueAt(row, 6); //6 is the cuit column
         filter.add("providerDoc", "=", cuit, String.class);
         
         return filter;
