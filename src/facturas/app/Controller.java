@@ -148,19 +148,21 @@ public class Controller {
         return items;
     }
     
-    public Map<String, Float> getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
+    public Pair<Map<String,Float>,List<Pair<Date,String>>> getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
         ProfitCalculator profit = new ProfitCalculator();
         List<Withholding> tickWi= getTickets(selectedFilters);
         tickWi.addAll(getWithholdings(selectedFilters));
+        
+        List<Pair<Date,String>> missingDays = new LinkedList<>();
         for(Withholding t : tickWi) {
-            //if (t instanceof Ticket) {
             if (inDollars) {
-                getDayPrice(t);
+                Pair<Date,String> miss = getDayPrice(t);
+                if (miss != null) missingDays.add(miss);
             }
             if (t instanceof Ticket) profit.addTicket((Ticket)t, inDollars);
             else profit.addRetention(t, inDollars);
         }
-        return profit.getValues();
+        return new Pair<> (profit.getValues(), missingDays);
     }
     
     public void createTicket(String ticketData) {
@@ -201,21 +203,23 @@ public class Controller {
         WithholdingDAO.changeAttribute(filter, attribute, value);
     }
     
-    private void getDayPrice(Withholding t) {
+    private Pair<Date,String> getDayPrice(Withholding t) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
         if (price == null) {
             price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
         }
+        t.addDollarPrice(price);
         
         long limit = 86400000 * (daysLimit + 1);
         long currentTime = ticketDate.getTime();
         long nearestTime = price.getDate().getTime();
         long timeDiference = Math.abs(nearestTime - currentTime);
         if (timeDiference >= limit) {
-            System.out.println("Dollar price is too far away from the limit by " + (timeDiference / 86400000) + " days");
+            //System.out.println("Dollar price is too far away from the limit by " + (timeDiference / 86400000) + " days");
+            return new Pair<Date,String> (ticketDate, Long.toString(timeDiference / 86400000));
         }
-        t.addDollarPrice(price);
+        return null;
     }
 
     public void resetDB(){
@@ -231,8 +235,14 @@ public class Controller {
         ProviderDAO.changeAttribute(filters, attribute, value);
     }
     
-    public JTable getMissingPricesTable() {
-        Object[][] rows = {{}};
+    public JTable createMissingPricesTable(List<Pair<Date,String>> data) {
+        int length = data.size(), i = 0;
+        Object[][] rows = new Object[length][2];
+        for (Pair<Date,String> p : data) {
+            rows[i][0] = p.getFst();
+            rows[i][1] = p.getSnd();
+            i++;
+        }
         Object[] cols = {"Fecha","Dias hasta el precio mas cercano"};
         JTable table = new JTable(rows, cols);
         return table;
@@ -260,6 +270,6 @@ public class Controller {
         }
         
         Boolean issuedByMe = initialLine.contains("Receptor");
-        return new Pair<List<String>,Boolean>(stringItems, issuedByMe);
+        return new Pair<>(stringItems, issuedByMe);
     }
 }

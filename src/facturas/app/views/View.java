@@ -10,6 +10,7 @@ import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.utils.FormatUtils;
+import facturas.app.utils.Pair;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.sql.Date;
@@ -21,6 +22,9 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
+import java.util.Vector;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -389,7 +393,13 @@ public class View extends javax.swing.JFrame {
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         
-        Map<String, Float> values = controller.getProfit(filtersView.getFilters(), dollar);
+        Pair<Map<String,Float>,List<Pair<Date,String>>> profitResult = controller.getProfit(filtersView.getFilters(), dollar);
+        Map<String,Float> values = profitResult.getFst();
+        List<Pair<Date,String>> missingPrices = profitResult.getSnd();
+        if (!missingPrices.isEmpty()) {
+            JTable pricesTable = controller.createMissingPricesTable(missingPrices);
+            optionPane.showMessageDialog(null, new JScrollPane(pricesTable));
+        }
         
         String money = dollar ? " USD" : " ARS";
         profitTax.setText(numberFormat.format(values.get("totalProfitTax")) + money);

@@ -290,7 +290,7 @@ public class CalculusView extends javax.swing.JFrame {
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
 
-        Map<String, Float> values = controller.getProfit(filtersView.getFilters(), dollar);
+        Map<String, Float> values = controller.getProfit(filtersView.getFilters(), dollar).getFst();
         String money = dollar ? " USD" : " ARS";
         
         //iva
