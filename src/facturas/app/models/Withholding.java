@@ -47,13 +47,13 @@ public class Withholding {
     
     public Map<String, Object> getValues() {
         Map<String, Object> dict = new HashMap<>();
+        dict.put("id", id);
         dict.put("date", date);
         dict.put("type", type);
         dict.put("totalAmount", totalAmount);
         dict.put("provider", provider);
         dict.put("number", number);
         dict.put("sector", sector);
-        if (id != null) dict.put("id", id);
         if (delivered != null) dict.put("delivered", delivered);
         return dict;
     }                  
