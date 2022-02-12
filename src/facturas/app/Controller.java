@@ -40,6 +40,10 @@ public class Controller {
     
     private final int daysLimit = 4;
     
+    public int getDaysLimit() {
+        return daysLimit;
+    }
+    
     public void loadTickets(File f) {
         Pair<List<String>,Boolean> csvContent = readCsv(f, "ticket");
         List<String> stringTickets = csvContent.getFst();

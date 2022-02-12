@@ -398,7 +398,10 @@ public class View extends javax.swing.JFrame {
         List<Pair<Date,String>> missingPrices = profitResult.getSnd();
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = controller.createMissingPricesTable(missingPrices);
-            optionPane.showMessageDialog(null, new JScrollPane(pricesTable));
+            int daysLimit = controller.getDaysLimit();
+            optionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
+                "Las siguientes fechas exceden el limite de " + daysLimit +
+                " dias para redondear el dolar", optionPane.WARNING_MESSAGE);
         }
         
         String money = dollar ? " USD" : " ARS";
