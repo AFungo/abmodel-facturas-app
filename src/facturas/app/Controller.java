@@ -249,6 +249,8 @@ public class Controller {
         }
         Object[] cols = {"Fecha","Dias hasta el precio mas cercano"};
         JTable table = new JTable(rows, cols);
+        table.setDefaultEditor(Object.class, null);
+        table.setCellSelectionEnabled(true);
         return table;
     }
     
