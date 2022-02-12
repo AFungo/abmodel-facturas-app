@@ -80,6 +80,8 @@ public class ConfigManager {
     
     private static Map<String, Boolean> initialConfig() {
         Map<String, Boolean> configs = new HashMap<String, Boolean>();
+        //ticket
+        configs.put("id", true);
         configs.put("date", true);
         configs.put("type", true);
         configs.put("noTicket", true);
@@ -92,16 +94,18 @@ public class ConfigManager {
         configs.put("netAmountWOI", true);
         configs.put("amountImpEx", true);
         configs.put("iva", true);
-        configs.put("ticketSector", true);
         configs.put("totalAmount", true);
+        configs.put("ticketSector", true);
+        configs.put("purchaseNSales", true);
+        configs.put("delivered", true);
+        //provider
         configs.put("docNo", true);
         configs.put("name", true);
         configs.put("docType", true);
         configs.put("direction", true);
         configs.put("providerSector", true);
         configs.put("alias", true);
-        configs.put("purchaseNSales", true);
-        configs.put("delivered", true);
+ 
         return configs;
     }
 }

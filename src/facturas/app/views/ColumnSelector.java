@@ -63,6 +63,7 @@ public class ColumnSelector extends javax.swing.JFrame {
         aliasCheckBox = new javax.swing.JCheckBox();
         purchaseNSalesCheckBox = new javax.swing.JCheckBox();
         deliveredCheckBox = new javax.swing.JCheckBox();
+        idCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("COLUMNAS");
@@ -74,8 +75,7 @@ public class ColumnSelector extends javax.swing.JFrame {
 
         ticketLabel.setText("Comprobante");
 
-        dateCheckBox.setSelected(config.get("date")
-        );
+        dateCheckBox.setSelected(config.get("date"));
         dateCheckBox.setText("Fecha");
 
         typeCheckBox.setSelected(config.get("type"));
@@ -119,7 +119,8 @@ public class ColumnSelector extends javax.swing.JFrame {
 
         providerLabel.setText("Proveedor");
 
-        docNoCheckBox.setSelected(config.get("docNo"));
+        docNoCheckBox.setSelected(config.get("docNo")
+        );
         docNoCheckBox.setText("CUIT");
 
         nameCheckBox.setSelected(config.get("name"));
@@ -150,18 +151,63 @@ public class ColumnSelector extends javax.swing.JFrame {
         deliveredCheckBox.setSelected(config.get("delivered"));
         deliveredCheckBox.setText("Env. contador");
 
+        idCheckBox.setSelected(config.get("id"));
+        idCheckBox.setText("Id");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(applyButton)
+                .addGap(138, 138, 138))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(providerNameCheckBox)
+                                .addGap(3, 3, 3)
+                                .addComponent(changeTypeCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(netAmountWICheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(netAmountWOICheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(amountImpExCheckBox))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ivaCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(totalAmountCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ticketSectorCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(purchaseNSalesCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deliveredCheckBox))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(idCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(dateCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(typeCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(noTicketCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(numberToCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(authCodeCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(providerDocCheckBox))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(ticketLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(providerLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
                                 .addComponent(docNoCheckBox)
@@ -174,48 +220,8 @@ public class ColumnSelector extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(directionCheckBox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(providerSectorCheckBox))
-                            .addComponent(providerLabel)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(purchaseNSalesCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deliveredCheckBox))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(changeTypeCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(netAmountWICheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(netAmountWOICheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(amountImpExCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ivaCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalAmountCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ticketSectorCheckBox))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(dateCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(typeCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(noTicketCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numberToCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(authCodeCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(providerDocCheckBox)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(providerNameCheckBox)))))
-                .addContainerGap(78, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(applyButton)
-                .addGap(138, 138, 138))
+                                .addComponent(providerSectorCheckBox)))))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,21 +236,22 @@ public class ColumnSelector extends javax.swing.JFrame {
                     .addComponent(numberToCheckBox)
                     .addComponent(authCodeCheckBox)
                     .addComponent(providerDocCheckBox)
-                    .addComponent(providerNameCheckBox))
+                    .addComponent(idCheckBox))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(changeTypeCheckBox)
                     .addComponent(netAmountWICheckBox)
                     .addComponent(netAmountWOICheckBox)
                     .addComponent(amountImpExCheckBox)
-                    .addComponent(ivaCheckBox)
-                    .addComponent(totalAmountCheckBox)
-                    .addComponent(ticketSectorCheckBox))
-                .addGap(3, 3, 3)
+                    .addComponent(providerNameCheckBox))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(purchaseNSalesCheckBox)
-                    .addComponent(deliveredCheckBox))
-                .addGap(18, 18, 18)
+                    .addComponent(deliveredCheckBox)
+                    .addComponent(ticketSectorCheckBox)
+                    .addComponent(totalAmountCheckBox)
+                    .addComponent(ivaCheckBox))
+                .addGap(16, 16, 16)
                 .addComponent(providerLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -254,7 +261,7 @@ public class ColumnSelector extends javax.swing.JFrame {
                     .addComponent(directionCheckBox)
                     .addComponent(providerSectorCheckBox)
                     .addComponent(aliasCheckBox))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addComponent(applyButton)
                 .addGap(28, 28, 28))
         );
@@ -327,24 +334,26 @@ public class ColumnSelector extends javax.swing.JFrame {
     }
     
     public boolean[] getTicketSelectedColumns() {
-        boolean[] columns = new boolean [16];
+        boolean[] columns = new boolean [17];
         
-        columns[0] = dateCheckBox.isSelected();
-        columns[1] = typeCheckBox.isSelected();
-        columns[2] = noTicketCheckBox.isSelected();
-        columns[3] = numberToCheckBox.isSelected();
-        columns[4] = authCodeCheckBox.isSelected();
-        columns[5] = providerDocCheckBox.isSelected();
-        columns[6] = providerNameCheckBox.isSelected();
-        columns[7] = changeTypeCheckBox.isSelected();
-        columns[8] = netAmountWICheckBox.isSelected();
-        columns[9] = netAmountWOICheckBox.isSelected();
-        columns[10] = amountImpExCheckBox.isSelected();
-        columns[11] = ivaCheckBox.isSelected();
-        columns[12] = totalAmountCheckBox.isSelected();
-        columns[13] = ticketSectorCheckBox.isSelected();
-        columns[14] = purchaseNSalesCheckBox.isSelected();
-        columns[15] = deliveredCheckBox.isSelected();
+        int i = 0;
+        columns[i++] = idCheckBox.isSelected();
+        columns[i++] = dateCheckBox.isSelected();
+        columns[i++] = typeCheckBox.isSelected();
+        columns[i++] = noTicketCheckBox.isSelected();
+        columns[i++] = numberToCheckBox.isSelected();
+        columns[i++] = authCodeCheckBox.isSelected();
+        columns[i++] = providerDocCheckBox.isSelected();
+        columns[i++] = providerNameCheckBox.isSelected();
+        columns[i++] = changeTypeCheckBox.isSelected();
+        columns[i++] = netAmountWICheckBox.isSelected();
+        columns[i++] = netAmountWOICheckBox.isSelected();
+        columns[i++] = amountImpExCheckBox.isSelected();
+        columns[i++] = ivaCheckBox.isSelected();
+        columns[i++] = totalAmountCheckBox.isSelected();
+        columns[i++] = ticketSectorCheckBox.isSelected();
+        columns[i++] = purchaseNSalesCheckBox.isSelected();
+        columns[i++] = deliveredCheckBox.isSelected();
         
         return columns;
     }
@@ -352,12 +361,13 @@ public class ColumnSelector extends javax.swing.JFrame {
     public boolean[] getProviderSelectedColumns() {
         boolean[] columns = new boolean [6];
         
-        columns[0] = docNoCheckBox.isSelected();
-        columns[1] = nameCheckBox.isSelected();
-        columns[2] = aliasCheckBox.isSelected();
-        columns[3] = docTypeCheckBox.isSelected();
-        columns[4] = directionCheckBox.isSelected();
-        columns[5] = providerSectorCheckBox.isSelected();
+        int i = 0;
+        columns[i++] = docNoCheckBox.isSelected();
+        columns[i++] = nameCheckBox.isSelected();
+        columns[i++] = aliasCheckBox.isSelected();
+        columns[i++] = docTypeCheckBox.isSelected();
+        columns[i++] = directionCheckBox.isSelected();
+        columns[i++] = providerSectorCheckBox.isSelected();
         
         return columns;
     }
@@ -376,6 +386,7 @@ public class ColumnSelector extends javax.swing.JFrame {
     private javax.swing.JCheckBox directionCheckBox;
     private javax.swing.JCheckBox docNoCheckBox;
     private javax.swing.JCheckBox docTypeCheckBox;
+    private javax.swing.JCheckBox idCheckBox;
     private javax.swing.JCheckBox ivaCheckBox;
     private javax.swing.JCheckBox nameCheckBox;
     private javax.swing.JCheckBox netAmountWICheckBox;
