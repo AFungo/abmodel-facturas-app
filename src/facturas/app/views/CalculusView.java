@@ -9,7 +9,12 @@ import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import facturas.app.Controller;
+import facturas.app.utils.Pair;
+import java.sql.Date;
+import java.util.List;
 import java.util.Map;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -35,6 +40,7 @@ public class CalculusView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        optionPane = new javax.swing.JOptionPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -290,7 +296,17 @@ public class CalculusView extends javax.swing.JFrame {
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
 
-        Map<String, Float> values = controller.getProfit(filtersView.getFilters(), dollar).getFst();
+        Pair<Map<String,Float>,List<Pair<Date,String>>> profitResult = controller.getProfit(filtersView.getFilters(), dollar);
+        Map<String,Float> values = profitResult.getFst();
+        List<Pair<Date,String>> missingPrices = profitResult.getSnd();
+        if (!missingPrices.isEmpty()) {
+            JTable pricesTable = controller.createMissingPricesTable(missingPrices);
+            int daysLimit = controller.getDaysLimit();
+            optionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
+                "Las siguientes fechas exceden el limite de " + daysLimit +
+                " dias para redondear el dolar", optionPane.WARNING_MESSAGE);
+        }
+        
         String money = dollar ? " USD" : " ARS";
         
         //iva
@@ -361,6 +377,7 @@ public class CalculusView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton loadDollarPricesButton;
+    private javax.swing.JOptionPane optionPane;
     private javax.swing.JTextField receivedIvaTextField;
     private javax.swing.JTextField receivedNetAmountTextField;
     private javax.swing.JCheckBox showInDollarsCheckBox;
