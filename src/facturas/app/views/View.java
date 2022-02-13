@@ -9,10 +9,13 @@ import facturas.app.Controller;
 import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
+import facturas.app.utils.ConfigManager;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import facturas.app.utils.PdfCreator;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.Map;
 import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -85,6 +89,7 @@ public class View extends javax.swing.JFrame {
         inDollars = new javax.swing.JCheckBox();
         resetDBButton = new javax.swing.JButton();
         viewMoreCalculusButton = new javax.swing.JButton();
+        createPdf = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         multipleLoad = new javax.swing.JMenu();
@@ -232,6 +237,13 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        createPdf.setText("Crear PDF");
+        createPdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createPdfActionPerformed(evt);
+            }
+        });
+
         files.setText("File");
 
         multipleLoad.setText("Cargar (.csv)...");
@@ -313,21 +325,24 @@ public class View extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(472, 472, 472)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(showProviders)
-                            .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(244, 244, 244)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(viewMoreCalculusButton)
-                            .addComponent(calculateButton))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(resetDBButton)
-                        .addGap(371, 371, 371)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(206, 206, 206)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(createPdf)
+                                        .addGap(188, 188, 188)
+                                        .addComponent(showProviders)))
+                                .addGap(244, 244, 244)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(viewMoreCalculusButton)
+                                    .addComponent(calculateButton))
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(resetDBButton)
+                                .addGap(371, 371, 371)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -337,16 +352,15 @@ public class View extends javax.swing.JFrame {
                                 .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(inDollars))
-                        .addGap(162, 239, Short.MAX_VALUE))
+                            .addComponent(inDollars)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ticketsTableScroll)
+                        .addContainerGap()
+                        .addComponent(ticketsTableScroll)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -373,7 +387,9 @@ public class View extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(showTickets)
                         .addGap(18, 18, 18)
-                        .addComponent(showProviders)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(showProviders)
+                            .addComponent(createPdf))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -551,6 +567,27 @@ public class View extends javax.swing.JFrame {
         ticketsTableMouseReleased(evt);
     }//GEN-LAST:event_ticketsTableMousePressed
 
+    private void createPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPdfActionPerformed
+                JFrame parentFrame = new JFrame();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("pdf")) {
+                file = new File(file.toString() + ".pdf");
+                file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".pdf");
+            }
+                   
+            PdfCreator pdfCreator = new PdfCreator(file.getAbsolutePath(), ticketsTable);
+            pdfCreator.setSelectedColumns(getSelectedColumns());
+            pdfCreator.createPDF();
+        }
+    }//GEN-LAST:event_createPdfActionPerformed
+
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -563,10 +600,33 @@ public class View extends javax.swing.JFrame {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
     }
+            
+    private boolean[] getSelectedColumns() {
+        Map<String, Boolean> config = ConfigManager.readConfig();
+        boolean[] selectedColumns = new boolean[16];
+        selectedColumns[0] = config.get("date");
+        selectedColumns[1] = config.get("type");
+        selectedColumns[2] = config.get("noTicket");
+        selectedColumns[3] = config.get("numberTo");
+        selectedColumns[4] = config.get("authCode");
+        selectedColumns[5] = config.get("providerDoc");
+        selectedColumns[6] = config.get("providerName");
+        selectedColumns[7] = config.get("changeType");
+        selectedColumns[8] = config.get("netAmountWI");
+        selectedColumns[9] = config.get("netAmountWOI");
+        selectedColumns[10] = config.get("amountImpEx");
+        selectedColumns[11] = config.get("iva");
+        selectedColumns[12] = config.get("totalAmount");
+        selectedColumns[13] = config.get("ticketSector");
+        selectedColumns[14] = config.get("purchaseNSales");
+        selectedColumns[15] = config.get("delivered");
+        return selectedColumns;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
+    private javax.swing.JButton createPdf;
     private javax.swing.JMenuItem deliveredMenuItem;
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;

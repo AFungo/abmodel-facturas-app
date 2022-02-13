@@ -162,10 +162,14 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <EmptySpace min="-2" pref="472" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="206" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="showProviders" min="-2" max="-2" attributes="0"/>
-                                  <Component id="showTickets" min="-2" pref="133" max="-2" attributes="0"/>
+                                  <Component id="showTickets" alignment="1" min="-2" pref="133" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="createPdf" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="188" max="-2" attributes="0"/>
+                                      <Component id="showProviders" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace min="-2" pref="244" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
@@ -237,7 +241,10 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="showTickets" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="showProviders" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="showProviders" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="createPdf" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -403,6 +410,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewMoreCalculusButtonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="createPdf">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Crear PDF"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createPdfActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
