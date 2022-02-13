@@ -63,6 +63,11 @@ public class WithholdingDAO {
         executeQuery(query, true);
     }
     
+    public static void remove(SQLFilter filters) {
+        String query = "DELETE FROM Withholding " + filters.get();
+        executeQuery(query, true);
+    }
+    
     private static List<Withholding> getWithholdingsList(ResultSet result) {
         List<Withholding> whithholdingList = new LinkedList<>();
         try {

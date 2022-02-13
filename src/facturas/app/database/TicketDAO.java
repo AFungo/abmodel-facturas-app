@@ -60,6 +60,11 @@ public class TicketDAO extends DAO {
         executeQuery(query, true);
     }
     
+    public static void remove(SQLFilter filters) {
+        String query = "DELETE FROM Ticket " + filters.get();
+        executeQuery(query, true);
+    }
+    
     private static List<Withholding> getTicketsList(ResultSet result) {
         List<Withholding> ticketsList = new LinkedList<>();
         try {

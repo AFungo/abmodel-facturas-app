@@ -207,6 +207,14 @@ public class Controller {
         WithholdingDAO.changeAttribute(filter, attribute, value);
     }
     
+    public void removeItem(SQLFilter filter, boolean isTicket) {
+        if (isTicket) {
+            TicketDAO.remove(filter);
+        } else {
+            WithholdingDAO.remove(filter);
+        }
+    }
+    
     private Pair<Date,String> getDayPrice(Withholding t) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
