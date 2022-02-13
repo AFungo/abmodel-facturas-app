@@ -96,7 +96,7 @@ public class DBManager {
                                         + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
                                         + "date DATE NOT NULL," //
                                         + "type VARCHAR(50) NOT NULL," //
-                                        + "number INTEGER NOT NULL," //
+                                        + "number VARCHAR(30) NOT NULL," //
                                         + "numberTo INTEGER," //
                                         + "authCode VARCHAR(30) NOT NULL," //
                                         + "providerDoc VARCHAR(30) NOT NULL," //
@@ -133,7 +133,7 @@ public class DBManager {
                                         + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
                                         + "date DATE NOT NULL,"
                                         + "type VARCHAR(50) NOT NULL,"
-                                        + "number INTEGER NOT NULL,"
+                                        + "number VARCHAR(30) NOT NULL,"
                                         + "providerDoc VARCHAR(30) NOT NULL,"
                                         + "delivered BOOLEAN DEFAULT false,"
                                         + "totalAmount REAL NOT NULL,"
