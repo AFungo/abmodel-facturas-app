@@ -9,10 +9,13 @@ import facturas.app.Controller;
 import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
+import facturas.app.utils.ConfigManager;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import facturas.app.utils.PdfCreator;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -22,9 +25,9 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
-import java.util.Vector;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -85,6 +88,7 @@ public class View extends javax.swing.JFrame {
         inDollars = new javax.swing.JCheckBox();
         resetDBButton = new javax.swing.JButton();
         viewMoreCalculusButton = new javax.swing.JButton();
+        createPdf = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         multipleLoad = new javax.swing.JMenu();
@@ -130,14 +134,14 @@ public class View extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro", "COMPRA/VENTA", "Env. Contador"
+                "id", "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro", "COMPRA/VENTA", "Env. Contador"
             }
         ) {
             Class[] types = new Class [] {
-                Object.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class, String.class
+                String.class, Object.class, String.class, Integer.class, Integer.class, Integer.class, Integer.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class, String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -232,6 +236,13 @@ public class View extends javax.swing.JFrame {
             }
         });
 
+        createPdf.setText("Crear PDF");
+        createPdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createPdfActionPerformed(evt);
+            }
+        });
+
         files.setText("File");
 
         multipleLoad.setText("Cargar (.csv)...");
@@ -313,21 +324,24 @@ public class View extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(472, 472, 472)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(showProviders)
-                            .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(244, 244, 244)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(viewMoreCalculusButton)
-                            .addComponent(calculateButton))
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(resetDBButton)
-                        .addGap(371, 371, 371)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(206, 206, 206)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(createPdf)
+                                        .addGap(188, 188, 188)
+                                        .addComponent(showProviders)))
+                                .addGap(244, 244, 244)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(viewMoreCalculusButton)
+                                    .addComponent(calculateButton))
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(resetDBButton)
+                                .addGap(371, 371, 371)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -337,16 +351,15 @@ public class View extends javax.swing.JFrame {
                                 .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(inDollars))
-                        .addGap(162, 239, Short.MAX_VALUE))
+                            .addComponent(inDollars)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ticketsTableScroll)
+                        .addContainerGap()
+                        .addComponent(ticketsTableScroll)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -373,7 +386,9 @@ public class View extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(showTickets)
                         .addGap(18, 18, 18)
-                        .addComponent(showProviders)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(showProviders)
+                            .addComponent(createPdf))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -482,7 +497,7 @@ public class View extends javax.swing.JFrame {
             ticketsTable.addRowSelectionInterval(rowPoint, rowPoint);
             int row = ticketsTable.getSelectedRow();
             if (evt.isPopupTrigger() && ticketsTable.getSelectedRowCount() != 0) {
-                String deliveredValue = (String)ticketsTable.getValueAt(row, 15); //15 is the delivered column
+                String deliveredValue = (String)ticketsTable.getValueAt(row, 16); //16 is the delivered column
                 deliveredMenuItem.setText(deliveredValue == "NO" ? "Marcar como enviado" : "Marcar como no enviado");
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
@@ -496,13 +511,13 @@ public class View extends javax.swing.JFrame {
             SQLFilter filter = createTicketFilter(row);
             
             String sector = (String)sectorComboBox.getSelectedItem();
-            String type = (String)ticketsTable.getValueAt(row, 1);
+            String type = (String)ticketsTable.getValueAt(row, 2);
             if (type.contains("Retencion"))
                 controller.changeWithholdingAttribute(filter, "sector", sector);
             else
                 controller.changeTicketAttribute(filter, "sector", sector);
         
-            ticketsTable.setValueAt(sector, row, 13);   //column 13 is for sector
+            ticketsTable.setValueAt(sector, row, 14);   //column 14 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
@@ -514,23 +529,23 @@ public class View extends javax.swing.JFrame {
         int row = ticketsTable.getSelectedRow();
         SQLFilter filter = createTicketFilter(row);
         
-        String deliveredValue = (String)ticketsTable.getValueAt(row, 15) == "NO" ? "SI" : "NO";
-        String type = (String)ticketsTable.getValueAt(row, 1);
+        String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
+        String type = (String)ticketsTable.getValueAt(row, 2);
         if (type.contains("Retencion"))
             controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
         else
             controller.changeTicketAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
         
-        ticketsTable.setValueAt(deliveredValue, row, 15);   //column 13 is for sector
+        ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
     private SQLFilter createTicketFilter(int row) {
         SQLFilter filter = new SQLFilter();
-        Date date = (Date)ticketsTable.getValueAt(row, 0); //0 is the date column
+        Date date = (Date)ticketsTable.getValueAt(row, 1); //1 is the date column
         filter.add("date", "=", date, Date.class);
-        Integer noTicket = (Integer)ticketsTable.getValueAt(row, 2); //2 is the noTicket column
+        Integer noTicket = (Integer)ticketsTable.getValueAt(row, 3); //3 is the noTicket column
         filter.add("number", "=", noTicket, Integer.class);
-        String cuit = (String)ticketsTable.getValueAt(row, 5); //5 is the cuit column
+        String cuit = (String)ticketsTable.getValueAt(row, 6); //6 is the cuit column
         filter.add("providerDoc", "=", cuit, String.class);
         
         return filter;
@@ -551,6 +566,27 @@ public class View extends javax.swing.JFrame {
         ticketsTableMouseReleased(evt);
     }//GEN-LAST:event_ticketsTableMousePressed
 
+    private void createPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPdfActionPerformed
+                JFrame parentFrame = new JFrame();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("pdf")) {
+                file = new File(file.toString() + ".pdf");
+                file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".pdf");
+            }
+                   
+            PdfCreator pdfCreator = new PdfCreator(file.getAbsolutePath(), ticketsTable);
+            pdfCreator.setSelectedColumns(getSelectedColumns());
+            pdfCreator.createPDF();
+        }
+    }//GEN-LAST:event_createPdfActionPerformed
+
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -563,10 +599,33 @@ public class View extends javax.swing.JFrame {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
     }
+            
+    private boolean[] getSelectedColumns() {
+        Map<String, Boolean> config = ConfigManager.readConfig();
+        boolean[] selectedColumns = new boolean[16];
+        selectedColumns[0] = config.get("date");
+        selectedColumns[1] = config.get("type");
+        selectedColumns[2] = config.get("noTicket");
+        selectedColumns[3] = config.get("numberTo");
+        selectedColumns[4] = config.get("authCode");
+        selectedColumns[5] = config.get("providerDoc");
+        selectedColumns[6] = config.get("providerName");
+        selectedColumns[7] = config.get("changeType");
+        selectedColumns[8] = config.get("netAmountWI");
+        selectedColumns[9] = config.get("netAmountWOI");
+        selectedColumns[10] = config.get("amountImpEx");
+        selectedColumns[11] = config.get("iva");
+        selectedColumns[12] = config.get("totalAmount");
+        selectedColumns[13] = config.get("ticketSector");
+        selectedColumns[14] = config.get("purchaseNSales");
+        selectedColumns[15] = config.get("delivered");
+        return selectedColumns;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
+    private javax.swing.JButton createPdf;
     private javax.swing.JMenuItem deliveredMenuItem;
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;

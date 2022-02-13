@@ -52,7 +52,7 @@ public class FormatUtils {
         
         String buyNSell = (boolean)dict.get("issuedByMe") ? "VENTA" : "COMPRA";
         
-        Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
+        Object[] values = {dict.get("id"), dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
             ((Provider)dict.get("provider")).getValues().get("docNo"), provider.getValues().get("name"), dict.get("exchangeType"), dict.get("netAmountWI"), 
             dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector, 
             buyNSell, delivered ? "SI" : "NO"};

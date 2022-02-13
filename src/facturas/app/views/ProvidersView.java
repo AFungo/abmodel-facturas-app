@@ -296,7 +296,6 @@ public class ProvidersView extends javax.swing.JFrame {
             pdfCreator.setSelectedColumns(getSelectedColumns());
             pdfCreator.createPDF();
         }
- 
     }//GEN-LAST:event_createPdfActionPerformed
 
     private void updateAttribute(String attribute, String value, int column) {

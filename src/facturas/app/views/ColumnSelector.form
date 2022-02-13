@@ -27,8 +27,55 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <Component id="applyButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
+          </Group>
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="providerNameCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                              <Component id="changeTypeCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="netAmountWICheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="netAmountWOICheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="amountImpExCheckBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="ivaCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="totalAmountCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="ticketSectorCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="purchaseNSalesCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="deliveredCheckBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="idCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="dateCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="typeCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="noTicketCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="numberToCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="authCodeCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="providerDocCheckBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="ticketLabel" min="-2" max="-2" attributes="0"/>
@@ -36,6 +83,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="providerLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                               <Component id="docNoCheckBox" min="-2" max="-2" attributes="0"/>
@@ -50,56 +98,10 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="providerSectorCheckBox" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="providerLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="purchaseNSalesCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="deliveredCheckBox" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="changeTypeCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="netAmountWICheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="netAmountWOICheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="amountImpExCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="ivaCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="totalAmountCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="ticketSectorCheckBox" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="dateCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="typeCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="noTicketCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="numberToCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="authCodeCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="providerDocCheckBox" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="providerNameCheckBox" min="-2" max="-2" attributes="0"/>
-                          </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="78" max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              <Component id="applyButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
+              <EmptySpace pref="136" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -116,7 +118,7 @@
                   <Component id="numberToCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="authCodeCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="providerDocCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="providerNameCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="idCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -124,16 +126,17 @@
                   <Component id="netAmountWICheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="netAmountWOICheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="amountImpExCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ivaCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="totalAmountCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="ticketSectorCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="providerNameCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="purchaseNSalesCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="deliveredCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ticketSectorCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="totalAmountCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ivaCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
               <Component id="providerLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -144,7 +147,7 @@
                   <Component id="providerSectorCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="aliasCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="73" max="32767" attributes="0"/>
+              <EmptySpace pref="72" max="32767" attributes="0"/>
               <Component id="applyButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
           </Group>
@@ -160,86 +163,112 @@
     <Component class="javax.swing.JCheckBox" name="dateCheckBox">
       <Properties>
         <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="config.get(&quot;date&quot;)&#xd;&#xa;" type="code"/>
+          <Connection code="config.get(&quot;date&quot;)" type="code"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Fecha"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="typeCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;type&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Tipo"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="noTicketCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;noTicket&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Nro factura"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="numberToCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;numberTo&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Numero hasta"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="authCodeCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;authCode&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="C&#xf3;d. Autorizaci&#xf3;n"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="providerDocCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;providerDoc&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Nro. Doc. Emisor"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="providerNameCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;providerName&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Denominaci&#xf3;n Emisor"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="changeTypeCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;changeType&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Tipo Cambio"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="netAmountWICheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;netAmountWI&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Imp. Neto Gravado"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="netAmountWOICheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;netAmountWOI&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Imp. Neto No Gravado"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="amountImpExCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;amountImpEx&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Imp. Op. Exentas"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="ivaCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;iva&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="IVA"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="ticketSectorCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;ticketSector&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Rubro"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="totalAmountCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;totalAmount&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Imp. Total"/>
       </Properties>
     </Component>
@@ -250,31 +279,41 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="docNoCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;docNo&quot;)&#xd;&#xa;" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="CUIT"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="nameCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;name&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Nombre"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="docTypeCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;docType&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Tipo de documento"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="directionCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;direction&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Direcci&#xf3;n"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="providerSectorCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;providerSector&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Rubro"/>
       </Properties>
     </Component>
@@ -288,18 +327,34 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="aliasCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;alias&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Alias"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="purchaseNSalesCheckBox">
       <Properties>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;purchaseNSales&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Compra/Venta"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JCheckBox" name="deliveredCheckBox">
       <Properties>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;delivered&quot;)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Env. contador"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="idCheckBox">
+      <Properties>
+        <Property name="selected" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="config.get(&quot;id&quot;)" type="code"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Id"/>
       </Properties>
     </Component>
   </SubComponents>

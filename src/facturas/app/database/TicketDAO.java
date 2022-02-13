@@ -65,6 +65,7 @@ public class TicketDAO extends DAO {
         try {
             while(result.next()) {
                 Map<String, String> ticketAttributes = new HashMap<>();
+                ticketAttributes.put("id", result.getString(1));
                 ticketAttributes.put("date", result.getString(2));
                 ticketAttributes.put("type", result.getString(3));
                 ticketAttributes.put("number", result.getString(4));
