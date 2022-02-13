@@ -16,7 +16,7 @@ import java.sql.Date;
  */
 public class Withholding {
     protected Provider provider;
-    protected int number;
+    protected String number;
     protected Date date;
     protected Float totalAmount;
     protected String type;
@@ -28,7 +28,7 @@ public class Withholding {
     public Withholding(Map<String, String> data) {
         date = FormatUtils.dateGen(data.get("date"));
         type = data.get("type");
-        number = Integer.parseInt(data.get("number"));
+        number = data.get("number");
         provider = new Provider(data);
         totalAmount = Float.parseFloat(data.get("totalAmount"));
         sector = data.get("sector");

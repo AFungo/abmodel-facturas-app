@@ -9,6 +9,7 @@ import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
+import java.math.BigInteger;
 
 import java.sql.Date;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class FormatUtils {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
         attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerDoc, issuedByMe";
-        values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
+        values += "'" + dict.get("number") + "', " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
                 + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
                 + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getValues().get("docNo") + "', " + dict.get("issuedByMe");
 
@@ -93,7 +94,7 @@ public class FormatUtils {
         Map<String, Object> dict = w.getValues();
         String attributes = "", values = "";
         attributes += "number, totalAmount, date, type, providerDoc";
-        values += dict.get("number") + ", " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
+        values += "'" + dict.get("number") + "', " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
         + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getValues().get("docNo") + "'";
 
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"id", "delivered"}, new String[] {"sector"});
@@ -237,7 +238,7 @@ public class FormatUtils {
             if (expectedClass == "Float") {
                 Float.parseFloat(value);
             } else if (expectedClass == "Integer") {
-                Integer.parseInt(value);
+                new BigInteger(value);
             } else {
                 System.out.println("class wrongly passed, " + expectedClass + " is not valid");
                 return false;
