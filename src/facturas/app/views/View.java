@@ -602,23 +602,24 @@ public class View extends javax.swing.JFrame {
             
     private boolean[] getSelectedColumns() {
         Map<String, Boolean> config = ConfigManager.readConfig();
-        boolean[] selectedColumns = new boolean[16];
-        selectedColumns[0] = config.get("date");
-        selectedColumns[1] = config.get("type");
-        selectedColumns[2] = config.get("noTicket");
-        selectedColumns[3] = config.get("numberTo");
-        selectedColumns[4] = config.get("authCode");
-        selectedColumns[5] = config.get("providerDoc");
-        selectedColumns[6] = config.get("providerName");
-        selectedColumns[7] = config.get("changeType");
-        selectedColumns[8] = config.get("netAmountWI");
-        selectedColumns[9] = config.get("netAmountWOI");
-        selectedColumns[10] = config.get("amountImpEx");
-        selectedColumns[11] = config.get("iva");
-        selectedColumns[12] = config.get("totalAmount");
-        selectedColumns[13] = config.get("ticketSector");
-        selectedColumns[14] = config.get("purchaseNSales");
-        selectedColumns[15] = config.get("delivered");
+        boolean[] selectedColumns = new boolean[17];
+        selectedColumns[0] = config.get("id");
+        selectedColumns[1] = config.get("date");
+        selectedColumns[2] = config.get("type");
+        selectedColumns[3] = config.get("noTicket");
+        selectedColumns[4] = config.get("numberTo");
+        selectedColumns[5] = config.get("authCode");
+        selectedColumns[6] = config.get("providerDoc");
+        selectedColumns[7] = config.get("providerName");
+        selectedColumns[8] = config.get("changeType");
+        selectedColumns[9] = config.get("netAmountWI");
+        selectedColumns[10] = config.get("netAmountWOI");
+        selectedColumns[11] = config.get("amountImpEx");
+        selectedColumns[12] = config.get("iva");
+        selectedColumns[13] = config.get("totalAmount");
+        selectedColumns[14] = config.get("ticketSector");
+        selectedColumns[15] = config.get("purchaseNSales");
+        selectedColumns[16] = config.get("delivered");
         return selectedColumns;
     }
     
