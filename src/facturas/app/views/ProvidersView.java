@@ -10,12 +10,14 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.ConfigManager;
 import facturas.app.utils.FormatUtils;
-import facturas.app.utils.JTableToPdf;
+import facturas.app.utils.PdfCreator;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -76,7 +78,7 @@ public class ProvidersView extends javax.swing.JFrame {
         searchProvider = new javax.swing.JButton();
         comboBox = new javax.swing.JComboBox<>();
         showAllProviders = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        createPdf = new javax.swing.JButton();
 
         directionMenuItem.setText("Modificar direccion");
         directionMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -167,10 +169,10 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Crear PDF");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        createPdf.setText("Crear PDF");
+        createPdf.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                createPdfActionPerformed(evt);
             }
         });
 
@@ -189,7 +191,7 @@ public class ProvidersView extends javax.swing.JFrame {
                         .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(63, 63, 63))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(createPdf)
                         .addGap(120, 120, 120)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(showAllProviders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -208,7 +210,7 @@ public class ProvidersView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(showAllProviders)
-                    .addComponent(jButton1))
+                    .addComponent(createPdf))
                 .addGap(21, 21, 21))
         );
 
@@ -275,7 +277,7 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_directionMenuItemActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void createPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPdfActionPerformed
         JFrame parentFrame = new JFrame();
 
         JFileChooser fileChooser = new JFileChooser();
@@ -290,11 +292,11 @@ public class ProvidersView extends javax.swing.JFrame {
                 file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".pdf");
             }
                    
-            JTableToPdf pdfCreator = new JTableToPdf(file.getAbsolutePath(), providersTable);
+            PdfCreator pdfCreator = new PdfCreator(file.getAbsolutePath(), providersTable);
+            pdfCreator.setSelectedColumns(getSelectedColumns());
             pdfCreator.createPDF();
-        }
- 
-    }//GEN-LAST:event_jButton1ActionPerformed
+        } 
+    }//GEN-LAST:event_createPdfActionPerformed
 
     private void updateAttribute(String attribute, String value, int column) {
          SQLFilter filter = new SQLFilter();
@@ -317,6 +319,17 @@ public class ProvidersView extends javax.swing.JFrame {
             model.removeRow(i);
     }
     
+    private boolean[] getSelectedColumns() {
+        Map<String, Boolean> config = ConfigManager.readConfig();
+        boolean[] selectedColumns = new boolean[6];
+        selectedColumns[0] = config.get("docNo");
+        selectedColumns[1] = config.get("providerName");
+        selectedColumns[2] = config.get("alias");
+        selectedColumns[3] = config.get("docType");
+        selectedColumns[4] = config.get("direction");
+        selectedColumns[5] = config.get("providerSector");
+        return selectedColumns;
+    }
     
     private Controller controller;
     private AutoSuggestor autoSuggestor;
@@ -324,8 +337,8 @@ public class ProvidersView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aliasMenuItem;
     private javax.swing.JComboBox<String> comboBox;
+    private javax.swing.JButton createPdf;
     private javax.swing.JMenuItem directionMenuItem;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable providersTable;
