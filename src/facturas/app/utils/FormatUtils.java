@@ -113,7 +113,7 @@ public class FormatUtils {
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         
-        Object[] values = {dict.get("date"), dict.get("type"), dict.get("number"), null, null, provider.getValues().get("docNo"), 
+        Object[] values = {dict.get("id"), dict.get("date"), dict.get("type"), dict.get("number"), null, null, provider.getValues().get("docNo"), 
         provider.getValues().get("name"), null, null, null, null, null, dict.get("totalAmount"), sector, null, delivered ? "SI" : "NO"};
         //null values are necessary so the array fits in the table of the view
         return values;
