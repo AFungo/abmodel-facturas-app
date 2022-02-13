@@ -101,6 +101,7 @@ public class ConfigManager {
         //provider
         configs.put("docNo", true);
         configs.put("name", true);
+        configs.put("alias", true);
         configs.put("docType", true);
         configs.put("direction", true);
         configs.put("providerSector", true);
