@@ -92,16 +92,16 @@ public class ConfigManager {
         configs.put("netAmountWOI", true);
         configs.put("amountImpEx", true);
         configs.put("iva", true);
-        configs.put("ticketSector", true);
         configs.put("totalAmount", true);
+        configs.put("ticketSector", true);
+        configs.put("purchaseNSales", true);
+        configs.put("delivered", true);
         configs.put("docNo", true);
         configs.put("name", true);
+        configs.put("alias", true);
         configs.put("docType", true);
         configs.put("direction", true);
         configs.put("providerSector", true);
-        configs.put("alias", true);
-        configs.put("purchaseNSales", true);
-        configs.put("delivered", true);
         return configs;
     }
 }
