@@ -72,6 +72,7 @@ public class View extends javax.swing.JFrame {
         popupMenu = new javax.swing.JPopupMenu();
         sectorMenuItem = new javax.swing.JMenuItem();
         deliveredMenuItem = new javax.swing.JMenuItem();
+        deleteMenuItem = new javax.swing.JMenuItem();
         optionPane = new javax.swing.JOptionPane();
         sectorComboBox = new javax.swing.JComboBox<>();
         ticketsTableScroll = new javax.swing.JScrollPane();
@@ -117,6 +118,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         popupMenu.add(deliveredMenuItem);
+
+        deleteMenuItem.setText("Eliminar");
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(deleteMenuItem);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
 
@@ -543,8 +552,8 @@ public class View extends javax.swing.JFrame {
         SQLFilter filter = new SQLFilter();
         Date date = (Date)ticketsTable.getValueAt(row, 1); //1 is the date column
         filter.add("date", "=", date, Date.class);
-        Integer noTicket = (Integer)ticketsTable.getValueAt(row, 3); //3 is the noTicket column
-        filter.add("number", "=", noTicket, Integer.class);
+        String noTicket = (String)ticketsTable.getValueAt(row, 3); //3 is the noTicket column
+        filter.add("number", "=", noTicket, String.class);
         String cuit = (String)ticketsTable.getValueAt(row, 6); //6 is the cuit column
         filter.add("providerDoc", "=", cuit, String.class);
         
@@ -587,6 +596,19 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_createPdfActionPerformed
 
+    private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
+        int row = ticketsTable.getSelectedRow();
+        SQLFilter filter = createTicketFilter(row);
+        
+        String type = (String)ticketsTable.getValueAt(row, 2);
+        if (type.contains("Retencion"))
+            controller.removeItem(filter, false);
+        else
+            controller.removeItem(filter, true);
+        
+        ((DefaultTableModel)ticketsTable.getModel()).removeRow(row); //remove row from view
+    }//GEN-LAST:event_deleteMenuItemActionPerformed
+
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -627,6 +649,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
     private javax.swing.JButton createPdf;
+    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenuItem deliveredMenuItem;
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;
