@@ -174,7 +174,9 @@ public class View extends javax.swing.JFrame {
         ticketsTableScroll.setViewportView(ticketsTable);
         ticketsTable.setAutoCreateRowSorter(true);
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
-        for (Withholding t : controller.getTickets()) {
+        List<Withholding> tickets = controller.getTickets();
+        tickets.addAll(controller.getWithholdings());
+        for (Withholding t : tickets) {
             model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
         }
 
