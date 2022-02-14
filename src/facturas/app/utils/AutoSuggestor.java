@@ -48,7 +48,7 @@ public class AutoSuggestor {
     private static DefaultComboBoxModel getSuggestedModel(List<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
         for (String s : list) {
-            if (s.toUpperCase().startsWith(text.toUpperCase())) {
+            if (s.toUpperCase().contains(text.toUpperCase())) {
                 m.addElement(s);
             }
         }
@@ -118,7 +118,7 @@ public class AutoSuggestor {
                     case KeyEvent.VK_RIGHT:
                         for (int i = 0; i < suggestions.size(); i++) {
                             String str = suggestions.elementAt(i);
-                            if (str.startsWith(text)) {
+                            if (str.contains(text)) {
                                 comboBox.setSelectedIndex(-1);
                                 textField.setText(str);
                                 return;
