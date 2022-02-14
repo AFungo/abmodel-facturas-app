@@ -96,7 +96,6 @@ public class SQLFilter {
             sqlCode += lastConjunction;
         }
         
-        System.out.println("Hola" + sqlCode);
         return sqlCode;
     }
     
