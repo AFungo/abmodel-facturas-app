@@ -32,7 +32,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
      * Creates new form TicketLoaderView
      * @param controller
      */
-    public TicketLoaderView(Controller controller) {
+    public TicketLoaderView(Controller controller, View mainView) {
         this.controller = controller;
         initComponents();
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
@@ -42,6 +42,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providerSectorsAutoSuggestor = new AutoSuggestor(providerSectorComboBox, getSectors());
         providersAutoSuggestor.autoSuggest();
         exchangeTypeTextField.setEditable(false);
+        this.mainView = mainView;
         
         e = providersAutoSuggestor.getEnabler();
         e.addComboBox(providerDocTypeComboBox);
@@ -444,6 +445,9 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
         controller.loadTicket(values);
         cleanTextFields();
+        if (providersComboBox.getSelectedItem() == null) {
+            mainView.updateProviders(getProvidersName());
+        }
     }//GEN-LAST:event_loadTicketActionPerformed
 
     private void cleanTextFields() {
@@ -483,6 +487,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     AutoSuggestor sectorsAutoSuggestor;
     AutoSuggestor providerSectorsAutoSuggestor;    
     Enabler e;
+    private View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addNewProvider;
     private javax.swing.JLabel addNewProvider1;

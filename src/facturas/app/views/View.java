@@ -55,7 +55,7 @@ public class View extends javax.swing.JFrame {
         providersView = new ProvidersView(controller);
         filtersView = new FiltersView(controller, ticketsTable);
         columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
-        ticketLoaderView = new TicketLoaderView(controller);
+        ticketLoaderView = new TicketLoaderView(controller, this);
         withholdingLoaderView = new WithholdingLoaderView(controller, this);
         sectorsView = new SectorsView(this);
     }
