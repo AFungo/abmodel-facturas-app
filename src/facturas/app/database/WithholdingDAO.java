@@ -34,7 +34,7 @@ public class WithholdingDAO {
         Provider provider = (Provider)withholding.getValues().get("provider");
         
         SQLFilter filter = new SQLFilter();
-        filter.add("cuit", "=", provider.getValues().get("docNo"), String.class);
+        filter.add("docNo", "=", provider.getValues().get("docNo"), String.class);
         if (!ProviderDAO.providerExist(filter)) {
             ProviderDAO.addProvider(provider);
         }
