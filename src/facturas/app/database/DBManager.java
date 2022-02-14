@@ -81,7 +81,7 @@ public class DBManager {
         String query = "";
         switch (tableName) {
             case "Provider": query = "CREATE TABLE Provider ("
-                                            + "cuit VARCHAR(30) PRIMARY KEY,"
+                                            + "docNo VARCHAR(30) PRIMARY KEY,"
                                             + "name VARCHAR(100),"
                                             + "documentType VARCHAR(20),"
                                             + "direction VARCHAR(50),"
@@ -113,7 +113,7 @@ public class DBManager {
                                         + "PRIMARY KEY (date, number, providerDoc),"
                                         + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name)"
                                         + "ON DELETE SET NULL,"
-                                        + "CONSTRAINT fk_Provider FOREIGN KEY (providerDoc) REFERENCES Provider(cuit)"
+                                        + "CONSTRAINT fk_Provider FOREIGN KEY (providerDoc) REFERENCES Provider(docNo)"
                                         + ")";
                                         break;
             
@@ -141,7 +141,7 @@ public class DBManager {
                                         + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(name)"
                                         + "ON DELETE SET NULL,"
                                         + "PRIMARY KEY (date, number, providerDoc),"
-                                        + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (providerDoc) REFERENCES Provider(cuit)"
+                                        + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (providerDoc) REFERENCES Provider(docNo)"
                                         + ")";
                                         break;
         

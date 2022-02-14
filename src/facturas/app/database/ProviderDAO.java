@@ -57,8 +57,8 @@ public class ProviderDAO extends DAO {
         }
     }
      
-    public static Provider getProvider(String cuit) {
-        ResultSet result = executeQuery("SELECT * FROM Provider WHERE cuit='" + cuit + "'", false);
+    public static Provider getProvider(String docNo) {
+        ResultSet result = executeQuery("SELECT * FROM Provider WHERE docNo='" + docNo + "'", false);
         try {
             if (result.next()) {
                 return createProvider(result);

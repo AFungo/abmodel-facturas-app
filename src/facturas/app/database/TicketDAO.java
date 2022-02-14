@@ -31,7 +31,7 @@ public class TicketDAO extends DAO {
         Provider provider = (Provider)ticket.getValues().get("provider");
         
         SQLFilter filter = new SQLFilter();
-        filter.add("cuit", "=", provider.getValues().get("docNo"), String.class);
+        filter.add("docNo", "=", provider.getValues().get("docNo"), String.class);
         if (!ProviderDAO.providerExist(filter)) {
             ProviderDAO.addProvider(provider);
         }

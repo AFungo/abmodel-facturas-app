@@ -141,7 +141,7 @@ public class FormatUtils {
     public static Pair<String, String> providerToSQL(Provider p) {
         Map<String, String> dict = p.getValues();
         String attributes = "", values = "";
-        attributes += "cuit, name, documentType";
+        attributes += "docNo, name, documentType";
         values += "'" + dict.get("docNo") + "', '" + dict.get("name") + "', '" + dict.get("docType") + "'";
         
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {}, new String[] {"direction", "sector", "alias"});
