@@ -8,6 +8,7 @@ package facturas.app.views;
 import com.toedter.calendar.JTextFieldDateEditor;
 import facturas.app.Controller;
 import facturas.app.database.SQLFilter;
+import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
@@ -38,10 +39,13 @@ public class FiltersView extends javax.swing.JFrame {
         initComponents();
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, SectorDAO.getSectors());
+        sectorsAutoSuggestor.autoSuggest();
     }
     
     public void updateSuggestions() {
         providersAutoSuggestor.setSuggestions(getProvidersName());
+        sectorsAutoSuggestor.setSuggestions(SectorDAO.getSectors());
     }
     
     private List<String> getProvidersName() {
@@ -86,6 +90,8 @@ public class FiltersView extends javax.swing.JFrame {
         ticketRadioButton = new javax.swing.JRadioButton();
         bothRadioButton2 = new javax.swing.JRadioButton();
         providersComboBox = new javax.swing.JComboBox<>();
+        sectorsComboBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         purchaseNSellButtonGroup.add(purchaseRadioButton);
         purchaseNSellButtonGroup.add(saleRadioButton);
@@ -149,6 +155,8 @@ public class FiltersView extends javax.swing.JFrame {
         bothRadioButton2.setSelected(true);
         bothRadioButton2.setText("Ambos");
 
+        jLabel1.setText("Rubro");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,14 +191,15 @@ public class FiltersView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ticketTypesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(maxTotalAmountLabel, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(maxIvaLabel))
-                            .addComponent(maxDateLabel))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(maxTotalAmountLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(maxIvaLabel)
+                            .addComponent(maxDateLabel)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(maxDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(maxDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(maxTotalAmountTextField)
                             .addComponent(maxIvaTextField))))
                 .addContainerGap())
@@ -220,7 +229,9 @@ public class FiltersView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cuitLabel)
-                    .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -283,6 +294,7 @@ public class FiltersView extends javax.swing.JFrame {
         selectedFilters.put("ticketTypesList", ticketTypesList.getSelectedValuesList());
         selectedFilters.put("purchase", purchaseRadioButton.isSelected());
         selectedFilters.put("sale", saleRadioButton.isSelected());
+        selectedFilters.put("sector", sectorsAutoSuggestor.getText());
         
         return selectedFilters;
     }
@@ -303,11 +315,13 @@ public class FiltersView extends javax.swing.JFrame {
     private Controller controller;
     private JTable ticketsTable;
     private AutoSuggestor providersAutoSuggestor;
+    private AutoSuggestor sectorsAutoSuggestor;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton appyFilters;
     private javax.swing.JRadioButton bothRadioButton;
     private javax.swing.JRadioButton bothRadioButton2;
     private javax.swing.JLabel cuitLabel;
+    private javax.swing.JLabel jLabel1;
     private com.toedter.calendar.JDateChooser maxDateChooser;
     private javax.swing.JLabel maxDateLabel;
     private javax.swing.JLabel maxIvaLabel;
@@ -324,6 +338,7 @@ public class FiltersView extends javax.swing.JFrame {
     private javax.swing.ButtonGroup purchaseNSellButtonGroup;
     private javax.swing.JRadioButton purchaseRadioButton;
     private javax.swing.JRadioButton saleRadioButton;
+    private javax.swing.JComboBox<String> sectorsComboBox;
     private javax.swing.JRadioButton ticketRadioButton;
     private javax.swing.JList<String> ticketTypesList;
     private javax.swing.JScrollPane ticketTypesScrollPane;

@@ -74,17 +74,17 @@
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="ticketTypesScrollPane" min="-2" pref="123" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="maxTotalAmountLabel" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="maxIvaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="maxTotalAmountLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="maxIvaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="maxDateLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="maxDateChooser" alignment="0" pref="150" max="32767" attributes="0"/>
+                          <Component id="sectorsComboBox" min="-2" pref="150" max="-2" attributes="0"/>
+                          <Component id="maxDateChooser" alignment="0" max="32767" attributes="0"/>
                           <Component id="maxTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
                           <Component id="maxIvaTextField" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -124,6 +124,8 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cuitLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="providersComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sectorsComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -285,6 +287,21 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="sectorsComboBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Rubro"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

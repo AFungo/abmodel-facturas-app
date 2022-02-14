@@ -48,6 +48,9 @@ public class SQLFilter {
         List<Object> typesList = (List<Object>)selectedFilters.get("ticketTypesList");
         if (!typesList.isEmpty()) { addDisjunction("type", "=", typesList, String.class); }
         
+        text = (String)selectedFilters.get("sector");
+        if (!text.isEmpty()) { add("sector", "=", text, String.class); }
+        
         if ((boolean)selectedFilters.get("sale")) {
             add("issuedByMe", "=", true, Boolean.class);
         } else if ((boolean)selectedFilters.get("purchase")) {

@@ -456,6 +456,7 @@ public class View extends javax.swing.JFrame {
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
+        filtersView.updateSuggestions();
         filtersView.setVisible(true);
     }//GEN-LAST:event_filtersActionPerformed
 
