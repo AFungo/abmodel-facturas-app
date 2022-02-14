@@ -37,8 +37,13 @@ public class SQLFilter {
         text = (String)selectedFilters.get("maxIva");
         if (!text.isEmpty()) { add("iva", "<=", Float.parseFloat(text), Float.class); }
 
-        text = (String)selectedFilters.get("companyCuit");
-        if (!text.isEmpty()) { add("providerDoc", "=", text, String.class); }
+        List<Object> providersDocs = (List<Object>)selectedFilters.get("providersDocs");
+        if (!providersDocs.isEmpty()) { 
+            System.out.println("Hi! the list is not empty");
+            addDisjunction("providerDoc", "=", providersDocs, String.class); 
+        } else {
+            System.out.println("The list is empty");
+        }
         
         List<Object> typesList = (List<Object>)selectedFilters.get("ticketTypesList");
         if (!typesList.isEmpty()) { addDisjunction("type", "=", typesList, String.class); }
@@ -88,6 +93,7 @@ public class SQLFilter {
             sqlCode += lastConjunction;
         }
         
+        System.out.println("Hola" + sqlCode);
         return sqlCode;
     }
     
@@ -117,7 +123,7 @@ public class SQLFilter {
     }
     
     public boolean isEmpty() {
-        return conditions.isEmpty();
+        return conditions.isEmpty() && orConditions.isEmpty();
     }
     
 }

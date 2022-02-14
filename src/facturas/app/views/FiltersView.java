@@ -7,12 +7,15 @@ package facturas.app.views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import facturas.app.Controller;
-import facturas.app.database.WithholdingDAO;
+import facturas.app.database.SQLFilter;
+import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
+import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JTable;
@@ -33,6 +36,20 @@ public class FiltersView extends javax.swing.JFrame {
         this.controller = controller;
         this.ticketsTable = ticketsTable;
         initComponents();
+        providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
+        providersAutoSuggestor.autoSuggest();
+    }
+    
+    public void updateSuggestions() {
+        providersAutoSuggestor.setSuggestions(getProvidersName());
+    }
+    
+    private List<String> getProvidersName() {
+        List<String> names = new LinkedList<>();
+        for (Provider p : controller.getProviders()) {
+            names.add(p.getValues().get("name"));
+        }
+        return names;
     }
 
     /**
@@ -50,7 +67,6 @@ public class FiltersView extends javax.swing.JFrame {
         maxTotalAmountTextField = new javax.swing.JTextField();
         minIvaTextField = new javax.swing.JTextField();
         maxIvaTextField = new javax.swing.JTextField();
-        cuitTextField = new javax.swing.JTextField();
         minDateLabel = new javax.swing.JLabel();
         maxDateLabel = new javax.swing.JLabel();
         minTotalAmountLabel = new javax.swing.JLabel();
@@ -69,6 +85,7 @@ public class FiltersView extends javax.swing.JFrame {
         withholdingRadioButton = new javax.swing.JRadioButton();
         ticketRadioButton = new javax.swing.JRadioButton();
         bothRadioButton2 = new javax.swing.JRadioButton();
+        providersComboBox = new javax.swing.JComboBox<>();
 
         purchaseNSellButtonGroup.add(purchaseRadioButton);
         purchaseNSellButtonGroup.add(saleRadioButton);
@@ -94,7 +111,7 @@ public class FiltersView extends javax.swing.JFrame {
 
         maxIvaLabel.setText("IVA Maximo");
 
-        cuitLabel.setText("CUIT");
+        cuitLabel.setText("Proveedor");
 
         appyFilters.setText("Aplicar filtros");
         appyFilters.addActionListener(new java.awt.event.ActionListener() {
@@ -154,15 +171,14 @@ public class FiltersView extends javax.swing.JFrame {
                             .addComponent(bothRadioButton)
                             .addComponent(purchaseRadioButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(withholdingRadioButton)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(minDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                .addComponent(minTotalAmountTextField)
-                                .addComponent(minIvaTextField)
-                                .addComponent(cuitTextField))
+                            .addComponent(minDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(minTotalAmountTextField)
+                            .addComponent(minIvaTextField)
                             .addComponent(ticketRadioButton)
-                            .addComponent(bothRadioButton2))
+                            .addComponent(bothRadioButton2)
+                            .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ticketTypesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,7 +220,7 @@ public class FiltersView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cuitLabel)
-                    .addComponent(cuitTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -232,8 +248,6 @@ public class FiltersView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
-        // TODO add your handling code here:
-        //ticketTypesScrollPane.setViewportView(ticketsTable);
         Map<String, Object> selectedFilters = getFilters();
         List<Withholding> tickets = controller.getTickets(selectedFilters);
         tickets.addAll(controller.getWithholdings());
@@ -254,7 +268,6 @@ public class FiltersView extends javax.swing.JFrame {
     public Map<String, Object> getFilters() {
         Map<String, Object> selectedFilters = new HashMap<> ();
         
-        // FIXME: If the date is null because we dont select it
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if(minDateChooser.getDate()!=null) selectedFilters.put("startDate", sdf.format(minDateChooser.getDate())); 
         if(maxDateChooser.getDate()!=null) selectedFilters.put("finishDate", sdf.format(maxDateChooser.getDate()));
@@ -262,12 +275,24 @@ public class FiltersView extends javax.swing.JFrame {
         selectedFilters.put("maxTotal", maxTotalAmountTextField.getText());
         selectedFilters.put("minIva", minIvaTextField.getText());
         selectedFilters.put("maxIva", maxIvaTextField.getText());
-        selectedFilters.put("companyCuit", cuitTextField.getText());
+        
+        SQLFilter providersDoc = new SQLFilter();
+        providersDoc.add("name", "=", providersAutoSuggestor.getText(), String.class);
+        
+        selectedFilters.put("providersDocs", getDocsList(controller.getProviders(providersDoc)));
         selectedFilters.put("ticketTypesList", ticketTypesList.getSelectedValuesList());
         selectedFilters.put("purchase", purchaseRadioButton.isSelected());
         selectedFilters.put("sale", saleRadioButton.isSelected());
         
         return selectedFilters;
+    }
+    
+    private List<String> getDocsList(List<Provider> list) {
+        List<String> namesList = new LinkedList<>();
+        for (Provider p : list) {
+            namesList.add(p.getValues().get("docNo"));
+        }
+        return namesList;
     }
     
     private void cleanTable(DefaultTableModel model) {
@@ -277,12 +302,12 @@ public class FiltersView extends javax.swing.JFrame {
     
     private Controller controller;
     private JTable ticketsTable;
+    private AutoSuggestor providersAutoSuggestor;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton appyFilters;
     private javax.swing.JRadioButton bothRadioButton;
     private javax.swing.JRadioButton bothRadioButton2;
     private javax.swing.JLabel cuitLabel;
-    private javax.swing.JTextField cuitTextField;
     private com.toedter.calendar.JDateChooser maxDateChooser;
     private javax.swing.JLabel maxDateLabel;
     private javax.swing.JLabel maxIvaLabel;
@@ -295,6 +320,7 @@ public class FiltersView extends javax.swing.JFrame {
     private javax.swing.JTextField minIvaTextField;
     private javax.swing.JLabel minTotalAmountLabel;
     private javax.swing.JTextField minTotalAmountTextField;
+    private javax.swing.JComboBox<String> providersComboBox;
     private javax.swing.ButtonGroup purchaseNSellButtonGroup;
     private javax.swing.JRadioButton purchaseRadioButton;
     private javax.swing.JRadioButton saleRadioButton;

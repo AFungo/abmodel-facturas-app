@@ -60,16 +60,14 @@
                           <Component id="purchaseRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="withholdingRadioButton" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="minDateChooser" pref="150" max="32767" attributes="0"/>
-                              <Component id="minTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="minIvaTextField" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cuitTextField" alignment="0" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="minDateChooser" max="32767" attributes="0"/>
+                          <Component id="minTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="minIvaTextField" alignment="0" max="32767" attributes="0"/>
                           <Component id="ticketRadioButton" min="-2" max="-2" attributes="0"/>
                           <Component id="bothRadioButton2" min="-2" max="-2" attributes="0"/>
+                          <Component id="providersComboBox" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="32767" attributes="0"/>
                   </Group>
@@ -125,7 +123,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cuitLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cuitTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="providersComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -167,8 +165,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="maxIvaTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="cuitTextField">
-    </Component>
     <Component class="javax.swing.JLabel" name="minDateLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fecha Minino"/>
@@ -201,7 +197,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="cuitLabel">
       <Properties>
-        <Property name="text" type="java.lang.String" value="CUIT"/>
+        <Property name="text" type="java.lang.String" value="Proveedor"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="appyFilters">
@@ -279,6 +275,16 @@
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Ambos"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="providersComboBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
