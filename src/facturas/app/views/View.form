@@ -171,13 +171,11 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="206" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="showTickets" alignment="1" min="-2" pref="133" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="createPdf" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="188" max="-2" attributes="0"/>
-                                      <Component id="showProviders" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                              <Component id="createPdf" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="188" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="showProviders" max="32767" attributes="0"/>
+                                  <Component id="showTickets" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="244" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
