@@ -35,6 +35,7 @@ public class AutoSuggestor {
     }
     
     public void setSuggestions(List<String> suggestions) {
+        Collections.sort(suggestions);
         this.suggestions = FormatUtils.listToVector(suggestions);
         setModel(getSuggestedModel(suggestions, ""), "");
     }
