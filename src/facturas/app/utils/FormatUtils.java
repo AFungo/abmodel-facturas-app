@@ -26,13 +26,13 @@ public class FormatUtils {
      public static Pair<String, String> ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
-        attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, authCode, providerDoc, issuedByMe";
+        attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, providerDoc, issuedByMe";
         values += "'" + dict.get("number") + "', " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
                 + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
-                + dict.get("authCode") + "', '" + ((Provider)dict.get("provider")).getValues().get("docNo") + "', " + dict.get("issuedByMe");
+                + ((Provider)dict.get("provider")).getValues().get("docNo") + "', " + dict.get("issuedByMe");
 
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"iva", "netAmountWI", "netAmountWOI", 
-            "numberTo", "amountImpEx"}, new String[] {"sector", "delivered"});
+            "numberTo", "amountImpEx"}, new String[] {"authCode", "sector", "delivered"});
         attributes += optionals.getFst();
         values += optionals.getSnd();
         
@@ -50,7 +50,6 @@ public class FormatUtils {
             sector = provider.getValues().get("provSector");
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
-        
         String buyNSell = (boolean)dict.get("issuedByMe") ? "VENTA" : "COMPRA";
         
         Object[] values = {dict.get("id"), dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 

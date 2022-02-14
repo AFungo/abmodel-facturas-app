@@ -98,7 +98,7 @@ public class DBManager {
                                         + "type VARCHAR(50) NOT NULL," //
                                         + "number VARCHAR(30) NOT NULL," //
                                         + "numberTo INTEGER," //
-                                        + "authCode VARCHAR(30) NOT NULL," //
+                                        + "authCode VARCHAR(30)," //
                                         + "providerDoc VARCHAR(30) NOT NULL," //
                                         + "exchangeType REAL NOT NULL," //
                                         + "exchangeMoney VARCHAR(5) NOT NULL," //

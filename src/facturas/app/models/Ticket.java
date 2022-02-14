@@ -44,7 +44,7 @@ public class Ticket extends Withholding{
     public Map<String, Object> getValues() {
         Map<String, Object> dict = super.getValues();
         if (numberTo != null) dict.put("numberTo", numberTo);
-        dict.put("authCode", authCode);
+        if (numberTo != null) dict.put("authCode", authCode);
         dict.put("provider", provider);
         dict.put("exchangeType", exchangeType);
         dict.put("exchangeMoney", exchangeMoney);
