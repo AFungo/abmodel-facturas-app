@@ -55,19 +55,21 @@
                               <Component id="minIvaLabel" alignment="0" max="32767" attributes="0"/>
                               <Component id="cuitLabel" alignment="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="saleRadioButton" min="-2" max="-2" attributes="0"/>
                           <Component id="bothRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="saleRadioButton" min="-2" max="-2" attributes="0"/>
                           <Component id="purchaseRadioButton" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="minDateChooser" max="32767" attributes="0"/>
+                              <Component id="minTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="minIvaTextField" alignment="0" max="32767" attributes="0"/>
+                              <Component id="bothRadioButton2" min="-2" max="-2" attributes="0"/>
+                              <Component id="providersComboBox" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="withholdingRadioButton" min="-2" max="-2" attributes="0"/>
-                          <Component id="minDateChooser" max="32767" attributes="0"/>
-                          <Component id="minTotalAmountTextField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="minIvaTextField" alignment="0" max="32767" attributes="0"/>
                           <Component id="ticketRadioButton" min="-2" max="-2" attributes="0"/>
-                          <Component id="bothRadioButton2" min="-2" max="-2" attributes="0"/>
-                          <Component id="providersComboBox" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="32767" attributes="0"/>
                   </Group>
@@ -127,9 +129,9 @@
                   <Component id="sectorsComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace pref="64" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="purchaseRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="withholdingRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -139,7 +141,7 @@
                           <Component id="saleRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="ticketRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="bothRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="bothRadioButton2" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -148,10 +150,9 @@
                       <Component id="appyFilters" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="ticketTypesScrollPane" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
