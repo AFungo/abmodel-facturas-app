@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -29,13 +30,14 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     /**
      * Creates new form WithholdingLoaderView
      */
-    public WithholdingLoaderView(Controller controller) {
+    public WithholdingLoaderView(Controller controller, View mainView) {
         this.controller = controller;
         initComponents();
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
+        this.mainView = mainView;
         
         e = providersAutoSuggestor.getEnabler();
         e.addComboBox(providerDocTypeComboBox);
@@ -90,6 +92,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         typeComboBox = new javax.swing.JComboBox<>();
         retentionTypeLabel = new javax.swing.JLabel();
+        deliveredCheckBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CARGAR COMPROBANTE");
@@ -135,6 +138,8 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
         retentionTypeLabel.setText("Tipo de Retencion");
 
+        deliveredCheckBox.setText("Enviado al contador");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -175,7 +180,9 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(retentionTypeLabel)
-                                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(50, 50, 50)
+                                .addComponent(deliveredCheckBox)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -223,8 +230,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(retentionTypeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(deliveredCheckBox))
+                .addGap(41, 41, 41)
                 .addComponent(loadWithholding)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -241,6 +250,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         values.put("docNo", providerDocTextField.getText());
         values.put("name", providerNameTextField.getText());
         values.put("sector", (String) sectorsComboBox.getSelectedItem());
+        values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
 
         if (typeComboBox.getSelectedItem() != null)
             values.put("type", typeComboBox.getSelectedItem().toString());
@@ -270,6 +280,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         }
         
         controller.loadWithholding(values);
+        if (providersComboBox.getSelectedItem() == null) {
+            mainView.updateProviders(getProvidersName());
+        }
+        cleanTextField();
     }//GEN-LAST:event_loadWithholdingActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
@@ -277,6 +291,13 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
             e.setEnabled(providersComboBox.getSelectedItem() == null);
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
+    private void cleanTextField(){
+        JTextField[] forClean = new JTextField[]{numberTextField, totalAmountTextField};
+        controller.cleanTextField(forClean);
+    }
+    public void updateProviders(List<String> names) {
+        providersAutoSuggestor.setSuggestions(names);
+    }
     
     public void updateSectors(List<String> sectors) {
         sectorsComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
@@ -286,8 +307,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
     Enabler e;
+    private View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dateDateChooser;
+    private javax.swing.JCheckBox deliveredCheckBox;
     private javax.swing.JOptionPane invalidParamDialog;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;

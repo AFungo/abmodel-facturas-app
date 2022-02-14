@@ -9,6 +9,7 @@ import facturas.app.Controller;
 import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
+import facturas.app.models.Provider;
 import facturas.app.utils.ConfigManager;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
@@ -18,6 +19,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.sql.Date;
 import java.text.DecimalFormat;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
@@ -55,8 +57,8 @@ public class View extends javax.swing.JFrame {
         providersView = new ProvidersView(controller);
         filtersView = new FiltersView(controller, ticketsTable);
         columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
-        ticketLoaderView = new TicketLoaderView(controller);
-        withholdingLoaderView = new WithholdingLoaderView(controller);
+        ticketLoaderView = new TicketLoaderView(controller, this);
+        withholdingLoaderView = new WithholdingLoaderView(controller, this);
         sectorsView = new SectorsView(this);
     }
 
@@ -470,6 +472,12 @@ public class View extends javax.swing.JFrame {
         // FIXME: Maybe we can update the suggestions only 
         // when we know that a providers was added
         providersView.updateSuggestions();
+        
+        List<String> names = new LinkedList<>();
+        for (Provider p : controller.getProviders()) {
+            names.add(p.getValues().get("name"));
+        }
+        updateProviders(names);
         showTicketsActionPerformed(evt);
     }//GEN-LAST:event_loadTicketsActionPerformed
 
@@ -617,6 +625,13 @@ public class View extends javax.swing.JFrame {
         //filtersView.updateSectors(sectors);
         ticketLoaderView.updateSectors(sectors);
         withholdingLoaderView.updateSectors(sectors);
+    }
+    
+    public void updateProviders(List<String> names) {
+        providersView.updateProviders(names);
+        //filtersView.updateProviders(names);
+        ticketLoaderView.updateProviders(names);
+        withholdingLoaderView.updateProviders(names);
     }
     
     private void cleanTable(DefaultTableModel model) {

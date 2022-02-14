@@ -39,12 +39,12 @@ public class ProvidersView extends javax.swing.JFrame {
     public ProvidersView(Controller controller) {
         this.controller = controller;
         initComponents();
-        autoSuggestor = new AutoSuggestor(comboBox, getProvidersName());
-        autoSuggestor.autoSuggest();
+        providersAutoSuggestor = new AutoSuggestor(comboBox, getProvidersName());
+        providersAutoSuggestor.autoSuggest();
     }
     
     public void updateSuggestions() {
-        autoSuggestor.setSuggestions(getProvidersName());
+        providersAutoSuggestor.setSuggestions(getProvidersName());
     }
     
     public javax.swing.JTable getTable() {
@@ -222,7 +222,7 @@ public class ProvidersView extends javax.swing.JFrame {
         cleanTable(model);
         
         SQLFilter filter = new SQLFilter();
-        filter.add("name", "=", autoSuggestor.getText(), String.class);
+        filter.add("name", "=", providersAutoSuggestor.getText(), String.class);
         List<Provider> providers = controller.getProviders(filter);
         for (Provider p : providers) {
             model.addRow(FormatUtils.providerToForm(p));
@@ -310,6 +310,11 @@ public class ProvidersView extends javax.swing.JFrame {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
     }
     
+    public void updateProviders(List<String> names) {
+        providersAutoSuggestor.setSuggestions(names);
+    }
+    
+    
     public void updateProviders(java.awt.event.ActionEvent evt) {
         showAllProvidersActionPerformed(evt);
     }
@@ -332,7 +337,7 @@ public class ProvidersView extends javax.swing.JFrame {
     }
     
     private Controller controller;
-    private AutoSuggestor autoSuggestor;
+    private AutoSuggestor providersAutoSuggestor;
     private String selectedCuit;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aliasMenuItem;

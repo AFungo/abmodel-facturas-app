@@ -72,6 +72,8 @@
                                   <Component id="retentionTypeLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="typeComboBox" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="deliveredCheckBox" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -139,8 +141,11 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="retentionTypeLabel" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="typeComboBox" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="typeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deliveredCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               <Component id="loadWithholding" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="21" max="32767" attributes="0"/>
           </Group>
@@ -263,6 +268,11 @@
     <Component class="javax.swing.JLabel" name="retentionTypeLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Tipo de Retencion"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="deliveredCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Enviado al contador"/>
       </Properties>
     </Component>
   </SubComponents>
