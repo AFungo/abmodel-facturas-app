@@ -468,6 +468,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
     
+    public void updateProviders(List<String> names) {
+        providersAutoSuggestor.setSuggestions(names);
+    }
+    
     public void updateSectors(List<String> sectors) {
         Vector<String> sectorsVector = FormatUtils.listToVector(sectors);
         sectorsComboBox.setModel(new DefaultComboBoxModel(sectorsVector));

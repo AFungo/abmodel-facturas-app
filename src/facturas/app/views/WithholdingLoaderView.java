@@ -29,13 +29,14 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     /**
      * Creates new form WithholdingLoaderView
      */
-    public WithholdingLoaderView(Controller controller) {
+    public WithholdingLoaderView(Controller controller, View mainView) {
         this.controller = controller;
         initComponents();
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
+        this.mainView = mainView;
         
         e = providersAutoSuggestor.getEnabler();
         e.addComboBox(providerDocTypeComboBox);
@@ -270,6 +271,9 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         }
         
         controller.loadWithholding(values);
+        if (providersComboBox.getSelectedItem() == null) {
+            mainView.updateProviders(getProvidersName());
+        }
     }//GEN-LAST:event_loadWithholdingActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
@@ -277,6 +281,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
             e.setEnabled(providersComboBox.getSelectedItem() == null);
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
+    
+    public void updateProviders(List<String> names) {
+        providersAutoSuggestor.setSuggestions(names);
+    }
     
     public void updateSectors(List<String> sectors) {
         sectorsComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
@@ -286,6 +294,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
     Enabler e;
+    private View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser dateDateChooser;
     private javax.swing.JOptionPane invalidParamDialog;

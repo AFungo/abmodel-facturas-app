@@ -56,7 +56,7 @@ public class View extends javax.swing.JFrame {
         filtersView = new FiltersView(controller, ticketsTable);
         columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
         ticketLoaderView = new TicketLoaderView(controller);
-        withholdingLoaderView = new WithholdingLoaderView(controller);
+        withholdingLoaderView = new WithholdingLoaderView(controller, this);
         sectorsView = new SectorsView(this);
     }
 
@@ -617,6 +617,13 @@ public class View extends javax.swing.JFrame {
         //filtersView.updateSectors(sectors);
         ticketLoaderView.updateSectors(sectors);
         withholdingLoaderView.updateSectors(sectors);
+    }
+    
+    public void updateProviders(List<String> names) {
+        providersView.updateProviders(names);
+        //filtersView.updateProviders(names);
+        ticketLoaderView.updateProviders(names);
+        withholdingLoaderView.updateProviders(names);
     }
     
     private void cleanTable(DefaultTableModel model) {
