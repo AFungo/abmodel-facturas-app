@@ -133,6 +133,7 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="loadTicket" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="issuedByMeCheckBox" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
+                                  <Component id="deliveredCheckBox" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Component id="addNewProvider1" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -176,7 +177,10 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="numberTextField" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="deliveredCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="dateDateChooser" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -515,6 +519,11 @@
           <Font name="Tahoma" size="24" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="A&#xf1;adir un nuevo proveedor"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="deliveredCheckBox">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Enviado al contador"/>
       </Properties>
     </Component>
   </SubComponents>
