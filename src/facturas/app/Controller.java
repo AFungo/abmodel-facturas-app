@@ -200,13 +200,13 @@ public class Controller {
     }
     
     public List<Withholding> getTickets(Map<String, Object> selectedFilters) {
-        SQLFilter filters = new SQLFilter(selectedFilters);
+        SQLFilter filters = new SQLFilter(selectedFilters, true);
         if (filters.isEmpty()) return getTickets();
         else return TicketDAO.getTickets(filters);            
     }
 
     public List<Withholding> getWithholdings(Map<String, Object> selectedFilters) {
-        SQLFilter filters = new SQLFilter(selectedFilters);
+        SQLFilter filters = new SQLFilter(selectedFilters, false);
         if(filters.isEmpty()) return WithholdingDAO.getWithholdings();
         else return WithholdingDAO.getWithholdings(filters);
     }

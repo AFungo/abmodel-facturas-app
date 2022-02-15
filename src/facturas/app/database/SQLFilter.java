@@ -22,7 +22,7 @@ public class SQLFilter {
     
     public SQLFilter() { }
        
-    public SQLFilter(Map<String, Object> selectedFilters) {
+    public SQLFilter(Map<String, Object> selectedFilters, boolean isTicket) {
         String text;
         text = (String)selectedFilters.get("id");
         if (FormatUtils.tryParse(text, "Integer")) {
@@ -42,25 +42,28 @@ public class SQLFilter {
         if (!text.isEmpty()) { add("totalAmount", ">=", Float.parseFloat(text), Float.class); }
         text = (String)selectedFilters.get("maxTotal");
         if (!text.isEmpty()) { add("totalAmount", "<=", Float.parseFloat(text), Float.class); }
-        
-        text = (String)selectedFilters.get("minIva");
-        if (!text.isEmpty()) { add("iva", ">=", Float.parseFloat(text), Float.class); }
-        text = (String)selectedFilters.get("maxIva");
-        if (!text.isEmpty()) { add("iva", "<=", Float.parseFloat(text), Float.class); }
 
         List<Object> providersDocs = (List<Object>)selectedFilters.get("providersDocs");
         if (!providersDocs.isEmpty()) { addDisjunction("providerDoc", "=", providersDocs, String.class); }
         
-        List<Object> typesList = (List<Object>)selectedFilters.get("ticketTypesList");
-        if (!typesList.isEmpty()) { addDisjunction("type", "=", typesList, String.class); }
-        
         text = (String)selectedFilters.get("sector");
         if (!text.isEmpty()) { add("sector", "=", text, String.class); }
         
-        if ((boolean)selectedFilters.get("sale")) {
-            add("issuedByMe", "=", true, Boolean.class);
-        } else if ((boolean)selectedFilters.get("purchase")) {
-            add("issuedByMe", "=", false, Boolean.class);
+        
+        if (isTicket) {
+            text = (String)selectedFilters.get("minIva");
+            if (!text.isEmpty()) { add("iva", ">=", Float.parseFloat(text), Float.class); }
+            text = (String)selectedFilters.get("maxIva");
+            if (!text.isEmpty()) { add("iva", "<=", Float.parseFloat(text), Float.class); }
+            
+            List<Object> typesList = (List<Object>)selectedFilters.get("ticketTypesList");
+            if (!typesList.isEmpty()) { addDisjunction("type", "=", typesList, String.class); }
+            
+            if ((boolean)selectedFilters.get("sale")) {
+                add("issuedByMe", "=", true, Boolean.class);
+            } else if ((boolean)selectedFilters.get("purchase")) {
+                add("issuedByMe", "=", false, Boolean.class);
+            }
         }
         
     }

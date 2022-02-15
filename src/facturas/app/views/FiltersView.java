@@ -284,7 +284,7 @@ public class FiltersView extends javax.swing.JFrame {
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
         Map<String, Object> selectedFilters = getFilters();
         List<Withholding> tickets = controller.getTickets(selectedFilters);
-        tickets.addAll(controller.getWithholdings());
+        tickets.addAll(controller.getWithholdings(selectedFilters));
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
