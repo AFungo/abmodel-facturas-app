@@ -23,7 +23,18 @@ public class SQLFilter {
     public SQLFilter() { }
        
     public SQLFilter(Map<String, Object> selectedFilters) {
-        String text = (String) selectedFilters.get("startDate");
+        String text;
+        text = (String)selectedFilters.get("id");
+        try {
+            add("id", "=", Integer.parseInt(text), Integer.class);
+        } catch (NumberFormatException e) { }
+        
+        text = (String)selectedFilters.get("number");
+        try {
+            add("number", "=", String.valueOf(Integer.parseInt(text)), String.class);
+        } catch (NumberFormatException e) { }
+        
+        text = (String) selectedFilters.get("startDate");
         if (text != null && !text.isEmpty()) { add("date", ">=", FormatUtils.dateGen(text), Date.class); }
         text = (String)selectedFilters.get("finishDate");
         if (text != null && !text.isEmpty()) { add("date", "<=", FormatUtils.dateGen(text), Date.class); }
