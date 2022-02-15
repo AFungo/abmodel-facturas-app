@@ -30,7 +30,6 @@ import java.util.Map;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import org.apache.commons.io.FilenameUtils;
-
 /**
  *
  * @author Agustin
@@ -101,6 +100,7 @@ public class View extends javax.swing.JFrame {
         loadWithholdingManually = new javax.swing.JMenuItem();
         edit = new javax.swing.JMenu();
         sectorsViewItem = new javax.swing.JMenuItem();
+        addProviderMenuItem = new javax.swing.JMenuItem();
         tools = new javax.swing.JMenu();
         filters = new javax.swing.JMenuItem();
         columnSelector = new javax.swing.JMenuItem();
@@ -305,6 +305,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         edit.add(sectorsViewItem);
+
+        addProviderMenuItem.setText("Añadir proveedor");
+        addProviderMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProviderMenuItemActionPerformed(evt);
+            }
+        });
+        edit.add(addProviderMenuItem);
 
         menuBar.add(edit);
 
@@ -619,6 +627,11 @@ public class View extends javax.swing.JFrame {
         ((DefaultTableModel)ticketsTable.getModel()).removeRow(row); //remove row from view
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
+    private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed
+        ProviderLoader providerLoader = new ProviderLoader(controller, this);
+        providerLoader.setVisible(true);
+    }//GEN-LAST:event_addProviderMenuItemActionPerformed
+
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -663,6 +676,7 @@ public class View extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem addProviderMenuItem;
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
     private javax.swing.JButton createPdf;
