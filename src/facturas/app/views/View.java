@@ -618,13 +618,16 @@ public class View extends javax.swing.JFrame {
         int row = ticketsTable.getSelectedRow();
         SQLFilter filter = createTicketFilter(row);
         
-        String type = (String)ticketsTable.getValueAt(row, 2);
-        if (type.contains("Retencion"))
-            controller.removeItem(filter, false);
-        else
-            controller.removeItem(filter, true);
-        
-        ((DefaultTableModel)ticketsTable.getModel()).removeRow(row); //remove row from view
+        int selection = optionPane.showConfirmDialog(null, null, "Estas seguro?", optionPane.OK_CANCEL_OPTION);
+        if (selection == optionPane.OK_OPTION) {
+            String type = (String)ticketsTable.getValueAt(row, 2);
+            if (type.contains("Retencion"))
+                controller.removeItem(filter, false);
+            else
+                controller.removeItem(filter, true);
+
+            ((DefaultTableModel)ticketsTable.getModel()).removeRow(row); //remove row from view
+        }
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed
