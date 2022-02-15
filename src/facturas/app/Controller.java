@@ -79,19 +79,35 @@ public class Controller {
             DollarPriceDAO.addDollarPrice(p);
         }
     }
-    
+    public String validateProviderParam(Map<String, String> values, JComboBox<String> sectorsComboBox){
+        String message = "<html>", invalidations = "";
+        List<String> sectors = getItemsFromComboBox(sectorsComboBox);
+                
+        if(values.get("name").isEmpty()){ invalidations += "<br/> Nombre no introducido";}
+        if(values.get("docNo").isEmpty()){invalidations += "<br/> Numero documento no introducido";}
+        if(!FormatUtils.tryParse(values.get("docNo"), "Integer")){ invalidations += "<br/> Numero documento mal escrito";}
+        
+        if(values.get("docType").isEmpty()){ invalidations += "<br/> Tipo de documento no introdcido";}
+        
+        //fixme no andaaaaaaaaaaa
+        String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
+        if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector))) invalidations += "<br/>El rubro del comprobante no existe";
+        
+        if (invalidations.isEmpty()) {
+            return null;
+        } else {
+            invalidations += "</html>";
+            return message + invalidations;
+        }
+    }
     //ticket is a boolean representing if the validation is for ticket or withholding
-    public String validateParam(java.util.Date date, JComboBox<String> provider, JComboBox<String> docType
-            , Map<String, String> values, boolean ticket, JComboBox<String> sectorsComboBox) {
+    public String validateParam(java.util.Date date, JComboBox<String> provider, Map<String, String> values, boolean ticket, JComboBox<String> sectorsComboBox) {
         
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
         String message = "<html>", invalidations = "";
         if (date == null) 
             invalidations += "<br/>Fecha no introducida";
         if (provider.getSelectedItem() == null) {
-            if (docType.getSelectedItem() == null || values.get("docNo").isEmpty() || values.get("name").isEmpty()) {
-                invalidations += "<br/>No se introdujeron datos sobre el proveedor";
-            }
             String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
             if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
                 invalidations += "<br/>El rubro del proveedor no existe";
@@ -264,6 +280,10 @@ public class Controller {
     
     public void cleanTextField(JTextField[] textField){
             for(JTextField t : textField) t.setText("");
+    }
+    public void addProvider(Map<String, String> values){
+        Provider provider = new Provider(values);
+        ProviderDAO.addProvider(provider);
     }
     
     private Pair<List<String>,Boolean> readCsv(File f, String type) {
