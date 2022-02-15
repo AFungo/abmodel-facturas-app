@@ -232,11 +232,11 @@ public class FormatUtils {
         return validations;
     }
     
-    private static boolean tryParse(String value, String expectedClass) {
+    public static boolean tryParse(String value, String expectedClass) {
         try { 
             if (expectedClass == "Float") {
                 Float.parseFloat(value);
-            } else if (expectedClass == "Integer") {
+            } else if (expectedClass == "Integer"){
                 new BigInteger(value);
             } else {
                 System.out.println("class wrongly passed, " + expectedClass + " is not valid");
