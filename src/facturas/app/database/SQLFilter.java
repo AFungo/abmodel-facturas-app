@@ -25,14 +25,14 @@ public class SQLFilter {
     public SQLFilter(Map<String, Object> selectedFilters) {
         String text;
         text = (String)selectedFilters.get("id");
-        try {
+        if (FormatUtils.tryParse(text, "Integer")) {
             add("id", "=", Integer.parseInt(text), Integer.class);
-        } catch (NumberFormatException e) { }
+        }
         
         text = (String)selectedFilters.get("number");
-        try {
-            add("number", "=", String.valueOf(Integer.parseInt(text)), String.class);
-        } catch (NumberFormatException e) { }
+        if (FormatUtils.tryParse(text, "Integer")) {
+            add("number", "=", text, String.class);
+        }
         
         text = (String) selectedFilters.get("startDate");
         if (text != null && !text.isEmpty()) { add("date", ">=", FormatUtils.dateGen(text), Date.class); }
@@ -49,12 +49,7 @@ public class SQLFilter {
         if (!text.isEmpty()) { add("iva", "<=", Float.parseFloat(text), Float.class); }
 
         List<Object> providersDocs = (List<Object>)selectedFilters.get("providersDocs");
-        if (!providersDocs.isEmpty()) { 
-            System.out.println("Hi! the list is not empty");
-            addDisjunction("providerDoc", "=", providersDocs, String.class); 
-        } else {
-            System.out.println("The list is empty");
-        }
+        if (!providersDocs.isEmpty()) { addDisjunction("providerDoc", "=", providersDocs, String.class); }
         
         List<Object> typesList = (List<Object>)selectedFilters.get("ticketTypesList");
         if (!typesList.isEmpty()) { addDisjunction("type", "=", typesList, String.class); }
