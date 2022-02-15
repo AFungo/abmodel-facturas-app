@@ -635,14 +635,14 @@ public class View extends javax.swing.JFrame {
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
-        //filtersView.updateSectors(sectors);
+        filtersView.updateSectors(sectors);
         ticketLoaderView.updateSectors(sectors);
         withholdingLoaderView.updateSectors(sectors);
     }
     
     public void updateProviders(List<String> names) {
         providersView.updateProviders(names);
-        //filtersView.updateProviders(names);
+        filtersView.updateProviders(names);
         ticketLoaderView.updateProviders(names);
         withholdingLoaderView.updateProviders(names);
     }

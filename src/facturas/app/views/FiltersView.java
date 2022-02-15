@@ -333,6 +333,14 @@ public class FiltersView extends javax.swing.JFrame {
         return namesList;
     }
     
+    public void updateSectors(List<String> sectors) {
+        sectorsAutoSuggestor.setSuggestions(sectors);
+    }
+    
+    public void updateProviders(List<String> names) {
+        providersAutoSuggestor.setSuggestions(names);
+    }
+    
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);

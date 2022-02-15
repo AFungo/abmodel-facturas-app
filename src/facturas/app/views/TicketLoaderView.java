@@ -12,14 +12,11 @@ import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.Enabler;
-import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 
 /**
@@ -390,9 +387,9 @@ public class TicketLoaderView extends javax.swing.JFrame {
     }
     
     public void updateSectors(List<String> sectors) {
-        Vector<String> sectorsVector = FormatUtils.listToVector(sectors);
-        sectorsComboBox.setModel(new DefaultComboBoxModel(sectorsVector));
+        sectorsAutoSuggestor.setSuggestions(sectors);
     }
+    
     Controller controller;
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
