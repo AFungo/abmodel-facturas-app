@@ -39,24 +39,15 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
-        providerSectorsAutoSuggestor = new AutoSuggestor(providerSectorComboBox, getSectors());
         providersAutoSuggestor.autoSuggest();
         exchangeTypeTextField.setEditable(false);
         this.mainView = mainView;
         
-        e = providersAutoSuggestor.getEnabler();
-        e.addComboBox(providerDocTypeComboBox);
-        e.addComboBox(providerSectorComboBox);
-        e.addTextField(providerDocTextField);
-        e.addTextField(providerNameTextField);
-        e.addTextField(providerAddressTextField);
-        e.addTextField(providerAliasTextField);
     }
     
     public void updateSuggestions() {
         providersAutoSuggestor.setSuggestions(getProvidersName());
         sectorsAutoSuggestor.setSuggestions(getSectors());
-        providerSectorsAutoSuggestor.setSuggestions(getSectors());
     }
     
     private List<String> getProvidersName() {
@@ -85,9 +76,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -96,8 +84,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         numberTextField = new javax.swing.JTextField();
-        providerDocTextField = new javax.swing.JTextField();
-        providerNameTextField = new javax.swing.JTextField();
         exchangeTypeTextField = new javax.swing.JTextField();
         netAmountWITextField = new javax.swing.JTextField();
         netAmountWOITextField = new javax.swing.JTextField();
@@ -107,23 +93,16 @@ public class TicketLoaderView extends javax.swing.JFrame {
         loadTicket = new javax.swing.JButton();
         issuedByMeCheckBox = new javax.swing.JCheckBox();
         dateDateChooser = new com.toedter.calendar.JDateChooser();
-        providerDocTypeComboBox = new javax.swing.JComboBox<>();
         providersComboBox = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         sectorsComboBox = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         addNewProvider = new javax.swing.JLabel();
         ticketType = new javax.swing.JComboBox<>();
-        providerSectorComboBox = new javax.swing.JComboBox<>();
-        providerAddressTextField = new javax.swing.JTextField();
-        rubroLabel = new javax.swing.JLabel();
-        addressLabel = new javax.swing.JLabel();
         exchangeMoneyComboBox = new javax.swing.JComboBox<>();
-        jLabel6 = new javax.swing.JLabel();
-        providerAliasTextField = new javax.swing.JTextField();
         addNewProvider1 = new javax.swing.JLabel();
-        addNewProvider2 = new javax.swing.JLabel();
         deliveredCheckBox = new javax.swing.JCheckBox();
+        addProviderButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CARGAR COMPROBANTE");
@@ -133,12 +112,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         jLabel2.setText("Tipo");
 
         jLabel3.setText("Numero de Comprobante");
-
-        jLabel7.setText("Tipo Doc. Proveedor");
-
-        jLabel8.setText("Numero Doc. Proveedor");
-
-        jLabel9.setText("Denominacion Proveedor");
 
         jLabel10.setText("Tipo de Cambio");
 
@@ -170,9 +143,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
         JTextFieldDateEditor textField = (JTextFieldDateEditor) dateDateChooser.getDateEditor();
         textField.setEditable(false);
 
-        providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
-        providerDocTypeComboBox.setSelectedIndex(-1);
-
         providersComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 providersComboBoxItemStateChanged(evt);
@@ -188,12 +158,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
         ticketType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Factura A", "Factura B", "Factura C", "Nota de credito A", "Nota de credito B ", "Nota de credito C", "Nota de debito A", "Nota de debito B ", "Nota de debito C", "Liquidacion", " " }));
 
-        providerSectorComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        rubroLabel.setText("Rubro");
-
-        addressLabel.setText("Direccion");
-
         exchangeMoneyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pesos", "USD", "Euro", "Real" }));
         exchangeMoneyComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,15 +165,17 @@ public class TicketLoaderView extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Alias Proveedor");
-
         addNewProvider1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         addNewProvider1.setText("Importes");
 
-        addNewProvider2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        addNewProvider2.setText("Añadir un nuevo proveedor");
-
         deliveredCheckBox.setText("Enviado al contador");
+
+        addProviderButton.setText("Añadir proveedor");
+        addProviderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProviderButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -218,91 +184,59 @@ public class TicketLoaderView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(addNewProvider)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(exchangeTypeTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(exchangeMoneyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(netAmountWOITextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(netAmountWITextField, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(amountImpExTextField)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ivaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(totalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(providerDocTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(providersComboBox, 0, 150, Short.MAX_VALUE)
+                            .addComponent(addProviderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(providerDocTextField)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(sectorsComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ticketType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(providerNameTextField)
-                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rubroLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(providerSectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(addressLabel)
-                                    .addComponent(providerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap())
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(providerAliasTextField)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(289, 289, 289))))
-                    .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(numberTextField)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dateDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(addNewProvider)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(exchangeTypeTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(exchangeMoneyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(netAmountWOITextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(netAmountWITextField, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(amountImpExTextField)
-                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(1, 1, 1)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(ivaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(totalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(sectorsComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(ticketType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(numberTextField)
-                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(dateDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(loadTicket)
-                                    .addComponent(issuedByMeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(deliveredCheckBox)))
-                            .addComponent(addNewProvider1))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(addNewProvider2)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(loadTicket)
+                            .addComponent(issuedByMeCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(deliveredCheckBox)))
+                    .addComponent(addNewProvider1))
+                .addGap(20, 49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -311,18 +245,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
                 .addComponent(addNewProvider)
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ticketType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(41, 41, 41)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(3, 3, 3)
@@ -338,7 +260,22 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(loadTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(35, 35, 35)
-                                .addComponent(issuedByMeCheckBox)))))
+                                .addComponent(issuedByMeCheckBox))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ticketType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addProviderButton))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(41, 41, 41)
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(addNewProvider1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -373,26 +310,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
                         .addComponent(jLabel16)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(totalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(addNewProvider2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9)
-                    .addComponent(rubroLabel)
-                    .addComponent(addressLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(providerDocTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(providerDocTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(providerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(providerSectorComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(providerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(providerAliasTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -405,6 +322,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private void loadTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketActionPerformed
         Map<String, String> values = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SQLFilter filter = new SQLFilter();
         
         //amounts
         values.put("amountImpEx", amountImpExTextField.getText());
@@ -420,47 +338,30 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("type", (String) ticketType.getSelectedItem());
         values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));        
         values.put("sector", (String) sectorsComboBox.getSelectedItem());
-        
-        //provider attributes
-        values.put("docNo", providerDocTextField.getText());
-        values.put("name", providerNameTextField.getText());
-        values.put("direction, ", providerAddressTextField.getText()); // may be null
-        values.put("provSector", (String) providerSectorComboBox.getSelectedItem());//may be null
-        values.put("alias", providerAliasTextField.getText());      //may be null
         values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
+        values.put("date", sdf.format(dateDateChooser.getDate()));        
 
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, 
-                providerDocTypeComboBox, values, true, sectorsComboBox);
+        //provider
+        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
+        Provider provider = ProviderDAO.getProviders(filter).get(0);
+        values.put("docNo", provider.getValues().get("docNo"));
+        values.put("docType", provider.getValues().get("docType"));
+        values.put("name", provider.getValues().get("name"));
+        values.put("provSector", provider.getValues().get("provSector"));
+        values.put("alias", (String) provider.getValues().get("alias"));
+
+        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, values, true, sectorsComboBox);
         if (errorMessage != null) {
             invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
             return ;
         }
-               
-        values.put("date", sdf.format(dateDateChooser.getDate()));
-        if (providersComboBox.getSelectedItem() != null) {
-            SQLFilter filter = new SQLFilter();
-            filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-            Provider provider = ProviderDAO.getProviders(filter).get(0);
-            values.put("docNo", provider.getValues().get("docNo"));
-            values.put("docType", provider.getValues().get("docType"));
-            values.put("name", provider.getValues().get("name"));
-            values.put("provSector", provider.getValues().get("provSector"));
-            values.put("alias", (String) provider.getValues().get("alias"));
-        } else {
-            values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());
-        }
-
         controller.loadTicket(values);
         cleanTextFields();
-        if (providersComboBox.getSelectedItem() == null) {
-            mainView.updateProviders(getProvidersName());
-        }
     }//GEN-LAST:event_loadTicketActionPerformed
 
     private void cleanTextFields() {
         JTextField[] forClean = new JTextField[] {numberTextField, netAmountWITextField, netAmountWOITextField, 
-            amountImpExTextField, ivaTextField, totalAmountTextField, providerDocTextField, providerNameTextField, 
-            providerAliasTextField, providerAddressTextField};
+            amountImpExTextField, ivaTextField, totalAmountTextField};
         
         controller.cleanTextField(forClean);
     }
@@ -478,6 +379,11 @@ public class TicketLoaderView extends javax.swing.JFrame {
             e.setEnabled(providersComboBox.getSelectedItem() == null);
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
+
+    private void addProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderButtonActionPerformed
+        ProviderLoader providerLoader = new ProviderLoader(controller, mainView);
+        providerLoader.setVisible(true);
+    }//GEN-LAST:event_addProviderButtonActionPerformed
     
     public void updateProviders(List<String> names) {
         providersAutoSuggestor.setSuggestions(names);
@@ -486,20 +392,16 @@ public class TicketLoaderView extends javax.swing.JFrame {
     public void updateSectors(List<String> sectors) {
         Vector<String> sectorsVector = FormatUtils.listToVector(sectors);
         sectorsComboBox.setModel(new DefaultComboBoxModel(sectorsVector));
-        providerSectorComboBox.setModel(new DefaultComboBoxModel(sectorsVector));
     }
-    
     Controller controller;
     AutoSuggestor providersAutoSuggestor;
     AutoSuggestor sectorsAutoSuggestor;
-    AutoSuggestor providerSectorsAutoSuggestor;    
     Enabler e;
     private View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addNewProvider;
     private javax.swing.JLabel addNewProvider1;
-    private javax.swing.JLabel addNewProvider2;
-    private javax.swing.JLabel addressLabel;
+    private javax.swing.JButton addProviderButton;
     private javax.swing.JTextField amountImpExTextField;
     private com.toedter.calendar.JDateChooser dateDateChooser;
     private javax.swing.JCheckBox deliveredCheckBox;
@@ -520,22 +422,11 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JButton loadTicket;
     private javax.swing.JTextField netAmountWITextField;
     private javax.swing.JTextField netAmountWOITextField;
     private javax.swing.JTextField numberTextField;
-    private javax.swing.JTextField providerAddressTextField;
-    private javax.swing.JTextField providerAliasTextField;
-    private javax.swing.JTextField providerDocTextField;
-    private javax.swing.JComboBox<String> providerDocTypeComboBox;
-    private javax.swing.JTextField providerNameTextField;
-    private javax.swing.JComboBox<String> providerSectorComboBox;
     private javax.swing.JComboBox<String> providersComboBox;
-    private javax.swing.JLabel rubroLabel;
     private javax.swing.JComboBox<String> sectorsComboBox;
     private javax.swing.JComboBox<String> ticketType;
     private javax.swing.JTextField totalAmountTextField;

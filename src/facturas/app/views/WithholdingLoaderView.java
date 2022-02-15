@@ -37,12 +37,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
-        this.mainView = mainView;
-        
-        e = providersAutoSuggestor.getEnabler();
-        e.addComboBox(providerDocTypeComboBox);
-        e.addTextField(providerNameTextField);
-        e.addTextField(providerDocTextField);
+        this.mainView = mainView;    
     }
     
     public void updateSuggestions() {
@@ -75,17 +70,11 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         invalidParamDialog = new javax.swing.JOptionPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         numberTextField = new javax.swing.JTextField();
-        providerDocTextField = new javax.swing.JTextField();
-        providerNameTextField = new javax.swing.JTextField();
         totalAmountTextField = new javax.swing.JTextField();
         loadWithholding = new javax.swing.JButton();
         dateDateChooser = new com.toedter.calendar.JDateChooser();
-        providerDocTypeComboBox = new javax.swing.JComboBox<>();
         providersComboBox = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         sectorsComboBox = new javax.swing.JComboBox<>();
@@ -93,6 +82,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         typeComboBox = new javax.swing.JComboBox<>();
         retentionTypeLabel = new javax.swing.JLabel();
         deliveredCheckBox = new javax.swing.JCheckBox();
+        addProviderButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CARGAR COMPROBANTE");
@@ -101,14 +91,9 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
         jLabel3.setText("Numero de Comprobante");
 
-        jLabel7.setText("Tipo Doc. Emisor");
-
-        jLabel8.setText("Numero Doc. Emisor");
-
-        jLabel9.setText("Denominacion Emisor");
-
         jLabel16.setText("Imp. Total");
 
+        loadWithholding.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         loadWithholding.setText("Agregar comprobante");
         loadWithholding.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,9 +105,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         JTextFieldDateEditor textField = (JTextFieldDateEditor) dateDateChooser.getDateEditor();
         textField.setEditable(false);
 
-        providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
-        providerDocTypeComboBox.setSelectedIndex(-1);
-
         providersComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 providersComboBoxItemStateChanged(evt);
@@ -133,6 +115,11 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
         jLabel5.setText("Rubro");
 
+        typeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeComboBoxActionPerformed(evt);
+            }
+        });
         typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Retencion iva", "Retencion ganancias" }));
         typeComboBox.setSelectedIndex(-1);
 
@@ -140,51 +127,52 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
         deliveredCheckBox.setText("Enviado al contador");
 
+        addProviderButton.setText("Añadir proveedor");
+        addProviderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProviderButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(dateDateChooser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(providerDocTypeComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(providerDocTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(numberTextField, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(providerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(dateDateChooser, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                             .addComponent(jLabel4)
-                            .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(totalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
+                            .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(numberTextField, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(retentionTypeLabel)
+                            .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(307, 307, 307)
-                                .addComponent(loadWithholding))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(retentionTypeLabel)
-                                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(50, 50, 50)
-                                .addComponent(deliveredCheckBox)))
+                                    .addComponent(sectorsComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(totalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(deliveredCheckBox)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                                .addComponent(loadWithholding))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addProviderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(45, 45, 45))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -208,34 +196,25 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
+                                .addComponent(totalAmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(providerDocTypeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(providerDocTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel4))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(providerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(18, 18, 18)
-                .addComponent(retentionTypeLabel)
+                            .addComponent(jLabel4)
+                            .addComponent(retentionTypeLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(deliveredCheckBox))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(loadWithholding, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(deliveredCheckBox))
-                .addGap(41, 41, 41)
-                .addComponent(loadWithholding)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addComponent(addProviderButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -247,18 +226,25 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         
         values.put("number", numberTextField.getText());
         values.put("totalAmount", totalAmountTextField.getText());
-        values.put("docNo", providerDocTextField.getText());
-        values.put("name", providerNameTextField.getText());
         values.put("sector", (String) sectorsComboBox.getSelectedItem());
         values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
 
+        //add providers things
+        SQLFilter filter = new SQLFilter();
+        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
+        Provider provider = ProviderDAO.getProviders(filter).get(0);
+        values.put("docNo", provider.getValues().get("docNo"));
+        values.put("docType", provider.getValues().get("docType"));
+        values.put("name", provider.getValues().get("name"));
+        values.put("provSector", provider.getValues().get("sector"));
+        
+        
         if (typeComboBox.getSelectedItem() != null)
             values.put("type", typeComboBox.getSelectedItem().toString());
         else
             values.put("type", "");
         
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, 
-                providerDocTypeComboBox, values, false, sectorsComboBox);
+        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, values, false, sectorsComboBox);
         if (errorMessage != null) {
             invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
             return ;
@@ -266,23 +252,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         values.put("date", sdf.format(dateDateChooser.getDate()));
-        
-        if (providersComboBox.getSelectedItem() != null) {
-            SQLFilter filter = new SQLFilter();
-            filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-            Provider provider = ProviderDAO.getProviders(filter).get(0);
-            values.put("docNo", provider.getValues().get("docNo"));
-            values.put("docType", provider.getValues().get("docType"));
-            values.put("name", provider.getValues().get("name"));
-            values.put("provSector", provider.getValues().get("sector"));
-        } else {
-            values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());
-        }
-        
         controller.loadWithholding(values);
-        if (providersComboBox.getSelectedItem() == null) {
-            mainView.updateProviders(getProvidersName());
-        }
         cleanTextField();
     }//GEN-LAST:event_loadWithholdingActionPerformed
 
@@ -291,6 +261,15 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
             e.setEnabled(providersComboBox.getSelectedItem() == null);
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
+
+    private void typeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeComboBoxActionPerformed
+
+    private void addProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderButtonActionPerformed
+        ProviderLoader providerLoader = new ProviderLoader(controller, mainView);
+        providerLoader.setVisible(true);
+    }//GEN-LAST:event_addProviderButtonActionPerformed
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[]{numberTextField, totalAmountTextField};
         controller.cleanTextField(forClean);
@@ -309,6 +288,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     Enabler e;
     private View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addProviderButton;
     private com.toedter.calendar.JDateChooser dateDateChooser;
     private javax.swing.JCheckBox deliveredCheckBox;
     private javax.swing.JOptionPane invalidParamDialog;
@@ -317,14 +297,8 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JButton loadWithholding;
     private javax.swing.JTextField numberTextField;
-    private javax.swing.JTextField providerDocTextField;
-    private javax.swing.JComboBox<String> providerDocTypeComboBox;
-    private javax.swing.JTextField providerNameTextField;
     private javax.swing.JComboBox<String> providersComboBox;
     private javax.swing.JLabel retentionTypeLabel;
     private javax.swing.JComboBox<String> sectorsComboBox;
