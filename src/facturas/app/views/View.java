@@ -616,11 +616,12 @@ public class View extends javax.swing.JFrame {
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
-        SQLFilter filter = createTicketFilter(row);
-        
-        int selection = optionPane.showConfirmDialog(null, null, "Estas seguro?", optionPane.OK_CANCEL_OPTION);
+        JTable toDelete = createToDeleteTable(row);
+        int selection = optionPane.showConfirmDialog(null, new JScrollPane(toDelete), "Estas seguro?", optionPane.OK_CANCEL_OPTION);
         if (selection == optionPane.OK_OPTION) {
+            SQLFilter filter = createTicketFilter(row);
             String type = (String)ticketsTable.getValueAt(row, 2);
+           
             if (type.contains("Retencion"))
                 controller.removeItem(filter, false);
             else
@@ -630,6 +631,20 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
+    private JTable createToDeleteTable(int rowIndex) {
+            Object[] rowToDelete = new Object[6];
+            int i = 0;
+            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 0);    //id
+            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 1);    //date
+            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 2);    //type
+            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 3);    //noTicket
+            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 7);    //provider name
+            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 13);  //total import
+            
+            JTable toDelete = controller.createTableToDelete(rowToDelete);
+            return toDelete;
+    }
+    
     private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed
         ProviderLoader providerLoader = new ProviderLoader(controller, this);
         providerLoader.setVisible(true);
