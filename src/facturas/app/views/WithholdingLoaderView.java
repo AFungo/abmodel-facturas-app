@@ -355,26 +355,14 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
     private void loadWithholdingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingActionPerformed
         Map<String, String> values = new HashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SQLFilter filter = new SQLFilter();
         
         values.put("number", numberTextField.getText());
         values.put("totalAmount", totalAmountTextField.getText());
         values.put("sector", (String) sectorsComboBox.getSelectedItem());
         values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
-
-        //add providers things
-        SQLFilter filter = new SQLFilter();
-        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-        Provider provider = ProviderDAO.getProviders(filter).get(0);
-        values.put("docNo", provider.getValues().get("docNo"));
-        values.put("docType", provider.getValues().get("docType"));
-        values.put("name", provider.getValues().get("name"));
-        values.put("provSector", provider.getValues().get("sector"));
-        
-        
-        if (typeComboBox.getSelectedItem() != null)
-            values.put("type", typeComboBox.getSelectedItem().toString());
-        else
-            values.put("type", "");
+        values.put("type", (String) typeComboBox.getSelectedItem());
         
         String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, values, false, sectorsComboBox);
         if (errorMessage != null) {
@@ -382,8 +370,16 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
             return ;
         }
         
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        //add providers things
+        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
+        Provider provider = ProviderDAO.getProviders(filter).get(0);
+        values.put("docNo", provider.getValues().get("docNo"));
+        values.put("docType", provider.getValues().get("docType"));
+        values.put("name", provider.getValues().get("name"));
+        values.put("provSector", provider.getValues().get("sector"));
+        
         values.put("date", sdf.format(dateDateChooser.getDate()));
+        
         controller.loadWithholding(values);
         cleanTextField();
         updateLastTicketLoaded(values);
