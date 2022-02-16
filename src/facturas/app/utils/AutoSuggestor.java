@@ -111,7 +111,8 @@ public class AutoSuggestor {
                             suggestions.addElement(text);
                             Collections.sort(suggestions);
                             setModel(getSuggestedModel(suggestions, text), text);
-                        }   hide_Flag = true;
+                        }   
+                        hide_Flag = true;
                         break;
                     case KeyEvent.VK_ESCAPE:
                         hide_Flag = true;
