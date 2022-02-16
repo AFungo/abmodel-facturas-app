@@ -79,6 +79,7 @@ public class Controller {
             DollarPriceDAO.addDollarPrice(p);
         }
     }
+    
     public String validateProviderParam(Map<String, String> values, JComboBox<String> sectorsComboBox){
         String message = "<html>", invalidations = "";
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
@@ -100,6 +101,7 @@ public class Controller {
             return message + invalidations;
         }
     }
+    
     //ticket is a boolean representing if the validation is for ticket or withholding
     public String validateParam(java.util.Date date, JComboBox<String> provider, Map<String, String> values, boolean ticket, JComboBox<String> sectorsComboBox) {
         
@@ -118,14 +120,14 @@ public class Controller {
         if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector)))
             invalidations += "<br/>El rubro del comprobante no existe";
         
-        if (values.get("type").isEmpty())
+        if (values.get("type") == null || values.get("type").isEmpty())
             invalidations += "<br/>No se especifico el tipo de comprobante";
         
         if (ticket && values.get("exchangeMoney").isEmpty())
             invalidations += "<br/>No se introdujo el tipo de moneda";
         
         boolean[] numerics = FormatUtils.validTicketInput(values, ticket);
-        invalidations += addInvalidNumerics(numerics);
+        invalidations += addInvalidNumerics(numerics, ticket);
         
         if (invalidations.isEmpty()) {
             return null;
@@ -135,26 +137,25 @@ public class Controller {
         }
     }
     
-    private String addInvalidNumerics(boolean[] numerics) {
+    private String addInvalidNumerics(boolean[] numerics, boolean ticket) {
         String invalidations = "";
-        if (!numerics[0])
+        int i = 0;
+        if (!numerics[i++])
             invalidations += "<br/>Numero de ticket mal escrito";
-        if (!numerics[1])
-            invalidations += "<br/>Numero de documento del proveedor mal escrito";
-        if (!numerics[2])
+        if (!numerics[i++])
             invalidations += "<br/>Importe total mal escrito";
-        if (numerics.length == 3) //case of withholding
+        if (!ticket) //case of withholding
             return invalidations;
         //otherwise check for ticket inputs
-        if (!numerics[3])
+        if (!numerics[i++])
             invalidations += "<br/>Importe Op. Exentas mal escrito";
-        if (!numerics[4])
+        if (!numerics[i++])
             invalidations += "<br/>Tipo de cambio mal escrito";
-        if (!numerics[5])
-            invalidations += "<br/>Iva mal escrito";
-        if (!numerics[6])
+        if (!numerics[i++] || !numerics[i++] || !numerics[i++])
+            invalidations += "<br/>algunos de los Ivas mal escritos";
+        if (!numerics[i++])
             invalidations += "<br/>Importe neto gravado mal escrito";
-        if (!numerics[7])
+        if (!numerics[i++])
             invalidations += "<br/>Importe neto no gravado mal escrito";
         
         return invalidations;
@@ -290,6 +291,7 @@ public class Controller {
     public void cleanTextField(JTextField[] textField){
             for(JTextField t : textField) t.setText("");
     }
+    
     public void addProvider(Map<String, String> values){
         Provider provider = new Provider(values);
         ProviderDAO.addProvider(provider);

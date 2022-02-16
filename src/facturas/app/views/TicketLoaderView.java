@@ -486,11 +486,12 @@ public class TicketLoaderView extends javax.swing.JFrame {
         Map<String, String> values = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         SQLFilter filter = new SQLFilter();
-        Float iva = Float.parseFloat(ivaTextField.getText()) + Float.parseFloat(ivaTextField1.getText()) + Float.parseFloat(ivaTextField2.getText());
         //amounts
         values.put("amountImpEx", amountImpExTextField.getText());
         values.put("exchangeType", exchangeTypeTextField.getText());
-        values.put("iva", iva.toString());
+        values.put("iva", ivaTextField.getText());
+        values.put("iva1", ivaTextField1.getText());
+        values.put("iva2", ivaTextField2.getText());
         values.put("netAmountWI", netAmountWITextField.getText());
         values.put("netAmountWOI", netAmountWOITextField.getText());
         values.put("exchangeMoney", (String) exchangeMoneyComboBox.getSelectedItem());
@@ -502,8 +503,13 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));        
         values.put("sector", (String) sectorsComboBox.getSelectedItem());
         values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
-        values.put("date", sdf.format(dateDateChooser.getDate()));        
 
+        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, values, true, sectorsComboBox);
+        if (errorMessage != null) {
+            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
+            return ;
+        }
+        
         //provider
         filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
         Provider provider = ProviderDAO.getProviders(filter).get(0);
@@ -513,11 +519,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("provSector", provider.getValues().get("provSector"));
         values.put("alias", (String) provider.getValues().get("alias"));
 
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, values, true, sectorsComboBox);
-        if (errorMessage != null) {
-            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
-            return ;
-        }
+        values.put("date", sdf.format(dateDateChooser.getDate()));
+        Float iva = Float.parseFloat(values.get("iva")) + Float.parseFloat(values.get("iva1")) + Float.parseFloat(values.get("iva2"));
+        values.put("iva", iva.toString());
+        
         controller.loadTicket(values);
         cleanTextFields();
         updateLastTicketLoaded(values);
