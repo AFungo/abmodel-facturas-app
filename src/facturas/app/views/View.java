@@ -36,14 +36,6 @@ import org.apache.commons.io.FilenameUtils;
  */
 public class View extends javax.swing.JFrame {
 
-    private Controller controller;
-    private ProvidersView providersView;
-    private FiltersView filtersView;
-    private ColumnSelector columnSelectorView;
-    private TicketLoaderView ticketLoaderView;
-    private WithholdingLoaderView withholdingLoaderView;
-    private SectorsView sectorsView;
-
     /**
      * Creates new form MainWindow
      *
@@ -59,6 +51,7 @@ public class View extends javax.swing.JFrame {
         ticketLoaderView = new TicketLoaderView(controller, this);
         withholdingLoaderView = new WithholdingLoaderView(controller, this);
         sectorsView = new SectorsView(this);
+        providerLoader = new ProviderLoader(controller, this);
     }
 
     /**
@@ -646,7 +639,6 @@ public class View extends javax.swing.JFrame {
     }
     
     private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed
-        ProviderLoader providerLoader = new ProviderLoader(controller, this);
         providerLoader.setVisible(true);
     }//GEN-LAST:event_addProviderMenuItemActionPerformed
 
@@ -693,6 +685,14 @@ public class View extends javax.swing.JFrame {
         return selectedColumns;
     }
     
+    private Controller controller;
+    private ProvidersView providersView;
+    private FiltersView filtersView;
+    private ColumnSelector columnSelectorView;
+    private TicketLoaderView ticketLoaderView;
+    private WithholdingLoaderView withholdingLoaderView;
+    private SectorsView sectorsView;
+    private ProviderLoader providerLoader;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addProviderMenuItem;
     private javax.swing.JButton calculateButton;

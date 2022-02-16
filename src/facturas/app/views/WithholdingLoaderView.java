@@ -37,7 +37,8 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
-        this.mainView = mainView;    
+        this.mainView = mainView;
+        providerLoader = new ProviderLoader(controller, mainView);
     }
     
     public void updateSuggestions() {
@@ -399,7 +400,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_typeComboBoxActionPerformed
 
     private void addProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderButtonActionPerformed
-        ProviderLoader providerLoader = new ProviderLoader(controller, mainView);
         providerLoader.setVisible(true);
     }//GEN-LAST:event_addProviderButtonActionPerformed
 
@@ -425,11 +425,13 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         showLastTotalTextField.setText(values.get("totalAmount"));
         showLastIDTextField.setText("falta poner el id");
     }
-    Controller controller;
-    AutoSuggestor providersAutoSuggestor;
-    AutoSuggestor sectorsAutoSuggestor;
-    Enabler e;
+    
+    private Controller controller;
+    private AutoSuggestor providersAutoSuggestor;
+    private AutoSuggestor sectorsAutoSuggestor;
+    private Enabler e;
     private View mainView;
+    private ProviderLoader providerLoader;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addProviderButton;
     private com.toedter.calendar.JDateChooser dateDateChooser;
