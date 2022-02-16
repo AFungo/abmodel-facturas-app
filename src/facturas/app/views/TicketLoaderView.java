@@ -12,6 +12,7 @@ import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.Enabler;
+import facturas.app.utils.FixedData;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -188,7 +189,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         addNewProvider.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         addNewProvider.setText("Comprobante");
 
-        ticketType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Factura A", "Factura B", "Factura C", "Nota de credito A", "Nota de credito B ", "Nota de credito C", "Nota de debito A", "Nota de debito B ", "Nota de debito C", "Liquidacion", " " }));
+        ticketType.setModel(new javax.swing.DefaultComboBoxModel<> (FixedData.getTicketTypes()));
 
         exchangeMoneyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pesos", "USD", "Euro", "Real" }));
         exchangeMoneyComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -268,7 +269,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addComponent(addNewProvider1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                                     .addComponent(addProviderButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(providersComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
