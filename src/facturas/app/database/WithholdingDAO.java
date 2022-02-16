@@ -38,8 +38,8 @@ public class WithholdingDAO {
         if (!ProviderDAO.providerExist(filter)) {
             ProviderDAO.addProvider(provider);
         }
-        String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
-            + "VALUES (" + sqlValues.getSnd() + ")";
+        String query = "INSERT INTO Withholding (id, " + sqlValues.getFst() + ") "
+            + "VALUES (NEXT VALUE FOR id_seq, " + sqlValues.getSnd() + ")";
         executeQuery(query, true);
     }
         
