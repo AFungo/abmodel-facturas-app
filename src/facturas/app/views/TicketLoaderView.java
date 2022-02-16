@@ -14,6 +14,7 @@ import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.Enabler;
 import facturas.app.utils.FixedData;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +38,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
+        ticketTypesAutoSuggestor = new AutoSuggestor(ticketType, Arrays.asList(FixedData.getTicketTypes()));
+        ticketTypesAutoSuggestor.autoSuggest();
         providersAutoSuggestor.autoSuggest();
         exchangeTypeTextField.setEditable(false);
         this.mainView = mainView;
@@ -569,6 +572,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private Controller controller;
     private AutoSuggestor providersAutoSuggestor;
     private AutoSuggestor sectorsAutoSuggestor;
+    private AutoSuggestor ticketTypesAutoSuggestor;
     private Enabler e;
     private View mainView;
     private ProviderLoader providerLoader;
