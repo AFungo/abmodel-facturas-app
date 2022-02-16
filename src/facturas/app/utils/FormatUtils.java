@@ -214,19 +214,21 @@ public class FormatUtils {
     public static boolean[] validTicketInput(Map<String, String> values, boolean ticket) {
         boolean[] validations;
         if (ticket) 
-            validations = new boolean[8];
+            validations = new boolean[9];
         else
-            validations = new boolean[3];
+            validations = new boolean[2];
         
-        validations[0] = tryParse(values.get("number"), "Integer");
-        validations[1] = values.get("docNo").isEmpty() ? true : tryParse(values.get("docNo"), "Integer"); //maybe user seleceted an existent provider
-        validations[2] = tryParse(values.get("totalAmount"), "Float");
+        int i = 0;
+        validations[i++] = tryParse(values.get("number"), "Integer");
+        validations[i++] = tryParse(values.get("totalAmount"), "Float");
         if (ticket) {
-            validations[3] = values.get("amountImpEx").isEmpty() ? true : tryParse(values.get("amountImpEx"), "Float");
-            validations[4] = values.get("exchangeType").isEmpty() ? true : tryParse(values.get("exchangeType"), "Float");
-            validations[5] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), "Float");
-            validations[6] = values.get("netAmountWI").isEmpty() ? true : tryParse(values.get("netAmountWI"), "Float");
-            validations[7] = values.get("netAmountWOI").isEmpty() ? true : tryParse(values.get("netAmountWOI"), "Float");
+            validations[i++] = values.get("amountImpEx").isEmpty() ? true : tryParse(values.get("amountImpEx"), "Float");
+            validations[i++] = values.get("exchangeType").isEmpty() ? true : tryParse(values.get("exchangeType"), "Float");
+            validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), "Float");
+            validations[i++] = values.get("iva1").isEmpty() ? true : tryParse(values.get("iva1"), "Float");
+            validations[i++] = values.get("iva2").isEmpty() ? true : tryParse(values.get("iva2"), "Float");
+            validations[i++] = values.get("netAmountWI").isEmpty() ? true : tryParse(values.get("netAmountWI"), "Float");
+            validations[i++] = values.get("netAmountWOI").isEmpty() ? true : tryParse(values.get("netAmountWOI"), "Float");
         }
 
         return validations;
