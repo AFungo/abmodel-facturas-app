@@ -634,6 +634,7 @@ public class View extends javax.swing.JFrame {
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
+        providerLoader.updateSectors(sectors);
         filtersView.updateSectors(sectors);
         ticketLoaderView.updateSectors(sectors);
         withholdingLoaderView.updateSectors(sectors);
