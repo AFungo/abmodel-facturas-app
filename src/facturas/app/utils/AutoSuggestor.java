@@ -9,7 +9,11 @@ import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -35,9 +39,9 @@ public class AutoSuggestor {
     }
     
     public void setSuggestions(List<String> suggestions) {
-        Collections.sort(suggestions);
-        this.suggestions = FormatUtils.listToVector(suggestions);
-        setModel(getSuggestedModel(suggestions, ""), "");
+        SortedSet<String> sortedSuggestions = new TreeSet<>(suggestions);
+        this.suggestions = setToVector(sortedSuggestions);
+        setModel(getSuggestedModel(this.suggestions, ""), "");
     }
     
     private void setModel(DefaultComboBoxModel model, String str) {
@@ -46,7 +50,7 @@ public class AutoSuggestor {
         textField.setText(str);
     }
     
-    private static DefaultComboBoxModel getSuggestedModel(List<String> list, String text) {
+    private DefaultComboBoxModel getSuggestedModel(List<String> list, String text) {
         DefaultComboBoxModel m = new DefaultComboBoxModel();
         for (String s : list) {
             if (s.toUpperCase().contains(text.toUpperCase())) {
@@ -135,4 +139,11 @@ public class AutoSuggestor {
         });
     }
     
+    private Vector<String> setToVector(Set<String> set) {
+        Vector<String> vector = new Vector<>();
+        for (String str : set) {
+            vector.add(str);
+        }
+        return vector;
+    }
 }
