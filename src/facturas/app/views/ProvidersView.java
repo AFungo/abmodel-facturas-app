@@ -244,7 +244,7 @@ public class ProvidersView extends javax.swing.JFrame {
             providersTable.addRowSelectionInterval(rowPoint, rowPoint);
             int row = providersTable.getSelectedRow();
             if (evt.isPopupTrigger() && providersTable.getSelectedRowCount() != 0) {
-                selectedCuit = (String)providersTable.getValueAt(row, 0); //0 is the cuit column
+                selectedDoc = (String)providersTable.getValueAt(row, 0); //0 is the cuit column
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
@@ -300,7 +300,7 @@ public class ProvidersView extends javax.swing.JFrame {
 
     private void updateAttribute(String attribute, String value, int column) {
          SQLFilter filter = new SQLFilter();
-        filter.add("cuit", "=", selectedCuit, String.class);
+        filter.add("docNo", "=", selectedDoc, String.class);
         controller.changeAttributeProviderDAO(filter, attribute, value);    //update db
         int row = providersTable.getSelectedRow();
         providersTable.setValueAt(value, row, column);  //update view
@@ -338,7 +338,7 @@ public class ProvidersView extends javax.swing.JFrame {
     
     private Controller controller;
     private AutoSuggestor providersAutoSuggestor;
-    private String selectedCuit;
+    private String selectedDoc;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aliasMenuItem;
     private javax.swing.JComboBox<String> comboBox;
