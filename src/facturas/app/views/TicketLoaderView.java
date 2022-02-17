@@ -549,7 +549,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_loadTicketActionPerformed
 
     private void getIva(Map<String, String> values) {
-        Float iva = new Float(0.0);
+        Float iva = 0.0f;
         if (!values.get("iva").isEmpty()) 
             iva += Float.parseFloat(values.get("iva"));
         if (!values.get("iva1").isEmpty()) 
