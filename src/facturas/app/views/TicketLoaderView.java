@@ -10,8 +10,10 @@ import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
+import facturas.app.models.Ticket;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.Enabler;
+import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FixedData;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -546,8 +548,12 @@ public class TicketLoaderView extends javax.swing.JFrame {
         showLastTypeTextField.setText(values.get("type"));
         showLastTotalTextField.setText(values.get("totalAmount"));
         showLastDateTextField1.setText(values.get("date"));
-        showLastIDTextField1.setText("falta poner el id");
+        
+        SQLFilter filter = FilterUtils.createTicketFilter(values);
+        Ticket ticket = (Ticket)controller.getTickets(filter).get(0);
+        showLastIDTextField1.setText(String.valueOf(ticket.getValues().get("id")));
     }
+    
     private void cleanTextFields() {
         JTextField[] forClean = new JTextField[] {numberTextField, netAmountWITextField, netAmountWOITextField, 
             amountImpExTextField, ivaTextField,ivaTextField1, ivaTextField2, totalAmountTextField};

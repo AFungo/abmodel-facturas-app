@@ -206,6 +206,11 @@ public class Controller {
         else return TicketDAO.getTickets(filters);            
     }
 
+    public List<Withholding> getTickets(SQLFilter filters) {
+        if (filters.isEmpty()) return getTickets();
+        else return TicketDAO.getTickets(filters);            
+    }
+
     public List<Withholding> getWithholdings(Map<String, Object> selectedFilters) {
         SQLFilter filters = new SQLFilter(selectedFilters, false);
         if(filters.isEmpty()) return WithholdingDAO.getWithholdings();
