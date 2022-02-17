@@ -520,16 +520,20 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("issuedByMe", String.valueOf(issuedByMeCheckBox.isSelected()));        
         values.put("sector", (String) sectorsComboBox.getSelectedItem());
         values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
+        
+        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
+        List<Provider> providerCheck = ProviderDAO.getProviders(filter);
 
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, values, true, sectorsComboBox);
+        String errorMessage = controller.validateParam(dateDateChooser.getDate(), values, true, 
+                sectorsComboBox, providerCheck);
         if (errorMessage != null) {
-            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
+            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", 
+                    invalidParamDialog.ERROR_MESSAGE);
             return ;
         }
         
         //provider
-        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-        Provider provider = ProviderDAO.getProviders(filter).get(0);
+        Provider provider = providerCheck.get(0);
         values.put("docNo", provider.getValues().get("docNo"));
         values.put("docType", provider.getValues().get("docType"));
         values.put("name", provider.getValues().get("name"));

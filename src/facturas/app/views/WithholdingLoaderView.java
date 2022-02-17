@@ -10,7 +10,6 @@ import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
-import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.Enabler;
@@ -368,15 +367,19 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
         values.put("type", (String) typeComboBox.getSelectedItem());
         
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, values, false, sectorsComboBox);
+        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
+        List<Provider> providerCheck = ProviderDAO.getProviders(filter);
+        
+        String errorMessage = controller.validateParam(dateDateChooser.getDate(), values, false, 
+                sectorsComboBox, providerCheck);
         if (errorMessage != null) {
-            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
+            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", 
+                    invalidParamDialog.ERROR_MESSAGE);
             return ;
         }
         
         //add providers things
-        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-        Provider provider = ProviderDAO.getProviders(filter).get(0);
+        Provider provider = providerCheck.get(0);
         values.put("docNo", provider.getValues().get("docNo"));
         values.put("docType", provider.getValues().get("docType"));
         values.put("name", provider.getValues().get("name"));

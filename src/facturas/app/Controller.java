@@ -103,18 +103,15 @@ public class Controller {
     }
     
     //ticket is a boolean representing if the validation is for ticket or withholding
-    public String validateParam(java.util.Date date, JComboBox<String> provider, Map<String, String> values, boolean ticket, JComboBox<String> sectorsComboBox) {
+    public String validateParam(java.util.Date date, Map<String, String> values, boolean ticket, 
+            JComboBox<String> sectorsComboBox, List<Provider> selectedProvider) {
         
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
         String message = "<html>", invalidations = "";
         if (date == null) 
             invalidations += "<br/>Fecha no introducida";
-        if (provider.getSelectedItem() == null) {
-            String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
-            if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
-                invalidations += "<br/>El rubro del proveedor no existe";
-            }
-        }
+        if (selectedProvider.isEmpty())
+            invalidations += "<br/>El proveedor elegido no existe";
         
         String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
         if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector)))
