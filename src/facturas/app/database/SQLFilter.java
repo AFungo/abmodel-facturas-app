@@ -49,6 +49,9 @@ public class SQLFilter {
         text = (String)selectedFilters.get("sector");
         if (!text.isEmpty()) { add("sector", "=", text, String.class); }
         
+        text = (String)selectedFilters.get("providerDoc");
+        if (!text.isEmpty()) { add("providerDoc", "=", text, String.class); }
+        
         
         if (isTicket) {
             text = (String)selectedFilters.get("minIva");
