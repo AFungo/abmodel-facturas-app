@@ -520,14 +520,25 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("alias", (String) provider.getValues().get("alias"));
 
         values.put("date", sdf.format(dateDateChooser.getDate()));
-        Float iva = Float.parseFloat(values.get("iva")) + Float.parseFloat(values.get("iva1")) + Float.parseFloat(values.get("iva2"));
-        values.put("iva", iva.toString());
+        getIva(values);
         
         controller.loadTicket(values);
         cleanTextFields();
         updateLastTicketLoaded(values);
-        
     }//GEN-LAST:event_loadTicketActionPerformed
+
+    private void getIva(Map<String, String> values) {
+        Float iva = new Float(0.0);
+        if (!values.get("iva").isEmpty()) 
+            iva += Float.parseFloat(values.get("iva"));
+        if (!values.get("iva1").isEmpty()) 
+            iva += Float.parseFloat(values.get("iva1"));
+        if (!values.get("iva2").isEmpty()) 
+            iva += Float.parseFloat(values.get("iva2"));
+        
+        values.put("iva", iva.toString());
+    }
+
     private void updateLastTicketLoaded(Map<String, String> values){
         showLastIvaTextField.setText(values.get("iva"));
         showLastProviderTextField.setText(values.get("name"));
