@@ -69,8 +69,6 @@ public class AutoSuggestor {
         return enabler;
     }
     
-    // FIXME: The suggestion is not case sensitive, for the providers problem
-    // works well but maybe in other context the case sensitive could be important
     public void autoSuggest() {
         comboBox.setEditable(true);
         setModel(getSuggestedModel(suggestions, ""), "");
