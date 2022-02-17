@@ -47,7 +47,7 @@ public class FormatUtils {
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
         if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
-            sector = provider.getValues().get("provSector");
+            sector = provider.getValues().get("sector");
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         String buyNSell = (boolean)dict.get("issuedByMe") ? "VENTA" : "COMPRA";
