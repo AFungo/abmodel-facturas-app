@@ -75,7 +75,7 @@ public class DBManager {
             updateSeq.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            if (e.toString().contains("'ID_SEQ' ya existe.")) {
+            if (e.toString().contains("'ID_SEQ' ya existe.") || e.toString().contains("'ID_SEQ' already exists.")) {
                 alreadyExists = true;
             } else {
                 e.printStackTrace();
