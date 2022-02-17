@@ -11,6 +11,7 @@ import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.ConfigManager;
+import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PdfCreator;
@@ -528,7 +529,7 @@ public class View extends javax.swing.JFrame {
         int selection = optionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", optionPane.OK_CANCEL_OPTION);
         if (selection == optionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
-            SQLFilter filter = createTicketFilter(row);
+            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             
             String sector = (String)sectorComboBox.getSelectedItem();
             String type = (String)ticketsTable.getValueAt(row, 2);
@@ -547,7 +548,7 @@ public class View extends javax.swing.JFrame {
 
     private void deliveredMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveredMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
-        SQLFilter filter = createTicketFilter(row);
+        SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
         
         String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
         String type = (String)ticketsTable.getValueAt(row, 2);
@@ -559,18 +560,6 @@ public class View extends javax.swing.JFrame {
         ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
-    private SQLFilter createTicketFilter(int row) {
-        SQLFilter filter = new SQLFilter();
-        Date date = (Date)ticketsTable.getValueAt(row, 1); //1 is the date column
-        filter.add("date", "=", date, Date.class);
-        String noTicket = (String)ticketsTable.getValueAt(row, 3); //3 is the noTicket column
-        filter.add("number", "=", noTicket, String.class);
-        String cuit = (String)ticketsTable.getValueAt(row, 6); //6 is the cuit column
-        filter.add("providerDoc", "=", cuit, String.class);
-        
-        return filter;
-    }
-    
     private void loadWithholdingManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingManuallyActionPerformed
         withholdingLoaderView.setVisible(true);
         withholdingLoaderView.updateSuggestions();
@@ -612,7 +601,7 @@ public class View extends javax.swing.JFrame {
         JTable toDelete = createToDeleteTable(row);
         int selection = optionPane.showConfirmDialog(null, new JScrollPane(toDelete), "Estas seguro?", optionPane.OK_CANCEL_OPTION);
         if (selection == optionPane.OK_OPTION) {
-            SQLFilter filter = createTicketFilter(row);
+            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             String type = (String)ticketsTable.getValueAt(row, 2);
            
             if (type.contains("Retencion"))
