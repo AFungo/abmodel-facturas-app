@@ -85,15 +85,18 @@ public class Controller {
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
                 
         if(values.get("name").isEmpty()){ invalidations += "<br/> Nombre no introducido";}
-        if(values.get("docNo").isEmpty()){invalidations += "<br/> Numero documento no introducido";}
-        if(!FormatUtils.tryParse(values.get("docNo"), "Integer")){ invalidations += "<br/> Numero documento mal escrito";}
+        if(values.get("docNo").isEmpty()){
+            invalidations += "<br/> Numero documento no introducido";
+        } else if (!FormatUtils.tryParse(values.get("docNo"), "Integer")){ 
+            invalidations += "<br/> Numero documento mal escrito";
+        }
         
         if(values.get("docType").isEmpty()){ invalidations += "<br/> Tipo de documento no introdcido";}
         
-        //fixme no andaaaaaaaaaaa
-        String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
-        if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector))) invalidations += "<br/>El rubro del comprobante no existe";
-        
+        String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
+        if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
+            invalidations += "<br/>El rubro del comprobante no existe";
+        }
         if (invalidations.isEmpty()) {
             return null;
         } else {
