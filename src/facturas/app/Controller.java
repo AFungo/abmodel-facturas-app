@@ -216,7 +216,12 @@ public class Controller {
         if(filters.isEmpty()) return WithholdingDAO.getWithholdings();
         else return WithholdingDAO.getWithholdings(filters);
     }
-    
+   
+    public List<Withholding> getWithholdings(SQLFilter selectedFilters) {
+        if(selectedFilters.isEmpty()) return WithholdingDAO.getWithholdings();
+        else return WithholdingDAO.getWithholdings(selectedFilters);
+    }
+   
     public List<Provider> getProviders() {
         return ProviderDAO.getProviders();
     }
