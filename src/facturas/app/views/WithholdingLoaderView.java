@@ -142,7 +142,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                 typeComboBoxActionPerformed(evt);
             }
         });
-        typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Retencion iva", "Retencion ganancias" }));
+        typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Retencion Iva", "Retencion Ganancias" }));
         typeComboBox.setSelectedIndex(-1);
 
         retentionTypeLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
