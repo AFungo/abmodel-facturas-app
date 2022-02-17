@@ -79,20 +79,24 @@ public class Controller {
             DollarPriceDAO.addDollarPrice(p);
         }
     }
+    
     public String validateProviderParam(Map<String, String> values, JComboBox<String> sectorsComboBox){
         String message = "<html>", invalidations = "";
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
                 
         if(values.get("name").isEmpty()){ invalidations += "<br/> Nombre no introducido";}
-        if(values.get("docNo").isEmpty()){invalidations += "<br/> Numero documento no introducido";}
-        if(!FormatUtils.tryParse(values.get("docNo"), "Integer")){ invalidations += "<br/> Numero documento mal escrito";}
+        if(values.get("docNo").isEmpty()){
+            invalidations += "<br/> Numero documento no introducido";
+        } else if (!FormatUtils.tryParse(values.get("docNo"), "Integer")){ 
+            invalidations += "<br/> Numero documento mal escrito";
+        }
         
         if(values.get("docType").isEmpty()){ invalidations += "<br/> Tipo de documento no introdcido";}
         
-        //fixme no andaaaaaaaaaaa
-        String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
-        if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector))) invalidations += "<br/>El rubro del comprobante no existe";
-        
+        String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
+        if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
+            invalidations += "<br/>El rubro del comprobante no existe";
+        }
         if (invalidations.isEmpty()) {
             return null;
         } else {
@@ -100,32 +104,30 @@ public class Controller {
             return message + invalidations;
         }
     }
+    
     //ticket is a boolean representing if the validation is for ticket or withholding
-    public String validateParam(java.util.Date date, JComboBox<String> provider, Map<String, String> values, boolean ticket, JComboBox<String> sectorsComboBox) {
+    public String validateParam(java.util.Date date, Map<String, String> values, boolean ticket, 
+            JComboBox<String> sectorsComboBox, List<Provider> selectedProvider) {
         
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
         String message = "<html>", invalidations = "";
         if (date == null) 
             invalidations += "<br/>Fecha no introducida";
-        if (provider.getSelectedItem() == null) {
-            String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
-            if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
-                invalidations += "<br/>El rubro del proveedor no existe";
-            }
-        }
+        if (selectedProvider.isEmpty())
+            invalidations += "<br/>El proveedor elegido no existe";
         
         String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
         if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector)))
             invalidations += "<br/>El rubro del comprobante no existe";
         
-        if (values.get("type").isEmpty())
+        if (values.get("type") == null || values.get("type").isEmpty())
             invalidations += "<br/>No se especifico el tipo de comprobante";
         
         if (ticket && values.get("exchangeMoney").isEmpty())
             invalidations += "<br/>No se introdujo el tipo de moneda";
         
         boolean[] numerics = FormatUtils.validTicketInput(values, ticket);
-        invalidations += addInvalidNumerics(numerics);
+        invalidations += addInvalidNumerics(numerics, ticket);
         
         if (invalidations.isEmpty()) {
             return null;
@@ -135,26 +137,25 @@ public class Controller {
         }
     }
     
-    private String addInvalidNumerics(boolean[] numerics) {
+    private String addInvalidNumerics(boolean[] numerics, boolean ticket) {
         String invalidations = "";
-        if (!numerics[0])
+        int i = 0;
+        if (!numerics[i++])
             invalidations += "<br/>Numero de ticket mal escrito";
-        if (!numerics[1])
-            invalidations += "<br/>Numero de documento del proveedor mal escrito";
-        if (!numerics[2])
+        if (!numerics[i++])
             invalidations += "<br/>Importe total mal escrito";
-        if (numerics.length == 3) //case of withholding
+        if (!ticket) //case of withholding
             return invalidations;
         //otherwise check for ticket inputs
-        if (!numerics[3])
+        if (!numerics[i++])
             invalidations += "<br/>Importe Op. Exentas mal escrito";
-        if (!numerics[4])
+        if (!numerics[i++])
             invalidations += "<br/>Tipo de cambio mal escrito";
-        if (!numerics[5])
-            invalidations += "<br/>Iva mal escrito";
-        if (!numerics[6])
+        if (!numerics[i++] || !numerics[i++] || !numerics[i++])
+            invalidations += "<br/>algunos de los Ivas mal escritos";
+        if (!numerics[i++])
             invalidations += "<br/>Importe neto gravado mal escrito";
-        if (!numerics[7])
+        if (!numerics[i++])
             invalidations += "<br/>Importe neto no gravado mal escrito";
         
         return invalidations;
@@ -205,12 +206,22 @@ public class Controller {
         else return TicketDAO.getTickets(filters);            
     }
 
+    public List<Withholding> getTickets(SQLFilter filters) {
+        if (filters.isEmpty()) return getTickets();
+        else return TicketDAO.getTickets(filters);            
+    }
+
     public List<Withholding> getWithholdings(Map<String, Object> selectedFilters) {
         SQLFilter filters = new SQLFilter(selectedFilters, false);
         if(filters.isEmpty()) return WithholdingDAO.getWithholdings();
         else return WithholdingDAO.getWithholdings(filters);
     }
-    
+   
+    public List<Withholding> getWithholdings(SQLFilter selectedFilters) {
+        if(selectedFilters.isEmpty()) return WithholdingDAO.getWithholdings();
+        else return WithholdingDAO.getWithholdings(selectedFilters);
+    }
+   
     public List<Provider> getProviders() {
         return ProviderDAO.getProviders();
     }
@@ -290,6 +301,7 @@ public class Controller {
     public void cleanTextField(JTextField[] textField){
             for(JTextField t : textField) t.setText("");
     }
+    
     public void addProvider(Map<String, String> values){
         Provider provider = new Provider(values);
         ProviderDAO.addProvider(provider);

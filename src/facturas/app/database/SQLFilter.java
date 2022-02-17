@@ -39,7 +39,7 @@ public class SQLFilter {
         text = (String)selectedFilters.get("finishDate");
         if (text != null && !text.isEmpty()) { add("date", "<=", FormatUtils.dateGen(text), Date.class); }
         text = (String)selectedFilters.get("minTotal");
-        if (!text.isEmpty()) { add("totalAmount", ">=", Float.parseFloat(text), Float.class); }
+        if (text != null && !text.isEmpty()) { add("totalAmount", ">=", Float.parseFloat(text), Float.class); }
         text = (String)selectedFilters.get("maxTotal");
         if (!text.isEmpty()) { add("totalAmount", "<=", Float.parseFloat(text), Float.class); }
 

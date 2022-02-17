@@ -113,7 +113,8 @@ public class SectorsView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSectorActionPerformed
-        if (!SectorDAO.sectorExist(sectorsAutoSuggestor.getText())) {
+        String newSector = sectorsAutoSuggestor.getText();
+        if (!newSector.isEmpty() && !SectorDAO.sectorExist(newSector)) {
             SectorDAO.addSector(sectorsAutoSuggestor.getText());
             updateSuggestions();
             sectorsAutoSuggestor.setText("");

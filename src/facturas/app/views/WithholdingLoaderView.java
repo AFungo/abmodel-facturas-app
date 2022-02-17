@@ -10,8 +10,10 @@ import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
+import facturas.app.models.Withholding;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.Enabler;
+import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -140,7 +142,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                 typeComboBoxActionPerformed(evt);
             }
         });
-        typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Retencion iva", "Retencion ganancias" }));
+        typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Retencion Iva", "Retencion Ganancias" }));
         typeComboBox.setSelectedIndex(-1);
 
         retentionTypeLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -336,12 +338,13 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                             .addComponent(jLabel7)
                             .addComponent(jLabel17))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(showLastTotalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showLastTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showLastTicketNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showLastDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showLastProviderTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(showLastProviderTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(showLastTotalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(showLastTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(showLastTicketNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(showLastDateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -355,38 +358,38 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
     private void loadWithholdingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingActionPerformed
         Map<String, String> values = new HashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SQLFilter filter = new SQLFilter();
         
         values.put("number", numberTextField.getText());
         values.put("totalAmount", totalAmountTextField.getText());
         values.put("sector", (String) sectorsComboBox.getSelectedItem());
         values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
-
-        //add providers things
-        SQLFilter filter = new SQLFilter();
+        values.put("type", (String) typeComboBox.getSelectedItem());
+        
         filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-        Provider provider = ProviderDAO.getProviders(filter).get(0);
+        List<Provider> providerCheck = ProviderDAO.getProviders(filter);
+        
+        String errorMessage = controller.validateParam(dateDateChooser.getDate(), values, false, 
+                sectorsComboBox, providerCheck);
+        if (errorMessage != null) {
+            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", 
+                    invalidParamDialog.ERROR_MESSAGE);
+            return ;
+        }
+        
+        //add providers things
+        Provider provider = providerCheck.get(0);
         values.put("docNo", provider.getValues().get("docNo"));
         values.put("docType", provider.getValues().get("docType"));
         values.put("name", provider.getValues().get("name"));
         values.put("provSector", provider.getValues().get("sector"));
         
-        
-        if (typeComboBox.getSelectedItem() != null)
-            values.put("type", typeComboBox.getSelectedItem().toString());
-        else
-            values.put("type", "");
-        
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), providersComboBox, values, false, sectorsComboBox);
-        if (errorMessage != null) {
-            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
-            return ;
-        }
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         values.put("date", sdf.format(dateDateChooser.getDate()));
+        
         controller.loadWithholding(values);
         cleanTextField();
-        updateLastTicketLoaded(values);
+        updateLastWithholdingLoaded(values);
     }//GEN-LAST:event_loadWithholdingActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
@@ -417,13 +420,16 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     public void updateSectors(List<String> sectors) {
         sectorsComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
     }
-    private void updateLastTicketLoaded(Map<String, String> values){
+    private void updateLastWithholdingLoaded(Map<String, String> values){
         showLastDateTextField.setText(values.get("date"));
         showLastProviderTextField.setText(values.get("name"));
         showLastTicketNumberTextField.setText(values.get("number"));
         showLastTypeTextField.setText(values.get("type"));
         showLastTotalTextField.setText(values.get("totalAmount"));
-        showLastIDTextField.setText("falta poner el id");
+        
+        SQLFilter filter = FilterUtils.createTicketFilter(values);
+        Withholding withholding = (Withholding)controller.getWithholdings(filter).get(0);
+        showLastIDTextField.setText(String.valueOf(withholding.getValues().get("id")));
     }
     
     private Controller controller;

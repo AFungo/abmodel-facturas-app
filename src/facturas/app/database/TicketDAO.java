@@ -35,8 +35,8 @@ public class TicketDAO extends DAO {
         if (!ProviderDAO.providerExist(filter)) {
             ProviderDAO.addProvider(provider);
         }
-        String query = "INSERT INTO Ticket (" + sqlValues.getFst() + ") "
-            + "VALUES (" + sqlValues.getSnd() + ")";
+        String query = "INSERT INTO Ticket (id, " + sqlValues.getFst() + ") "
+            + "VALUES (NEXT VALUE FOR id_seq, " + sqlValues.getSnd() + ")";
         executeQuery(query, true);
     }
         

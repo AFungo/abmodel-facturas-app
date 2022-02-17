@@ -181,17 +181,22 @@ public class ProviderLoader extends javax.swing.JFrame {
         values.put("provSector", (String) sectorsComboBox.getSelectedItem());//may be null
         values.put("alias", providerAliasTextField.getText());      //may be null
         values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());
-        values.put("provSector", (String)sectorsComboBox.getSelectedItem());
-        controller.addProvider(values);
-        mainView.updateProviders(getProvidersName());
 
         String errorMessage = controller.validateProviderParam(values, sectorsComboBox);
         if (errorMessage != null) {
             invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
             return ;
         }
+        
+        controller.addProvider(values);
+        mainView.updateProviders(getProvidersName());
         cleanTextField();
     }//GEN-LAST:event_addProviderButtonActionPerformed
+    
+    public void updateSectors(List<String> sectors) {
+        sectorsAutoSuggestor.setSuggestions(sectors);
+    }
+    
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[] {providerAddressTextField, providerAliasTextField, providerDocTextField, providerNameTextField};        
         controller.cleanTextField(forClean);

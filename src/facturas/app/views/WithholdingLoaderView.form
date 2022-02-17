@@ -201,12 +201,14 @@
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="showLastTotalTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="showLastTypeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="showLastTicketNumberTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="showLastDateTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="showLastProviderTextField" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="showLastTotalTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="showLastTypeTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="showLastTicketNumberTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="showLastDateTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
@@ -314,7 +316,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="typeComboBoxActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="typeComboBox.setModel(new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Retencion iva&quot;, &quot;Retencion ganancias&quot; }));&#xa;typeComboBox.setSelectedIndex(-1);"/>
+        <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="typeComboBox.setModel(new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Retencion Iva&quot;, &quot;Retencion Ganancias&quot; }));&#xa;typeComboBox.setSelectedIndex(-1);"/>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
