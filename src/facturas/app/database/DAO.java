@@ -7,6 +7,7 @@
 package facturas.app.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,13 +22,14 @@ public abstract class DAO {
     protected static ResultSet executeQuery(String query, boolean update) {
         try {
             Connection connection = DBManager.getConnection();
-            Statement stm = connection.createStatement();
+            PreparedStatement stm = connection.prepareStatement(query,
+                                      Statement.RETURN_GENERATED_KEYS);
             
-            if (update){
-                stm.executeUpdate(query);
-                return null;
+            if (update) {
+                stm.executeUpdate();
+                return stm.getGeneratedKeys();
             } else {
-                ResultSet result = stm.executeQuery(query);
+                ResultSet result = stm.executeQuery();
                 return result;
             }
         } catch (DerbySQLIntegrityConstraintViolationException e) {

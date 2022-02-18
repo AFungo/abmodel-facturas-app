@@ -27,9 +27,7 @@ import java.util.logging.Logger;
  */
 public class WithholdingDAO {
 
-    public static void addWithholding(Withholding withholding) {
-        if (withholding instanceof Ticket)
-            throw new IllegalArgumentException("Unable to add as withholding, Tickets must be added to Ticket table");
+    public static String addWithholding(Withholding withholding) {
         Pair<String, String> sqlValues = FormatUtils.withholdingToSQL(withholding);
         Provider provider = (Provider)withholding.getValues().get("provider");
         
@@ -38,9 +36,18 @@ public class WithholdingDAO {
         if (!ProviderDAO.providerExist(filter)) {
             ProviderDAO.addProvider(provider);
         }
-        String query = "INSERT INTO Withholding (id, " + sqlValues.getFst() + ") "
-            + "VALUES (NEXT VALUE FOR id_seq, " + sqlValues.getSnd() + ")";
-        executeQuery(query, true);
+        String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
+            + "VALUES (" + sqlValues.getSnd() + ")";
+        ResultSet generatedKeys = executeQuery(query, true);
+        
+        String id = "";
+        try {
+            generatedKeys.next();
+            id = String.valueOf(generatedKeys.getInt(1));
+        } catch (SQLException ex) {
+            Logger.getLogger(WithholdingDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
     }
         
     public static List<Withholding> getWithholdings() {
