@@ -49,46 +49,17 @@ public class DBManager {
     }
 
     public static void initializeDB() {
-        boolean idSequenceCreated = createIdSequence();
         boolean sectorTableCreated = createTable("Sector");
         boolean providerTableCreated = createTable("Provider");
         boolean withholdingTableCreated = createTable("Withholding");
         boolean ticketTableCreated = createTable("Ticket");
         boolean dollarPriceTableCreated = createTable("DollarPrice");
         
-        System.out.println("id sequence " + (idSequenceCreated ? "was created" : "already exists"));
         System.out.println("sectorTable " + (sectorTableCreated ? "was created" : "already exists"));
         System.out.println("providerTable " + (providerTableCreated ? "was created" : "already exists"));
         System.out.println("withholdingTable " + (withholdingTableCreated ? "was created" : "already exists"));
         System.out.println("ticketTable " + (ticketTableCreated ? "was created" : "already exists"));
         System.out.println("dollarPriceTable " + (dollarPriceTableCreated ? "was created" : "already exists"));
-    }
-    
-    public static boolean createIdSequence() {
-        PreparedStatement updateSeq = null;
-        String createQuery ="CREATE SEQUENCE id_seq AS INTEGER START WITH 1 INCREMENT BY 1";
-        boolean alreadyExists = false;
-        try {
-            connection = getConnection();
-            connection.setAutoCommit(false);
-            updateSeq = connection.prepareStatement(createQuery);
-            updateSeq.executeUpdate();
-            connection.commit();
-        } catch (SQLException e) {
-            if (e.toString().contains("'ID_SEQ' ya existe.") || e.toString().contains("'ID_SEQ' already exists.")) {
-                alreadyExists = true;
-            } else {
-                e.printStackTrace();
-            }
-        } finally {
-            try {
-                updateSeq.close();
-                connection.setAutoCommit(true);
-                return alreadyExists ? false : true;
-            } catch (SQLException e) {
-                throw new IllegalStateException(e.toString());
-            }
-        }
     }
     
     private static boolean createTable(String tableName) {
@@ -124,26 +95,17 @@ public class DBManager {
             
             case "Ticket": query = "CREATE TABLE Ticket ("
                                         + "id INTEGER,"
-                                        + "date DATE NOT NULL," //
-                                        + "type VARCHAR(50) NOT NULL," //
-                                        + "number VARCHAR(30) NOT NULL," //
                                         + "numberTo INTEGER," //
                                         + "authCode VARCHAR(30)," //
-                                        + "providerDoc VARCHAR(30) NOT NULL," //
                                         + "exchangeType REAL NOT NULL," //
                                         + "exchangeMoney VARCHAR(5) NOT NULL," //
                                         + "netAmountWI REAL," //
                                         + "netAmountWOI REAL," //
                                         + "amountImpEx REAL,"
                                         + "iva REAL," //
-                                        + "totalAmount REAL NOT NULL," //
                                         + "issuedByMe BOOLEAN NOT NULL," //
-                                        + "sector VARCHAR(50)," //
-                                        + "delivered BOOLEAN DEFAULT false," //
-                                        + "PRIMARY KEY (date, number, providerDoc),"
-                                        + "CONSTRAINT fk_SectorTicket FOREIGN KEY (sector) REFERENCES Sector(name)"
-                                        + "ON DELETE SET NULL,"
-                                        + "CONSTRAINT fk_Provider FOREIGN KEY (providerDoc) REFERENCES Provider(docNo)"
+                                        + "PRIMARY KEY (id),"
+                                        + "CONSTRAINT fk_id FOREIGN KEY (id) REFERENCES Withholding(id)"
                                         + ")";
                                         break;
             
@@ -160,7 +122,7 @@ public class DBManager {
                                         break;
         
             case "Withholding": query = "CREATE TABLE Withholding ("
-                                        + "id INTEGER,"
+                                        + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
                                         + "date DATE NOT NULL,"
                                         + "type VARCHAR(50) NOT NULL,"
                                         + "number VARCHAR(30) NOT NULL,"
@@ -180,31 +142,17 @@ public class DBManager {
     }
     
     public static void deleteDB() {
-        boolean deletedIdSequence = dropSequence();
         boolean deletedTicketTable = dropTable("Ticket");
         boolean deletedWithholdingTable = dropTable("Withholding");
         boolean deletedProviderTable = dropTable("Provider");
         boolean deletedDollarPriceTable = dropTable("DollarPrice");
         boolean deletedSectorTable = dropTable("Sector");
         
-        System.out.println("id sequence " + (deletedIdSequence ? "was deleted" : "didn't exist"));
         System.out.println("withholding " + (deletedWithholdingTable ? "was deleted" : "didn't exist"));
         System.out.println("ticketTable " + (deletedTicketTable ? "was deleted" : "didn't exist"));
         System.out.println("providerTable " + (deletedProviderTable ? "was deleted" : "didn't exist"));
         System.out.println("dollarPriceTable " + (deletedDollarPriceTable ? "was deleted" : "didn't exist"));
         System.out.println("sectorTable " + (deletedSectorTable ? "was deleted" : "didn't exist"));
-    }
-    
-    private static boolean dropSequence() {
-        try {
-            connection = getConnection();
-            Statement stm = connection.createStatement();
-            stm.executeUpdate("DROP SEQUENCE id_seq RESTRICT");
-            return true;
-        } catch (SQLException e) {
-            e.toString();
-            return false;
-        }
     }
     
     private static boolean dropTable(String table) {
