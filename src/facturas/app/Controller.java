@@ -111,20 +111,29 @@ public class Controller {
         
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
         String message = "<html>", invalidations = "";
-        if (date == null) 
+        
+        if (date == null) {
             invalidations += "<br/>Fecha no introducida";
-        if (selectedProvider.isEmpty())
-            invalidations += "<br/>El proveedor elegido no existe";
+        }
+        
+        if (selectedProvider.isEmpty()) {
+            invalidations += "<br/>Proveedor no introducido";
+        } else if (selectedProvider.size() > 1) {
+            invalidations += "<br/>El proveedor elegido no es unico, especifique su documento";
+        }
         
         String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
-        if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector)))
+        if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector))) {
             invalidations += "<br/>El rubro del comprobante no existe";
+        }
         
-        if (values.get("type") == null || values.get("type").isEmpty())
+        if (values.get("type") == null || values.get("type").isEmpty()) {
             invalidations += "<br/>No se especifico el tipo de comprobante";
+        }
         
-        if (ticket && values.get("exchangeMoney").isEmpty())
+        if (ticket && values.get("exchangeMoney").isEmpty()) {
             invalidations += "<br/>No se introdujo el tipo de moneda";
+        }
         
         boolean[] numerics = FormatUtils.validTicketInput(values, ticket);
         invalidations += addInvalidNumerics(numerics, ticket);
