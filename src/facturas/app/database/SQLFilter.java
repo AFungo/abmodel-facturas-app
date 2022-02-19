@@ -7,6 +7,7 @@ package facturas.app.database;
 
 import facturas.app.utils.FormatUtils;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,8 @@ import java.util.Map;
  */
 public class SQLFilter {
     
-    List<Condition> conditions = new LinkedList<>();
-    List<List<Condition>> orConditions = new LinkedList<>();
+    Map<String,Condition> conditions = new HashMap<>();
+    Map<String,List<Condition>> orConditions = new HashMap<>();
     
     public SQLFilter() { }
        
@@ -72,7 +73,11 @@ public class SQLFilter {
     }
     
     public final void add(String attr, String comparison, Object val, Class<?> valClass) {
-        conditions.add(new Condition(attr, comparison, val, valClass));
+        conditions.put(attr, new Condition(attr, comparison, val, valClass));
+    }
+    
+    public final void add(Condition condition) {
+        conditions.put(condition.getAttr(), condition);
     }
     
     public void addDisjunction(String attr, String comparison, List<Object> vals, Class<?> valClass) {    
@@ -80,7 +85,32 @@ public class SQLFilter {
         for (Object v : vals) {
             orFilter.add(new Condition(attr, comparison, v, valClass));
         }
-        orConditions.add(orFilter);
+        orConditions.put(attr, orFilter);
+    }
+    
+    public void addDisjunction(List<Condition> condition, String attr) {    
+        orConditions.put(attr, condition);
+    }
+    
+    public List<Condition> removeCondition(String attr) {
+        List<Condition> removed = new LinkedList<>();
+        Condition cond = conditions.remove(attr);
+        while (cond != null) {
+            removed.add(cond);
+            cond = conditions.remove(cond);
+        }
+        return removed;
+    }
+    
+    //returns a list of list because it could be several or conditions of the same attribute
+    public List<List<Condition>> removeOrCondition(String attr) {
+        List<List<Condition>> removed = new LinkedList<>();
+        List<Condition> cond = orConditions.remove(attr);
+        while (cond != null) {
+            removed.add(cond);
+            cond = orConditions.remove(cond);
+        }
+        return removed;
     }
     
     /**
@@ -89,7 +119,7 @@ public class SQLFilter {
     public String get() {
         String sqlCode = " WHERE ";
         boolean firstOne = true; // The first iteration should not add the AND connector
-        for (List<Condition> orCondition : orConditions) {
+        for (List<Condition> orCondition : orConditions.values()) {
             if (!firstOne) {
                 sqlCode += " AND ";
             }
@@ -100,7 +130,7 @@ public class SQLFilter {
         }
         
         
-        String lastConjunction = getComplexCondition(conditions, "AND");
+        String lastConjunction = getComplexCondition(new LinkedList(conditions.values()), "AND");
         if (!lastConjunction.equals("")) {
             if (!firstOne) {
                 sqlCode += " AND ";
