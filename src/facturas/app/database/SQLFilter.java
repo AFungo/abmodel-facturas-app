@@ -27,7 +27,11 @@ public class SQLFilter {
         String text;
         text = (String)selectedFilters.get("id");
         if (FormatUtils.tryParse(text, "Integer")) {
-            add("id", "=", Integer.parseInt(text), Integer.class);
+            if (isTicket) {
+                add("Ticket.id", "=", Integer.parseInt(text), Integer.class);
+            } else {
+                add("Withholding.id", "=", Integer.parseInt(text), Integer.class);
+            }
         }
         
         text = (String)selectedFilters.get("number");

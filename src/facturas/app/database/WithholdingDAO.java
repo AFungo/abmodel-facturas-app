@@ -8,7 +8,6 @@ package facturas.app.database;
 import facturas.app.Controller;
 import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.Provider;
-import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
@@ -51,7 +50,8 @@ public class WithholdingDAO {
     }
         
     public static List<Withholding> getWithholdings() {
-        ResultSet result = executeQuery("SELECT * FROM Withholding", false);
+        ResultSet result = executeQuery("SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON "
+                + "Withholding.id = Ticket.id WHERE Ticket.id IS NULL" , false);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;
     }
@@ -60,7 +60,8 @@ public class WithholdingDAO {
         if (filters == null) {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
-        ResultSet result = executeQuery("SELECT * FROM Withholding" + filters.get(), false);
+        ResultSet result = executeQuery("SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON "
+                + "Withholding.id = Ticket.id " + filters.get() + " AND Ticket.id IS NULL", false);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;
     }
