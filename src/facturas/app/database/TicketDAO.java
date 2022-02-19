@@ -9,6 +9,7 @@ import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.models.Provider;
+import facturas.app.utils.FilterUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
 import java.sql.ResultSet;
@@ -41,7 +42,7 @@ public class TicketDAO extends DAO {
     }
         
     public static List<Withholding> getTickets() {
-        ResultSet result = executeQuery("SELECT * FROM Ticket", false);
+        ResultSet result = executeQuery("SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id", false);
         List<Withholding> ticketsList = getTicketsList(result);
         return ticketsList;
     }
@@ -50,7 +51,9 @@ public class TicketDAO extends DAO {
         if (filters == null) {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
-        ResultSet result = executeQuery("SELECT * FROM Ticket" + filters.get(), false);
+        
+        ResultSet result = executeQuery("SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id " 
+                + filters.get(), false);
         List<Withholding> ticketsList = getTicketsList(result);
         return ticketsList;
     }
@@ -74,25 +77,27 @@ public class TicketDAO extends DAO {
                 ticketAttributes.put("date", result.getString(2));
                 ticketAttributes.put("type", result.getString(3));
                 ticketAttributes.put("number", result.getString(4));
-                if (result.getString(5) != null) ticketAttributes.put("numberTo", result.getString(5));
-                ticketAttributes.put("authCode", result.getString(6));
-                Map<String, String> prov = ProviderDAO.getProvider(result.getString(7)).getValues();
+                //provider
+                Map<String, String> prov = ProviderDAO.getProvider(result.getString(5)).getValues();
                 ticketAttributes.put("docType", prov.get("docType"));
                 ticketAttributes.put("docNo", prov.get("docNo"));
                 ticketAttributes.put("name", prov.get("name"));
                 ticketAttributes.put("direction", prov.get("direction"));
                 ticketAttributes.put("provSector", prov.get("sector"));
                 ticketAttributes.put("alias", prov.get("alias"));
-                ticketAttributes.put("exchangeType", result.getString(8));
-                ticketAttributes.put("exchangeMoney", result.getString(9));
-                if (result.getString(10) != null) ticketAttributes.put("netAmountWI", result.getString(10));
-                if (result.getString(11) != null) ticketAttributes.put("netAmountWOI", result.getString(11));
-                if (result.getString(12) != null) ticketAttributes.put("amountImpEx", result.getString(12));
-                if (result.getString(13) != null) ticketAttributes.put("iva", result.getString(13));
-                ticketAttributes.put("totalAmount", result.getString(14));
-                ticketAttributes.put("issuedByMe", result.getString(15));
-                ticketAttributes.put("sector", result.getString(16));
-                ticketAttributes.put("delivered", result.getString(17));
+                
+                ticketAttributes.put("delivered", result.getString(6));
+                ticketAttributes.put("totalAmount", result.getString(7));
+                ticketAttributes.put("sector", result.getString(8));    //9 is ticket id
+                if (result.getString(10) != null) ticketAttributes.put("numberTo", result.getString(10));
+                ticketAttributes.put("authCode", result.getString(11));
+                ticketAttributes.put("exchangeType", result.getString(12));
+                ticketAttributes.put("exchangeMoney", result.getString(13));
+                if (result.getString(14) != null) ticketAttributes.put("netAmountWI", result.getString(14));
+                if (result.getString(15) != null) ticketAttributes.put("netAmountWOI", result.getString(15));
+                if (result.getString(16) != null) ticketAttributes.put("amountImpEx", result.getString(16));
+                if (result.getString(17) != null) ticketAttributes.put("iva", result.getString(17));
+                ticketAttributes.put("issuedByMe", result.getString(18));
                 ticketsList.add(new Ticket(ticketAttributes));
             }
         } catch (SQLException ex) {
