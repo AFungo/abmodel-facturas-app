@@ -14,8 +14,8 @@ import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FormatUtils;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -318,9 +318,8 @@ public class FiltersView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
-        Map<String, Object> selectedFilters = getFilters();
-        List<Withholding> tickets = controller.getTickets(selectedFilters);
-        tickets.addAll(controller.getWithholdings(selectedFilters));
+        List<Withholding> tickets = controller.getTickets(getFilters(true));
+        tickets.addAll(controller.getWithholdings(getFilters(false)));
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
@@ -356,29 +355,68 @@ public class FiltersView extends javax.swing.JFrame {
         bothRadioButton2.setSelected(true);
     }//GEN-LAST:event_cleanFiltersActionPerformed
 
-    public Map<String, Object> getFilters() {
-        Map<String, Object> selectedFilters = new HashMap<> ();
+    public SQLFilter getFilters(boolean isTicket) {
+        SQLFilter selectedFilters = new SQLFilter();
         
-        selectedFilters.put("id", idTextField.getText());
-        selectedFilters.put("number", noTicketWithholdingTextField.getText());
-        
+        if (FormatUtils.tryParse(idTextField.getText(), "Integer")) {             
+            selectedFilters.add("id", "=", Integer.parseInt(idTextField.getText()), Integer.class);
+        }
+        if (FormatUtils.tryParse(noTicketWithholdingTextField.getText(), "Integer")) {
+            selectedFilters.add("number", "=", noTicketWithholdingTextField.getText(), String.class);
+        }
+
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        if(minDateChooser.getDate()!=null) selectedFilters.put("startDate", sdf.format(minDateChooser.getDate())); 
-        if(maxDateChooser.getDate()!=null) selectedFilters.put("finishDate", sdf.format(maxDateChooser.getDate()));
-        selectedFilters.put("minTotal", minTotalAmountTextField.getText());
-        selectedFilters.put("maxTotal", maxTotalAmountTextField.getText());
-        selectedFilters.put("minIva", minIvaTextField.getText());
-        selectedFilters.put("maxIva", maxIvaTextField.getText());
+        if(minDateChooser.getDate()!=null) {
+            selectedFilters.add("date", ">=", FormatUtils.dateGen(sdf.format(minDateChooser.getDate())), Date.class);
+        } 
+        if(maxDateChooser.getDate()!=null) {
+            selectedFilters.add("date", "<=", FormatUtils.dateGen(sdf.format(maxDateChooser.getDate())), Date.class);
+        }
+        
+        if (FormatUtils.tryParse(minTotalAmountTextField.getText(), "Float")) {
+            selectedFilters.add("totalAmount", ">=", Float.parseFloat(minTotalAmountTextField.getText()), Float.class);
+        }
+        if (FormatUtils.tryParse(maxTotalAmountTextField.getText(), "Float")) {
+            selectedFilters.add("totalAmount", "<=", Float.parseFloat(maxTotalAmountTextField.getText()), Float.class);       
+        }        
         
         SQLFilter providersDoc = new SQLFilter();
-        providersDoc.add("name", "=", providersAutoSuggestor.getText(), String.class);
+        String selectedProvider = providersAutoSuggestor.getText();
+        if (selectedProvider != null && !selectedProvider.isEmpty()) {
+            providersDoc.add("name", "=", selectedProvider, String.class);
+            selectedFilters.addDisjunction("providerDoc", "=", 
+                    getDocsList(controller.getProviders(providersDoc)), String.class);
+        }
         
-        selectedFilters.put("providersDocs", getDocsList(controller.getProviders(providersDoc)));
-        selectedFilters.put("ticketTypesList", ticketTypesList.getSelectedValuesList());
-        selectedFilters.put("purchase", purchaseRadioButton.isSelected());
-        selectedFilters.put("sale", saleRadioButton.isSelected());
-        selectedFilters.put("sector", sectorsAutoSuggestor.getText());
-        selectedFilters.put("providerDoc", docNoTextField.getText());
+        String selectedSector = sectorsAutoSuggestor.getText();
+        if (selectedSector != null && !selectedSector.isEmpty()) {
+            selectedFilters.add("sector", "=", selectedSector, String.class);
+        }
+        
+        if (FormatUtils.tryParse(docNoTextField.getText(), "Integer")) {
+            selectedFilters.add("providerDoc", "=", docNoTextField.getText(), String.class);
+        }
+        
+        if (!isTicket) {
+            return selectedFilters;
+        }
+             
+        if (FormatUtils.tryParse(minIvaTextField.getText(), "Float")) {
+            selectedFilters.add("iva", ">=", Float.parseFloat(minIvaTextField.getText()), Float.class);
+        }
+        if (FormatUtils.tryParse(maxIvaTextField.getText(), "Float")) {
+            selectedFilters.add("iva", "<=", Float.parseFloat(maxIvaTextField.getText()), Float.class);
+        }  
+           
+        if (!ticketTypesList.getSelectedValuesList().isEmpty()) {
+            selectedFilters.addDisjunction("type", "=", ticketTypesList.getSelectedValuesList(), String.class);
+        }
+        
+        if (saleRadioButton.isSelected()) {
+            selectedFilters.add("issuedByMe", "=", true, Boolean.class);
+        } else if (purchaseRadioButton.isSelected()) {
+            selectedFilters.add("issuedByMe", "=", false, Boolean.class);
+        }
         
         return selectedFilters;
     }

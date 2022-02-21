@@ -20,64 +20,13 @@ public class SQLFilter {
     List<Condition> conditions = new LinkedList<>();
     List<List<Condition>> orConditions = new LinkedList<>();
     
-    public SQLFilter() { }
-       
-    public SQLFilter(Map<String, Object> selectedFilters, boolean isTicket) {
-        String text;
-        text = (String)selectedFilters.get("id");
-        if (FormatUtils.tryParse(text, "Integer")) {
-            add("id", "=", Integer.parseInt(text), Integer.class);
-        }
-        
-        text = (String)selectedFilters.get("number");
-        if (FormatUtils.tryParse(text, "Integer")) {
-            add("number", "=", text, String.class);
-        }
-        
-        text = (String) selectedFilters.get("startDate");
-        if (text != null && !text.isEmpty()) { add("date", ">=", FormatUtils.dateGen(text), Date.class); }
-        text = (String)selectedFilters.get("finishDate");
-        if (text != null && !text.isEmpty()) { add("date", "<=", FormatUtils.dateGen(text), Date.class); }
-        text = (String)selectedFilters.get("minTotal");
-        if (text != null && !text.isEmpty()) { add("totalAmount", ">=", Float.parseFloat(text), Float.class); }
-        text = (String)selectedFilters.get("maxTotal");
-        if (!text.isEmpty()) { add("totalAmount", "<=", Float.parseFloat(text), Float.class); }
-
-        List<Object> providersDocs = (List<Object>)selectedFilters.get("providersDocs");
-        if (!providersDocs.isEmpty()) { addDisjunction("providerDoc", "=", providersDocs, String.class); }
-        
-        text = (String)selectedFilters.get("sector");
-        if (!text.isEmpty()) { add("sector", "=", text, String.class); }
-        
-        text = (String)selectedFilters.get("providerDoc");
-        if (!text.isEmpty()) { add("providerDoc", "=", text, String.class); }
-        
-        
-        if (isTicket) {
-            text = (String)selectedFilters.get("minIva");
-            if (!text.isEmpty()) { add("iva", ">=", Float.parseFloat(text), Float.class); }
-            text = (String)selectedFilters.get("maxIva");
-            if (!text.isEmpty()) { add("iva", "<=", Float.parseFloat(text), Float.class); }
-            
-            List<Object> typesList = (List<Object>)selectedFilters.get("ticketTypesList");
-            if (!typesList.isEmpty()) { addDisjunction("type", "=", typesList, String.class); }
-            
-            if ((boolean)selectedFilters.get("sale")) {
-                add("issuedByMe", "=", true, Boolean.class);
-            } else if ((boolean)selectedFilters.get("purchase")) {
-                add("issuedByMe", "=", false, Boolean.class);
-            }
-        }
-        
-    }
-    
     public final void add(String attr, String comparison, Object val, Class<?> valClass) {
         conditions.add(new Condition(attr, comparison, val, valClass));
     }
     
-    public void addDisjunction(String attr, String comparison, List<Object> vals, Class<?> valClass) {    
+    public void addDisjunction(String attr, String comparison, Object vals, Class<?> valClass) {    
         List<Condition> orFilter = new LinkedList<>();
-        for (Object v : vals) {
+        for (Object v : (List<Object>)vals) {
             orFilter.add(new Condition(attr, comparison, v, valClass));
         }
         orConditions.add(orFilter);

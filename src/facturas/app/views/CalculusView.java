@@ -296,7 +296,7 @@ public class CalculusView extends javax.swing.JFrame {
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
 
-        Pair<Map<String,Float>,List<Pair<Date,String>>> profitResult = controller.getProfit(filtersView.getFilters(), dollar);
+        Pair<Map<String,Float>,List<Pair<Date,String>>> profitResult = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
         Map<String,Float> values = profitResult.getFst();
         List<Pair<Date,String>> missingPrices = profitResult.getSnd();
         if (!missingPrices.isEmpty()) {

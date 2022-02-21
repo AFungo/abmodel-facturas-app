@@ -178,10 +178,10 @@ public class Controller {
         return items;
     }
     
-    public Pair<Map<String,Float>,List<Pair<Date,String>>> getProfit(Map<String, Object> selectedFilters, boolean inDollars) {
+    public Pair<Map<String,Float>,List<Pair<Date,String>>> getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
         ProfitCalculator profit = new ProfitCalculator();
-        List<Withholding> tickWi= getTickets(selectedFilters);
-        tickWi.addAll(getWithholdings(selectedFilters));
+        List<Withholding> tickWi= getTickets(ticketsFilters);
+        tickWi.addAll(getWithholdings(withholdingsFilters));
         
         List<Pair<Date,String>> missingDays = new LinkedList<>();
         for(Withholding t : tickWi) {
