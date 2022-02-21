@@ -48,8 +48,8 @@ public class ProfitCalculator {
         Float sellPrice = inDollars(dollars, 1.0f, r.getDollarPrice());//le pongo 1 en exchangetype pq no se carga en ret
         Float ta = (Float) r.getValues().get("totalAmount") / sellPrice;
 
-        if(r.getValues().get("type").equals("Retencion iva")) retentionIva.addTransaction(ta, 0.0f, 0.0f);
-        if(r.getValues().get("type").equals("Retencion ganancias")) retentionGan.addTransaction(ta, 0.0f, 0.0f);
+        if(r.getValues().get("type").equals("Retencion Iva")) retentionIva.addTransaction(ta, 0.0f, 0.0f);
+        if(r.getValues().get("type").equals("Retencion Ganancias")) retentionGan.addTransaction(ta, 0.0f, 0.0f);
     }
     
     public Map<String, Float> getValues(){
