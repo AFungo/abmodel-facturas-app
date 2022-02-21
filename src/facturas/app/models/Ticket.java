@@ -69,7 +69,11 @@ public class Ticket extends Withholding{
     }
     
     public boolean isIncome(){
-        return !(this.type.contains("Factura") || this.type.contains("Débito"));
+        if(issuedByMe){
+            return !this.type.contains("Crédito");
+        }else{ 
+            return this.type.contains("Crédito");
+        }
     }
 
     @Override

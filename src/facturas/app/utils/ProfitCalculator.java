@@ -54,20 +54,26 @@ public class ProfitCalculator {
     
     public Map<String, Float> getValues(){
         Map<String, Float> values= new HashMap();
+        //totals
         values.put("profitWOTax", this.getProfitWOTax());
         values.put("profitWTax", this.getProfitWTax());
         values.put("totlSell",(Float) sales.getTransactions().get("totalAmount"));
         values.put("totalBuy",(Float)purchases.getTransactions().get("totalAmount"));
+        values.put("grossMargin", this.getGrossMargin());
         
+        //iva
         values.put("issuedIva",(Float)sales.getTransactions().get("iva"));
         values.put("receivedIva", (Float)purchases.getTransactions().get("iva"));
+        values.put("withheldIva", (Float) retentionGan.getTransactions().get("totalAmount"));
         values.put("totalIva", this.getIva());
-        values.put("totalwithoutholdingIva", (Float) retentionGan.getTransactions().get("totalAmount"));
         
+        
+        //profitTax
         values.put("issuedNetAmount",(Float)sales.getTransactions().get("netAmountWI"));
         values.put("receivedNetAmount",(Float)purchases.getTransactions().get("netAmountWI"));
+        values.put("withheldProfit",(Float) retentionGan.getTransactions().get("totalAmount"));
         values.put("totalProfitTax", this.getGanancia());
-        values.put("totalWithoutholdingGanancia",(Float) retentionGan.getTransactions().get("totalAmount"));
+        
         
         return values;
     }
@@ -92,9 +98,9 @@ public class ProfitCalculator {
         
         if (issuedByMe) {
             if (isIncome){
-                sales.addTransaction(-totalAmount, -iva, -netAmountWI);
-            }else{          
                 sales.addTransaction(totalAmount, iva, netAmountWI);
+            }else{          
+                sales.addTransaction(-totalAmount, -iva, -netAmountWI);
             }
         } else {
             if (isIncome){
@@ -113,4 +119,8 @@ public class ProfitCalculator {
         }
         return 1.0f;
     }            
+
+    private Float getGrossMargin() {
+        return  (Float)sales.getTransactions().get("netAmountWI") - (Float)purchases.getTransactions().get("netAmountWI");
+    }
 }
