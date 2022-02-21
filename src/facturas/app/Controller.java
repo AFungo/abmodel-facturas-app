@@ -17,6 +17,7 @@ import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import facturas.app.utils.PricesList;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
 import java.io.IOException;
@@ -178,22 +179,29 @@ public class Controller {
         return items;
     }
     
-    public Pair<Map<String,Float>,List<Pair<Date,String>>> getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
-        ProfitCalculator profit = new ProfitCalculator();
-        List<Withholding> tickWi= getTickets(ticketsFilters);
-        tickWi.addAll(getWithholdings(withholdingsFilters));
-        
-        List<Pair<Date,String>> missingDays = new LinkedList<>();
-        for(Withholding t : tickWi) {
-            if (inDollars) {
-                Pair<Date,String> miss = getDayPrice(t);
-                if (miss != null) missingDays.add(miss);
-            }
-            if (t instanceof Ticket) profit.addTicket((Ticket)t, inDollars);
-            else profit.addRetention(t, inDollars);
+    public PricesList getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
+    ProfitCalculator profit = new ProfitCalculator();
+    List<Withholding> tickets = getTickets(ticketsFilters);
+    List<Withholding> withholdings = getWithholdings(withholdingsFilters);
+    //load tickets
+    PricesList pricesList = new PricesList();
+    for(Withholding t : tickets) {
+        if (inDollars) { //dollars required and ticket in pesos
+            pricesList.loadPriceInTicket((Ticket)t, daysLimit);
         }
-        return new Pair<> (profit.getValues(), missingDays);
+        profit.addTicket((Ticket)t, inDollars);
     }
+    //load withholdings
+    for (Withholding w : withholdings) {
+        if (inDollars) {
+            pricesList.loadPriceInWithholding(w, daysLimit);
+        }
+        profit.addRetention(w, inDollars);
+    }
+    
+    pricesList.addProfitValues(profit.getValues());
+    return pricesList;
+}
     
     public void createTicket(String ticketData) {
         boolean issuedByMe = true;  //for now this will be fixed to true

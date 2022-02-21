@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import facturas.app.Controller;
 import facturas.app.utils.Pair;
+import facturas.app.utils.PricesList;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -349,9 +350,10 @@ public class CalculusView extends javax.swing.JFrame {
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
 
-        Pair<Map<String,Float>,List<Pair<Date,String>>> profitResult = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
-        Map<String,Float> values = profitResult.getFst();
-        List<Pair<Date,String>> missingPrices = profitResult.getSnd();
+        PricesList pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
+    
+        Map<String,Float> values = pricesList.getValues();
+        List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = controller.createMissingPricesTable(missingPrices);
             int daysLimit = controller.getDaysLimit();
