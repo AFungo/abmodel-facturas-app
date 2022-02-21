@@ -114,11 +114,14 @@ public class SectorsView extends javax.swing.JFrame {
 
     private void addSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSectorActionPerformed
         String newSector = sectorsAutoSuggestor.getText();
-        if (!newSector.isEmpty() && !SectorDAO.sectorExist(newSector)) {
+        if (!newSector.trim().isEmpty() && !SectorDAO.sectorExist(newSector)) {
             SectorDAO.addSector(sectorsAutoSuggestor.getText());
             updateSuggestions();
             sectorsAutoSuggestor.setText("");
-        } // TODO: Maybe if the sector already exists then show a massage
+        } else {
+            JOptionPane.showMessageDialog(null, "El rubro ingresado es vacio o ya existe",
+                    "Rubto invalido", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_addSectorActionPerformed
 
     private void deleteSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorActionPerformed
