@@ -87,11 +87,11 @@ public class ProfitCalculator {
     }
     
     public Float getIva(){
-        return ((Float)sales.getTransactions().get("iva") - (Float)purchases.getTransactions().get("iva") - (Float) retentionIva.getTransactions().get("totalAmount"));
+        return (-(Float)sales.getTransactions().get("iva") + (Float)purchases.getTransactions().get("iva") + (Float) retentionIva.getTransactions().get("totalAmount"));
     }
     
     public Float getGanancia(){//falta restarle las retenciones para que te quede el numero.
-        return ((Float)sales.getTransactions().get("netAmountWI") - (Float)purchases.getTransactions().get("netAmountWI") - (Float) retentionGan.getTransactions().get("totalAmount"));
+        return (-(Float)sales.getTransactions().get("netAmountWI") + (Float)purchases.getTransactions().get("netAmountWI") + (Float) retentionGan.getTransactions().get("totalAmount"));
     }
     
     private void addTransaction(boolean isIncome, boolean issuedByMe, Float totalAmount, Float iva, Float netAmountWI){
