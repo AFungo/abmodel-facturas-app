@@ -20,7 +20,7 @@ public class Withholding {
     protected Date date;
     protected Float totalAmount;
     protected String type;
-    private Integer id;
+    protected Integer id;
     protected Boolean delivered;
     protected String sector;
     protected DollarPrice dollarPrice = null;

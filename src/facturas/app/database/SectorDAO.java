@@ -20,16 +20,16 @@ public class SectorDAO extends DAO {
     public static void addSector(String name) {
         String query = "INSERT INTO Sector (name) "
             + "VALUES ('"+ name + "')";
-        executeQuery(query, true);
+        executeQuery(query, true, true);
     }
     
     public static void deleteSector(String name) {
         String query = "DELETE FROM Sector WHERE name = '" + name + "'";
-        executeQuery(query, true);
+        executeQuery(query, true, true);
     }
     
     public static boolean sectorExist(String name) {
-        ResultSet result = executeQuery("SELECT * FROM Sector WHERE name = '" + name + "'", false);
+        ResultSet result = executeQuery("SELECT * FROM Sector WHERE name = '" + name + "'", false, true);
         try {
             return result.next();
         } catch (SQLException e) {
@@ -38,7 +38,7 @@ public class SectorDAO extends DAO {
     }
     
     public static List<String> getSectors() {
-        ResultSet result = executeQuery("SELECT * FROM Sector", false);
+        ResultSet result = executeQuery("SELECT * FROM Sector", false, true);
         List<String> providers = new LinkedList<>();
         try {
             while (result.next()) {

@@ -61,6 +61,13 @@ public class Ticket extends Withholding{
         this.sector = sector;
     }
     
+    public void addId(String id) {
+        if (this.id != null)
+            throw new IllegalStateException("Id already set, current id: " + this.id + ", new id: " + id);
+        
+        this.id = Integer.valueOf(id);
+    }
+    
     public boolean isIncome(){
         return !(this.type.contains("Factura") || this.type.contains("Débito"));
     }

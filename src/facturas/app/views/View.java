@@ -532,11 +532,7 @@ public class View extends javax.swing.JFrame {
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             
             String sector = (String)sectorComboBox.getSelectedItem();
-            String type = (String)ticketsTable.getValueAt(row, 2);
-            if (type.contains("Retencion"))
-                controller.changeWithholdingAttribute(filter, "sector", sector);
-            else
-                controller.changeTicketAttribute(filter, "sector", sector);
+            controller.changeWithholdingAttribute(filter, "sector", sector);
         
             ticketsTable.setValueAt(sector, row, 14);   //column 14 is for sector
         }
@@ -551,11 +547,7 @@ public class View extends javax.swing.JFrame {
         SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
         
         String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
-        String type = (String)ticketsTable.getValueAt(row, 2);
-        if (type.contains("Retencion"))
             controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
-        else
-            controller.changeTicketAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
         
         ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed

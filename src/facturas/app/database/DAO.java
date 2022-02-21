@@ -7,6 +7,7 @@
 package facturas.app.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,16 +19,22 @@ import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolation
  */
 public abstract class DAO {
 
-    protected static ResultSet executeQuery(String query, boolean update) {
+    protected static ResultSet executeQuery(String query, boolean update, boolean returnKeys) {
         try {
             Connection connection = DBManager.getConnection();
-            Statement stm = connection.createStatement();
-            
-            if (update){
-                stm.executeUpdate(query);
-                return null;
+            PreparedStatement stm;
+            if (returnKeys) {
+                stm = connection.prepareStatement(query,
+                                          Statement.RETURN_GENERATED_KEYS);
             } else {
-                ResultSet result = stm.executeQuery(query);
+                stm = connection.prepareStatement(query);
+            }
+            
+            if (update) {
+                stm.executeUpdate();
+                return stm.getGeneratedKeys();
+            } else {
+                ResultSet result = stm.executeQuery();
                 return result;
             }
         } catch (DerbySQLIntegrityConstraintViolationException e) {

@@ -8,7 +8,6 @@ package facturas.app.database;
 import facturas.app.Controller;
 import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.Provider;
-import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
@@ -27,9 +26,7 @@ import java.util.logging.Logger;
  */
 public class WithholdingDAO {
 
-    public static void addWithholding(Withholding withholding) {
-        if (withholding instanceof Ticket)
-            throw new IllegalArgumentException("Unable to add as withholding, Tickets must be added to Ticket table");
+    public static String addWithholding(Withholding withholding) {
         Pair<String, String> sqlValues = FormatUtils.withholdingToSQL(withholding);
         Provider provider = (Provider)withholding.getValues().get("provider");
         
@@ -38,13 +35,23 @@ public class WithholdingDAO {
         if (!ProviderDAO.providerExist(filter)) {
             ProviderDAO.addProvider(provider);
         }
-        String query = "INSERT INTO Withholding (id, " + sqlValues.getFst() + ") "
-            + "VALUES (NEXT VALUE FOR id_seq, " + sqlValues.getSnd() + ")";
-        executeQuery(query, true);
+        String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
+            + "VALUES (" + sqlValues.getSnd() + ")";
+        ResultSet generatedKeys = executeQuery(query, true, true);
+        
+        String id = "";
+        try {
+            generatedKeys.next();
+            id = String.valueOf(generatedKeys.getInt(1));
+        } catch (SQLException ex) {
+            Logger.getLogger(WithholdingDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
     }
         
     public static List<Withholding> getWithholdings() {
-        ResultSet result = executeQuery("SELECT * FROM Withholding", false);
+        String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id WHERE Ticket.id IS NULL";
+        ResultSet result = executeQuery(query , false, true);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;
     }
@@ -53,19 +60,21 @@ public class WithholdingDAO {
         if (filters == null) {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
-        ResultSet result = executeQuery("SELECT * FROM Withholding" + filters.get(), false);
+        String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id " 
+                + filters.get() + " AND Ticket.id IS NULL";
+        ResultSet result = executeQuery(query, false, true);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;
     }
 
     public static void changeAttribute(SQLFilter filters, String attribute, String value) {
         String query = "UPDATE Withholding SET " + attribute + " = '" + value  + "' " + filters.get();
-        executeQuery(query, true);
+        executeQuery(query, true, false);
     }
     
     public static void remove(SQLFilter filters) {
         String query = "DELETE FROM Withholding " + filters.get();
-        executeQuery(query, true);
+        executeQuery(query, true, true);
     }
     
     private static List<Withholding> getWithholdingsList(ResultSet result) {

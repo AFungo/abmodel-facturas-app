@@ -5,8 +5,12 @@
  */
 package facturas.app.utils;
 
+import facturas.app.database.Condition;
 import facturas.app.database.SQLFilter;
 import java.sql.Date;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JTable;
 
@@ -40,4 +44,36 @@ public class FilterUtils {
         return filter;
     }
     
+    /*
+        removes filters of attributes of withholding and puts them in a new filter
+    */
+    public static SQLFilter getWithholdingFilter(SQLFilter filter) {
+        SQLFilter withholdingFilter = new SQLFilter();
+        String[] attributesToRemove = {"id", "date", "type", "number", "providerDoc", "delivered", 
+            "totalAmount", "sector"};
+        
+        transferFilters(withholdingFilter, filter, attributesToRemove);
+        
+        return withholdingFilter;
+    }
+    
+    private static void transferFilters(SQLFilter filterToAdd, SQLFilter filterToRemove, String[] attributes) {
+        for (String attr : attributes) {
+            for (Condition cond : filterToRemove.removeCondition(attr)) {
+                filterToAdd.add(cond);  //transfering and conditions
+            }
+            for (List<Condition> cond : filterToRemove.removeOrCondition(attr)) {
+                filterToAdd.addDisjunction(cond, attr); //transfering or conditions
+            }
+        }
+    }
+    
+    public static List<Condition> concatenateLists(Collection<List<Condition>> lists) { 
+        List<Condition> conditions = new LinkedList<> ();
+        for (List<Condition> cond : lists) {
+            conditions.addAll(cond);
+        }
+        
+        return conditions;
+    }
 }

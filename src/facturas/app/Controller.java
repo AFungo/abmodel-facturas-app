@@ -55,12 +55,12 @@ public class Controller {
         }
 
         tickets.forEach((ticket) -> {
-            TicketDAO.addTicket(ticket);
+            createTicketOnDB(ticket);
         });
     }
     
     public void loadTicket(Map<String, String> values) {
-        TicketDAO.addTicket(new Ticket(values));
+        createTicketOnDB(new Ticket(values));
     }
     
     public void loadWithholding(Map<String, String> values) {
@@ -198,7 +198,7 @@ public class Controller {
     public void createTicket(String ticketData) {
         boolean issuedByMe = true;  //for now this will be fixed to true
         Ticket ticket = new Ticket(FormatUtils.ticketCsvToDict(ticketData, issuedByMe));
-        TicketDAO.addTicket(ticket);
+        createTicketOnDB(ticket);
     }
     
     public List<Withholding> getTickets() {
@@ -232,11 +232,7 @@ public class Controller {
     }
     
     public void removeItem(SQLFilter filter, boolean isTicket) {
-        if (isTicket) {
-            TicketDAO.remove(filter);
-        } else {
             WithholdingDAO.remove(filter);
-        }
     }
     
     private Pair<Date,String> getDayPrice(Withholding t) {
@@ -284,6 +280,12 @@ public class Controller {
         table.setDefaultEditor(Object.class, null);
         table.setCellSelectionEnabled(true);
         return table;
+    }
+    
+    private void createTicketOnDB(Ticket ticket) {
+        String id = WithholdingDAO.addWithholding(ticket);
+        ticket.addId(id);
+        TicketDAO.addTicket(ticket);
     }
     
     public JTable createTableToDelete(Object[] rowToDelete) {

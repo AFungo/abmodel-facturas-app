@@ -26,13 +26,12 @@ public class FormatUtils {
      public static Pair<String, String> ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
-        attributes += "number, totalAmount, date, exchangeType, type, exchangeMoney, providerDoc, issuedByMe";
-        values += "'" + dict.get("number") + "', " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', " 
-                + dict.get("exchangeType") + ", '" + dict.get("type") + "', '" + dict.get("exchangeMoney") + "', '" 
-                + ((Provider)dict.get("provider")).getValues().get("docNo") + "', " + dict.get("issuedByMe");
+        attributes += "id, exchangeType, exchangeMoney, issuedByMe";
+        values += dict.get("id") + ", " + dict.get("exchangeType") + ", '" + dict.get("exchangeMoney") 
+                + "', " + dict.get("issuedByMe");
 
-        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"iva", "netAmountWI", "netAmountWOI", 
-            "numberTo", "amountImpEx"}, new String[] {"authCode", "sector", "delivered"});
+        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"iva", "netAmountWI", 
+            "netAmountWOI", "numberTo", "amountImpEx"}, new String[] {"authCode"});
         attributes += optionals.getFst();
         values += optionals.getSnd();
         
@@ -96,7 +95,7 @@ public class FormatUtils {
         values += "'" + dict.get("number") + "', " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
         + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getValues().get("docNo") + "'";
 
-        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"id", "delivered"}, new String[] {"sector"});
+        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"delivered"}, new String[] {"sector"});
         attributes += optionals.getFst();
         values += optionals.getSnd();
 
