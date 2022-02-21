@@ -12,7 +12,6 @@ import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.AutoSuggestor;
-import facturas.app.utils.Enabler;
 import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FixedData;
 import java.text.SimpleDateFormat;

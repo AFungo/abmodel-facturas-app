@@ -9,7 +9,6 @@ import java.awt.EventQueue;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -29,7 +28,6 @@ public class AutoSuggestor {
     private JTextField textField;
     private Vector<String> suggestions;
     private boolean hide_Flag = false;
-    private Enabler enabler = new Enabler();
             
     @SuppressWarnings("unchecked")
     public AutoSuggestor(JComboBox comboBox, List<String> suggestions) {
@@ -69,10 +67,6 @@ public class AutoSuggestor {
         textField.setText(t);
     }
     
-    public Enabler getEnabler() {
-        return enabler;
-    }
-    
     public void autoSuggest() {
         comboBox.setEditable(true);
         setModel(getSuggestedModel(suggestions, ""), "");
@@ -84,11 +78,9 @@ public class AutoSuggestor {
                     public void run() {
                         String text = textField.getText();
                         if (text.length() == 0) {
-                            enabler.setEnabled(true);
                             comboBox.hidePopup();
                             setModel(new DefaultComboBoxModel(suggestions), text);
                         } else {
-                            enabler.setEnabled(false);
                             DefaultComboBoxModel m = getSuggestedModel(suggestions, text);
                             if (m.getSize() == 0 || hide_Flag) {
                                 comboBox.hidePopup();
