@@ -5,7 +5,7 @@
  */
 package facturas.app.database;
 
-import facturas.app.utils.FormatUtils;
+import facturas.app.utils.FilterUtils;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,15 +18,26 @@ import java.util.Map;
  */
 public class SQLFilter {
     
-    Map<String,Condition> conditions = new HashMap<>();
+    Map<String,List<Condition>> conditions = new HashMap<>();
     Map<String,List<Condition>> orConditions = new HashMap<>();
     
     public final void add(String attr, String comparison, Object val, Class<?> valClass) {
-        conditions.put(attr, new Condition(attr, comparison, val, valClass));
+        List<Condition> conds = conditions.get(attr);
+        if (conds == null) {
+            conds = new LinkedList();
+        }
+        conds.add(new Condition(attr, comparison, val, valClass));
+        conditions.put(attr, conds);
     }
     
     public final void add(Condition condition) {
-        conditions.put(condition.getAttr(), condition);
+        String attr = condition.getAttr();
+        List<Condition> conds = conditions.get(attr);
+        if (conds == null) {
+            conds = new LinkedList();
+        }
+        conds.add(condition);
+        conditions.put(attr, conds);
     }
     
     public void addDisjunction(String attr, String comparison, Object vals, Class<?> valClass) {    
@@ -42,12 +53,11 @@ public class SQLFilter {
     }
     
     public List<Condition> removeCondition(String attr) {
-        List<Condition> removed = new LinkedList<>();
-        Condition cond = conditions.remove(attr);
-        while (cond != null) {
-            removed.add(cond);
-            cond = conditions.remove(cond);
+        List<Condition> removed = conditions.remove(attr);
+        if (removed == null) {
+            removed = new LinkedList<>();
         }
+        
         return removed;
     }
     
@@ -79,7 +89,7 @@ public class SQLFilter {
         }
         
         
-        String lastConjunction = getComplexCondition(new LinkedList(conditions.values()), "AND");
+        String lastConjunction = getComplexCondition(FilterUtils.concatenateLists(conditions.values()), "AND");
         if (!lastConjunction.equals("")) {
             if (!firstOne) {
                 sqlCode += " AND ";

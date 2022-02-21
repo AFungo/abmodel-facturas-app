@@ -8,6 +8,8 @@ package facturas.app.utils;
 import facturas.app.database.Condition;
 import facturas.app.database.SQLFilter;
 import java.sql.Date;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JTable;
@@ -64,5 +66,14 @@ public class FilterUtils {
                 filterToAdd.addDisjunction(cond, attr); //transfering or conditions
             }
         }
+    }
+    
+    public static List<Condition> concatenateLists(Collection<List<Condition>> lists) { 
+        List<Condition> conditions = new LinkedList<> ();
+        for (List<Condition> cond : lists) {
+            conditions.addAll(cond);
+        }
+        
+        return conditions;
     }
 }
