@@ -105,7 +105,7 @@ public class DBManager {
                                         + "iva REAL," //
                                         + "issuedByMe BOOLEAN NOT NULL," //
                                         + "PRIMARY KEY (id),"
-                                        + "CONSTRAINT fk_id FOREIGN KEY (id) REFERENCES Withholding(id)"
+                                        + "CONSTRAINT fk_id FOREIGN KEY (id) REFERENCES Withholding(id) ON DELETE CASCADE"
                                         + ")";
                                         break;
             

@@ -235,11 +235,7 @@ public class Controller {
     }
     
     public void removeItem(SQLFilter filter, boolean isTicket) {
-        if (isTicket) {
-            TicketDAO.remove(filter);
-        } else {
             WithholdingDAO.remove(filter);
-        }
     }
     
     private Pair<Date,String> getDayPrice(Withholding t) {

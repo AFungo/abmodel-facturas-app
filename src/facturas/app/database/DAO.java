@@ -31,7 +31,6 @@ public abstract class DAO {
             }
             
             if (update) {
-                System.out.println("la query es: " + query);
                 stm.executeUpdate();
                 return stm.getGeneratedKeys();
             } else {
