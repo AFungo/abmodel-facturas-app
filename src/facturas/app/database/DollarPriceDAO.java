@@ -27,19 +27,23 @@ public class DollarPriceDAO extends DAO {
         Pair<String, String> sqlValues = FormatUtils.dollarPriceToSQL(price);
         String query = "INSERT INTO DollarPrice (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-        executeQuery(query, true);
+        executeQuery(query, true, true);
     }
     
     public static DollarPrice getPrice(Date date) {
-        ResultSet result = executeQuery("SELECT * FROM DollarPrice WHERE date = '" + date.toString() + "'", false);
+        String query = "SELECT * FROM DollarPrice WHERE date = '" + date.toString() + "'";
+        ResultSet result = executeQuery(query, false, true);
         DollarPrice price = buildDollarPrice(result);
         return price;
     }
     
     public static DollarPrice getAproximatePrice(Date date) {
-        ResultSet before = executeQuery("SELECT * FROM DollarPrice WHERE date = ("
-                + "SELECT MAX(date) FROM DollarPrice WHERE date < '" + date.toString() + "')", false);
-        ResultSet after = executeQuery("SELECT * FROM DollarPrice WHERE date > '" + date.toString() + "' FETCH FIRST 1 ROWS ONLY", false);
+        String query = "SELECT * FROM DollarPrice WHERE date = (SELECT MAX(date) FROM DollarPrice WHERE "
+                + "date < '" + date.toString() + "')";
+        ResultSet before = executeQuery(query, false, true);
+        
+        query = "SELECT * FROM DollarPrice WHERE date > '" + date.toString() + "' FETCH FIRST 1 ROWS ONLY";
+        ResultSet after = executeQuery(query, false, true);
         
         DollarPrice priceBefore = buildDollarPrice(before);
         DollarPrice priceAfter = buildDollarPrice(after);

@@ -27,11 +27,12 @@ public class ProviderDAO extends DAO {
         Pair<String, String> sqlValues = FormatUtils.providerToSQL(provider);
         String query = "INSERT INTO Provider (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-        executeQuery(query, true);
+        executeQuery(query, true, true);
     }
     
     public static boolean providerExist(SQLFilter filters) {
-        ResultSet result = executeQuery("SELECT * FROM Provider " + filters.get(), false);
+        String query = "SELECT * FROM Provider " + filters.get();
+        ResultSet result = executeQuery(query, false, true);
         try {
             return result.next();
         } catch (SQLException e) {
@@ -44,7 +45,8 @@ public class ProviderDAO extends DAO {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
         
-        ResultSet result = executeQuery("SELECT * FROM Provider" + filters.get(), false);
+        String query = "SELECT * FROM Provider" + filters.get();
+        ResultSet result = executeQuery(query, false, true);
         List<Provider> providers = new LinkedList<>();
         try {
             while (result.next()) {
@@ -58,7 +60,8 @@ public class ProviderDAO extends DAO {
     }
      
     public static Provider getProvider(String docNo) {
-        ResultSet result = executeQuery("SELECT * FROM Provider WHERE docNo='" + docNo + "'", false);
+        String query = "SELECT * FROM Provider WHERE docNo='" + docNo + "'";
+        ResultSet result = executeQuery(query, false, true);
         try {
             if (result.next()) {
                 return createProvider(result);
@@ -71,7 +74,8 @@ public class ProviderDAO extends DAO {
     }
 
     public static List<Provider> getProviders() {
-        ResultSet result = executeQuery("SELECT * FROM Provider", false);
+        String query = "SELECT * FROM Provider";
+        ResultSet result = executeQuery(query, false, true);
         List<Provider> providers = new LinkedList<>();
         
         try {
@@ -88,7 +92,7 @@ public class ProviderDAO extends DAO {
     public static void changeAttribute(SQLFilter filters, String attribute, String value) {
         if (providerExist(filters)) {
             String query = "UPDATE Provider SET " + attribute + " = '" + value  + "' " + filters.get();
-            executeQuery(query, true);
+            executeQuery(query, true, false);
         } else {
             System.out.println("A provider with filters (" + filters.get() + ") was not found");
         }

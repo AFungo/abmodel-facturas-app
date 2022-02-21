@@ -37,7 +37,7 @@ public class WithholdingDAO {
         }
         String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-        ResultSet generatedKeys = executeQuery(query, true);
+        ResultSet generatedKeys = executeQuery(query, true, true);
         
         String id = "";
         try {
@@ -50,8 +50,8 @@ public class WithholdingDAO {
     }
         
     public static List<Withholding> getWithholdings() {
-        ResultSet result = executeQuery("SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON "
-                + "Withholding.id = Ticket.id WHERE Ticket.id IS NULL" , false);
+        String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id WHERE Ticket.id IS NULL";
+        ResultSet result = executeQuery(query , false, true);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;
     }
@@ -60,20 +60,21 @@ public class WithholdingDAO {
         if (filters == null) {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
-        ResultSet result = executeQuery("SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON "
-                + "Withholding.id = Ticket.id " + filters.get() + " AND Ticket.id IS NULL", false);
+        String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id " 
+                + filters.get() + " AND Ticket.id IS NULL";
+        ResultSet result = executeQuery(query, false, true);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;
     }
 
     public static void changeAttribute(SQLFilter filters, String attribute, String value) {
         String query = "UPDATE Withholding SET " + attribute + " = '" + value  + "' " + filters.get();
-        executeQuery(query, true);
+        executeQuery(query, true, false);
     }
     
     public static void remove(SQLFilter filters) {
         String query = "DELETE FROM Withholding " + filters.get();
-        executeQuery(query, true);
+        executeQuery(query, true, true);
     }
     
     private static List<Withholding> getWithholdingsList(ResultSet result) {

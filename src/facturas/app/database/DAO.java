@@ -19,13 +19,19 @@ import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolation
  */
 public abstract class DAO {
 
-    protected static ResultSet executeQuery(String query, boolean update) {
+    protected static ResultSet executeQuery(String query, boolean update, boolean returnKeys) {
         try {
             Connection connection = DBManager.getConnection();
-            PreparedStatement stm = connection.prepareStatement(query,
-                                      Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stm;
+            if (returnKeys) {
+                stm = connection.prepareStatement(query,
+                                          Statement.RETURN_GENERATED_KEYS);
+            } else {
+                stm = connection.prepareStatement(query);
+            }
             
             if (update) {
+                System.out.println("la query es: " + query);
                 stm.executeUpdate();
                 return stm.getGeneratedKeys();
             } else {

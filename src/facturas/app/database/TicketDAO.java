@@ -9,7 +9,6 @@ import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.models.Provider;
-import facturas.app.utils.FilterUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
 import java.sql.ResultSet;
@@ -38,11 +37,12 @@ public class TicketDAO extends DAO {
         }
         String query = "INSERT INTO Ticket (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-        executeQuery(query, true);
+        executeQuery(query, true, true);
     }
         
     public static List<Withholding> getTickets() {
-        ResultSet result = executeQuery("SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id", false);
+        String query = "SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id";
+        ResultSet result = executeQuery(query, false, true);
         List<Withholding> ticketsList = getTicketsList(result);
         return ticketsList;
     }
@@ -52,20 +52,20 @@ public class TicketDAO extends DAO {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
         
-        ResultSet result = executeQuery("SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id " 
-                + filters.get(), false);
+        String query = "SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id " + filters.get();
+        ResultSet result = executeQuery(query, false, true);
         List<Withholding> ticketsList = getTicketsList(result);
         return ticketsList;
     }
 
     public static void changeAttribute(SQLFilter filters, String attribute, String value) {
         String query = "UPDATE Ticket SET " + attribute + " = '" + value  + "' " + filters.get();
-        executeQuery(query, true);
+        executeQuery(query, true, false);
     }
     
     public static void remove(SQLFilter filters) {
         String query = "DELETE FROM Ticket " + filters.get();
-        executeQuery(query, true);
+        executeQuery(query, true, true);
     }
     
     private static List<Withholding> getTicketsList(ResultSet result) {
