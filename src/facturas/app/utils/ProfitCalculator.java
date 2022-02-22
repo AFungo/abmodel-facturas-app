@@ -29,27 +29,51 @@ public class ProfitCalculator {
         retentionGan = new Transaction();
     }
     
-    public void addTicket(Ticket t, boolean dollars) {
+    public void addTicket(Ticket t) {
         Map<String, Object> values = t.getValues();
         
-        Float exchangeType = (Float) t.getValues().get("exchangeType");
-        Float sellPrice = inDollars(dollars, exchangeType, t.getDollarPrice());
-        
+        Float exchangeType = 1.0f;
+        String exchangeMoney = (String)t.getValues().get("exchangeMoney");
+       if (exchangeMoney == "USD") {
+            exchangeType = (Float) t.getValues().get("exchangeType");
+        }
        
-        Float totalAmount = ((Float) values.get("totalAmount") * exchangeType) / sellPrice;//Total * (exchange type who coming in the file) / (dollar price of this day or 1)
-        Float iva = ((values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType)/sellPrice;
-        Float netAmountWI = ((values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType)/sellPrice;        
+        Float totalAmount = (Float) values.get("totalAmount") * exchangeType;   //Total * exchange type
+        Float iva = (values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType;
+        Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType;
 
         addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, iva, netAmountWI);
     }
   
+public void addTicketInDollars(Ticket t) {
+        Map<String, Object> values = t.getValues();
+        Float sellPrice = 1.0f;
+        
+        Float exchangeType = (Float) t.getValues().get("exchangeType");
+        String exchangeMoney = (String)t.getValues().get("exchangeMoney");
+        if (exchangeMoney == "USD") {   //we already have the price in dollars so we don't want to modify it
+            exchangeType = 1.0f;    
+        } else if (exchangeType == 1.0f) {  //money are pesos and we don't have the exchange type
+            sellPrice = inDollars(true, exchangeType, t.getDollarPrice());
+        }
+       //in case we are in pesos and we have the exchange type, we just divide by it
+        Float totalAmount = ((Float) values.get("totalAmount") / exchangeType) / sellPrice; //Total / (exchange type or 1) / (dollar price of this day or 1)
+        Float iva = ((values.get("iva") != null ? (Float) values.get("iva") : 0.0f) / exchangeType)/sellPrice;
+        Float netAmountWI = ((values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) / exchangeType)/sellPrice;        
 
+        addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, iva, netAmountWI);
+    }
+    
     public void addRetention(Withholding r, boolean dollars){
-        Float sellPrice = inDollars(dollars, 1.0f, r.getDollarPrice());//le pongo 1 en exchangetype pq no se carga en ret
-        Float ta = (Float) r.getValues().get("totalAmount") / sellPrice;
+        Float totalAmount = (Float) r.getValues().get("totalAmount");
 
-        if(r.getValues().get("type").equals("Retencion Iva")) retentionIva.addTransaction(ta, 0.0f, 0.0f);
-        if(r.getValues().get("type").equals("Retencion Ganancias")) retentionGan.addTransaction(ta, 0.0f, 0.0f);
+        if (dollars) {
+            Float sellPrice = inDollars(dollars, 1.0f, r.getDollarPrice());//le pongo 1 en exchangetype pq no se carga en ret
+            totalAmount /= sellPrice;
+        }
+        
+        if(r.getValues().get("type").equals("Retencion Iva")) retentionIva.addTransaction(totalAmount, 0.0f, 0.0f);
+        if(r.getValues().get("type").equals("Retencion Ganancias")) retentionGan.addTransaction(totalAmount, 0.0f, 0.0f);
     }
     
     public Map<String, Float> getValues(){
@@ -67,13 +91,11 @@ public class ProfitCalculator {
         values.put("withheldIva", (Float) retentionGan.getTransactions().get("totalAmount"));
         values.put("totalIva", this.getIva());
         
-        
         //profitTax
         values.put("issuedNetAmount",(Float)sales.getTransactions().get("netAmountWI"));
         values.put("receivedNetAmount",(Float)purchases.getTransactions().get("netAmountWI"));
         values.put("withheldProfit",(Float) retentionGan.getTransactions().get("totalAmount"));
         values.put("totalProfitTax", this.getGanancia());
-        
         
         return values;
     }
