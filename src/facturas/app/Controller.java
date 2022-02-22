@@ -184,7 +184,8 @@ public class Controller {
         List<Withholding> tickets = getTickets(ticketsFilters);
         List<Withholding> withholdings = getWithholdings(withholdingsFilters);
         //load tickets
-        PricesList pricesList = new PricesList();
+        PricesList pricesList = new PricesList(inDollars);
+        
         for(Withholding t : tickets) {
             pricesList.loadTicketValues((Ticket)t, daysLimit, inDollars);
         }

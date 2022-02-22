@@ -27,10 +27,13 @@ public class PricesList {
     //list of prices that exceed the days limit
     private List<Pair<Date,String>> missingPrices;
     
-    public PricesList() {
+    public PricesList(boolean inDollars) {
         calculator = new ProfitCalculator ();
         datePrices = new HashMap<> ();
         missingPrices = new LinkedList();
+        if (DollarPriceDAO.noPrices() && inDollars) {
+            throw new IllegalStateException("No dollar prices loaded");
+        }
     }
     
     public Map<String,Float> getValues() {
