@@ -21,39 +21,44 @@ import java.util.Map;
  */
 public class PricesList {
     //values such iva, total amount, etc
-    private Map<String,Float> calculatedValues;
+    private ProfitCalculator calculator;
     //prices of the already checked days to reduce database calls
     private Map<Date,DollarPrice> datePrices;
     //list of prices that exceed the days limit
     private List<Pair<Date,String>> missingPrices;
     
     public PricesList() {
-        calculatedValues = new HashMap<> ();
+        calculator = new ProfitCalculator ();
         datePrices = new HashMap<> ();
         missingPrices = new LinkedList();
     }
     
-    public void addProfitValues(Map<String,Float> values) {
-        calculatedValues = values;
-    }
-    
     public Map<String,Float> getValues() {
-        return calculatedValues;
+        return calculator.getValues();
     }
     
     public List<Pair<Date,String>> getMissingPrices() {
         return missingPrices;
     }
     
-    public void loadPriceInTicket(Ticket t, int daysLimit) {
-        Float exchangeType = (Float)t.getValues().get("exchangeType");
-        if (exchangeType == 1.0f) { //exchange type is in pesos
-            setDollarPrice(t, daysLimit);
+    public void loadTicketValues(Ticket t, int daysLimit, boolean inDollars) {
+        if (!inDollars) {
+            calculator.addTicket((Ticket)t);
+        } else {
+            Float exchangeType = (Float)t.getValues().get("exchangeType");
+            if (exchangeType == 1.0f) { //exchange type is in pesos
+                setDollarPrice(t, daysLimit);
+            }
+
+            calculator.addTicketInDollars((Ticket)t);
         }
     }
     
-    public void loadPriceInWithholding(Withholding w, int daysLimit) {
-        setDollarPrice(w, daysLimit);
+    public void loadPriceInWithholding(Withholding w, int daysLimit, boolean inDollars) {
+        if (inDollars) {
+            setDollarPrice(w, daysLimit);
+        }
+        calculator.addRetention(w, inDollars);
     }
     
     private void setDollarPrice(Withholding t, int daysLimit) {

@@ -180,28 +180,19 @@ public class Controller {
     }
     
     public PricesList getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
-    ProfitCalculator profit = new ProfitCalculator();
-    List<Withholding> tickets = getTickets(ticketsFilters);
-    List<Withholding> withholdings = getWithholdings(withholdingsFilters);
-    //load tickets
-    PricesList pricesList = new PricesList();
-    for(Withholding t : tickets) {
-        if (inDollars) { //dollars required and ticket in pesos
-            pricesList.loadPriceInTicket((Ticket)t, daysLimit);
+        List<Withholding> tickets = getTickets(ticketsFilters);
+        List<Withholding> withholdings = getWithholdings(withholdingsFilters);
+        //load tickets
+        PricesList pricesList = new PricesList();
+        for(Withholding t : tickets) {
+            pricesList.loadTicketValues((Ticket)t, daysLimit, inDollars);
         }
-        profit.addTicket((Ticket)t, inDollars);
-    }
-    //load withholdings
-    for (Withholding w : withholdings) {
-        if (inDollars) {
-            pricesList.loadPriceInWithholding(w, daysLimit);
+        //load withholdings
+        for (Withholding w : withholdings) {
+            pricesList.loadPriceInWithholding(w, daysLimit, inDollars);
         }
-        profit.addRetention(w, inDollars);
+        return pricesList;
     }
-    
-    pricesList.addProfitValues(profit.getValues());
-    return pricesList;
-}
     
     public void createTicket(String ticketData) {
         boolean issuedByMe = true;  //for now this will be fixed to true
