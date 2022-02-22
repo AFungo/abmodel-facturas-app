@@ -99,6 +99,15 @@ public class Controller {
         if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
             invalidations += "<br/>El rubro del comprobante no existe";
         }
+        
+        if (invalidations.isEmpty()) {
+            SQLFilter filter = new SQLFilter();
+            filter.add("docNo", "=", values.get("docNo"), String.class);
+            if (ProviderDAO.providerExist(filter)) {
+                invalidations += "<br/>El proveedor " + values.get("name") + " con nro documento " + values.get("docNo") + " ya esta cargado";
+            }
+        }
+        
         if (invalidations.isEmpty()) {
             return null;
         } else {
