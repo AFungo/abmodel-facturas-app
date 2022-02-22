@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -234,7 +235,17 @@ public class Controller {
     public void removeItem(SQLFilter filter, boolean isTicket) {
             WithholdingDAO.remove(filter);
     }
+    public Ticket makeNegative(Ticket t){
+        Map<String, String> values = FormatUtils.objectToStringMap(t.getValues());
+        values.put("totalAmount", "-" + values.get("totalAmount"));
+        if (values.get("netAmountWI") != null) values.put("netAmountWI","-" + values.get("netAmountWI"));
+        if (values.get("netAmountWOI") != null) values.put("netAmountWOI","-" + values.get("netAmountWOI"));
+        if (values.get("amountImpEx") != null) values.put("amountImpEx","-" + values.get("amountImpEx"));
+        if (values.get("iva") != null) values.put("iva", "-" + values.get("iva"));
+        return new Ticket(values);
+    }
     
+
     private Pair<Date,String> getDayPrice(Withholding t) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = DollarPriceDAO.getPrice(ticketDate);

@@ -261,4 +261,28 @@ public class FormatUtils {
         String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
         return Date.valueOf(formatedDate);
     }
+        public static Map<String, String> objectToStringMap(Map<String, Object> values){
+        Map<String, String> v = new HashMap();
+        Provider provider = (Provider) values.get("provider");
+        v.putAll(provider.getValues());
+        v.put("id", values.get("id").toString());
+        v.put("date", values.get("date").toString());
+        v.put("type", values.get("type").toString());
+        v.put("totalAmount", values.get("totalAmount").toString());
+        v.put("number", values.get("number").toString());
+        if(values.get("sector")!=null)v.put("sector", values.get("sector").toString());
+        if (values.get("delivered").toString() != null) v.put("delivered", values.get("delivered").toString());
+        if(values.get("numberTo")!=null)v.put("numberTo", values.get("numberTo").toString());
+        if(values.get("authCode")!=null)v.put("authCode", values.get("authCode").toString());
+        v.put("provider", values.get("provider").toString());
+        v.put("exchangeType", values.get("exchangeType").toString());
+        v.put("exchangeMoney", values.get("exchangeMoney").toString());
+        v.put("issuedByMe", values.get("issuedByMe").toString());
+        if (values.get("netAmountWI") != null) v.put("netAmountWI", values.get("netAmountWI").toString());
+        if (values.get("netAmountWOI") != null) v.put("netAmountWOI", values.get("netAmountWOI").toString());
+        if (values.get("amountImpEx") != null) v.put("amountImpEx", values.get("amountImpEx").toString());
+        if (values.get("iva") != null) v.put("iva", values.get("iva").toString());
+        if (values.get("sector") != null) v.put("sector", values.get("sector").toString());
+        return v;
+    }
 }

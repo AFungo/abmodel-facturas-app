@@ -324,6 +324,11 @@ public class FiltersView extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
         for (Withholding t : tickets) {
+            if(t instanceof Ticket){
+                if(!((Ticket)t).isIncome()){
+                    t = controller.makeNegative((Ticket) t);
+                }
+            }
             if (withholdingRadioButton.isSelected() && !(t instanceof Ticket)) {
                 model.addRow(FormatUtils.ticketToForm(t));
             } else if (ticketRadioButton.isSelected() && t instanceof Ticket) {

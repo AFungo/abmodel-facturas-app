@@ -10,6 +10,7 @@ import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
+import facturas.app.models.Ticket;
 import facturas.app.utils.ConfigManager;
 import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FormatUtils;
@@ -173,6 +174,12 @@ public class View extends javax.swing.JFrame {
         List<Withholding> tickets = controller.getTickets();
         tickets.addAll(controller.getWithholdings());
         for (Withholding t : tickets) {
+            if(t instanceof Ticket){
+                if(!((Ticket)t).isIncome()){
+                    t = controller.makeNegative((Ticket) t);
+                }
+            }
+
             model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
         }
 
@@ -449,12 +456,17 @@ public class View extends javax.swing.JFrame {
 
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        List<Withholding> tickets = controller.getTickets();
+                List<Withholding> tickets = controller.getTickets();
         tickets.addAll(controller.getWithholdings());
 
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
         for (Withholding t : tickets) {
+            if(t instanceof Ticket){
+                if(!((Ticket)t).isIncome()){
+                    t = controller.makeNegative((Ticket) t);
+                }
+            }
             model.addRow(FormatUtils.ticketToForm(t));
         }
     }                                            
