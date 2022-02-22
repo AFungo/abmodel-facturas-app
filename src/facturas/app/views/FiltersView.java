@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -135,7 +136,24 @@ public class FiltersView extends javax.swing.JFrame {
             }
         });
 
+        ticketTypesList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] types = FixedData.getTicketTypes();
+            public int getSize() { return types.length; }
+            public String getElementAt(int i) { return types[i]; }
+        });
         ticketTypesScrollPane.setViewportView(ticketTypesList);
+        ticketTypesList.setSelectionModel(new DefaultListSelectionModel() {
+            @Override
+            public void setSelectionInterval(int index0, int index1) {
+                if(super.isSelectedIndex(index0)) {
+                    super.removeSelectionInterval(index0, index1);
+                }
+                else {
+                    super.addSelectionInterval(index0, index1);
+                }
+                fireValueChanged(index0, index1);
+            }
+        });
 
         minDateChooser.setDateFormatString("dd-MM-yyyy");
         JTextFieldDateEditor textField = (JTextFieldDateEditor) minDateChooser.getDateEditor();
@@ -289,8 +307,7 @@ public class FiltersView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cleanDateFilters)
                                 .addGap(18, 18, 18)
-                                .addComponent(cleanFilters)
-                                .addContainerGap())
+                                .addComponent(cleanFilters))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(purchaseRadioButton)
@@ -304,8 +321,8 @@ public class FiltersView extends javax.swing.JFrame {
                                     .addComponent(bothRadioButton)
                                     .addComponent(bothRadioButton2))
                                 .addGap(34, 34, 34)
-                                .addComponent(appyFilters)
-                                .addGap(24, 24, 24))))
+                                .addComponent(appyFilters)))
+                        .addGap(24, 24, 24))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ticketTypesScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
