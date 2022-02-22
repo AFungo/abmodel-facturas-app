@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class Ticket extends Withholding{   
     private Float iva;
-    private float exchangeType;
+    private Float exchangeType;
     private String exchangeMoney;
     private Float netAmountWI;//with iva
     private Float netAmountWOI;//without iva

@@ -17,6 +17,7 @@ import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import facturas.app.utils.PricesList;
 import facturas.app.utils.ProfitCalculator;
 import java.io.File;
 import java.io.IOException;
@@ -179,21 +180,19 @@ public class Controller {
         return items;
     }
     
-    public Pair<Map<String,Float>,List<Pair<Date,String>>> getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
-        ProfitCalculator profit = new ProfitCalculator();
-        List<Withholding> tickWi= getTickets(ticketsFilters);
-        tickWi.addAll(getWithholdings(withholdingsFilters));
-        
-        List<Pair<Date,String>> missingDays = new LinkedList<>();
-        for(Withholding t : tickWi) {
-            if (inDollars) {
-                Pair<Date,String> miss = getDayPrice(t);
-                if (miss != null) missingDays.add(miss);
-            }
-            if (t instanceof Ticket) profit.addTicket((Ticket)t, inDollars);
-            else profit.addRetention(t, inDollars);
+    public PricesList getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
+        List<Withholding> tickets = getTickets(ticketsFilters);
+        List<Withholding> withholdings = getWithholdings(withholdingsFilters);
+        //load tickets
+        PricesList pricesList = new PricesList();
+        for(Withholding t : tickets) {
+            pricesList.loadTicketValues((Ticket)t, daysLimit, inDollars);
         }
-        return new Pair<> (profit.getValues(), missingDays);
+        //load withholdings
+        for (Withholding w : withholdings) {
+            pricesList.loadPriceInWithholding(w, daysLimit, inDollars);
+        }
+        return pricesList;
     }
     
     public void createTicket(String ticketData) {

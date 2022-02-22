@@ -16,6 +16,7 @@ import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PdfCreator;
+import facturas.app.utils.PricesList;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -429,9 +430,10 @@ public class View extends javax.swing.JFrame {
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         
-        Pair<Map<String,Float>,List<Pair<Date,String>>> profitResult = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
-        Map<String,Float> values = profitResult.getFst();
-        List<Pair<Date,String>> missingPrices = profitResult.getSnd();
+        PricesList pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
+    
+        Map<String,Float> values = pricesList.getValues();
+        List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = controller.createMissingPricesTable(missingPrices);
             int daysLimit = controller.getDaysLimit();
