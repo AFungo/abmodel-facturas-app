@@ -56,6 +56,7 @@ public class SectorsView extends javax.swing.JFrame {
         updateSector = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("RUBROS");
 
         addSector.setText("Agregar");
         addSector.addActionListener(new java.awt.event.ActionListener() {
@@ -110,6 +111,7 @@ public class SectorsView extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void addSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSectorActionPerformed
