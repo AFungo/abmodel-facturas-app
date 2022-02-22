@@ -37,6 +37,22 @@ public class DollarPriceDAO extends DAO {
         return price;
     }
     
+    public static boolean noPrices() {
+        String query = "SELECT COUNT(date) FROM DollarPrice";
+        ResultSet result = executeQuery(query, false, true);
+        boolean noPrices = true;
+        try {
+            result.next();
+            int amount = result.getInt(1);
+            if (amount != 0) {
+                noPrices = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DollarPriceDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return noPrices;
+    }
+    
     public static DollarPrice getAproximatePrice(Date date) {
         String query = "SELECT * FROM DollarPrice WHERE date = (SELECT MAX(date) FROM DollarPrice WHERE "
                 + "date < '" + date.toString() + "')";
