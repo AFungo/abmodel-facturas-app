@@ -56,6 +56,16 @@ public class WithholdingDAO {
         return withholdingsList;
     }
     
+    public static boolean exists(SQLFilter filter) {
+        String query = "SELECT * FROM Withholding " + filter.get();
+        ResultSet result = executeQuery(query, false, true);
+        try {
+            return result.next();
+        } catch (SQLException e) {
+            throw new IllegalStateException(e.toString());
+        }
+    }
+    
     public static List<Withholding> getWithholdings(SQLFilter filters) {
         if (filters == null) {
             throw new IllegalArgumentException("The parameter filters can not be null");
