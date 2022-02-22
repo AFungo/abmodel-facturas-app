@@ -18,13 +18,12 @@ import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PricesList;
-import facturas.app.utils.ProfitCalculator;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.Date;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +147,21 @@ public class Controller {
         
         boolean[] numerics = FormatUtils.validTicketInput(values, ticket);
         invalidations += addInvalidNumerics(numerics, ticket);
+        
+        if (invalidations.isEmpty()) {
+            SQLFilter filter = new SQLFilter();
+            Provider prov = selectedProvider.get(0);
+            filter.add("providerDoc", "=", prov.getValues().get("docNo"), String.class);
+            filter.add("number", "=", values.get("number"), String.class);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date formatedDate = FormatUtils.dateGen(sdf.format(date));
+            filter.add("date", "=", formatedDate, Date.class);
+            if (WithholdingDAO.exists(filter)) { 
+                invalidations += "<br/>El comprobante de proveedor " + prov.getValues().get("name") + ", numero " + 
+                        values.get("number") + " y fecha " + formatedDate + " ya esta cargado";
+            }
+        }
         
         if (invalidations.isEmpty()) {
             return null;
