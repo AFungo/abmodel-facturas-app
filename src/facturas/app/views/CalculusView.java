@@ -349,8 +349,14 @@ public class CalculusView extends javax.swing.JFrame {
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
-
-        PricesList pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
+        PricesList pricesList;
+        try {
+            pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
+        } catch (IllegalStateException e) {
+            optionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
+                "Error", optionPane.ERROR_MESSAGE);
+            return ;
+        }
     
         Map<String,Float> values = pricesList.getValues();
         List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
