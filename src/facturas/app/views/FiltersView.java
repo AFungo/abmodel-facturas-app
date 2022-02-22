@@ -19,7 +19,6 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -373,6 +372,7 @@ public class FiltersView extends javax.swing.JFrame {
         docNoTextField.setText("");
         bothRadioButton.setSelected(true);
         bothRadioButton2.setSelected(true);
+        ticketTypesList.clearSelection();
     }//GEN-LAST:event_cleanFiltersActionPerformed
 
     public SQLFilter getFilters(boolean isTicket) {
