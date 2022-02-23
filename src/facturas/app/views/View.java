@@ -668,8 +668,8 @@ public class View extends javax.swing.JFrame {
         withholdingLoaderView.updateProviders(names);
     }
     
-    public void showError(Throwable e) {
-        JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado", "Error", JOptionPane.ERROR_MESSAGE);
+    public void showError(Throwable e, String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
     private void cleanTable(DefaultTableModel model) {

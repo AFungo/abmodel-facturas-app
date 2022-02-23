@@ -7,6 +7,7 @@ package facturas.app.views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import facturas.app.Controller;
+import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
@@ -405,12 +406,18 @@ public class FiltersView extends javax.swing.JFrame {
         String selectedProvider = providersAutoSuggestor.getText();
         if (selectedProvider != null && !selectedProvider.isEmpty()) {
             providersDoc.add("name", "=", selectedProvider, String.class);
+            if (!ProviderDAO.providerExist(providersDoc)) {
+                throw new IllegalArgumentException("provider doesn't exists");
+            }
             selectedFilters.addDisjunction("providerDoc", "=", 
                     getDocsList(controller.getProviders(providersDoc)), String.class);
         }
         
         String selectedSector = sectorsAutoSuggestor.getText();
         if (selectedSector != null && !selectedSector.isEmpty()) {
+            if (SectorDAO.sectorExist(selectedSector)) {
+                throw new IllegalArgumentException("sector doesn't exists");
+            }
             selectedFilters.add("sector", "=", selectedSector, String.class);
         }
         
