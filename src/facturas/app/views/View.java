@@ -31,6 +31,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import org.apache.commons.io.FilenameUtils;
@@ -71,7 +72,6 @@ public class View extends javax.swing.JFrame {
         sectorMenuItem = new javax.swing.JMenuItem();
         deliveredMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
-        optionPane = new javax.swing.JOptionPane();
         sectorComboBox = new javax.swing.JComboBox<>();
         ticketsTableScroll = new javax.swing.JScrollPane();
         ticketsTable = new javax.swing.JTable();
@@ -441,8 +441,8 @@ public class View extends javax.swing.JFrame {
         try {
             pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
         } catch (IllegalStateException e) {
-            optionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
-                "Error", optionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
+                "Error", JOptionPane.ERROR_MESSAGE);
             return ;
         }
     
@@ -451,9 +451,9 @@ public class View extends javax.swing.JFrame {
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = controller.createMissingPricesTable(missingPrices);
             int daysLimit = controller.getDaysLimit();
-            optionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
+            JOptionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
-                " dias para redondear el dolar", optionPane.WARNING_MESSAGE);
+                " dias para redondear el dolar", JOptionPane.WARNING_MESSAGE);
         }
         
         String money = dollar ? " USD" : " ARS";
@@ -555,8 +555,8 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_ticketsTableMouseReleased
 
     private void sectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorMenuItemActionPerformed
-        int selection = optionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", optionPane.OK_CANCEL_OPTION);
-        if (selection == optionPane.OK_OPTION) {
+        int selection = JOptionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
+        if (selection == JOptionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             
@@ -620,8 +620,8 @@ public class View extends javax.swing.JFrame {
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
         JTable toDelete = createToDeleteTable(row);
-        int selection = optionPane.showConfirmDialog(null, new JScrollPane(toDelete), "Estas seguro?", optionPane.OK_CANCEL_OPTION);
-        if (selection == optionPane.OK_OPTION) {
+        int selection = JOptionPane.showConfirmDialog(null, new JScrollPane(toDelete), "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
+        if (selection == JOptionPane.OK_OPTION) {
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             String type = (String)ticketsTable.getValueAt(row, 2);
            
@@ -723,7 +723,6 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem loadWithholdingManually;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenu multipleLoad;
-    private javax.swing.JOptionPane optionPane;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTextField profitTax;
     private javax.swing.JTextField profitTaxLabel;
