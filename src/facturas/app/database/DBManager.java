@@ -8,7 +8,6 @@ package facturas.app.database;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -64,10 +63,9 @@ public class DBManager {
     
     private static boolean createTable(String tableName) {
         try {
-            connection = getConnection();
             if (tableAlreadyExists(tableName.toUpperCase()))
                 return false;
-            Statement stm = connection.createStatement();
+            Statement stm = getConnection().createStatement();
             
             String tableQuery = getTableQuery(tableName);
 
@@ -157,11 +155,10 @@ public class DBManager {
     
     private static boolean dropTable(String table) {
         try {
-            connection = getConnection();
             if (!tableAlreadyExists(table.toUpperCase())) {
                 return false;
             }
-            Statement stm = connection.createStatement();
+            Statement stm = getConnection().createStatement();
 
             String tableDollarPrice = "DROP TABLE " + table;
             stm.executeUpdate(tableDollarPrice);
@@ -172,7 +169,7 @@ public class DBManager {
     }
     
     private static boolean tableAlreadyExists(String tableName) throws SQLException {
-        DatabaseMetaData meta = connection.getMetaData();
+        DatabaseMetaData meta = getConnection().getMetaData();
         ResultSet resultSet = meta.getTables(null, null, tableName, new String[] {"TABLE"});
 
         return resultSet.next();
