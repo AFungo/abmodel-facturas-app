@@ -175,8 +175,8 @@ public class View extends javax.swing.JFrame {
         ticketsTableScroll.setViewportView(ticketsTable);
         ticketsTable.setAutoCreateRowSorter(true);
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
-        List<Withholding> tickets = controller.getTickets();
-        tickets.addAll(controller.getWithholdings());
+        List<Withholding> tickets = controller.getWithholdings();
+        tickets.addAll(controller.getTickets());
         for (Withholding t : tickets) {
             if(t instanceof Ticket){
                 if(!((Ticket)t).isIncome()){
@@ -471,8 +471,8 @@ public class View extends javax.swing.JFrame {
 
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
-                List<Withholding> tickets = controller.getTickets();
-        tickets.addAll(controller.getWithholdings());
+        List<Withholding> tickets = controller.getWithholdings();
+        tickets.addAll(controller.getTickets());
 
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);

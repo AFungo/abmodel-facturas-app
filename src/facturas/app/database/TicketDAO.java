@@ -40,21 +40,21 @@ public class TicketDAO extends DAO {
         executeQuery(query, true, true);
     }
         
-    public static List<Withholding> getTickets() {
+    public static List<Ticket> getTickets() {
         String query = "SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id";
         ResultSet result = executeQuery(query, false, true);
-        List<Withholding> ticketsList = getTicketsList(result);
+        List<Ticket> ticketsList = getTicketsList(result);
         return ticketsList;
     }
     
-    public static List<Withholding> getTickets(SQLFilter filters) {
+    public static List<Ticket> getTickets(SQLFilter filters) {
         if (filters == null) {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
         
         String query = "SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id " + filters.get();
         ResultSet result = executeQuery(query, false, true);
-        List<Withholding> ticketsList = getTicketsList(result);
+        List<Ticket> ticketsList = getTicketsList(result);
         return ticketsList;
     }
 
@@ -68,8 +68,8 @@ public class TicketDAO extends DAO {
         executeQuery(query, true, true);
     }
     
-    private static List<Withholding> getTicketsList(ResultSet result) {
-        List<Withholding> ticketsList = new LinkedList<>();
+    private static List<Ticket> getTicketsList(ResultSet result) {
+        List<Ticket> ticketsList = new LinkedList<>();
         try {
             while(result.next()) {
                 Map<String, String> ticketAttributes = new HashMap<>();

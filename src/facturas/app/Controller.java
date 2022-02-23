@@ -204,7 +204,7 @@ public class Controller {
     }
     
     public PricesList getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
-        List<Withholding> tickets = getTickets(ticketsFilters);
+        List<Ticket> tickets = getTickets(ticketsFilters);
         List<Withholding> withholdings = getWithholdings(withholdingsFilters);
         //load tickets
         PricesList pricesList = new PricesList(inDollars);
@@ -225,7 +225,7 @@ public class Controller {
         createTicketOnDB(ticket);
     }
     
-    public List<Withholding> getTickets() {
+    public List<Ticket> getTickets() {
         return TicketDAO.getTickets();
     }
 
@@ -233,7 +233,7 @@ public class Controller {
         return WithholdingDAO.getWithholdings();
     }
 
-    public List<Withholding> getTickets(SQLFilter filters) {
+    public List<Ticket> getTickets(SQLFilter filters) {
         if (filters.isEmpty()) return getTickets();
         else return TicketDAO.getTickets(filters);            
     }
