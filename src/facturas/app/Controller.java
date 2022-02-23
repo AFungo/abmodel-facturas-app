@@ -224,17 +224,9 @@ public class Controller {
         Ticket ticket = new Ticket(FormatUtils.ticketCsvToDict(ticketData, issuedByMe));
         createTicketOnDB(ticket);
     }
-    
-    public List<Ticket> getTickets() {
-        return TicketDAO.getTickets();
-    }
-
-    public List<Withholding> getWithholdings() {
-        return WithholdingDAO.getWithholdings();
-    }
 
     public List<Ticket> getTickets(SQLFilter filters) {
-        if (filters.isEmpty()) return getTickets();
+        if (filters.isEmpty()) return TicketDAO.getTickets();
         else return TicketDAO.getTickets(filters);            
     }
 

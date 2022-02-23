@@ -138,11 +138,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Rubro");
 
-        typeComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typeComboBoxActionPerformed(evt);
-            }
-        });
         typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Retencion Iva", "Retencion Ganancias" }));
         typeComboBox.setSelectedIndex(-1);
 
@@ -171,11 +166,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
         showLastDateTextField.setEditable(false);
         showLastDateTextField.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        showLastDateTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showLastDateTextFieldActionPerformed(evt);
-            }
-        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Fecha");
@@ -420,17 +410,9 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
 
-    private void typeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeComboBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_typeComboBoxActionPerformed
-
     private void addProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderButtonActionPerformed
         providerLoader.setVisible(true);
     }//GEN-LAST:event_addProviderButtonActionPerformed
-
-    private void showLastDateTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLastDateTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_showLastDateTextFieldActionPerformed
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[]{numberTextField, totalAmountTextField};
         controller.cleanTextField(forClean);

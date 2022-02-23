@@ -7,7 +7,6 @@ package facturas.app.database;
 
 import facturas.app.Controller;
 import facturas.app.models.Ticket;
-import facturas.app.models.Withholding;
 import facturas.app.models.Provider;
 import facturas.app.utils.Pair;
 import facturas.app.utils.FormatUtils;
