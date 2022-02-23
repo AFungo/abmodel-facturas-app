@@ -260,26 +260,6 @@ public class Controller {
         return new Ticket(values);
     }
     
-
-    private Pair<Date,String> getDayPrice(Withholding t) {
-        Date ticketDate = (Date)t.getValues().get("date");
-        DollarPrice price = DollarPriceDAO.getPrice(ticketDate);
-        if (price == null) {
-            price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
-        }
-        t.addDollarPrice(price);
-        
-        long limit = 86400000 * (daysLimit + 1);
-        long currentTime = ticketDate.getTime();
-        long nearestTime = price.getDate().getTime();
-        long timeDiference = Math.abs(nearestTime - currentTime);
-        if (timeDiference >= limit) {
-            //System.out.println("Dollar price is too far away from the limit by " + (timeDiference / 86400000) + " days");
-            return new Pair<Date,String> (ticketDate, Long.toString(timeDiference / 86400000));
-        }
-        return null;
-    }
-
     public void resetDB(){
             DBManager.deleteDB();
             DBManager.initializeDB();

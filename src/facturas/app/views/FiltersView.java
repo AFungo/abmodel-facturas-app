@@ -462,9 +462,6 @@ public class FiltersView extends javax.swing.JFrame {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
     }
-    private String[] getTicketTypes(){
-        return FixedData.getTicketTypes();
-    }
     
     private Controller controller;
     private JTable ticketsTable;
