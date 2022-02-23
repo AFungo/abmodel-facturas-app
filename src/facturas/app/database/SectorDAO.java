@@ -29,7 +29,8 @@ public class SectorDAO extends DAO {
     }
     
     public static boolean sectorExist(String name) {
-        ResultSet result = executeQuery("SELECT * FROM Sector WHERE name = '" + name + "'", false, true);
+        String query = "SELECT * FROM Sector WHERE name = '" + name + "'";
+        ResultSet result = executeQuery(query, false, true);
         try {
             return result.next();
         } catch (SQLException e) {
