@@ -666,6 +666,10 @@ public class View extends javax.swing.JFrame {
         withholdingLoaderView.updateProviders(names);
     }
     
+    public void showError(Throwable e) {
+        optionPane.showMessageDialog(null, "Ocurrio un error inesperado", "Error", optionPane.ERROR_MESSAGE);
+    }
+    
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
