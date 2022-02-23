@@ -9,7 +9,6 @@ import facturas.app.views.View;
 import facturas.app.database.DBManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 /**
  *
  * @author Agustin
@@ -22,8 +21,9 @@ public class FacturasApp {
     public static void main(String[] args) {
         DBManager.createConnection();
         DBManager.initializeDB();
-        
         View view = new View(new Controller());
+        Handler globalExceptionHandler = new Handler(view);
+        Thread.setDefaultUncaughtExceptionHandler(globalExceptionHandler);
         view.setVisible(true);
         
         view.addWindowListener(new WindowAdapter() {
