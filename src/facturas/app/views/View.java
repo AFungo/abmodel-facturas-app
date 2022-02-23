@@ -669,7 +669,7 @@ public class View extends javax.swing.JFrame {
     }
     
     public void showError(Throwable e) {
-        optionPane.showMessageDialog(null, "Ocurrio un error inesperado", "Error", optionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado", "Error", JOptionPane.ERROR_MESSAGE);
     }
     
     private void cleanTable(DefaultTableModel model) {
