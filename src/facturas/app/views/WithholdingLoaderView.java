@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -69,7 +70,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        invalidParamDialog = new javax.swing.JOptionPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -375,8 +375,8 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         String errorMessage = controller.validateParam(dateDateChooser.getDate(), values, false, 
                 sectorsComboBox, providerCheck);
         if (errorMessage != null) {
-            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", 
-                    invalidParamDialog.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, errorMessage, "Los siguientes datos son invalidos", 
+                    JOptionPane.ERROR_MESSAGE);
             return ;
         }
         
@@ -446,7 +446,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dateDateChooser;
     private javax.swing.JCheckBox deliveredCheckBox;
     private javax.swing.JComboBox<String> docNoComboBox;
-    private javax.swing.JOptionPane invalidParamDialog;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel16;

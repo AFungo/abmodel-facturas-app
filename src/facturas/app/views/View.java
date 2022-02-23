@@ -441,7 +441,7 @@ public class View extends javax.swing.JFrame {
         try {
             pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
         } catch (IllegalStateException e) {
-            JOptionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
+            JOptionPane.showMessageDialog(this, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
                 "Error", JOptionPane.ERROR_MESSAGE);
             return ;
         }
@@ -451,7 +451,7 @@ public class View extends javax.swing.JFrame {
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = controller.createMissingPricesTable(missingPrices);
             int daysLimit = controller.getDaysLimit();
-            JOptionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
+            JOptionPane.showMessageDialog(this, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
                 " dias para redondear el dolar", JOptionPane.WARNING_MESSAGE);
         }
@@ -555,7 +555,7 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_ticketsTableMouseReleased
 
     private void sectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorMenuItemActionPerformed
-        int selection = JOptionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
+        int selection = JOptionPane.showConfirmDialog(this, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
@@ -620,7 +620,7 @@ public class View extends javax.swing.JFrame {
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
         JTable toDelete = createToDeleteTable(row);
-        int selection = JOptionPane.showConfirmDialog(null, new JScrollPane(toDelete), "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
+        int selection = JOptionPane.showConfirmDialog(this, new JScrollPane(toDelete), "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             String type = (String)ticketsTable.getValueAt(row, 2);
@@ -669,7 +669,7 @@ public class View extends javax.swing.JFrame {
     }
     
     public void showError(Throwable e) {
-        JOptionPane.showMessageDialog(null, "Ocurrio un error inesperado", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado", "Error", JOptionPane.ERROR_MESSAGE);
     }
     
     private void cleanTable(DefaultTableModel model) {

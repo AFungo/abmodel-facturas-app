@@ -121,7 +121,7 @@ public class SectorsView extends javax.swing.JFrame {
             updateSuggestions();
             sectorsAutoSuggestor.setText("");
         } else {
-            JOptionPane.showMessageDialog(null, "El rubro ingresado es vacio o ya existe",
+            JOptionPane.showMessageDialog(this, "El rubro ingresado es vacio o ya existe",
                     "Rubto invalido", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_addSectorActionPerformed
@@ -142,7 +142,7 @@ public class SectorsView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteSectorActionPerformed
 
     private void updateSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateSectorActionPerformed
-        String userInput = JOptionPane.showInputDialog(null, "Nuevo nombre: ", "");
+        String userInput = JOptionPane.showInputDialog(this, "Nuevo nombre: ", "");
         if (userInput != null && sectorsAutoSuggestor.getText() != null) {
             SQLFilter filter = new SQLFilter();
             filter.add("sector", "=", sectorsAutoSuggestor.getText(), String.class);

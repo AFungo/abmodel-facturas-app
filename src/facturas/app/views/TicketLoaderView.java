@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -74,7 +75,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        invalidParamDialog = new javax.swing.JOptionPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -276,9 +276,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addComponent(addProviderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(docNoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(docNoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -539,8 +540,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
         String errorMessage = controller.validateParam(dateDateChooser.getDate(), values, true, 
                 sectorsComboBox, providersCheck);
         if (errorMessage != null) {
-            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", 
-                    invalidParamDialog.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, errorMessage, "Los siguientes datos son invalidos", 
+                    JOptionPane.ERROR_MESSAGE);
             return ;
         }
         
@@ -644,7 +645,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> docNoComboBox;
     private javax.swing.JComboBox<String> exchangeMoneyComboBox;
     private javax.swing.JTextField exchangeTypeTextField;
-    private javax.swing.JOptionPane invalidParamDialog;
     private javax.swing.JCheckBox issuedByMeCheckBox;
     private javax.swing.JTextField ivaTextField;
     private javax.swing.JTextField ivaTextField1;

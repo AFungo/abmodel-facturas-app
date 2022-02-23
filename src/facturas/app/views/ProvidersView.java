@@ -22,7 +22,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.io.FilenameUtils;
 
@@ -257,14 +256,14 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_providersTableMousePressed
 
     private void aliasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aliasMenuItemActionPerformed
-        String userInput = JOptionPane.showInputDialog(null, "alias: ", "");
+        String userInput = JOptionPane.showInputDialog(this, "alias: ", "");
         if (userInput != null) {
             updateAttribute("alias", userInput, 2); //column 2 is for alias
         }
     }//GEN-LAST:event_aliasMenuItemActionPerformed
 
     private void sectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorMenuItemActionPerformed
-        int selection = JOptionPane.showConfirmDialog(null, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
+        int selection = JOptionPane.showConfirmDialog(this, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             String sector = (String)sectorComboBox.getSelectedItem();
             updateAttribute("sector", sector, 5);   //column 5 is for sector
@@ -272,7 +271,7 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
     private void directionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionMenuItemActionPerformed
-        String userInput = JOptionPane.showInputDialog(null, "Dirección: ", "");
+        String userInput = JOptionPane.showInputDialog(this, "Dirección: ", "");
         if (userInput != null) {
             updateAttribute("direction", userInput, 4); //column 4 is for direction
         }

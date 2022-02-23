@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -55,7 +56,6 @@ public class ProviderLoader extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        invalidParamDialog = new javax.swing.JOptionPane();
         jLabel1 = new javax.swing.JLabel();
         providerAddressTextField = new javax.swing.JTextField();
         providerDocTypeComboBox = new javax.swing.JComboBox<>();
@@ -185,7 +185,8 @@ public class ProviderLoader extends javax.swing.JFrame {
 
         String errorMessage = controller.validateProviderParam(values, sectorsComboBox);
         if (errorMessage != null) {
-            invalidParamDialog.showMessageDialog(null, errorMessage, "Los siguientes datos son invalidos", invalidParamDialog.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, errorMessage, 
+                    "Los siguientes datos son invalidos", JOptionPane.ERROR_MESSAGE);
             return ;
         }
         
@@ -208,7 +209,6 @@ public class ProviderLoader extends javax.swing.JFrame {
     AutoSuggestor providersAutoSuggestor;        
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addProviderButton;
-    private javax.swing.JOptionPane invalidParamDialog;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
