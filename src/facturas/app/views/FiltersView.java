@@ -333,8 +333,8 @@ public class FiltersView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
-        List<Withholding> tickets = controller.getTickets(getFilters(true));
-        tickets.addAll(controller.getWithholdings(getFilters(false)));
+        List<Withholding> tickets = controller.getWithholdings(getFilters(false));
+        tickets.addAll(controller.getTickets(getFilters(true)));
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
