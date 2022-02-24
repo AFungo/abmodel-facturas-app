@@ -5,10 +5,13 @@
  */
 package facturas.app;
 
-import com.itextpdf.text.log.LoggerFactory;
 import facturas.app.views.View;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.XMLFormatter;
 import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 
 /**
@@ -17,18 +20,30 @@ import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolation
  */
 class Handler implements Thread.UncaughtExceptionHandler {
 
-    private static com.itextpdf.text.log.Logger LOGGER = LoggerFactory.getLogger(Handler.class);
+    private static Logger logger = Logger.getLogger(Handler.class.getName());
     private static View view;
     
     public Handler(View view) {
         this.view = view;
+        initializeLogger();
+    }
+    
+    private void initializeLogger() {
+        try {
+            FileHandler fileHandler = new FileHandler("./log", 2000, 5);
+            fileHandler.setFormatter(new XMLFormatter());
+            logger.addHandler(fileHandler);
+            
+        } catch (SecurityException | IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public void uncaughtException(Thread t, Throwable e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
-        LOGGER.info(sw.toString());
+        logger.info(sw.toString());
         
         if (e instanceof DerbySQLIntegrityConstraintViolationException) {
             view.showError(e, "El item que se intento cargar ya estaba cargado");
