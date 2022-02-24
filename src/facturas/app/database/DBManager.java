@@ -32,10 +32,14 @@ public class DBManager {
         }
     }
     
-    public static Connection getConnection() {
+    private static void checkConnection() {
         if (connection == null) {
             throw new IllegalStateException("the connection was not established");
         }
+    }
+    
+    public static Connection getConnection() {
+        checkConnection();
         return connection;
     }
     
@@ -65,7 +69,9 @@ public class DBManager {
         try {
             if (tableAlreadyExists(tableName.toUpperCase()))
                 return false;
-            Statement stm = getConnection().createStatement();
+            
+            checkConnection();
+            Statement stm = connection.createStatement();
             
             String tableQuery = getTableQuery(tableName);
 
@@ -158,7 +164,9 @@ public class DBManager {
             if (!tableAlreadyExists(table.toUpperCase())) {
                 return false;
             }
-            Statement stm = getConnection().createStatement();
+            
+            checkConnection();
+            Statement stm = connection.createStatement();
 
             String tableDollarPrice = "DROP TABLE " + table;
             stm.executeUpdate(tableDollarPrice);
@@ -169,7 +177,8 @@ public class DBManager {
     }
     
     private static boolean tableAlreadyExists(String tableName) throws SQLException {
-        DatabaseMetaData meta = getConnection().getMetaData();
+        checkConnection();
+        DatabaseMetaData meta = connection.getMetaData();
         ResultSet resultSet = meta.getTables(null, null, tableName, new String[] {"TABLE"});
 
         return resultSet.next();
