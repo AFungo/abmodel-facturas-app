@@ -18,7 +18,7 @@ import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolation
  *
  * @author nacho
  */
-public class Handler implements Thread.UncaughtExceptionHandler {
+public  class Handler implements Thread.UncaughtExceptionHandler {
 
     private static Logger logger = Logger.getLogger(Handler.class.getName());
     private static View view;
