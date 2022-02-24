@@ -45,12 +45,14 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
         if (e instanceof DerbySQLIntegrityConstraintViolationException) {
             view.showError(e, "El item que se intento cargar ya estaba cargado");
         } else if (e instanceof IllegalArgumentException) {
-            if (e.getMessage().contains("File does not have a valid format to be loaded")) {
+            String msg = e.getMessage();
+            if (msg.contains("File does not have a valid format to be loaded")) {
                 view.showError(e, "El archivo no tiene un formato valido para cargarse");
-            } else if (e.getMessage().contains("provider doesn't exists")) {
+            } else if (msg.contains("provider doesn't exists")) {
                 view.showError(e, "El proveedor elegido no existe");
-            } else if (e.getMessage().contains("sector doesn't exists")) {
+            } else if (msg.contains("sector doesn't exists")) {
                 view.showError(e, "El rubro elegido no existe");
+            } else if (msg.contains("File is null")) { //we just want to do nothing
             }
         } else {
             view.showError(e, "Ocurrio un error inesperado");
