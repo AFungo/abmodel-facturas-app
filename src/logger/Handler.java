@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.logging.FileHandler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.XMLFormatter;
 import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 
 /**
@@ -22,6 +22,14 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
 
     private static Logger logger = Logger.getLogger(Handler.class.getName());
     private static View view;
+    private static FileHandler fileHandler;
+    static {
+            try {
+                fileHandler = new FileHandler("./log", 0, 1, true);
+            } catch (IOException | SecurityException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
     
     public Handler(View view) {
         this.view = view;
@@ -29,22 +37,11 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
     }
     
     private void initializeLogger() {
-        try {
-            FileHandler fileHandler = new FileHandler("./log", 2000, 5);
-            fileHandler.setFormatter(new FacturasFormatter());
-            logger.addHandler(fileHandler);
-            
-        } catch (SecurityException | IOException e) {
-            e.printStackTrace();
-        }
+        fileHandler.setFormatter(new FacturasFormatter());
+        logger.addHandler(fileHandler);
     }
     
     public void uncaughtException(Thread t, Throwable e) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        logger.info(sw.toString());
-        
         if (e instanceof DerbySQLIntegrityConstraintViolationException) {
             view.showError(e, "El item que se intento cargar ya estaba cargado");
         } else if (e instanceof IllegalArgumentException) {
@@ -57,6 +54,10 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
             }
         } else {
             view.showError(e, "Ocurrio un error inesperado");
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            logger.info(sw.toString());
         }
     }
 }
