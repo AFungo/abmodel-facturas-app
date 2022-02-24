@@ -5,6 +5,7 @@
  */
 package facturas.app;
 
+import logger.Handler;
 import facturas.app.views.View;
 import facturas.app.database.DBManager;
 import java.awt.event.WindowAdapter;

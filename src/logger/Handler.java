@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package facturas.app;
+package logger;
 
 import facturas.app.views.View;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolation
  *
  * @author nacho
  */
-class Handler implements Thread.UncaughtExceptionHandler {
+public class Handler implements Thread.UncaughtExceptionHandler {
 
     private static Logger logger = Logger.getLogger(Handler.class.getName());
     private static View view;
@@ -31,7 +31,7 @@ class Handler implements Thread.UncaughtExceptionHandler {
     private void initializeLogger() {
         try {
             FileHandler fileHandler = new FileHandler("./log", 2000, 5);
-            fileHandler.setFormatter(new XMLFormatter());
+            fileHandler.setFormatter(new FacturasFormatter());
             logger.addHandler(fileHandler);
             
         } catch (SecurityException | IOException e) {
