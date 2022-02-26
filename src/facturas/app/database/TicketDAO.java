@@ -74,10 +74,9 @@ public class TicketDAO extends DAO {
                 Map<String, String> ticketAttributes = new HashMap<>();
                 ticketAttributes.put("id", result.getString(1));
                 ticketAttributes.put("date", result.getString(2));
-                ticketAttributes.put("type", result.getString(3));
-                ticketAttributes.put("number", result.getString(4));
+                ticketAttributes.put("number", result.getString(3));
                 //provider
-                Map<String, String> prov = ProviderDAO.getProvider(result.getString(5)).getValues();
+                Map<String, String> prov = ProviderDAO.getProvider(result.getString(4)).getValues();
                 ticketAttributes.put("docType", prov.get("docType"));
                 ticketAttributes.put("docNo", prov.get("docNo"));
                 ticketAttributes.put("name", prov.get("name"));
@@ -85,18 +84,22 @@ public class TicketDAO extends DAO {
                 ticketAttributes.put("provSector", prov.get("sector"));
                 ticketAttributes.put("alias", prov.get("alias"));
                 
-                ticketAttributes.put("delivered", result.getString(6));
-                ticketAttributes.put("totalAmount", result.getString(7));
-                ticketAttributes.put("sector", result.getString(8));    //9 is ticket id
-                if (result.getString(10) != null) ticketAttributes.put("numberTo", result.getString(10));
-                ticketAttributes.put("authCode", result.getString(11));
-                ticketAttributes.put("exchangeType", result.getString(12));
-                ticketAttributes.put("exchangeMoney", result.getString(13));
-                if (result.getString(14) != null) ticketAttributes.put("netAmountWI", result.getString(14));
-                if (result.getString(15) != null) ticketAttributes.put("netAmountWOI", result.getString(15));
-                if (result.getString(16) != null) ticketAttributes.put("amountImpEx", result.getString(16));
-                if (result.getString(17) != null) ticketAttributes.put("iva", result.getString(17));
-                ticketAttributes.put("issuedByMe", result.getString(18));
+                ticketAttributes.put("iva", result.getString(5));
+                ticketAttributes.put("profits", result.getString(6));
+                ticketAttributes.put("delivered", result.getString(7));
+                ticketAttributes.put("sector", result.getString(8));
+                //9 is ticket id
+                ticketAttributes.put("type", result.getString(10));
+                if (result.getString(11) != null) ticketAttributes.put("numberTo", result.getString(10));
+                ticketAttributes.put("authCode", result.getString(12));
+                ticketAttributes.put("exchangeType", result.getString(13));
+                ticketAttributes.put("exchangeMoney", result.getString(14));
+                if (result.getString(15) != null) ticketAttributes.put("netAmountWI", result.getString(15));
+                if (result.getString(16) != null) ticketAttributes.put("netAmountWOI", result.getString(16));
+                if (result.getString(17) != null) ticketAttributes.put("amountImpEx", result.getString(17));
+                if (result.getString(18) != null) ticketAttributes.put("ivaTax", result.getString(18));
+                ticketAttributes.put("totalAmount", result.getString(19));
+                ticketAttributes.put("issuedByMe", result.getString(20));
                 ticketsList.add(new Ticket(ticketAttributes));
             }
         } catch (SQLException ex) {
