@@ -26,11 +26,11 @@ public class FormatUtils {
      public static Pair<String, String> ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
-        attributes += "id, exchangeType, exchangeMoney, issuedByMe";
+        attributes += "id, exchangeType, exchangeMoney, issuedByMe, type, totalAmount";
         values += dict.get("id") + ", " + dict.get("exchangeType") + ", '" + dict.get("exchangeMoney") 
-                + "', " + dict.get("issuedByMe");
+                + "', " + dict.get("issuedByMe") + ", '" + dict.get("type") + "', " + dict.get("totalAmount");
 
-        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"iva", "netAmountWI", 
+        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"ivaTax", "netAmountWI", 
             "netAmountWOI", "numberTo", "amountImpEx"}, new String[] {"authCode"});
         attributes += optionals.getFst();
         values += optionals.getSnd();
@@ -53,7 +53,7 @@ public class FormatUtils {
         
         Object[] values = {dict.get("id"), dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
             ((Provider)dict.get("provider")).getValues().get("docNo"), provider.getValues().get("name"), dict.get("exchangeType"), dict.get("netAmountWI"), 
-            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("iva"), dict.get("totalAmount"), sector, 
+            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("ivaTax"), dict.get("totalAmount"), sector, 
             buyNSell, delivered ? "SI" : "NO"};
 
         return values;
@@ -81,7 +81,7 @@ public class FormatUtils {
         String amountImpExVar = data[13];
         if (!amountImpExVar.isEmpty()) dict.put("amountImpEx", amountImpExVar);
         String ivaVar = data[14];
-        if (!ivaVar.isEmpty()) dict.put("iva", ivaVar);
+        if (!ivaVar.isEmpty()) dict.put("ivaTax", ivaVar);
         dict.put("totalAmount", data[15]);
         dict.put("issuedByMe", issuedByMe ? "true" : "false");
         
@@ -91,11 +91,11 @@ public class FormatUtils {
     public static Pair<String, String> withholdingToSQL(Withholding w) { 
         Map<String, Object> dict = w.getValues();
         String attributes = "", values = "";
-        attributes += "number, totalAmount, date, type, providerDoc";
-        values += "'" + dict.get("number") + "', " + dict.get("totalAmount") + ", '" + ((Date)dict.get("date")).toString() + "', '" 
-        + dict.get("type") + "', '" + ((Provider)dict.get("provider")).getValues().get("docNo") + "'";
+        attributes += "number, date, providerDoc";
+        values += "'" + dict.get("number") + "', '" + ((Date)dict.get("date")).toString() + "', '" 
+                + ((Provider)dict.get("provider")).getValues().get("docNo") + "'";
 
-        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"delivered"}, new String[] {"sector"});
+        Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"delivered", "iva", "profits"}, new String[] {"sector"});
         attributes += optionals.getFst();
         values += optionals.getSnd();
 
@@ -111,12 +111,44 @@ public class FormatUtils {
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         
-        Object[] values = {dict.get("id"), dict.get("date"), dict.get("type"), dict.get("number"), null, null, provider.getValues().get("docNo"), 
-        provider.getValues().get("name"), null, null, null, null, null, dict.get("totalAmount"), sector, null, delivered ? "SI" : "NO"};
+        //so we should check if iva and/or profits have a value and then return the type properly, if both present we should make 2 rows
+        Object[] values = {dict.get("id"), dict.get("date"), null, dict.get("number"), null, null, provider.getValues().get("docNo"), 
+        provider.getValues().get("name"), null, null, null, null, null, null, sector, null, delivered ? "SI" : "NO"};
         //null values are necessary so the array fits in the table of the view
         return values;
     }
 
+    public Pair<Object[],Object[]> retrieveInternalWithholdings(Withholding w) {
+        Map<String, Object> dict = w.getValues();
+        Provider provider = (Provider)dict.get("provider");
+        String sector = (String)dict.get("sector");
+        if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
+            sector = provider.getValues().get("provSector");
+        }
+        Boolean delivered = (Boolean) (dict.get("delivered"));
+        
+        Pair<Object[],Object[]> values = new Pair();
+        Object iva = dict.get("iva");
+        if (iva != null && (Float) iva != 0.0f) {
+            Object[] ivaWithholding = {dict.get("id"), dict.get("date"), "Retencion Iva", dict.get("number"), null, null, 
+                provider.getValues().get("docNo"), provider.getValues().get("name"), null, null, null, null, null, null, sector, iva, 
+                delivered ? "SI" : "NO"};
+            
+            values.setFst(ivaWithholding);
+        }
+        
+        Object profits = dict.get("profits");
+        if (profits != null && (Float) profits != 0.0f) {
+            Object[] profitsWithholding = {dict.get("id"), dict.get("date"), "Retencion Ganancias", dict.get("number"), null, 
+                null, provider.getValues().get("docNo"), provider.getValues().get("name"), null, null, null, null, null, null, sector, 
+                profits, delivered ? "SI" : "NO"};
+            
+            values.setSnd(profitsWithholding);
+        }
+        //null values are necessary so the array fits in the table of the view
+        return values;
+    }
+    
     public static Map<String, String> dollarPriceCsvToDict(String priceStr) {
         String[ ] data = priceStr.replace(",", ".").split(";");
         Map<String, String> dict = new HashMap<>();
