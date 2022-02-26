@@ -118,7 +118,7 @@ public class FormatUtils {
         return values;
     }
 
-    public Pair<Object[],Object[]> retrieveInternalWithholdings(Withholding w) {
+    public Pair<Object[],Object[]> retrieveInternalWithholdingsToForm(Withholding w) {
         Map<String, Object> dict = w.getValues();
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
