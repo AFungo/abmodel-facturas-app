@@ -137,7 +137,7 @@ public class Controller {
             invalidations += "<br/>El rubro del comprobante no existe";
         }
         
-        if (values.get("type") == null || values.get("type").isEmpty()) {
+        if (ticket && (values.get("type") == null || values.get("type").isEmpty())) {
             invalidations += "<br/>No se especifico el tipo de comprobante";
         }
         
@@ -147,6 +147,17 @@ public class Controller {
         
         boolean[] numerics = FormatUtils.validTicketInput(values, ticket);
         invalidations += addInvalidNumerics(numerics, ticket);
+        
+        if (!invalidations.isEmpty()) {
+            invalidations += "</html>";
+            return message + invalidations;
+        }
+        
+        String iva = values.get("iva"), profits = values.get("profits");
+        if ((!ticket) && (iva.isEmpty() || Float.valueOf(iva) == 0) && 
+                (profits.isEmpty() || Float.valueOf(profits) == 0)) {
+            invalidations += "<br/>No se introdujo ningun ningun importe en la retencion";
+        }
         
         if (invalidations.isEmpty()) {
             SQLFilter filter = new SQLFilter();
@@ -177,7 +188,9 @@ public class Controller {
         if (!numerics[i++])
             invalidations += "<br/>Numero de ticket mal escrito";
         if (!numerics[i++])
-            invalidations += "<br/>Importe total mal escrito";
+            invalidations += "<br/>retencion iva mal escrito";
+        if (!numerics[i++])
+            invalidations += "<br/>retencion ganancias mal escrito";
         if (!ticket) //case of withholding
             return invalidations;
         //otherwise check for ticket inputs
@@ -191,6 +204,8 @@ public class Controller {
             invalidations += "<br/>Importe neto gravado mal escrito";
         if (!numerics[i++])
             invalidations += "<br/>Importe neto no gravado mal escrito";
+        if (!numerics[i++])
+            invalidations += "<br/>Importe total mal escrito";
         
         return invalidations;
     }

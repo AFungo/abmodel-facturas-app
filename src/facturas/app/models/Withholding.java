@@ -30,8 +30,10 @@ public class Withholding {
         number = data.get("number");
         provider = new Provider(data);
         sector = data.get("sector");
-        if (data.get("iva") != null) iva = Float.parseFloat(data.get("iva"));
-        if (data.get("profits") != null) profits = Float.parseFloat(data.get("profits"));
+        String iva = data.get("iva");
+        if (iva != null && !iva.isEmpty()) this.iva = Float.parseFloat(iva);
+        String profits = data.get("profits");
+        if (profits != null && !profits.isEmpty()) this.profits = Float.parseFloat(profits);
         if (data.get("id") != null) id = Integer.parseInt(data.get("id"));
         if (data.get("delivered") != null) delivered = Boolean.valueOf(data.get("delivered"));
     }

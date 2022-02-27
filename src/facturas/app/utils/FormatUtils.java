@@ -131,8 +131,8 @@ public class FormatUtils {
         Object iva = dict.get("iva");
         if (iva != null && (Float) iva != 0.0f) {
             Object[] ivaWithholding = {dict.get("id"), dict.get("date"), "Retencion Iva", dict.get("number"), null, null, 
-                provider.getValues().get("docNo"), provider.getValues().get("name"), null, null, null, null, null, null, sector, iva, 
-                delivered ? "SI" : "NO"};
+                provider.getValues().get("docNo"), provider.getValues().get("name"), null, null, null, null, null, iva, sector,
+                null, delivered ? "SI" : "NO"};
             
             values.setFst(ivaWithholding);
         }
@@ -140,8 +140,8 @@ public class FormatUtils {
         Object profits = dict.get("profits");
         if (profits != null && (Float) profits != 0.0f) {
             Object[] profitsWithholding = {dict.get("id"), dict.get("date"), "Retencion Ganancias", dict.get("number"), null, 
-                null, provider.getValues().get("docNo"), provider.getValues().get("name"), null, null, null, null, null, null, sector, 
-                profits, delivered ? "SI" : "NO"};
+                null, provider.getValues().get("docNo"), provider.getValues().get("name"), null, null, null, null, null, profits,
+                sector, null, delivered ? "SI" : "NO"};
             
             values.setSnd(profitsWithholding);
         }
@@ -245,21 +245,23 @@ public class FormatUtils {
     public static boolean[] validTicketInput(Map<String, String> values, boolean ticket) {
         boolean[] validations;
         if (ticket) 
-            validations = new boolean[9];
+            validations = new boolean[11];
         else
-            validations = new boolean[2];
+            validations = new boolean[3];
         
         int i = 0;
         validations[i++] = tryParse(values.get("number"), "Integer");
-        validations[i++] = tryParse(values.get("totalAmount"), "Float");
+        validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), "Float");
+        validations[i++] = values.get("profits").isEmpty() ? true : tryParse(values.get("profits"), "Float");
         if (ticket) {
             validations[i++] = values.get("amountImpEx").isEmpty() ? true : tryParse(values.get("amountImpEx"), "Float");
             validations[i++] = values.get("exchangeType").isEmpty() ? true : tryParse(values.get("exchangeType"), "Float");
-            validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), "Float");
+            validations[i++] = values.get("ivaTax").isEmpty() ? true : tryParse(values.get("ivaTax"), "Float");
             validations[i++] = values.get("iva1").isEmpty() ? true : tryParse(values.get("iva1"), "Float");
             validations[i++] = values.get("iva2").isEmpty() ? true : tryParse(values.get("iva2"), "Float");
             validations[i++] = values.get("netAmountWI").isEmpty() ? true : tryParse(values.get("netAmountWI"), "Float");
             validations[i++] = values.get("netAmountWOI").isEmpty() ? true : tryParse(values.get("netAmountWOI"), "Float");
+            validations[i++] = tryParse(values.get("totalAmount"), "Float");
         }
 
         return validations;
