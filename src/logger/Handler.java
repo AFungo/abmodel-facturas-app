@@ -53,13 +53,19 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
             } else if (msg.contains("sector doesn't exists")) {
                 view.showError(e, "El rubro elegido no existe");
             } else if (msg.contains("File is null")) { //we just want to do nothing
+            } else {
+                unexpectedError(e);
             }
         } else {
-            view.showError(e, "Ocurrio un error inesperado");
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            logger.info(sw.toString());
+            unexpectedError(e);
         }
+    }
+    
+    private void unexpectedError(Throwable e) {
+        view.showError(e, "Ocurrio un error inesperado");
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        logger.info(sw.toString());
     }
 }
