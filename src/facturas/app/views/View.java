@@ -174,19 +174,7 @@ public class View extends javax.swing.JFrame {
         });
         ticketsTableScroll.setViewportView(ticketsTable);
         ticketsTable.setAutoCreateRowSorter(true);
-        DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
-        SQLFilter filter = new SQLFilter();
-        List<Withholding> tickets = controller.getWithholdings(filter);
-        tickets.addAll(controller.getTickets(filter));
-        for (Withholding t : tickets) {
-            if(t instanceof Ticket){
-                if(!((Ticket)t).isIncome()){
-                    t = controller.makeNegative((Ticket) t);
-                }
-            }
-
-            model.addRow(facturas.app.utils.FormatUtils.ticketToForm(t));
-        }
+        loadTicketsInTable();
 
         ticketsTable.setCellSelectionEnabled(true);
         ticketsTable.setVisible(true);
@@ -472,20 +460,7 @@ public class View extends javax.swing.JFrame {
 
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        SQLFilter filter = new SQLFilter();
-        List<Withholding> tickets = controller.getWithholdings(filter);
-        tickets.addAll(controller.getTickets(filter));
-
-        DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
-        cleanTable(model);
-        for (Withholding t : tickets) {
-            if(t instanceof Ticket){
-                if(!((Ticket)t).isIncome()){
-                    t = controller.makeNegative((Ticket) t);
-                }
-            }
-            model.addRow(FormatUtils.ticketToForm(t));
-        }
+        loadTicketsInTable();
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
@@ -670,6 +645,31 @@ public class View extends javax.swing.JFrame {
     
     public void showError(Throwable e, String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    private void loadTicketsInTable() {
+        SQLFilter filter = new SQLFilter();
+        List<Withholding> tickets = controller.getWithholdings(filter);
+        tickets.addAll(controller.getTickets(filter));
+
+        DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
+        cleanTable(model);
+        for (Withholding t : tickets) {
+            if(t instanceof Ticket){
+                if(!((Ticket)t).isIncome()){
+                    t = controller.makeNegative((Ticket) t);
+                }
+                model.addRow(FormatUtils.ticketToForm(t));
+            } else {
+                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingsToForm(t);
+                if (withholdings.getFst() != null) {
+                    model.addRow(withholdings.getFst());
+                }
+                if (withholdings.getSnd() != null) {
+                    model.addRow(withholdings.getSnd());
+                }
+            }
+        }
     }
     
     private void cleanTable(DefaultTableModel model) {
