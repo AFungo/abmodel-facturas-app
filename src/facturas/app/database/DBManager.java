@@ -96,9 +96,10 @@ public class DBManager {
                                             + "ON DELETE SET NULL"
                                             + ")";
                                             break;
-            
+
             case "Ticket": query = "CREATE TABLE Ticket ("
                                         + "id INTEGER,"
+                                        + "type VARCHAR(50) NOT NULL,"
                                         + "numberTo INTEGER," //
                                         + "authCode VARCHAR(30)," //
                                         + "exchangeType REAL NOT NULL," //
@@ -106,7 +107,8 @@ public class DBManager {
                                         + "netAmountWI REAL," //
                                         + "netAmountWOI REAL," //
                                         + "amountImpEx REAL,"
-                                        + "iva REAL," //
+                                        + "ivaTax REAL," //
+                                        + "totalAmount REAL NOT NULL," //
                                         + "issuedByMe BOOLEAN NOT NULL," //
                                         + "PRIMARY KEY (id),"
                                         + "CONSTRAINT fk_id FOREIGN KEY (id) REFERENCES Withholding(id) ON DELETE CASCADE"
@@ -128,11 +130,11 @@ public class DBManager {
             case "Withholding": query = "CREATE TABLE Withholding ("
                                         + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
                                         + "date DATE NOT NULL,"
-                                        + "type VARCHAR(50) NOT NULL,"
                                         + "number VARCHAR(30) NOT NULL,"
                                         + "providerDoc VARCHAR(30) NOT NULL,"
+                                        + "iva REAL,"
+                                        + "profits REAL,"
                                         + "delivered BOOLEAN DEFAULT false,"
-                                        + "totalAmount REAL NOT NULL,"
                                         + "sector VARCHAR(50),"
                                         + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(name)"
                                         + "ON DELETE SET NULL,"

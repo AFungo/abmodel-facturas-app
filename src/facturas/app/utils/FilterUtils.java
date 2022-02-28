@@ -49,9 +49,7 @@ public class FilterUtils {
     */
     public static SQLFilter getWithholdingFilter(SQLFilter filter) {
         SQLFilter withholdingFilter = new SQLFilter();
-        String[] attributesToRemove = {"id", "date", "type", "number", "providerDoc", "delivered", 
-            "totalAmount", "sector"};
-        
+        String[] attributesToRemove = {"id", "date", "number", "providerDoc", "delivered", "sector"};
         transferFilters(withholdingFilter, filter, attributesToRemove);
         
         return withholdingFilter;

@@ -94,17 +94,17 @@ public class WithholdingDAO {
                 Map<String, String> WithholdingAttributes = new HashMap<>();
                 WithholdingAttributes.put("id", result.getString(1));
                 WithholdingAttributes.put("date", result.getString(2));
-                WithholdingAttributes.put("type", result.getString(3));
-                WithholdingAttributes.put("number", result.getString(4));
-                Map<String, String> prov = ProviderDAO.getProvider(result.getString(5)).getValues();
+                WithholdingAttributes.put("number", result.getString(3));
+                Map<String, String> prov = ProviderDAO.getProvider(result.getString(4)).getValues();
                 WithholdingAttributes.put("docType", prov.get("docType"));
                 WithholdingAttributes.put("docNo", prov.get("docNo"));
                 WithholdingAttributes.put("name", prov.get("name"));
                 WithholdingAttributes.put("direction", prov.get("direction"));
                 WithholdingAttributes.put("provSector", prov.get("sector"));
                 WithholdingAttributes.put("alias", prov.get("alias"));
-                WithholdingAttributes.put("delivered", result.getString(6));
-                WithholdingAttributes.put("totalAmount", result.getString(7));
+                WithholdingAttributes.put("iva", result.getString(5));
+                WithholdingAttributes.put("profits", result.getString(6));
+                WithholdingAttributes.put("delivered", result.getString(7));
                 WithholdingAttributes.put("sector", result.getString(8));
                 whithholdingList.add(new Withholding(WithholdingAttributes));
             }

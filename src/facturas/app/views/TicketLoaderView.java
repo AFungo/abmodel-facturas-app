@@ -90,7 +90,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         netAmountWITextField = new javax.swing.JTextField();
         netAmountWOITextField = new javax.swing.JTextField();
         amountImpExTextField = new javax.swing.JTextField();
-        ivaTextField = new javax.swing.JTextField();
+        ivaTaxTextField = new javax.swing.JTextField();
         totalAmountTextField = new javax.swing.JTextField();
         loadTicket = new javax.swing.JButton();
         issuedByMeCheckBox = new javax.swing.JCheckBox();
@@ -116,14 +116,18 @@ public class TicketLoaderView extends javax.swing.JFrame {
         showLastIvaTextField = new javax.swing.JTextField();
         showLastTotalTextField = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
-        ivaTextField1 = new javax.swing.JTextField();
-        ivaTextField2 = new javax.swing.JTextField();
+        ivaTax1TextField = new javax.swing.JTextField();
+        ivaTax2TextField = new javax.swing.JTextField();
         showLastDateTextField1 = new javax.swing.JTextField();
         showLastIDTextField1 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         docNoComboBox = new javax.swing.JComboBox<>();
         jLabel21 = new javax.swing.JLabel();
+        profitsTextField = new javax.swing.JTextField();
+        ivaTextField = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CARGAR COMPROBANTE");
@@ -263,6 +267,12 @@ public class TicketLoaderView extends javax.swing.JFrame {
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel21.setText("Nro Doc Proveedor");
 
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel22.setText("Retencion IVA");
+
+        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel23.setText("Retencion ganancias");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -304,7 +314,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(deliveredCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(92, 92, 92)))
-                        .addGap(55, 55, 55))
+                        .addGap(35, 35, 35))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(addNewProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(542, 542, 542))
@@ -322,19 +332,27 @@ public class TicketLoaderView extends javax.swing.JFrame {
                             .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(amountImpExTextField)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ivaTextField)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(ivaTextField1)
-                            .addComponent(ivaTextField2))
+                            .addComponent(profitsTextField)
+                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(totalAmountTextField))
-                        .addGap(30, 30, 30))
+                            .addComponent(ivaTaxTextField)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(ivaTax1TextField)
+                            .addComponent(ivaTax2TextField))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(30, 30, 30))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(amountImpExTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(totalAmountTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                                .addContainerGap())))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addGap(571, 571, 571))
@@ -418,45 +436,52 @@ public class TicketLoaderView extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel23))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(netAmountWITextField)
-                                    .addComponent(amountImpExTextField))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ivaTaxTextField)
+                                    .addComponent(totalAmountTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(26, 26, 26))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(jLabel22))
+                                                .addGap(26, 26, 26))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(20, 20, 20)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(netAmountWOITextField)
+                                                    .addComponent(ivaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(20, 20, 20)
-                                        .addComponent(netAmountWOITextField))))
+                                        .addGap(6, 6, 6)
+                                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(amountImpExTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(1, 1, 1))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(exchangeMoneyComboBox)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(exchangeMoneyComboBox)
+                                    .addComponent(netAmountWITextField)
+                                    .addComponent(profitsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(exchangeTypeTextField)))
                         .addGap(6, 6, 6))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(78, 78, 78))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ivaTextField))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(totalAmountTextField)))
+                        .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(35, 35, 35)
+                        .addComponent(ivaTax1TextField)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ivaTextField1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ivaTextField2)))
+                        .addComponent(ivaTax2TextField)))
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -514,11 +539,13 @@ public class TicketLoaderView extends javax.swing.JFrame {
         values.put("amountImpEx", amountImpExTextField.getText());
         values.put("exchangeType", exchangeTypeTextField.getText());
         values.put("iva", ivaTextField.getText());
-        values.put("iva1", ivaTextField1.getText());
-        values.put("iva2", ivaTextField2.getText());
+        values.put("ivaTax", ivaTaxTextField.getText());
+        values.put("ivaTax1", ivaTax1TextField.getText());
+        values.put("ivaTax2", ivaTax2TextField.getText());
         values.put("netAmountWI", netAmountWITextField.getText());
         values.put("netAmountWOI", netAmountWOITextField.getText());
         values.put("exchangeMoney", (String) exchangeMoneyComboBox.getSelectedItem());
+        values.put("profits", profitsTextField.getText());
         values.put("totalAmount", totalAmountTextField.getText());
         
         //ticket data
@@ -563,18 +590,18 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
     private void getIva(Map<String, String> values) {
         Float iva = 0.0f;
-        if (!values.get("iva").isEmpty()) 
-            iva += Float.parseFloat(values.get("iva"));
-        if (!values.get("iva1").isEmpty()) 
-            iva += Float.parseFloat(values.get("iva1"));
-        if (!values.get("iva2").isEmpty()) 
-            iva += Float.parseFloat(values.get("iva2"));
+        if (!values.get("ivaTax").isEmpty()) 
+            iva += Float.parseFloat(values.get("ivaTax"));
+        if (!values.get("ivaTax1").isEmpty()) 
+            iva += Float.parseFloat(values.get("ivaTax1"));
+        if (!values.get("ivaTax2").isEmpty()) 
+            iva += Float.parseFloat(values.get("ivaTax2"));
         
-        values.put("iva", iva.toString());
+        values.put("ivaTax", iva.toString());
     }
 
     private void updateLastTicketLoaded(Map<String, String> values){
-        showLastIvaTextField.setText(values.get("iva"));
+        showLastIvaTextField.setText(values.get("ivaTax"));
         showLastProviderTextField.setText(values.get("name"));
         showLastTicketNumberTextField.setText(values.get("number"));
         showLastTypeTextField.setText(values.get("type"));
@@ -588,7 +615,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     
     private void cleanTextFields() {
         JTextField[] forClean = new JTextField[] {numberTextField, netAmountWITextField, netAmountWOITextField, 
-            amountImpExTextField, ivaTextField,ivaTextField1, ivaTextField2, totalAmountTextField};
+            amountImpExTextField, ivaTaxTextField,ivaTax1TextField, ivaTax2TextField, totalAmountTextField};
         
         controller.cleanTextField(forClean);
     }
@@ -646,9 +673,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> exchangeMoneyComboBox;
     private javax.swing.JTextField exchangeTypeTextField;
     private javax.swing.JCheckBox issuedByMeCheckBox;
+    private javax.swing.JTextField ivaTax1TextField;
+    private javax.swing.JTextField ivaTax2TextField;
+    private javax.swing.JTextField ivaTaxTextField;
     private javax.swing.JTextField ivaTextField;
-    private javax.swing.JTextField ivaTextField1;
-    private javax.swing.JTextField ivaTextField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -663,6 +691,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -674,6 +704,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private javax.swing.JTextField netAmountWITextField;
     private javax.swing.JTextField netAmountWOITextField;
     private javax.swing.JTextField numberTextField;
+    private javax.swing.JTextField profitsTextField;
     private javax.swing.JComboBox<String> providersComboBox;
     private javax.swing.JComboBox<String> sectorsComboBox;
     private javax.swing.JTextField showLastDateTextField1;

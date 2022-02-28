@@ -61,3 +61,7 @@ derby.log
 
 # config
 config.txt
+
+# log
+log
+log.lck

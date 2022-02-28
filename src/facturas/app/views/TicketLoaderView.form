@@ -71,7 +71,7 @@
                               <EmptySpace min="92" pref="92" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="addNewProvider" max="32767" attributes="0"/>
@@ -91,24 +91,35 @@
                           <Component id="netAmountWITextField" alignment="0" max="32767" attributes="0"/>
                           <Component id="jLabel12" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="amountImpExTextField" max="32767" attributes="0"/>
-                          <Component id="jLabel14" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel22" alignment="0" max="32767" attributes="0"/>
                           <Component id="ivaTextField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jLabel15" alignment="1" max="32767" attributes="0"/>
-                          <Component id="ivaTextField1" alignment="0" max="32767" attributes="0"/>
-                          <Component id="ivaTextField2" alignment="0" max="32767" attributes="0"/>
+                          <Component id="profitsTextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel23" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel16" alignment="1" max="32767" attributes="0"/>
-                          <Component id="totalAmountTextField" max="32767" attributes="0"/>
+                          <Component id="ivaTaxTextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jLabel15" alignment="1" max="32767" attributes="0"/>
+                          <Component id="ivaTax1TextField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="ivaTax2TextField" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="jLabel16" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jLabel14" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="amountImpExTextField" alignment="0" pref="150" max="32767" attributes="0"/>
+                                  <Component id="totalAmountTextField" alignment="0" pref="150" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jLabel6" pref="0" max="32767" attributes="0"/>
@@ -220,28 +231,53 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel12" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="netAmountWITextField" alignment="3" max="32767" attributes="0"/>
-                                  <Component id="amountImpExTextField" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="jLabel12" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="jLabel15" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="jLabel23" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="ivaTaxTextField" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="totalAmountTextField" alignment="3" max="-2" attributes="0"/>
+                              </Group>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel13" max="32767" attributes="0"/>
-                                      <EmptySpace min="26" pref="26" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Group type="103" groupAlignment="3" attributes="0">
+                                                  <Component id="jLabel13" alignment="3" max="32767" attributes="0"/>
+                                                  <Component id="jLabel22" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="26" pref="26" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="3" attributes="0">
+                                                  <Component id="netAmountWOITextField" alignment="3" max="32767" attributes="0"/>
+                                                  <Component id="ivaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                      </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                                      <Component id="netAmountWOITextField" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                      <Component id="jLabel14" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="amountImpExTextField" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel11" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="exchangeMoneyComboBox" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="exchangeMoneyComboBox" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="netAmountWITextField" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="profitsTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel10" max="32767" attributes="0"/>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -250,27 +286,12 @@
                       </Group>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jLabel14" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabel15" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="ivaTextField" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="jLabel16" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
-                              <Component id="totalAmountTextField" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                      <Component id="jLabel16" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                      <Component id="ivaTax1TextField" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="ivaTextField1" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="ivaTextField2" max="32767" attributes="0"/>
+                      <Component id="ivaTax2TextField" max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
@@ -426,7 +447,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="amountImpExTextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="ivaTextField">
+    <Component class="javax.swing.JTextField" name="ivaTaxTextField">
     </Component>
     <Component class="javax.swing.JTextField" name="totalAmountTextField">
     </Component>
@@ -660,9 +681,9 @@
         <Property name="text" type="java.lang.String" value="Total"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="ivaTextField1">
+    <Component class="javax.swing.JTextField" name="ivaTax1TextField">
     </Component>
-    <Component class="javax.swing.JTextField" name="ivaTextField2">
+    <Component class="javax.swing.JTextField" name="ivaTax2TextField">
     </Component>
     <Component class="javax.swing.JTextField" name="showLastDateTextField1">
       <Properties>
@@ -717,6 +738,26 @@
           <Font name="Tahoma" size="11" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Nro Doc Proveedor"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="profitsTextField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="ivaTextField">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel22">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Retencion IVA"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel23">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Retencion ganancias"/>
       </Properties>
     </Component>
   </SubComponents>
