@@ -64,3 +64,4 @@ config.txt
 
 # log
 log
+log.lck
