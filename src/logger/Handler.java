@@ -9,10 +9,10 @@ import facturas.app.views.View;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 
 /**
  *
@@ -42,9 +42,7 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
     }
     
     public void uncaughtException(Thread t, Throwable e) {
-        if (e instanceof DerbySQLIntegrityConstraintViolationException) {
-            view.showError(e, "El item que se intento cargar ya estaba cargado");
-        } else if (e instanceof IllegalArgumentException) {
+        if (e instanceof IllegalArgumentException) {
             String msg = e.getMessage();
             if (msg.contains("File does not have a valid format to be loaded")) {
                 view.showError(e, "El archivo no tiene un formato valido para cargarse");
@@ -53,6 +51,12 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
             } else if (msg.contains("sector doesn't exists")) {
                 view.showError(e, "El rubro elegido no existe");
             } else if (msg.contains("File is null")) { //we just want to do nothing
+            } else {
+                unexpectedError(e);
+            }
+        } else if (e instanceof SQLException) {
+            if (((SQLException) e).getSQLState() == "23505") {
+                view.showError(e, "El item que se intento cargar ya estaba cargado");
             } else {
                 unexpectedError(e);
             }

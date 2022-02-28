@@ -18,27 +18,22 @@ import java.sql.Statement;
  */
 public abstract class DAO {
 
-    protected static ResultSet executeQuery(String query, boolean update, boolean returnKeys) {
-        try {
-            Connection connection = DBManager.getConnection();
-            PreparedStatement stm;
-            if (returnKeys) {
-                stm = connection.prepareStatement(query,
-                                          Statement.RETURN_GENERATED_KEYS);
-            } else {
-                stm = connection.prepareStatement(query);
-            }
-            
-            if (update) {
-                stm.executeUpdate();
-                return stm.getGeneratedKeys();
-            } else {
-                ResultSet result = stm.executeQuery();
-                return result;
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
+    protected static ResultSet executeQuery(String query, boolean update, boolean returnKeys) throws SQLException {
+        Connection connection = DBManager.getConnection();
+        PreparedStatement stm;
+        if (returnKeys) {
+            stm = connection.prepareStatement(query,
+                                      Statement.RETURN_GENERATED_KEYS);
+        } else {
+            stm = connection.prepareStatement(query);
+        }
+
+        if (update) {
+            stm.executeUpdate();
+            return stm.getGeneratedKeys();
+        } else {
+            ResultSet result = stm.executeQuery();
+            return result;
         }
     }
-
 }
