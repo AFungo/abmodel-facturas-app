@@ -54,8 +54,9 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
             } else {
                 unexpectedError(e);
             }
-        } else if (e instanceof SQLException) {
-            if (((SQLException) e).getSQLState() == "23505") {
+        } else if (e instanceof IllegalStateException) {
+            String msg = e.getMessage();
+            if (msg.contains("<23505> duplicate item")) {
                 view.showError(e, "El item que se intento cargar ya estaba cargado");
             } else {
                 unexpectedError(e);
