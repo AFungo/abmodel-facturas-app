@@ -257,8 +257,8 @@ public class FormatUtils {
             validations[i++] = values.get("amountImpEx").isEmpty() ? true : tryParse(values.get("amountImpEx"), "Float");
             validations[i++] = values.get("exchangeType").isEmpty() ? true : tryParse(values.get("exchangeType"), "Float");
             validations[i++] = values.get("ivaTax").isEmpty() ? true : tryParse(values.get("ivaTax"), "Float");
-            validations[i++] = values.get("iva1").isEmpty() ? true : tryParse(values.get("iva1"), "Float");
-            validations[i++] = values.get("iva2").isEmpty() ? true : tryParse(values.get("iva2"), "Float");
+            validations[i++] = values.get("ivaTax1").isEmpty() ? true : tryParse(values.get("ivaTax1"), "Float");
+            validations[i++] = values.get("ivaTax2").isEmpty() ? true : tryParse(values.get("ivaTax2"), "Float");
             validations[i++] = values.get("netAmountWI").isEmpty() ? true : tryParse(values.get("netAmountWI"), "Float");
             validations[i++] = values.get("netAmountWOI").isEmpty() ? true : tryParse(values.get("netAmountWOI"), "Float");
             validations[i++] = tryParse(values.get("totalAmount"), "Float");
