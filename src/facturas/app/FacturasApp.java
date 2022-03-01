@@ -8,6 +8,7 @@ package facturas.app;
 import logger.Handler;
 import facturas.app.views.View;
 import facturas.app.database.DBManager;
+import facturas.app.database.DBManager.TypeDB;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 /**
@@ -20,7 +21,7 @@ public class FacturasApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        DBManager.createConnection();
+        DBManager.createConnection(TypeDB.PRODUCTION);
         DBManager.initializeDB();
         View view = new View(new Controller());
         Handler globalExceptionHandler = new Handler(view);

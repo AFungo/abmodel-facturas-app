@@ -17,12 +17,21 @@ import java.sql.Statement;
  * @author Agustin
  */
 public class DBManager {
+    
+    public static enum TypeDB {
+        PRODUCTION, TESTING
+    }
 
     private static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-    private static final String JDBC_URL = "jdbc:derby:db;create=true";
+    private static String JDBC_URL;
     private static Connection connection = null;
     
-    public static void createConnection() {
+    public static void createConnection(TypeDB type) {
+        if (type == TypeDB.TESTING) {
+            JDBC_URL = "jdbc:derby:test-db;create=true";
+        } else if (type == TypeDB.PRODUCTION) {
+            JDBC_URL = "jdbc:derby:db;create=true";
+        }
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(JDBC_URL);
