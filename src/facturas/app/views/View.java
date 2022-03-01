@@ -639,7 +639,7 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_addProviderMenuItemActionPerformed
 
     private void deleteSectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorMenuItemActionPerformed
-        int selection = JOptionPane.showConfirmDialog(this, null, "Estas seguro de removerle el rubro al ticket?", JOptionPane.OK_CANCEL_OPTION);
+        int selection = JOptionPane.showConfirmDialog(this, "se le removera el rubro al ticket", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
