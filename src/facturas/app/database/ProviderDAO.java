@@ -98,6 +98,11 @@ public class ProviderDAO extends DAO {
         }
     }
     
+    public static void deleteAttribute(SQLFilter filters, String attribute) {
+        String query = "UPDATE Provider SET " + attribute + " =  null " + filters.get();
+        executeQuery(query, true, false);
+    }
+    
     private static Provider createProvider(ResultSet result) throws SQLException {
         Map<String, String> values = new HashMap<>();
         values.put("docNo", result.getString(1));
