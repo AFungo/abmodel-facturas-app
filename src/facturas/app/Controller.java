@@ -271,7 +271,7 @@ public class Controller {
         if (values.get("netAmountWI") != null) values.put("netAmountWI","-" + values.get("netAmountWI"));
         if (values.get("netAmountWOI") != null) values.put("netAmountWOI","-" + values.get("netAmountWOI"));
         if (values.get("amountImpEx") != null) values.put("amountImpEx","-" + values.get("amountImpEx"));
-        if (values.get("iva") != null) values.put("iva", "-" + values.get("iva"));
+        if (values.get("ivaTax") != null) values.put("ivaTax", "-" + values.get("ivaTax"));
         return new Ticket(values);
     }
     

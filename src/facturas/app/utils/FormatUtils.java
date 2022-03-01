@@ -41,7 +41,7 @@ public class FormatUtils {
     public static Object[] ticketToForm(Withholding t) {
         if (!(t instanceof Ticket))
             return withholdingToForm(t);
-
+        
         Map<String, Object> dict = t.getValues();
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
@@ -302,12 +302,14 @@ public class FormatUtils {
         v.put("id", values.get("id").toString());
         v.put("date", values.get("date").toString());
         v.put("type", values.get("type").toString());
+        if(values.get("iva")!=null) v.put("iva", values.get("iva").toString());
+        if(values.get("profits")!=null) v.put("profits", values.get("profits").toString());
         v.put("totalAmount", values.get("totalAmount").toString());
         v.put("number", values.get("number").toString());
-        if(values.get("sector")!=null)v.put("sector", values.get("sector").toString());
+        if(values.get("sector")!=null) v.put("sector", values.get("sector").toString());
         if (values.get("delivered").toString() != null) v.put("delivered", values.get("delivered").toString());
-        if(values.get("numberTo")!=null)v.put("numberTo", values.get("numberTo").toString());
-        if(values.get("authCode")!=null)v.put("authCode", values.get("authCode").toString());
+        if(values.get("numberTo")!=null) v.put("numberTo", values.get("numberTo").toString());
+        if(values.get("authCode")!=null) v.put("authCode", values.get("authCode").toString());
         v.put("provider", values.get("provider").toString());
         v.put("exchangeType", values.get("exchangeType").toString());
         v.put("exchangeMoney", values.get("exchangeMoney").toString());
@@ -315,7 +317,7 @@ public class FormatUtils {
         if (values.get("netAmountWI") != null) v.put("netAmountWI", values.get("netAmountWI").toString());
         if (values.get("netAmountWOI") != null) v.put("netAmountWOI", values.get("netAmountWOI").toString());
         if (values.get("amountImpEx") != null) v.put("amountImpEx", values.get("amountImpEx").toString());
-        if (values.get("iva") != null) v.put("iva", values.get("iva").toString());
+        if (values.get("ivaTax") != null) v.put("ivaTax", values.get("ivaTax").toString());
         if (values.get("sector") != null) v.put("sector", values.get("sector").toString());
         return v;
     }
