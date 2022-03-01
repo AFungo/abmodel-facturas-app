@@ -262,6 +262,14 @@ public class Controller {
         WithholdingDAO.changeAttribute(filter, attribute, value);
     }
     
+    public void deleteWithholdingAttribute(SQLFilter filter, String attribute){
+        WithholdingDAO.deleteAttribute(filter, attribute);
+    }
+
+    public void deleteProviderAttribute(SQLFilter filter, String attribute){
+        ProviderDAO.deleteAttribute(filter, attribute);
+    }
+    
     public void removeItem(SQLFilter filter, boolean isTicket) {
             WithholdingDAO.remove(filter);
     }
@@ -271,7 +279,7 @@ public class Controller {
         if (values.get("netAmountWI") != null) values.put("netAmountWI","-" + values.get("netAmountWI"));
         if (values.get("netAmountWOI") != null) values.put("netAmountWOI","-" + values.get("netAmountWOI"));
         if (values.get("amountImpEx") != null) values.put("amountImpEx","-" + values.get("amountImpEx"));
-        if (values.get("iva") != null) values.put("iva", "-" + values.get("iva"));
+        if (values.get("ivaTax") != null) values.put("ivaTax", "-" + values.get("ivaTax"));
         return new Ticket(values);
     }
     

@@ -72,6 +72,7 @@ public class View extends javax.swing.JFrame {
         sectorMenuItem = new javax.swing.JMenuItem();
         deliveredMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
+        deleteSectorMenuItem = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         ticketsTableScroll = new javax.swing.JScrollPane();
         ticketsTable = new javax.swing.JTable();
@@ -125,6 +126,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         popupMenu.add(deleteMenuItem);
+
+        deleteSectorMenuItem.setText("Eliminar rubro");
+        deleteSectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteSectorMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(deleteSectorMenuItem);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
 
@@ -524,6 +533,8 @@ public class View extends javax.swing.JFrame {
             if (evt.isPopupTrigger() && ticketsTable.getSelectedRowCount() != 0) {
                 String deliveredValue = (String)ticketsTable.getValueAt(row, 16); //16 is the delivered column
                 deliveredMenuItem.setText(deliveredValue == "NO" ? "Marcar como enviado" : "Marcar como no enviado");
+                String sector = (String)ticketsTable.getValueAt(row, 14); //14 is the delivered column
+                deleteSectorMenuItem.setEnabled(sector == null || sector.isEmpty() ? false : true);
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
@@ -627,6 +638,17 @@ public class View extends javax.swing.JFrame {
         providerLoader.setVisible(true);
     }//GEN-LAST:event_addProviderMenuItemActionPerformed
 
+    private void deleteSectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorMenuItemActionPerformed
+        int selection = JOptionPane.showConfirmDialog(this, "se le removera el rubro al ticket", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
+        if (selection == JOptionPane.OK_OPTION) {
+            int row = ticketsTable.getSelectedRow();
+            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+            
+            controller.deleteWithholdingAttribute(filter, "sector");
+            ticketsTable.setValueAt(null, row, 14);   //column 14 is for sector
+        }
+    }//GEN-LAST:event_deleteSectorMenuItemActionPerformed
+
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -713,6 +735,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem columnSelector;
     private javax.swing.JButton createPdf;
     private javax.swing.JMenuItem deleteMenuItem;
+    private javax.swing.JMenuItem deleteSectorMenuItem;
     private javax.swing.JMenuItem deliveredMenuItem;
     private javax.swing.JMenu edit;
     private javax.swing.JMenu files;
