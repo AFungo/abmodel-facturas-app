@@ -20,12 +20,12 @@ import javax.swing.JTextField;
  *
  * @author Lenovo
  */
-public class ProviderLoader extends javax.swing.JFrame {
+public class ProviderLoaderView extends javax.swing.JFrame {
 
     /**
      * Creates new form providerLoader
      */
-    public ProviderLoader(Controller controller, View mainView) {
+    public ProviderLoaderView(Controller controller, View mainView) {
         initComponents();
         this.controller = controller;
         this.mainView = mainView;
@@ -69,7 +69,7 @@ public class ProviderLoader extends javax.swing.JFrame {
         providerDocTextField = new javax.swing.JTextField();
         providerAliasTextField = new javax.swing.JTextField();
         sectorsComboBox = new javax.swing.JComboBox<>();
-        addProviderButton = new javax.swing.JButton();
+        addProvider = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CARGAR PROVEEDOR");
@@ -91,11 +91,16 @@ public class ProviderLoader extends javax.swing.JFrame {
 
         jLabel7.setText("Tipo documento");
 
-        addProviderButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        addProviderButton.setText("Añadir proveedor");
-        addProviderButton.addActionListener(new java.awt.event.ActionListener() {
+        providerNameTextField.setName("providerNameTextField");
+
+        providerDocTextField.setName("providerDocTextField");
+
+        addProvider.setName("addProvider");
+        addProvider.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        addProvider.setText("Añadir proveedor");
+        addProvider.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProviderButtonActionPerformed(evt);
+                addProviderActionPerformed(evt);
             }
         });
 
@@ -114,7 +119,7 @@ public class ProviderLoader extends javax.swing.JFrame {
                                     .addComponent(providerAddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(37, 37, 37)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(addProviderButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(addProvider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(providerDocTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -164,7 +169,7 @@ public class ProviderLoader extends javax.swing.JFrame {
                     .addComponent(providerAliasTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(providerDocTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(addProviderButton)
+                .addComponent(addProvider)
                 .addContainerGap(96, Short.MAX_VALUE))
         );
 
@@ -172,7 +177,7 @@ public class ProviderLoader extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderButtonActionPerformed
+    private void addProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderActionPerformed
         //provider attributes
         Map<String, String> values = new HashMap();
         values.put("docNo", providerDocTextField.getText());
@@ -192,7 +197,7 @@ public class ProviderLoader extends javax.swing.JFrame {
         controller.addProvider(values);
         mainView.updateProviders(getProvidersName());
         cleanTextField();
-    }//GEN-LAST:event_addProviderButtonActionPerformed
+    }//GEN-LAST:event_addProviderActionPerformed
     
     public void updateSectors(List<String> sectors) {
         sectorsAutoSuggestor.setSuggestions(sectors);
@@ -202,12 +207,12 @@ public class ProviderLoader extends javax.swing.JFrame {
         JTextField[] forClean = new JTextField[] {providerAddressTextField, providerAliasTextField, providerDocTextField, providerNameTextField};        
         controller.cleanTextField(forClean);
     }
-    View mainView;
-    Controller controller;
-    AutoSuggestor sectorsAutoSuggestor;
-    AutoSuggestor providersAutoSuggestor;        
+    
+    private View mainView;
+    private Controller controller;
+    private AutoSuggestor sectorsAutoSuggestor;  
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addProviderButton;
+    private javax.swing.JButton addProvider;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

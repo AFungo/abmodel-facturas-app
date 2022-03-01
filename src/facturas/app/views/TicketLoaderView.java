@@ -45,7 +45,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         providersAutoSuggestor.autoSuggest();
         exchangeTypeTextField.setEditable(false);
         this.mainView = mainView;
-        providerLoader = new ProviderLoader(controller, mainView);
+        providerLoader = new ProviderLoaderView(controller, mainView);
     }
     
     public void updateSuggestions() {
@@ -661,7 +661,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private AutoSuggestor sectorsAutoSuggestor;
     private AutoSuggestor ticketTypesAutoSuggestor;
     private View mainView;
-    private ProviderLoader providerLoader;
+    private ProviderLoaderView providerLoader;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addNewProvider;
     private javax.swing.JLabel addNewProvider1;

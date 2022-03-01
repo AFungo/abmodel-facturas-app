@@ -35,7 +35,7 @@
                                   <Component id="providerAddressTextField" min="-2" pref="180" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="addProviderButton" max="32767" attributes="0"/>
+                                      <Component id="addProvider" max="32767" attributes="0"/>
                                       <Component id="providerDocTextField" pref="180" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -104,7 +104,7 @@
                   <Component id="providerDocTextField" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="addProviderButton" min="-2" max="-2" attributes="0"/>
+              <Component id="addProvider" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="96" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -165,8 +165,14 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="providerNameTextField">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="providerNameTextField.setName(&quot;providerNameTextField&quot;);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="providerDocTextField">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="providerDocTextField.setName(&quot;providerDocTextField&quot;);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="providerAliasTextField">
     </Component>
@@ -180,7 +186,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="addProviderButton">
+    <Component class="javax.swing.JButton" name="addProvider">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="14" style="1"/>
@@ -188,8 +194,11 @@
         <Property name="text" type="java.lang.String" value="A&#xf1;adir proveedor"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addProviderButtonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addProviderActionPerformed"/>
       </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="addProvider.setName(&quot;addProvider&quot;);"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>

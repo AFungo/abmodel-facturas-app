@@ -56,7 +56,7 @@ public class View extends javax.swing.JFrame {
         ticketLoaderView = new TicketLoaderView(controller, this);
         withholdingLoaderView = new WithholdingLoaderView(controller, this);
         sectorsView = new SectorsView(this);
-        providerLoader = new ProviderLoader(controller, this);
+        providerLoader = new ProviderLoaderView(controller, this);
     }
 
     /**
@@ -706,7 +706,7 @@ public class View extends javax.swing.JFrame {
     private TicketLoaderView ticketLoaderView;
     private WithholdingLoaderView withholdingLoaderView;
     private SectorsView sectorsView;
-    private ProviderLoader providerLoader;
+    private ProviderLoaderView providerLoader;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem addProviderMenuItem;
     private javax.swing.JButton calculateButton;
