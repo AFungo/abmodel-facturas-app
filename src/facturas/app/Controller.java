@@ -262,6 +262,10 @@ public class Controller {
         WithholdingDAO.changeAttribute(filter, attribute, value);
     }
     
+    public void deleteWithholdingAttribute(SQLFilter filter, String attribute){
+        WithholdingDAO.deleteAttribute(filter, attribute);
+    }
+    
     public void removeItem(SQLFilter filter, boolean isTicket) {
             WithholdingDAO.remove(filter);
     }

@@ -82,6 +82,11 @@ public class WithholdingDAO {
         executeQuery(query, true, false);
     }
     
+    public static void deleteAttribute(SQLFilter filters, String attribute) {
+        String query = "UPDATE Withholding SET " + attribute + " =  null " + filters.get();
+        executeQuery(query, true, false);
+    }
+    
     public static void remove(SQLFilter filters) {
         String query = "DELETE FROM Withholding " + filters.get();
         executeQuery(query, true, true);
