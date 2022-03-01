@@ -39,10 +39,10 @@ public class ProfitCalculator {
         }
        
         Float totalAmount = (Float) values.get("totalAmount") * exchangeType;   //Total * exchange type
-        Float iva = (values.get("iva") != null ? (Float) values.get("iva") : 0.0f) * exchangeType;
+        Float ivaTax = (values.get("ivaTax") != null ? (Float) values.get("ivaTax") : 0.0f) * exchangeType;
         Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType;
 
-        addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, iva, netAmountWI);
+        addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
     }
   
 public void addTicketInDollars(Ticket t) {
@@ -58,10 +58,10 @@ public void addTicketInDollars(Ticket t) {
         }
        //in case we are in pesos and we have the exchange type, we just divide by it
         Float totalAmount = ((Float) values.get("totalAmount") / exchangeType) / sellPrice; //Total / (exchange type or 1) / (dollar price of this day or 1)
-        Float iva = ((values.get("iva") != null ? (Float) values.get("iva") : 0.0f) / exchangeType)/sellPrice;
+        Float ivaTax = ((values.get("ivaTax") != null ? (Float) values.get("ivaTax") : 0.0f) / exchangeType)/sellPrice;
         Float netAmountWI = ((values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) / exchangeType)/sellPrice;        
 
-        addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, iva, netAmountWI);
+        addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
     }
     
     public void addRetention(Withholding r, boolean dollars){
