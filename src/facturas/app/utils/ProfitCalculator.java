@@ -65,15 +65,23 @@ public void addTicketInDollars(Ticket t) {
     }
     
     public void addRetention(Withholding r, boolean dollars){
-        Float totalAmount = (Float) r.getValues().get("totalAmount");
-
+        Map<String, Object> dict = r.getValues();
+        Float iva = (Float) dict.get("iva");
+        Float profits = (Float) dict.get("profits");
         if (dollars) {
             Float sellPrice = inDollars(dollars, 1.0f, r.getDollarPrice());//le pongo 1 en exchangetype pq no se carga en ret
-            totalAmount /= sellPrice;
+            if (iva != null)
+                iva /= sellPrice;
+            if (profits != null)
+                profits /= sellPrice;
         }
         
-        if(r.getValues().get("type").equals("Retencion Iva")) retentionIva.addTransaction(totalAmount, 0.0f, 0.0f);
-        if(r.getValues().get("type").equals("Retencion Ganancias")) retentionGan.addTransaction(totalAmount, 0.0f, 0.0f);
+        if (iva != null && (Float) iva != 0.0f) {
+            retentionIva.addTransaction((Float) iva, 0.0f, 0.0f);
+        }
+        if (profits != null && (Float) profits != 0.0f) {
+            retentionGan.addTransaction((Float) profits, 0.0f, 0.0f);
+        }
     }
     
     public Map<String, Float> getValues(){
