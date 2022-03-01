@@ -57,6 +57,7 @@ pom.xml.tag
 
 # db
 db/
+test-db/
 derby.log
 
 # config
