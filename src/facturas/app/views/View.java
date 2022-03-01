@@ -533,6 +533,8 @@ public class View extends javax.swing.JFrame {
             if (evt.isPopupTrigger() && ticketsTable.getSelectedRowCount() != 0) {
                 String deliveredValue = (String)ticketsTable.getValueAt(row, 16); //16 is the delivered column
                 deliveredMenuItem.setText(deliveredValue == "NO" ? "Marcar como enviado" : "Marcar como no enviado");
+                String sector = (String)ticketsTable.getValueAt(row, 14); //14 is the delivered column
+                deleteSectorMenuItem.setEnabled(sector == null || sector.isEmpty() ? false : true);
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
