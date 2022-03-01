@@ -40,7 +40,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
         sectorsAutoSuggestor.autoSuggest();
         this.mainView = mainView;
-        providerLoader = new ProviderLoader(controller, mainView);
+        providerLoader = new ProviderLoaderView(controller, mainView);
     }
     
     public void updateSuggestions() {
@@ -76,13 +76,13 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         numberTextField = new javax.swing.JTextField();
         profitsTextField = new javax.swing.JTextField();
         loadWithholding = new javax.swing.JButton();
-        dateDateChooser = new com.toedter.calendar.JDateChooser();
+        dateChooser = new com.toedter.calendar.JDateChooser();
         providersComboBox = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         sectorsComboBox = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         deliveredCheckBox = new javax.swing.JCheckBox();
-        addProviderButton = new javax.swing.JButton();
+        addProvider = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         showLastProviderTextField = new javax.swing.JTextField();
@@ -114,6 +114,11 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel16.setText("Ganancias");
 
+        numberTextField.setName("numberTextField");
+
+        profitsTextField.setName("profitsTextField");
+
+        loadWithholding.setName("loadWithholding");
         loadWithholding.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         loadWithholding.setText("Agregar Retencion");
         loadWithholding.addActionListener(new java.awt.event.ActionListener() {
@@ -122,10 +127,14 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
             }
         });
 
-        dateDateChooser.setDateFormatString("dd-MM-yyyy");
-        JTextFieldDateEditor textField = (JTextFieldDateEditor) dateDateChooser.getDateEditor();
-        textField.setEditable(false);
+        dateChooser.setName("dateChooser");
+        dateChooser.getCalendarButton().setName("dateChooserButton");
+        dateChooser.setDateFormatString("dd-MM-yyyy");
+        JTextFieldDateEditor dateTextField = (JTextFieldDateEditor) dateChooser.getDateEditor();
+        dateTextField.setName("dateTextField");
+        dateTextField.setEditable(false);
 
+        providersComboBox.setName("providersComboBox");
         providersComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 providersComboBoxItemStateChanged(evt);
@@ -141,11 +150,12 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         deliveredCheckBox.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         deliveredCheckBox.setText("Enviado al contador");
 
-        addProviderButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        addProviderButton.setText("Añadir proveedor");
-        addProviderButton.addActionListener(new java.awt.event.ActionListener() {
+        addProvider.setName("addProvider");
+        addProvider.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        addProvider.setText("Añadir proveedor");
+        addProvider.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProviderButtonActionPerformed(evt);
+                addProviderActionPerformed(evt);
             }
         });
 
@@ -155,9 +165,11 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Proveedor");
 
+        showLastProviderTextField.setName("showLastProviderTextField");
         showLastProviderTextField.setEditable(false);
         showLastProviderTextField.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        showLastDateTextField.setName("showLastDateTextField");
         showLastDateTextField.setEditable(false);
         showLastDateTextField.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -167,12 +179,14 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Numero comprobante");
 
+        showLastTicketNumberTextField.setName("showLastTicketNumberTextField");
         showLastTicketNumberTextField.setEditable(false);
         showLastTicketNumberTextField.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel18.setText("Iva");
 
+        showLastIvaTextField.setName("showLastIvaTextField");
         showLastIvaTextField.setEditable(false);
         showLastIvaTextField.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -190,9 +204,12 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("Nro Doc Proveedor");
 
+        ivaTextField.setName("ivaTextField");
+
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel20.setText("Iva");
 
+        showLastProfitsTextField.setName("showLastProfitsTextField");
         showLastProfitsTextField.setEditable(false);
         showLastProfitsTextField.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -221,7 +238,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(dateDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                            .addComponent(dateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                                             .addComponent(jLabel4)
                                             .addComponent(providersComboBox, 0, 150, Short.MAX_VALUE)
                                             .addComponent(docNoComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -232,7 +249,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                                     .addComponent(numberTextField, javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addComponent(addProviderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(addProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(deliveredCheckBox, javax.swing.GroupLayout.Alignment.TRAILING))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE))
                                     .addGroup(layout.createSequentialGroup()
@@ -293,7 +310,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                         .addGap(1, 1, 1)
                         .addComponent(jLabel1))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(dateDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -322,7 +339,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addProviderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addProvider, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(docNoComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
@@ -376,7 +393,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         }
         List<Provider> providerCheck = ProviderDAO.getProviders(filter);
         
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), values, false, 
+        String errorMessage = controller.validateParam(dateChooser.getDate(), values, false, 
                 sectorsComboBox, providerCheck);
         if (errorMessage != null) {
             JOptionPane.showMessageDialog(this, errorMessage, "Los siguientes datos son invalidos", 
@@ -391,7 +408,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         values.put("name", provider.getValues().get("name"));
         values.put("provSector", provider.getValues().get("sector"));
         
-        values.put("date", sdf.format(dateDateChooser.getDate()));
+        values.put("date", sdf.format(dateChooser.getDate()));
         
         controller.loadWithholding(values);
         cleanTextField();
@@ -414,9 +431,9 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
 
-    private void addProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderButtonActionPerformed
+    private void addProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderActionPerformed
         providerLoader.setVisible(true);
-    }//GEN-LAST:event_addProviderButtonActionPerformed
+    }//GEN-LAST:event_addProviderActionPerformed
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[]{numberTextField, ivaTextField, profitsTextField};
         controller.cleanTextField(forClean);
@@ -444,10 +461,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     private AutoSuggestor providersAutoSuggestor;
     private AutoSuggestor sectorsAutoSuggestor;
     private View mainView;
-    private ProviderLoader providerLoader;
+    private ProviderLoaderView providerLoader;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addProviderButton;
-    private com.toedter.calendar.JDateChooser dateDateChooser;
+    private javax.swing.JButton addProvider;
+    private com.toedter.calendar.JDateChooser dateChooser;
     private javax.swing.JCheckBox deliveredCheckBox;
     private javax.swing.JComboBox<String> docNoComboBox;
     private javax.swing.JTextField ivaTextField;
