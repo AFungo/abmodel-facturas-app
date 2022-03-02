@@ -16,6 +16,7 @@ import facturas.app.models.Withholding;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
+import facturas.app.utils.Pair;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
@@ -340,17 +341,20 @@ public class FiltersView extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
         for (Withholding t : tickets) {
-            if(t instanceof Ticket){
+            if(t instanceof Ticket && (ticketRadioButton.isSelected() || bothRadioButton2.isSelected())){
                 if(!((Ticket)t).isIncome()){
                     t = controller.makeNegative((Ticket) t);
                 }
+                model.addRow(FormatUtils.ticketToForm(t));
             }
-            if (withholdingRadioButton.isSelected() && !(t instanceof Ticket)) {
-                model.addRow(FormatUtils.ticketToForm(t));
-            } else if (ticketRadioButton.isSelected() && t instanceof Ticket) {
-                model.addRow(FormatUtils.ticketToForm(t));
-            } else if (bothRadioButton2.isSelected()) {
-                model.addRow(FormatUtils.ticketToForm(t));
+            if (!(t instanceof Ticket) && (withholdingRadioButton.isSelected() || bothRadioButton2.isSelected())) {
+                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingsToForm(t);
+                if (withholdings.getFst() != null) {
+                    model.addRow(withholdings.getFst());
+                }
+                if (withholdings.getSnd() != null) {
+                    model.addRow(withholdings.getSnd());
+                }
             }
         }
     }//GEN-LAST:event_appyFiltersActionPerformed
@@ -380,8 +384,12 @@ public class FiltersView extends javax.swing.JFrame {
     public SQLFilter getFilters(boolean isTicket) {
         SQLFilter selectedFilters = new SQLFilter();
         
-        if (FormatUtils.tryParse(idTextField.getText(), "Integer")) {             
-            selectedFilters.add("id", "=", Integer.parseInt(idTextField.getText()), Integer.class);
+        if (FormatUtils.tryParse(idTextField.getText(), "Integer")) {
+            String idField = "id";
+            if (isTicket) {
+                idField = "Ticket.id";
+            }
+            selectedFilters.add(idField, "=", Integer.parseInt(idTextField.getText()), Integer.class);
         }
         if (FormatUtils.tryParse(noTicketWithholdingTextField.getText(), "Integer")) {
             selectedFilters.add("number", "=", noTicketWithholdingTextField.getText(), String.class);
@@ -393,14 +401,7 @@ public class FiltersView extends javax.swing.JFrame {
         } 
         if(maxDateChooser.getDate()!=null) {
             selectedFilters.add("date", "<=", FormatUtils.dateGen(sdf.format(maxDateChooser.getDate())), Date.class);
-        }
-        
-        if (FormatUtils.tryParse(minTotalAmountTextField.getText(), "Float")) {
-            selectedFilters.add("totalAmount", ">=", Float.parseFloat(minTotalAmountTextField.getText()), Float.class);
-        }
-        if (FormatUtils.tryParse(maxTotalAmountTextField.getText(), "Float")) {
-            selectedFilters.add("totalAmount", "<=", Float.parseFloat(maxTotalAmountTextField.getText()), Float.class);       
-        }        
+        }       
         
         SQLFilter providersDoc = new SQLFilter();
         String selectedProvider = providersAutoSuggestor.getText();
@@ -415,7 +416,7 @@ public class FiltersView extends javax.swing.JFrame {
         
         String selectedSector = sectorsAutoSuggestor.getText();
         if (selectedSector != null && !selectedSector.isEmpty()) {
-            if (SectorDAO.sectorExist(selectedSector)) {
+            if (!SectorDAO.sectorExist(selectedSector)) {
                 throw new IllegalArgumentException("sector doesn't exists");
             }
             selectedFilters.add("sector", "=", selectedSector, String.class);
@@ -428,7 +429,14 @@ public class FiltersView extends javax.swing.JFrame {
         if (!isTicket) {
             return selectedFilters;
         }
-             
+                     
+        if (FormatUtils.tryParse(minTotalAmountTextField.getText(), "Float")) {
+            selectedFilters.add("totalAmount", ">=", Float.parseFloat(minTotalAmountTextField.getText()), Float.class);
+        }
+        if (FormatUtils.tryParse(maxTotalAmountTextField.getText(), "Float")) {
+            selectedFilters.add("totalAmount", "<=", Float.parseFloat(maxTotalAmountTextField.getText()), Float.class);       
+        } 
+        
         if (FormatUtils.tryParse(minIvaTextField.getText(), "Float")) {
             selectedFilters.add("iva", ">=", Float.parseFloat(minIvaTextField.getText()), Float.class);
         }

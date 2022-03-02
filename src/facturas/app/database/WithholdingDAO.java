@@ -50,7 +50,7 @@ public class WithholdingDAO {
     }
         
     public static List<Withholding> getWithholdings() {
-        String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id WHERE Ticket.id IS NULL";
+        String query = "SELECT * FROM Withholding";
         ResultSet result = executeQuery(query , false, true);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;
@@ -70,8 +70,7 @@ public class WithholdingDAO {
         if (filters == null) {
             throw new IllegalArgumentException("The parameter filters can not be null");
         }
-        String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id " 
-                + filters.get() + " AND Ticket.id IS NULL";
+        String query = "SELECT * FROM Withholding " + filters.get();
         ResultSet result = executeQuery(query, false, true);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;

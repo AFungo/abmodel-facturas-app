@@ -682,13 +682,14 @@ public class View extends javax.swing.JFrame {
                     t = controller.makeNegative((Ticket) t);
                 }
                 model.addRow(FormatUtils.ticketToForm(t));
-            }
-            Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingsToForm(t);
-            if (withholdings.getFst() != null) {
-                model.addRow(withholdings.getFst());
-            }
-            if (withholdings.getSnd() != null) {
-                model.addRow(withholdings.getSnd());
+            } else {
+                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingsToForm(t);
+                if (withholdings.getFst() != null) {
+                    model.addRow(withholdings.getFst());
+                }
+                if (withholdings.getSnd() != null) {
+                    model.addRow(withholdings.getSnd());
+                }
             }
         }
     }
