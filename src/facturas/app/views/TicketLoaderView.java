@@ -615,7 +615,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
     
     private void cleanTextFields() {
         JTextField[] forClean = new JTextField[] {numberTextField, netAmountWITextField, netAmountWOITextField, 
-            amountImpExTextField, ivaTaxTextField,ivaTax1TextField, ivaTax2TextField, totalAmountTextField};
+            amountImpExTextField, ivaTaxTextField,ivaTax1TextField, ivaTax2TextField, totalAmountTextField, 
+            profitsTextField, ivaTextField};
         
         controller.cleanTextField(forClean);
     }
