@@ -239,6 +239,8 @@ public class View extends javax.swing.JFrame {
         inDollars.setText("Precio en dolares");
 
         resetDBButton.setText("Reset DB");
+        resetDBButton.setVisible(false);
+        resetDBButton.setEnabled(false);
         resetDBButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetDBButtonActionPerformed(evt);
