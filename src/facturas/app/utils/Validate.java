@@ -133,13 +133,18 @@ public class Validate {
     }
     
     private static boolean[] validWithholdingValues(Map<String, String> values) {
-        boolean[] validations = new boolean[3];
+        boolean[] validations = new boolean[4];
         
         int i = 0;
         validations[i++] = tryParse(values.get("number"), Integer.class, false);
-        validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), Float.class, true);
-        validations[i++] = values.get("profits").isEmpty() ? true : tryParse(values.get("profits"), Float.class, true);
-
+        validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), Float.class, false);
+        validations[i++] = values.get("profits").isEmpty() ? true : tryParse(values.get("profits"), Float.class, false);
+        
+        if (values.get("iva").isEmpty() && values.get("profits").isEmpty()) {   //cannot be both empty
+            validations[i++] = false;
+        }else { //also cannot be both 0 
+            validations[i++] = tryParse(values.get("iva"), Float.class, true) || tryParse(values.get("profits"), Float.class, true);
+        }
         return validations;
     }
     
@@ -171,6 +176,8 @@ public class Validate {
             invalidations += "<br/>retencion iva mal escrito";
         if (!numerics[i++])
             invalidations += "<br/>retencion ganancias mal escrito";
+        if (!numerics[i++])
+            invalidations += "<br/>ningun valor introducido a la retencion";
 
         return invalidations;
     }
