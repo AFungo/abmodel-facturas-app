@@ -17,6 +17,7 @@ import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import facturas.app.utils.Validate;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
@@ -384,14 +385,14 @@ public class FiltersView extends javax.swing.JFrame {
     public SQLFilter getFilters(boolean isTicket) {
         SQLFilter selectedFilters = new SQLFilter();
         
-        if (FormatUtils.tryParse(idTextField.getText(), "Integer")) {
+        if (Validate.tryParse(idTextField.getText(), Integer.class, false)) {
             String idField = "id";
             if (isTicket) {
                 idField = "Ticket.id";
             }
             selectedFilters.add(idField, "=", Integer.parseInt(idTextField.getText()), Integer.class);
         }
-        if (FormatUtils.tryParse(noTicketWithholdingTextField.getText(), "Integer")) {
+        if (Validate.tryParse(noTicketWithholdingTextField.getText(), Integer.class, false)) {
             selectedFilters.add("number", "=", noTicketWithholdingTextField.getText(), String.class);
         }
 
@@ -422,7 +423,7 @@ public class FiltersView extends javax.swing.JFrame {
             selectedFilters.add("sector", "=", selectedSector, String.class);
         }
         
-        if (FormatUtils.tryParse(docNoTextField.getText(), "Integer")) {
+        if (Validate.tryParse(docNoTextField.getText(), Integer.class, false)) {
             selectedFilters.add("providerDoc", "=", docNoTextField.getText(), String.class);
         }
         
@@ -430,17 +431,17 @@ public class FiltersView extends javax.swing.JFrame {
             return selectedFilters;
         }
                      
-        if (FormatUtils.tryParse(minTotalAmountTextField.getText(), "Float")) {
+        if (Validate.tryParse(minTotalAmountTextField.getText(), Float.class, false)) {
             selectedFilters.add("totalAmount", ">=", Float.parseFloat(minTotalAmountTextField.getText()), Float.class);
         }
-        if (FormatUtils.tryParse(maxTotalAmountTextField.getText(), "Float")) {
+        if (Validate.tryParse(maxTotalAmountTextField.getText(), Float.class, false)) {
             selectedFilters.add("totalAmount", "<=", Float.parseFloat(maxTotalAmountTextField.getText()), Float.class);       
         } 
         
-        if (FormatUtils.tryParse(minIvaTextField.getText(), "Float")) {
+        if (Validate.tryParse(minIvaTextField.getText(), Float.class, false)) {
             selectedFilters.add("iva", ">=", Float.parseFloat(minIvaTextField.getText()), Float.class);
         }
-        if (FormatUtils.tryParse(maxIvaTextField.getText(), "Float")) {
+        if (Validate.tryParse(maxIvaTextField.getText(), Float.class, false)) {
             selectedFilters.add("iva", "<=", Float.parseFloat(maxIvaTextField.getText()), Float.class);
         }  
            

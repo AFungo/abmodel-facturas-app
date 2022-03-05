@@ -18,17 +18,15 @@ import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PricesList;
+import facturas.app.utils.Validate;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -82,140 +80,24 @@ public class Controller {
     }
     
     public String validateProviderParam(Map<String, String> values, JComboBox<String> sectorsComboBox){
-        String message = "<html>", invalidations = "";
-        List<String> sectors = getItemsFromComboBox(sectorsComboBox);
-                
-        if(values.get("name").isEmpty()){ invalidations += "<br/> Nombre no introducido";}
-        if(values.get("docNo").isEmpty()){
-            invalidations += "<br/> Numero documento no introducido";
-        } else if (!FormatUtils.tryParse(values.get("docNo"), "Integer")){ 
-            invalidations += "<br/> Numero documento mal escrito";
-        }
-        
-        if(values.get("docType").isEmpty()){ invalidations += "<br/> Tipo de documento no introdcido";}
-        
-        String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
-        if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
-            invalidations += "<br/>El rubro del comprobante no existe";
-        }
-        
-        if (invalidations.isEmpty()) {
-            SQLFilter filter = new SQLFilter();
-            filter.add("docNo", "=", values.get("docNo"), String.class);
-            if (ProviderDAO.providerExist(filter)) {
-                invalidations += "<br/>El proveedor " + values.get("name") + " con nro documento " + values.get("docNo") + " ya esta cargado";
-            }
-        }
-        
-        if (invalidations.isEmpty()) {
-            return null;
-        } else {
-            invalidations += "</html>";
-            return message + invalidations;
-        }
+        String message = Validate.providerInput(values, sectorsComboBox);
+        return message;
     }
     
     //ticket is a boolean representing if the validation is for ticket or withholding
     public String validateParam(java.util.Date date, Map<String, String> values, boolean ticket, 
             JComboBox<String> sectorsComboBox, List<Provider> selectedProvider) {
         
-        List<String> sectors = getItemsFromComboBox(sectorsComboBox);
-        String message = "<html>", invalidations = "";
-        
-        if (date == null) {
-            invalidations += "<br/>Fecha no introducida";
+        String message = Validate.withholdingInput(date, sectorsComboBox, values, selectedProvider);
+        if (ticket) {
+            message += Validate.ticketInput(date, values);
         }
         
-        if (selectedProvider.isEmpty()) {
-            invalidations += "<br/>Proveedor no introducido";
-        } else if (selectedProvider.size() > 1) {
-            invalidations += "<br/>El proveedor elegido no es unico, especifique su documento";
+        if (!message.isEmpty()) {
+            return "<html>" + message + "</html>";
         }
-        
-        String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
-        if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector))) {
-            invalidations += "<br/>El rubro del comprobante no existe";
-        }
-        
-        if (ticket && (values.get("type") == null || values.get("type").isEmpty())) {
-            invalidations += "<br/>No se especifico el tipo de comprobante";
-        }
-        
-        if (ticket && values.get("exchangeMoney").isEmpty()) {
-            invalidations += "<br/>No se introdujo el tipo de moneda";
-        }
-        
-        boolean[] numerics = FormatUtils.validTicketInput(values, ticket);
-        invalidations += addInvalidNumerics(numerics, ticket);
-        
-        if (!invalidations.isEmpty()) {
-            invalidations += "</html>";
-            return message + invalidations;
-        }
-        
-        String iva = values.get("iva"), profits = values.get("profits");
-        if ((!ticket) && (iva.isEmpty() || Float.valueOf(iva) == 0) && 
-                (profits.isEmpty() || Float.valueOf(profits) == 0)) {
-            invalidations += "<br/>No se introdujo ningun ningun importe en la retencion";
-        }
-        
-        if (invalidations.isEmpty()) {
-            SQLFilter filter = new SQLFilter();
-            Provider prov = selectedProvider.get(0);
-            filter.add("providerDoc", "=", prov.getValues().get("docNo"), String.class);
-            filter.add("number", "=", values.get("number"), String.class);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date formatedDate = FormatUtils.dateGen(sdf.format(date));
-            filter.add("date", "=", formatedDate, Date.class);
-            if (WithholdingDAO.exists(filter)) { 
-                invalidations += "<br/>El comprobante de proveedor " + prov.getValues().get("name") + ", numero " + 
-                        values.get("number") + " y fecha " + formatedDate + " ya esta cargado";
-            }
-        }
-        
-        if (invalidations.isEmpty()) {
-            return null;
-        } else {
-            invalidations += "</html>";
-            return message + invalidations;
-        }
-    }
-    
-    private String addInvalidNumerics(boolean[] numerics, boolean ticket) {
-        String invalidations = "";
-        int i = 0;
-        if (!numerics[i++])
-            invalidations += "<br/>Numero de ticket mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>retencion iva mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>retencion ganancias mal escrito";
-        if (!ticket) //case of withholding
-            return invalidations;
-        //otherwise check for ticket inputs
-        if (!numerics[i++])
-            invalidations += "<br/>Importe Op. Exentas mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>Tipo de cambio mal escrito";
-        if (!numerics[i++] || !numerics[i++] || !numerics[i++])
-            invalidations += "<br/>algunos de los Ivas mal escritos";
-        if (!numerics[i++])
-            invalidations += "<br/>Importe neto gravado mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>Importe neto no gravado mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>Importe total mal escrito";
-        
-        return invalidations;
-    }
-    
-    private List<String> getItemsFromComboBox(JComboBox<String> sectorsComboBox) {
-        List<String> items = new LinkedList<>();
-        for (int i = 0; i < sectorsComboBox.getItemCount(); i++) {
-            items.add(sectorsComboBox.getItemAt(i));
-        }
-        return items;
+        return null;
     }
     
     public PricesList getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
@@ -344,7 +226,7 @@ public class Controller {
         try {
             stringItems = Files.readAllLines(f.toPath(), Charset.defaultCharset());
         } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalStateException(ex.toString());
         }
         
         String initialLine = stringItems.remove(0); //Remove the first row of the file for checking

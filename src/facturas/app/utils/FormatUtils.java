@@ -9,8 +9,6 @@ import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
-import java.math.BigInteger;
-
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -240,47 +238,6 @@ public class FormatUtils {
             vector.addElement(e);
         }
         return vector;
-    }
-    
-    public static boolean[] validTicketInput(Map<String, String> values, boolean ticket) {
-        boolean[] validations;
-        if (ticket) 
-            validations = new boolean[11];
-        else
-            validations = new boolean[3];
-        
-        int i = 0;
-        validations[i++] = tryParse(values.get("number"), "Integer");
-        validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), "Float");
-        validations[i++] = values.get("profits").isEmpty() ? true : tryParse(values.get("profits"), "Float");
-        if (ticket) {
-            validations[i++] = values.get("amountImpEx").isEmpty() ? true : tryParse(values.get("amountImpEx"), "Float");
-            validations[i++] = values.get("exchangeType").isEmpty() ? true : tryParse(values.get("exchangeType"), "Float");
-            validations[i++] = values.get("ivaTax").isEmpty() ? true : tryParse(values.get("ivaTax"), "Float");
-            validations[i++] = values.get("ivaTax1").isEmpty() ? true : tryParse(values.get("ivaTax1"), "Float");
-            validations[i++] = values.get("ivaTax2").isEmpty() ? true : tryParse(values.get("ivaTax2"), "Float");
-            validations[i++] = values.get("netAmountWI").isEmpty() ? true : tryParse(values.get("netAmountWI"), "Float");
-            validations[i++] = values.get("netAmountWOI").isEmpty() ? true : tryParse(values.get("netAmountWOI"), "Float");
-            validations[i++] = tryParse(values.get("totalAmount"), "Float");
-        }
-
-        return validations;
-    }
-    
-    public static boolean tryParse(String value, String expectedClass) {
-        try { 
-            if (expectedClass == "Float") {
-                Float.parseFloat(value);
-            } else if (expectedClass == "Integer"){
-                new BigInteger(value);
-            } else {
-                System.out.println("class wrongly passed, " + expectedClass + " is not valid");
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
     
     //this method takes a String and returns a Date.
