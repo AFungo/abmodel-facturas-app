@@ -11,7 +11,6 @@ import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.ConfigManager;
-import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.PdfCreator;
 import java.awt.event.MouseEvent;
@@ -72,6 +71,7 @@ public class ProvidersView extends javax.swing.JFrame {
         directionMenuItem = new javax.swing.JMenuItem();
         sectorMenuItem = new javax.swing.JMenuItem();
         aliasMenuItem = new javax.swing.JMenuItem();
+        nameMenuItem = new javax.swing.JMenuItem();
         deleteSectorMenuItem = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -104,6 +104,14 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         });
         popupMenu.add(aliasMenuItem);
+
+        nameMenuItem.setText("Cambiar nombre");
+        nameMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(nameMenuItem);
 
         deleteSectorMenuItem.setText("Eliminar rubro");
         deleteSectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -321,6 +329,13 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteSectorMenuItemActionPerformed
 
+    private void nameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameMenuItemActionPerformed
+        String userInput = JOptionPane.showInputDialog(this, "nombre: ", "");
+        if (userInput != null) {
+            updateAttribute("name", userInput, 1); //column 1 is for name
+        }
+    }//GEN-LAST:event_nameMenuItemActionPerformed
+
     private void updateAttribute(String attribute, String value, int column) {
          SQLFilter filter = new SQLFilter();
         filter.add("docNo", "=", selectedDoc, String.class);
@@ -369,6 +384,7 @@ public class ProvidersView extends javax.swing.JFrame {
     private javax.swing.JMenuItem deleteSectorMenuItem;
     private javax.swing.JMenuItem directionMenuItem;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem nameMenuItem;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable providersTable;
     private javax.swing.JButton searchProvider;
