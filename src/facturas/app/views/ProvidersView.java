@@ -276,7 +276,8 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_providersTableMousePressed
 
     private void aliasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aliasMenuItemActionPerformed
-        String userInput = JOptionPane.showInputDialog(this, "alias: ", "");
+        String alias = getAttribute(2);
+        String userInput = JOptionPane.showInputDialog(this, "alias: ", alias);
         if (userInput != null) {
             updateAttribute("alias", userInput, 2); //column 2 is for alias
         }
@@ -291,7 +292,8 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
     private void directionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionMenuItemActionPerformed
-        String userInput = JOptionPane.showInputDialog(this, "Dirección: ", "");
+        String direction = getAttribute(4);
+        String userInput = JOptionPane.showInputDialog(this, "Dirección: ", direction);
         if (userInput != null) {
             updateAttribute("direction", userInput, 4); //column 4 is for direction
         }
@@ -330,12 +332,18 @@ public class ProvidersView extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteSectorMenuItemActionPerformed
 
     private void nameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameMenuItemActionPerformed
-        String userInput = JOptionPane.showInputDialog(this, "nombre: ", "");
+        String name = getAttribute(1);
+        String userInput = JOptionPane.showInputDialog(this, "nombre: ", name);
         if (userInput != null) {
             updateAttribute("name", userInput, 1); //column 1 is for name
         }
     }//GEN-LAST:event_nameMenuItemActionPerformed
 
+    private String getAttribute(int column) {
+        int row = providersTable.getSelectedRow();
+        return (String)providersTable.getValueAt(row, column);
+    }
+    
     private void updateAttribute(String attribute, String value, int column) {
          SQLFilter filter = new SQLFilter();
         filter.add("docNo", "=", selectedDoc, String.class);
