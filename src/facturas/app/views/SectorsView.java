@@ -11,6 +11,7 @@ import facturas.app.database.TicketDAO;
 import facturas.app.database.WithholdingDAO;
 import facturas.app.utils.AutoSuggestor;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -57,6 +58,9 @@ public class SectorsView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("RUBROS");
+        setFocusableWindowState(false);
+        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage()
+        );
 
         addSector.setText("Agregar");
         addSector.addActionListener(new java.awt.event.ActionListener() {
