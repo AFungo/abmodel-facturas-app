@@ -146,7 +146,7 @@ public class SectorsView extends javax.swing.JFrame {
             SQLFilter filter = new SQLFilter();
             filter.add("sector", "=", sectorsAutoSuggestor.getText(), String.class);
             SectorDAO.addSector(userInput);
-            WithholdingDAO.changeAttribute(filter, "sector", userInput, false);
+            WithholdingDAO.changeAttribute(filter, "sector", userInput, true);
             ProviderDAO.changeAttribute(filter, "sector", userInput);
             SectorDAO.deleteSector(sectorsAutoSuggestor.getText());
             sectorsAutoSuggestor.setText("");
