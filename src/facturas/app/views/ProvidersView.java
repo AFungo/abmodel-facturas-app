@@ -345,9 +345,9 @@ public class ProvidersView extends javax.swing.JFrame {
     }
     
     private void updateAttribute(String attribute, String value, int column) {
-         SQLFilter filter = new SQLFilter();
+        SQLFilter filter = new SQLFilter();
         filter.add("docNo", "=", selectedDoc, String.class);
-        controller.changeAttributeProviderDAO(filter, attribute, value);    //update db
+        controller.changeProviderAttribute(filter, attribute, value);    //update db
         int row = providersTable.getSelectedRow();
         providersTable.setValueAt(value, row, column);  //update view
     }
