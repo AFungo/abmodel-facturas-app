@@ -73,6 +73,7 @@ public class View extends javax.swing.JFrame {
         deliveredMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         deleteSectorMenuItem = new javax.swing.JMenuItem();
+        exchangeTypeMenuItem = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         ticketsTableScroll = new javax.swing.JScrollPane();
         ticketsTable = new javax.swing.JTable();
@@ -134,6 +135,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         popupMenu.add(deleteSectorMenuItem);
+
+        exchangeTypeMenuItem.setText("Modificar tipo de cambio");
+        exchangeTypeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exchangeTypeMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(exchangeTypeMenuItem);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
 
@@ -651,6 +660,22 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteSectorMenuItemActionPerformed
 
+    private void exchangeTypeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeTypeMenuItemActionPerformed
+        int row = ticketsTable.getSelectedRow();
+        Float exchangeType = (Float)ticketsTable.getValueAt(row, 8); //column 8 is for exchange type
+        String userInput = JOptionPane.showInputDialog(this, "Tipo de cambio: ", exchangeType);
+        if (userInput != null) {
+            updateAttribute("exchangeType", userInput, 8); //column 8 is for exchange type
+        }
+    }//GEN-LAST:event_exchangeTypeMenuItemActionPerformed
+
+    private void updateAttribute(String attribute, String value, int column) {
+        int row = ticketsTable.getSelectedRow();
+        SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+        controller.changeTicketAttribute(filter, attribute, value, false);    //update db
+        ticketsTable.setValueAt(Float.parseFloat(value), row, column);  //update view
+    }
+    
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -741,6 +766,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem deleteSectorMenuItem;
     private javax.swing.JMenuItem deliveredMenuItem;
     private javax.swing.JMenu edit;
+    private javax.swing.JMenuItem exchangeTypeMenuItem;
     private javax.swing.JMenu files;
     private javax.swing.JMenuItem filters;
     private javax.swing.JCheckBox inDollars;

@@ -15,6 +15,7 @@ import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
+import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PricesList;
@@ -136,8 +137,13 @@ public class Controller {
         return ProviderDAO.getProviders();
     }
 
-    public void changeTicketAttribute(SQLFilter filter, String attribute, String value){
-        TicketDAO.changeAttribute(filter, attribute, value);
+    public void changeTicketAttribute(SQLFilter filter, String attribute, String value, boolean quotes){
+        //getting id of withholding
+        SQLFilter withholdingFilter = FilterUtils.getWithholdingFilter(filter);
+        List<Withholding> withholdings = WithholdingDAO.getWithholdings(withholdingFilter);
+        filter.add("id", "=", withholdings.get(0).getValues().get("id"), Integer.class);
+        
+        TicketDAO.changeAttribute(filter, attribute, value, quotes);
     }
     
     public void changeWithholdingAttribute(SQLFilter filter, String attribute, String value){
@@ -174,7 +180,7 @@ public class Controller {
         return ProviderDAO.getProviders(filters);
     }
 
-    public void changeAttributeProviderDAO(SQLFilter filters, String attribute, String value){
+    public void changeProviderAttribute(SQLFilter filters, String attribute, String value){
         ProviderDAO.changeAttribute(filters, attribute, value);
     }
     
