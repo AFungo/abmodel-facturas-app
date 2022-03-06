@@ -71,9 +71,9 @@ public class View extends javax.swing.JFrame {
         popupMenu = new javax.swing.JPopupMenu();
         sectorMenuItem = new javax.swing.JMenuItem();
         deliveredMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        deleteSectorMenuItem = new javax.swing.JMenuItem();
         exchangeTypeMenuItem = new javax.swing.JMenuItem();
+        deleteSectorMenuItem = new javax.swing.JMenuItem();
+        deleteMenuItem = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         ticketsTableScroll = new javax.swing.JScrollPane();
         ticketsTable = new javax.swing.JTable();
@@ -120,13 +120,13 @@ public class View extends javax.swing.JFrame {
         });
         popupMenu.add(deliveredMenuItem);
 
-        deleteMenuItem.setText("Eliminar");
-        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        exchangeTypeMenuItem.setText("Modificar tipo de cambio");
+        exchangeTypeMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteMenuItemActionPerformed(evt);
+                exchangeTypeMenuItemActionPerformed(evt);
             }
         });
-        popupMenu.add(deleteMenuItem);
+        popupMenu.add(exchangeTypeMenuItem);
 
         deleteSectorMenuItem.setText("Eliminar rubro");
         deleteSectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -136,13 +136,13 @@ public class View extends javax.swing.JFrame {
         });
         popupMenu.add(deleteSectorMenuItem);
 
-        exchangeTypeMenuItem.setText("Modificar tipo de cambio");
-        exchangeTypeMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        deleteMenuItem.setText("Eliminar");
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exchangeTypeMenuItemActionPerformed(evt);
+                deleteMenuItemActionPerformed(evt);
             }
         });
-        popupMenu.add(exchangeTypeMenuItem);
+        popupMenu.add(deleteMenuItem);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
 

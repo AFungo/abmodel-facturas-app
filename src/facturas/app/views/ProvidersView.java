@@ -105,7 +105,7 @@ public class ProvidersView extends javax.swing.JFrame {
         });
         popupMenu.add(aliasMenuItem);
 
-        nameMenuItem.setText("Cambiar nombre");
+        nameMenuItem.setText("Modificar nombre");
         nameMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameMenuItemActionPerformed(evt);

@@ -34,7 +34,7 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="nameMenuItem">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cambiar nombre"/>
+            <Property name="text" type="java.lang.String" value="Modificar nombre"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nameMenuItemActionPerformed"/>
