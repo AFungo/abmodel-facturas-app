@@ -76,8 +76,11 @@ public class WithholdingDAO {
         return withholdingsList;
     }
 
-    public static void changeAttribute(SQLFilter filters, String attribute, String value) {
-        String query = "UPDATE Withholding SET " + attribute + " = '" + value  + "' " + filters.get();
+    public static void changeAttribute(SQLFilter filters, String attribute, String value, boolean quotes) {
+        if (quotes) {
+            value = "'" + value + "'";
+        }
+        String query = "UPDATE Withholding SET " + attribute + " = " + value  + filters.get();
         executeQuery(query, true, false);
     }
     

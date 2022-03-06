@@ -146,8 +146,8 @@ public class Controller {
         TicketDAO.changeAttribute(filter, attribute, value, quotes);
     }
     
-    public void changeWithholdingAttribute(SQLFilter filter, String attribute, String value){
-        WithholdingDAO.changeAttribute(filter, attribute, value);
+    public void changeWithholdingAttribute(SQLFilter filter, String attribute, String value, boolean quotes){
+        WithholdingDAO.changeAttribute(filter, attribute, value, quotes);
     }
     
     public void deleteWithholdingAttribute(SQLFilter filter, String attribute){
