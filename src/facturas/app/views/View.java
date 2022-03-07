@@ -261,7 +261,7 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        files.setText("File");
+        files.setText("Cargar");
 
         multipleLoad.setText("Cargar (.csv)...");
 
@@ -301,7 +301,7 @@ public class View extends javax.swing.JFrame {
 
         menuBar.add(files);
 
-        edit.setText("Edit");
+        edit.setText("Editar");
 
         sectorsViewItem.setText("Agregar/Borrar rubro");
         sectorsViewItem.addActionListener(new java.awt.event.ActionListener() {
