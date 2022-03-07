@@ -303,7 +303,7 @@ public class ProvidersView extends javax.swing.JFrame {
         JFrame parentFrame = new JFrame();
 
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Specify a file to save");   
+        fileChooser.setDialogTitle("Elije un archivo donde guardarlo");   
 
         int userSelection = fileChooser.showSaveDialog(parentFrame);
 
