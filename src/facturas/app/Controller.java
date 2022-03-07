@@ -28,6 +28,8 @@ import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -221,6 +223,15 @@ public class Controller {
     public void addProvider(Map<String, String> values){
         Provider provider = new Provider(values);
         ProviderDAO.addProvider(provider);
+    }
+    
+    public void createBackup(File folder) {
+        if (folder == null) {
+            throw new IllegalArgumentException("File is null");
+        }
+        //create backup folder (could be several backups in the folder)
+        File backupFolder = new File(folder, "/backup-" + LocalDate.now() + "-" + LocalTime.now());
+        backupFolder.mkdir();
     }
     
     private Pair<List<String>,Boolean> readCsv(File f, String type) {

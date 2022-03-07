@@ -103,6 +103,7 @@ public class View extends javax.swing.JFrame {
         tools = new javax.swing.JMenu();
         filters = new javax.swing.JMenuItem();
         columnSelector = new javax.swing.JMenuItem();
+        createBackup = new javax.swing.JMenuItem();
 
         sectorMenuItem.setText("Modificar rubro");
         sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -347,6 +348,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         tools.add(columnSelector);
+
+        createBackup.setText("Crear backup");
+        createBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBackupActionPerformed(evt);
+            }
+        });
+        tools.add(createBackup);
 
         menuBar.add(tools);
 
@@ -669,6 +678,19 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exchangeTypeMenuItemActionPerformed
 
+    private void createBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBackupActionPerformed
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setDialogTitle("Elije una carpeta donde guardar el backup");   
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            controller.createBackup(file);
+        }
+    }//GEN-LAST:event_createBackupActionPerformed
+
     private void updateAttribute(String attribute, String value, int column) {
         int row = ticketsTable.getSelectedRow();
         SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
@@ -761,6 +783,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem addProviderMenuItem;
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
+    private javax.swing.JMenuItem createBackup;
     private javax.swing.JButton createPdf;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenuItem deleteSectorMenuItem;
