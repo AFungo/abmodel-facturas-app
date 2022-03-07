@@ -221,11 +221,11 @@ public class FormatUtils {
         }
         
         if ("ticket".equals(mode)) {
-            String expectedLineEmitter = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
-            String expectedLineReceptor = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Receptor\",\"Nro. Doc. Receptor\",\"Denominación Receptor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+            String expectedLineEmitter = FixedData.getTicketEmitterFileFormat();
+            String expectedLineReceptor = FixedData.getTicketReceptorFileFormat();
             return initialLine.contentEquals(expectedLineEmitter) || initialLine.contentEquals(expectedLineReceptor);
         } else if ("price".equals(mode)) {
-            String expectedLine = "Fecha cotizacion;Compra;Venta;";
+            String expectedLine = FixedData.getDollarPriceFileFormat();
             return initialLine.contentEquals(expectedLine);
         }
         

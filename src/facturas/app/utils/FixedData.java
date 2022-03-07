@@ -34,6 +34,18 @@ public class FixedData {
         return types;
     }
 
+    public static String getTicketEmitterFileFormat() {
+        return "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+    }
+    
+    public static String getTicketReceptorFileFormat() {
+        return "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Receptor\",\"Nro. Doc. Receptor\",\"Denominación Receptor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+    }
+    
+    public static String getDollarPriceFileFormat() {
+        return "Fecha cotizacion;Compra;Venta;";
+    }
+    
     public static boolean validType(String type) {
         boolean value = Arrays.asList(types).contains(type);
         return value;
