@@ -56,6 +56,13 @@ public class WithholdingDAO {
         return withholdingsList;
     }
     
+    public static List<Withholding> getWithholdingsWithNoTicket() {
+        String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id WHERE Ticket.id IS NULL";
+        ResultSet result = executeQuery(query , false, true);
+        List<Withholding> withholdingsList = getWithholdingsList(result);
+        return withholdingsList;
+    }
+    
     public static boolean exists(SQLFilter filter) {
         String query = "SELECT * FROM Withholding " + filter.get();
         ResultSet result = executeQuery(query, false, true);
