@@ -16,11 +16,13 @@ import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FilterUtils;
+import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PricesList;
 import facturas.app.utils.Validate;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -30,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -230,8 +234,40 @@ public class Controller {
             throw new IllegalArgumentException("File is null");
         }
         //create backup folder (could be several backups in the folder)
-        File backupFolder = new File(folder, "/backup-" + LocalDate.now() + "-" + LocalTime.now());
+        File backupFolder = new File(folder, "\\backup--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\");
         backupFolder.mkdir();
+        
+        List<Ticket> tickets = TicketDAO.getTickets();
+        List<Withholding> withholdings = WithholdingDAO.getWithholdings();
+        if (! tickets.isEmpty() && !withholdings.isEmpty()) {   //if any ticket or withholding, save them in a file
+            backupTickets(tickets, withholdings, backupFolder);
+        }
+    }
+    
+    private void backupTickets(List<Ticket> tickets, List<Withholding> withholdings, File backupFolder) {
+        File ticketsBackup = new File(backupFolder, "tickets.csv");
+        try {
+            ticketsBackup.createNewFile();
+        } catch (IOException ex) {
+            throw new IllegalStateException("failed to create file at : " + ticketsBackup.getAbsolutePath() + "\n" + ex.toString());
+        }
+        FileWriter ticketsWriter;
+        try {   //write tickets in file
+            ticketsWriter = new FileWriter(ticketsBackup);
+            ticketsWriter.write(FixedData.getTicketAppFormat());    //first line gives format to be identified at loading
+            for (Ticket t : tickets) {
+                ticketsWriter.append("\n" + FormatUtils.ticketToCsv(t));
+            }
+            
+            ticketsWriter.close();
+        } catch (IOException ex) {
+            throw new IllegalStateException("failed to write on file: " + ticketsBackup.getAbsolutePath() + "\n" + ex.toString());
+        }
+    }
+    
+    private String currentTimeMinutesHours() {
+        LocalTime current = LocalTime.now();
+        return current.getHour() + "-" + current.getMinute();
     }
     
     private Pair<List<String>,Boolean> readCsv(File f, String type) {
