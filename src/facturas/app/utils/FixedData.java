@@ -50,8 +50,16 @@ public class FixedData {
         return "date;number;providerDoc;iva;profits;delivered;sector;type;numberTo;authCode;exchangeType;exchangeMoney;netAmountWI;netAmountWOI;amountImpEx;ivaTax;totalAmount;issuedByMe";
     }
     
+    public static String getWithholdingAppFormat() {
+        return "date;number;providerDoc;iva;profits;delivered;sector";
+    }
+    
     public static String getProviderAppFormat() {
         return "docNo;name;documentType;direction;sector;alias";
+    }
+    
+    public static String getSectorAppFormat() {
+        return "name";
     }
     
     public static boolean validType(String type) {
