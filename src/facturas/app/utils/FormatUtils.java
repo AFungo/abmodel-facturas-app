@@ -86,6 +86,21 @@ public class FormatUtils {
         return dict;
     }
     
+    public static String ticketToCsv(Ticket t) {
+        Map<String, Object> dict = t.getValues();
+        Provider provider = (Provider)dict.get("provider");
+        String result = "";
+        
+        result += dict.get("date") + ";" + dict.get("number") + ";" + provider.getValues().get("docNo") + ";" + dict.get("iva") 
+                + ";" + dict.get("profits") + ";" + dict.get("delivered") + ";" + dict.get("sector") + ";" + dict.get("type") + ";" 
+                + dict.get("numberTo") + ";" + dict.get("authCode") + ";" + dict.get("exchangeType") + ";" 
+                + dict.get("exchangeMoney") + ";" + dict.get("netAmountWI") + ";" + dict.get("netAmountWOI") + ";" 
+                + dict.get("amountImpEx") + ";" + dict.get("ivaTax") + ";" + dict.get("totalAmount") + ";" + dict.get("issuedByMe");
+        
+        result = result.replace("null", "");
+        return result;
+    }
+    
     public static Pair<String, String> withholdingToSQL(Withholding w) { 
         Map<String, Object> dict = w.getValues();
         String attributes = "", values = "";
