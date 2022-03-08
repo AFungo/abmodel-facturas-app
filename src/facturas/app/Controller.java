@@ -251,6 +251,8 @@ public class Controller {
         //sectors backup
         backupData(backupFolder, () -> SectorDAO.getSectors(), s -> s, FixedData.getSectorAppFormat(), "sectors");
         //dollar prices backup
+        backupData(backupFolder, () -> DollarPriceDAO.getPrices(), p -> FormatUtils.dollarPriceToCsv(p), 
+                FixedData.getDollarPriceFileFormat(), "prices");
     }
     
     private <E> void backupData(File backupFolder, Supplier<List<E>> dao, Function<E,String> formater, 
