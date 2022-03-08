@@ -238,7 +238,7 @@ public class Controller {
         backupFolder.mkdir();
         
         List<Ticket> tickets = TicketDAO.getTickets();
-        List<Withholding> withholdings = WithholdingDAO.getWithholdings();
+        List<Withholding> withholdings = WithholdingDAO.getWithholdingsWithNoTicket();
         if (! tickets.isEmpty() && !withholdings.isEmpty()) {   //if any ticket or withholding, save them in a file
             backupTickets(tickets, withholdings, backupFolder);
         }
@@ -258,8 +258,11 @@ public class Controller {
             for (Ticket t : tickets) {
                 ticketsWriter.append("\n" + FormatUtils.ticketToCsv(t));
             }
-            
+            for (Withholding w : withholdings) {
+                ticketsWriter.append("\n" + FormatUtils.withholdingToCsv(w));
+            }
             ticketsWriter.close();
+            
         } catch (IOException ex) {
             throw new IllegalStateException("failed to write on file: " + ticketsBackup.getAbsolutePath() + "\n" + ex.toString());
         }
