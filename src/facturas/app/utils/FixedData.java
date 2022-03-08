@@ -46,6 +46,10 @@ public class FixedData {
         return "Fecha cotizacion;Compra;Venta;";
     }
     
+    public static String getTicketAppFormat() {
+        return "date;number;providerDoc;iva;profits;delivered;sector;type;numberTo;authCode;exchangeType;exchangeMoney;netAmountWI;netAmountWOI;amountImpEx;ivaTax;totalAmount;issuedByMe";
+    }
+    
     public static boolean validType(String type) {
         boolean value = Arrays.asList(types).contains(type);
         return value;
