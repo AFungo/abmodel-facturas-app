@@ -171,7 +171,6 @@ public class FormatUtils {
                 + ";" + dict.get("profits") + ";" + dict.get("delivered") + ";" + dict.get("sector") + ";;;;;;;;;;;";
         
         result = result.replace("null", "");
-        System.out.println(result);
         return result;
     }
     
@@ -194,6 +193,14 @@ public class FormatUtils {
         return new Pair<>(attributes, values);
     }
     
+    public static String dollarPriceToCsv(DollarPrice p) {
+        Map<String, Object> dict = p.getValues();
+        String result = dict.get("date") + ";" + dict.get("buy") + ";" + dict.get("sell");
+        
+        result = result.replace("null", "");
+        return result;
+    }
+
     public static Pair<String, String> providerToSQL(Provider p) {
         Map<String, String> dict = p.getValues();
         String attributes = "", values = "";
@@ -231,7 +238,6 @@ public class FormatUtils {
                 + ";" + dict.get("sector") + ";" + dict.get("alias");
         
         result = result.replace("null", "");
-        System.out.println(result);
         return result;
     }
 
