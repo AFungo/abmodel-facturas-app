@@ -222,6 +222,18 @@ public class FormatUtils {
 
         return values;
     }
+    
+    public static String providerToCsv(Provider p) {
+        Map<String, String> dict = p.getValues();
+        String result = "";
+        
+        result += dict.get("docNo") + ";" + dict.get("name") + ";" + dict.get("documentType") + ";" + dict.get("direction") 
+                + ";" + dict.get("sector") + ";" + dict.get("alias");
+        
+        result = result.replace("null", "");
+        System.out.println(result);
+        return result;
+    }
 
     private static Pair<String, String> addOptionalAttributes(Map<String, ? extends Object> dict, String[] keys, String[] commaKeys) {
         String attributes = "", values = "";
