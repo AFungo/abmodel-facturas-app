@@ -162,6 +162,19 @@ public class FormatUtils {
         return values;
     }
     
+    public static String withholdingToCsv(Withholding w) { 
+        Map<String, Object> dict = w.getValues();
+        Provider provider = (Provider)dict.get("provider");
+        String result = "";
+        
+        result += dict.get("date") + ";" + dict.get("number") + ";" + provider.getValues().get("docNo") + ";" + dict.get("iva") 
+                + ";" + dict.get("profits") + ";" + dict.get("delivered") + ";" + dict.get("sector") + ";;;;;;;;;;;";
+        
+        result = result.replace("null", "");
+        System.out.println(result);
+        return result;
+    }
+    
     public static Map<String, String> dollarPriceCsvToDict(String priceStr) {
         String[ ] data = priceStr.replace(",", ".").split(";");
         Map<String, String> dict = new HashMap<>();
