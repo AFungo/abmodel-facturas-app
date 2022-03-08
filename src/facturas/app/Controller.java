@@ -237,22 +237,28 @@ public class Controller {
         File backupFolder = new File(folder, "\\backup--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\");
         backupFolder.mkdir();
         
-        List<Ticket> tickets = TicketDAO.getTickets();
-        List<Withholding> withholdings = WithholdingDAO.getWithholdingsWithNoTicket();
-        if (! tickets.isEmpty() && !withholdings.isEmpty()) {   //if any ticket or withholding, save them in a file
-            backupTickets(tickets, withholdings, backupFolder);
-        }
+        backupTickets(backupFolder);
+        backupProviders(backupFolder);
+        
     }
     
-    private void backupTickets(List<Ticket> tickets, List<Withholding> withholdings, File backupFolder) {
+    private void backupTickets(File backupFolder) {
+        List<Ticket> tickets = TicketDAO.getTickets();
+        List<Withholding> withholdings = WithholdingDAO.getWithholdingsWithNoTicket();
+        if (tickets.isEmpty() && withholdings.isEmpty()) {   //if there is no tickets and withholdings we don't save anything
+            System.out.println("no tickets to backup");
+            return ;
+        }
+        //creating file
         File ticketsBackup = new File(backupFolder, "tickets.csv");
         try {
             ticketsBackup.createNewFile();
         } catch (IOException ex) {
             throw new IllegalStateException("failed to create file at : " + ticketsBackup.getAbsolutePath() + "\n" + ex.toString());
         }
+        //writing tickets in file
         FileWriter ticketsWriter;
-        try {   //write tickets in file
+        try {
             ticketsWriter = new FileWriter(ticketsBackup);
             ticketsWriter.write(FixedData.getTicketAppFormat());    //first line gives format to be identified at loading
             for (Ticket t : tickets) {
@@ -262,9 +268,39 @@ public class Controller {
                 ticketsWriter.append("\n" + FormatUtils.withholdingToCsv(w));
             }
             ticketsWriter.close();
+            System.out.println("tickets backup done succesfully");
             
         } catch (IOException ex) {
             throw new IllegalStateException("failed to write on file: " + ticketsBackup.getAbsolutePath() + "\n" + ex.toString());
+        }
+    }
+    
+    private void backupProviders(File backupFolder) {
+        List<Provider> providers = ProviderDAO.getProviders();
+        if (providers.isEmpty()) {   //if there is no providers we don't save anything
+            System.out.println("no providers to backup");
+            return ;
+        }
+        //creating file
+        File providersBackup = new File(backupFolder, "providers.csv");
+        try {
+            providersBackup.createNewFile();
+        } catch (IOException ex) {
+            throw new IllegalStateException("failed to create file at : " + providersBackup.getAbsolutePath() + "\n" + ex.toString());
+        }
+        //writing providers in file
+        FileWriter providersWriter;
+        try {
+            providersWriter = new FileWriter(providersBackup);
+            providersWriter.write(FixedData.getProviderAppFormat());    //first line gives format to be identified at loading
+            for (Provider t : providers) {
+                providersWriter.append("\n" + FormatUtils.providerToCsv(t));
+            }
+            providersWriter.close();
+            System.out.println("providers backup done succesfully");
+            
+        } catch (IOException ex) {
+            throw new IllegalStateException("failed to write on file: " + providersBackup.getAbsolutePath() + "\n" + ex.toString());
         }
     }
     
