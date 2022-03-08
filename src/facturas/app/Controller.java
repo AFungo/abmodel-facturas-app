@@ -9,6 +9,7 @@ import facturas.app.database.DBManager;
 import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
+import facturas.app.database.SectorDAO;
 import facturas.app.database.TicketDAO;
 import facturas.app.database.WithholdingDAO;
 import facturas.app.models.DollarPrice;
@@ -32,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
@@ -236,71 +239,55 @@ public class Controller {
         //create backup folder (could be several backups in the folder)
         File backupFolder = new File(folder, "\\backup--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\");
         backupFolder.mkdir();
-        
-        backupTickets(backupFolder);
-        backupProviders(backupFolder);
-        
+        //tickets backup
+        backupData(backupFolder, () -> TicketDAO.getTickets(), t -> FormatUtils.ticketToCsv(t), 
+                FixedData.getTicketAppFormat(), "tickets");
+        //withholdings backup
+        backupData(backupFolder, () -> WithholdingDAO.getWithholdingsWithNoTicket(), 
+                w -> FormatUtils.withholdingToCsv(w), FixedData.getWithholdingAppFormat(), "withholdings");
+        //providers backup
+        backupData(backupFolder, () -> ProviderDAO.getProviders(), p -> FormatUtils.providerToCsv(p), 
+                FixedData.getProviderAppFormat(), "providers");
+        //sectors backup
+        backupData(backupFolder, () -> SectorDAO.getSectors(), s -> s, FixedData.getSectorAppFormat(), "sectors");
+        //dollar prices backup
     }
     
-    private void backupTickets(File backupFolder) {
-        List<Ticket> tickets = TicketDAO.getTickets();
-        List<Withholding> withholdings = WithholdingDAO.getWithholdingsWithNoTicket();
-        if (tickets.isEmpty() && withholdings.isEmpty()) {   //if there is no tickets and withholdings we don't save anything
-            System.out.println("no tickets to backup");
+    private <E> void backupData(File backupFolder, Supplier<List<E>> dao, Function<E,String> formater, 
+            String format, String itemName) {
+        List<E> items = dao.get();
+        if (items.isEmpty()) {   //if there is no items we don't save anything
+            System.out.println("no " + itemName + " to backup");
             return ;
         }
-        //creating file
-        File ticketsBackup = new File(backupFolder, "tickets.csv");
-        try {
-            ticketsBackup.createNewFile();
-        } catch (IOException ex) {
-            throw new IllegalStateException("failed to create file at : " + ticketsBackup.getAbsolutePath() + "\n" + ex.toString());
-        }
-        //writing tickets in file
-        FileWriter ticketsWriter;
-        try {
-            ticketsWriter = new FileWriter(ticketsBackup);
-            ticketsWriter.write(FixedData.getTicketAppFormat());    //first line gives format to be identified at loading
-            for (Ticket t : tickets) {
-                ticketsWriter.append("\n" + FormatUtils.ticketToCsv(t));
-            }
-            for (Withholding w : withholdings) {
-                ticketsWriter.append("\n" + FormatUtils.withholdingToCsv(w));
-            }
-            ticketsWriter.close();
-            System.out.println("tickets backup done succesfully");
-            
-        } catch (IOException ex) {
-            throw new IllegalStateException("failed to write on file: " + ticketsBackup.getAbsolutePath() + "\n" + ex.toString());
-        }
+        File dataBackup = createFile(backupFolder, itemName + ".csv");
+        writeToFile(dataBackup, formater, format, items, itemName);
     }
     
-    private void backupProviders(File backupFolder) {
-        List<Provider> providers = ProviderDAO.getProviders();
-        if (providers.isEmpty()) {   //if there is no providers we don't save anything
-            System.out.println("no providers to backup");
-            return ;
-        }
-        //creating file
-        File providersBackup = new File(backupFolder, "providers.csv");
+    private File createFile(File parentFolder, String filename) {
+        File file = new File(parentFolder, filename);
         try {
-            providersBackup.createNewFile();
+            file.createNewFile();
         } catch (IOException ex) {
-            throw new IllegalStateException("failed to create file at : " + providersBackup.getAbsolutePath() + "\n" + ex.toString());
+            throw new IllegalStateException("failed to create file at : " + file.getAbsolutePath() + "\n" + ex.toString());
         }
-        //writing providers in file
-        FileWriter providersWriter;
+        return file;
+    }
+    
+    private <E> void writeToFile(File fileToWrite, Function<E,String> formater, String format, List<E> items, 
+            String itemName) {
+        FileWriter writer;
         try {
-            providersWriter = new FileWriter(providersBackup);
-            providersWriter.write(FixedData.getProviderAppFormat());    //first line gives format to be identified at loading
-            for (Provider t : providers) {
-                providersWriter.append("\n" + FormatUtils.providerToCsv(t));
+            writer = new FileWriter(fileToWrite);
+            writer.write(format);    //first line gives format to be identified at loading
+            for (E s : items) {
+                writer.append("\n" + formater.apply(s));
             }
-            providersWriter.close();
-            System.out.println("providers backup done succesfully");
+            writer.close();
+            System.out.println(itemName + " backup done succesfully");
             
         } catch (IOException ex) {
-            throw new IllegalStateException("failed to write on file: " + providersBackup.getAbsolutePath() + "\n" + ex.toString());
+            throw new IllegalStateException("failed to write on file: " + fileToWrite.getAbsolutePath() + "\n" + ex.toString());
         }
     }
     
