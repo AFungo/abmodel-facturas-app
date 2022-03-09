@@ -104,6 +104,7 @@ public class View extends javax.swing.JFrame {
         filters = new javax.swing.JMenuItem();
         columnSelector = new javax.swing.JMenuItem();
         createBackup = new javax.swing.JMenuItem();
+        loadBackup = new javax.swing.JMenuItem();
 
         sectorMenuItem.setText("Modificar rubro");
         sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -356,6 +357,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         tools.add(createBackup);
+
+        loadBackup.setText("Cargar backup");
+        loadBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadBackupActionPerformed(evt);
+            }
+        });
+        tools.add(loadBackup);
 
         menuBar.add(tools);
 
@@ -691,6 +700,20 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_createBackupActionPerformed
 
+    private void loadBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBackupActionPerformed
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setDialogTitle("Seleccione la carpeta de backup a cargar");   
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            controller.loadBackup(file);
+            loadTicketsInTable();
+        }
+    }//GEN-LAST:event_loadBackupActionPerformed
+
     private void updateAttribute(String attribute, String value, int column) {
         int row = ticketsTable.getSelectedRow();
         SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
@@ -795,6 +818,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JCheckBox inDollars;
     private javax.swing.JTextField ivaTaxLabel;
     private javax.swing.JTextField ivaTaxTextField;
+    private javax.swing.JMenuItem loadBackup;
     private javax.swing.JMenuItem loadDollarValue;
     private javax.swing.JMenuItem loadTicketManually;
     private javax.swing.JMenuItem loadTickets;
