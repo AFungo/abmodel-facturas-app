@@ -266,16 +266,37 @@ public class FormatUtils {
             initialLine = initialLine.substring(1); //remove special char
         }
         
-        if ("ticket".equals(mode)) {
-            String expectedLineEmitter = FixedData.getTicketEmitterFileFormat();
-            String expectedLineReceptor = FixedData.getTicketReceptorFileFormat();
-            return initialLine.contentEquals(expectedLineEmitter) || initialLine.contentEquals(expectedLineReceptor);
-        } else if ("price".equals(mode)) {
-            String expectedLine = FixedData.getDollarPriceFileFormat();
-            return initialLine.contentEquals(expectedLine);
+        boolean valid;
+        switch (mode) {
+            case "ticket": String expectedLineEmitter = FixedData.getTicketEmitterFileFormat();
+                            String expectedLineReceptor = FixedData.getTicketReceptorFileFormat();
+                            valid = initialLine.contentEquals(expectedLineEmitter) || initialLine.contentEquals(expectedLineReceptor);
+                            break;
+           
+            case "price": String expectedLine = FixedData.getDollarPriceFileFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            case "ticketBackup": expectedLine = FixedData.getTicketAppFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            case "withholdingBackup": expectedLine = FixedData.getWithholdingAppFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            case "providerBackup": expectedLine = FixedData.getProviderAppFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            case "sectorBackup": expectedLine = FixedData.getSectorAppFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            default: throw new IllegalArgumentException("invalid mode: " + mode);
         }
         
-        return false;
+        return valid;
     }
 
     public static <E> Vector<E> listToVector(List<E> list) {
