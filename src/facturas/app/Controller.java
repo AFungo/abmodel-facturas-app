@@ -35,8 +35,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -253,6 +251,19 @@ public class Controller {
         //dollar prices backup
         backupData(backupFolder, () -> DollarPriceDAO.getPrices(), p -> FormatUtils.dollarPriceToCsv(p), 
                 FixedData.getDollarPriceFileFormat(), "prices");
+    }
+    
+    public void loadBackup(File folder) {
+        if (folder == null) {
+            throw new IllegalArgumentException("File is null");
+        }
+        
+        File ticketCsv = new File(folder, "tickets.csv");
+        List<String> ticketsData = readCsv(ticketCsv, "ticketBackup").getFst();
+        for (String s : ticketsData) {
+            Ticket t = new Ticket(FormatUtils.ticketCsvBackupToDict(s));
+            TicketDAO.addTicket(t);
+        }
     }
     
     private <E> void backupData(File backupFolder, Supplier<List<E>> dao, Function<E,String> formater, 
