@@ -58,7 +58,7 @@ public class FormatUtils {
     }
     
     public static Map<String, String> ticketCsvToDict(String strTicket, boolean issuedByMe) {
-        String[ ] data = strTicket.replace("\"", "").split(",");
+        String[] data = strTicket.replace("\"", "").split(",");
         Map<String, String> dict = new HashMap<>();
         
         dict.put("date", data[0]);
@@ -82,6 +82,41 @@ public class FormatUtils {
         if (!ivaVar.isEmpty()) dict.put("ivaTax", ivaVar);
         dict.put("totalAmount", data[15]);
         dict.put("issuedByMe", issuedByMe ? "true" : "false");
+        
+        return dict;
+    }
+    
+    public static Map<String, String> ticketCsvBackupToDict(String s) {
+        String[] data = s.split(";");
+        Map<String, String> dict = new HashMap<>();
+        
+        dict.put("date", data[0]);
+        dict.put("number", data[1]+data[2]);
+        dict.put("providerDoc", data[3]);
+        String iva = data[4];
+        if (!iva.isEmpty()) dict.put("iva", iva);
+        String profits = data[5];
+        if (!profits.isEmpty()) dict.put("profits", profits);
+        dict.put("delivered", data[6]);
+        String sector = data[7];
+        if (!sector.isEmpty()) dict.put("sector", sector);
+        dict.put("type", data[8]);
+        String numberTo = data[9];
+        if (!numberTo.isEmpty()) dict.put("numberTo", numberTo);
+        String authCode = data[10];
+        if (!authCode.isEmpty()) dict.put("authCode", authCode);
+        dict.put("exchangeType", data[11]);
+        dict.put("exchangeMoney", data[12]);
+        String netAmountWI = data[13];
+        if (!netAmountWI.isEmpty()) dict.put("netAmountWI", netAmountWI);
+        String netAmountWIO = data[14];
+        if (!netAmountWIO.isEmpty()) dict.put("netAmountWOI", netAmountWIO);
+        String amountImpEx = data[15];
+        if (!amountImpEx.isEmpty()) dict.put("amountImpEx", amountImpEx);
+        String ivaTax = data[16];
+        if (!ivaTax.isEmpty()) dict.put("ivaTax", ivaTax);
+        dict.put("totalAmount", data[17]);
+        dict.put("issuedByMe", data[18]);
         
         return dict;
     }
@@ -175,7 +210,7 @@ public class FormatUtils {
     }
     
     public static Map<String, String> dollarPriceCsvToDict(String priceStr) {
-        String[ ] data = priceStr.replace(",", ".").split(";");
+        String[] data = priceStr.replace(",", ".").split(";");
         Map<String, String> dict = new HashMap<>();
         dict.put("date", data[0]);
         dict.put("buy", data[1]);
