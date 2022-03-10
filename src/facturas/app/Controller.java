@@ -258,6 +258,8 @@ public class Controller {
     public void loadBackup(File folder) {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
+        } else if (!folder.getName().contains("backup--")) {
+            throw new IllegalArgumentException("Folder " + folder.getPath() + " is not a valid backup folder");
         }
         //load dollar prices
         loadBackupData(folder,"prices.csv", "price", e -> DollarPriceDAO.addDollarPrice(e), 
@@ -279,10 +281,12 @@ public class Controller {
     private <E> void loadBackupData(File parentFolder, String filename, String formatId, Consumer<E> loadDAO,
             Function<String,E> formater) {
         File fileCsv = new File(parentFolder, filename);
-        List<String> itemData = readCsv(fileCsv, formatId).getFst();
-        for (String s : itemData) {
-            E e = formater.apply(s);
-            loadDAO.accept(e);
+        if (fileCsv.exists()) {
+            List<String> itemData = readCsv(fileCsv, formatId).getFst();
+            for (String s : itemData) {
+                E e = formater.apply(s);
+                loadDAO.accept(e);
+            }
         }
     }
     

@@ -50,6 +50,8 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
                 view.showError(e, "El proveedor elegido no existe");
             } else if (msg.contains("sector doesn't exists")) {
                 view.showError(e, "El rubro elegido no existe");
+            } else if (msg.contains("is not a valid backup folder")) {
+                view.showError(e, "La carpeta elegida no es un backup valido");
             } else if (msg.contains("File is null")) { //we just want to do nothing
             } else {
                 unexpectedError(e);
