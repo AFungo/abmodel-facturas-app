@@ -203,7 +203,7 @@ public class FormatUtils {
         String result = "";
         
         result += dict.get("date") + ";" + dict.get("number") + ";" + provider.getValues().get("docNo") + ";" + dict.get("iva") 
-                + ";" + dict.get("profits") + ";" + dict.get("delivered") + ";" + dict.get("sector") + ";;;;;;;;;;;";
+                + ";" + dict.get("profits") + ";" + dict.get("sector") + ";" + dict.get("delivered");
         
         result = result.replace("null", "");
         return result;
@@ -265,12 +265,29 @@ public class FormatUtils {
         return values;
     }
     
+    public static Map<String, String> providerCsvBackupToDict(String s) {
+        String[] data = s.split(";");
+        Map<String, String> dict = new HashMap<>();
+        
+        dict.put("docNo", data[0]);
+        dict.put("name", data[1]);
+        String direction = data[2];
+        if (!direction.isEmpty()) dict.put("direction", direction);
+        String sector = data[3];
+        if (!sector.isEmpty()) dict.put("provSector", sector);
+        String alias = data[4];
+        if (!alias.isEmpty()) dict.put("alias", alias);
+        dict.put("docType", data[5]);
+        
+        return dict;
+    }
+            
     public static String providerToCsv(Provider p) {
         Map<String, String> dict = p.getValues();
         String result = "";
         
-        result += dict.get("docNo") + ";" + dict.get("name") + ";" + dict.get("documentType") + ";" + dict.get("direction") 
-                + ";" + dict.get("sector") + ";" + dict.get("alias");
+        result += dict.get("docNo") + ";" + dict.get("name") + ";" + dict.get("direction") 
+                + ";" + dict.get("sector") + ";" + dict.get("alias") + ";" + dict.get("docType");
         
         result = result.replace("null", "");
         return result;

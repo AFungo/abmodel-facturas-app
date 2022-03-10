@@ -51,11 +51,11 @@ public class FixedData {
     }
     
     public static String getWithholdingAppFormat() {
-        return "date;number;providerDoc;iva;profits;delivered;sector";
+        return "date;number;providerDoc;iva;profits;sector;delivered";
     }
     
     public static String getProviderAppFormat() {
-        return "docNo;name;documentType;direction;sector;alias";
+        return "docNo;name;direction;sector;alias;documentType;";
     }
     
     public static String getSectorAppFormat() {
