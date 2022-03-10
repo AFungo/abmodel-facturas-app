@@ -258,12 +258,26 @@ public class Controller {
             throw new IllegalArgumentException("File is null");
         }
         
+        File sectorCsv = new File(folder, "sectors.csv");
+        List<String> sectorsData = readCsv(sectorCsv, "sectorBackup").getFst();
+        for (String s : sectorsData) {
+            SectorDAO.addSector(s);
+        }
+        
+        File providerCsv = new File(folder, "providers.csv");
+        List<String> providersData = readCsv(providerCsv, "providerBackup").getFst();
+        for (String s : providersData) {
+            Provider p = new Provider(FormatUtils.providerCsvBackupToDict(s));
+            ProviderDAO.addProvider(p);
+        }
+        
         File ticketCsv = new File(folder, "tickets.csv");
         List<String> ticketsData = readCsv(ticketCsv, "ticketBackup").getFst();
         for (String s : ticketsData) {
             Ticket t = new Ticket(FormatUtils.ticketCsvBackupToDict(s));
             TicketDAO.addTicket(t);
         }
+        
     }
     
     private <E> void backupData(File backupFolder, Supplier<List<E>> dao, Function<E,String> formater, 
