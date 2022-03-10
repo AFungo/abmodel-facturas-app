@@ -37,9 +37,6 @@ public class FormatUtils {
     }
      
     public static Object[] ticketToForm(Withholding t) {
-        if (!(t instanceof Ticket))
-            return withholdingToForm(t);
-        
         Map<String, Object> dict = t.getValues();
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
@@ -149,22 +146,6 @@ public class FormatUtils {
         values += optionals.getSnd();
 
         return new Pair<>(attributes, values);
-    }
-
-    private static Object[] withholdingToForm(Withholding w) {
-        Map<String, Object> dict = w.getValues();
-        Provider provider = (Provider)dict.get("provider");
-        String sector = (String)dict.get("sector");
-        if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
-            sector = provider.getValues().get("provSector");
-        }
-        Boolean delivered = (Boolean) (dict.get("delivered"));
-        
-        //so we should check if iva and/or profits have a value and then return the type properly, if both present we should make 2 rows
-        Object[] values = {dict.get("id"), dict.get("date"), null, dict.get("number"), null, null, provider.getValues().get("docNo"), 
-        provider.getValues().get("name"), null, null, null, null, null, null, sector, null, delivered ? "SI" : "NO"};
-        //null values are necessary so the array fits in the table of the view
-        return values;
     }
 
     public static Pair<Object[],Object[]> retrieveInternalWithholdingsToForm(Withholding w) {
