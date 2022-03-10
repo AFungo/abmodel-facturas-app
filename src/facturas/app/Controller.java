@@ -35,6 +35,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.Consumer;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -237,6 +238,7 @@ public class Controller {
         //create backup folder (could be several backups in the folder)
         File backupFolder = new File(folder, "\\backup--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\");
         backupFolder.mkdir();
+        
         //tickets backup
         backupData(backupFolder, () -> TicketDAO.getTickets(), t -> FormatUtils.ticketToCsv(t), 
                 FixedData.getTicketAppFormat(), "tickets");
@@ -257,32 +259,27 @@ public class Controller {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
         }
-        
-        File sectorCsv = new File(folder, "sectors.csv");
-        List<String> sectorsData = readCsv(sectorCsv, "sectorBackup").getFst();
-        for (String s : sectorsData) {
-            SectorDAO.addSector(s.split(";")[0]);
-        }
-        
-        File providerCsv = new File(folder, "providers.csv");
-        List<String> providersData = readCsv(providerCsv, "providerBackup").getFst();
-        for (String s : providersData) {
-            Provider p = new Provider(FormatUtils.providerCsvBackupToDict(s));
-            ProviderDAO.addProvider(p);
-        }
-        
-        File ticketCsv = new File(folder, "tickets.csv");
-        List<String> ticketsData = readCsv(ticketCsv, "ticketBackup").getFst();
-        for (String s : ticketsData) {
-            Ticket t = new Ticket(FormatUtils.ticketCsvBackupToDict(s));
-            createTicketOnDB(t);
-        }
-        
-        File withholdingCsv = new File(folder, "withholdings.csv");
-        List<String> withholdingsData = readCsv(withholdingCsv, "withholdingBackup").getFst();
-        for (String s : withholdingsData) {
-            Withholding w = new Withholding(FormatUtils.withholdingCsvBackupToDict(s));
-            WithholdingDAO.addWithholding(w);
+        //load sectors
+        loadBackupData(folder,"sectors.csv", "sectorBackup", e -> SectorDAO.addSector(e), 
+                s -> s.split(";")[0]);  //function removes the ; at the end of the sector name
+        //load providers
+        loadBackupData(folder,"providers.csv", "providerBackup", e -> ProviderDAO.addProvider(e), 
+                s -> new Provider(FormatUtils.providerCsvBackupToDict(s)));
+        //load tickets
+        loadBackupData(folder,"tickets.csv", "ticketBackup", e -> createTicketOnDB(e), 
+                s -> new Ticket(FormatUtils.ticketCsvBackupToDict(s)));
+        //load withholdings
+        loadBackupData(folder,"withholdings.csv", "withholdingBackup", e -> WithholdingDAO.addWithholding(e), 
+                s -> new Withholding(FormatUtils.withholdingCsvBackupToDict(s)));
+    }
+    
+    private <E> void loadBackupData(File parentFolder, String filename, String formatId, Consumer<E> loadDAO,
+            Function<String,E> formater) {
+        File fileCsv = new File(parentFolder, filename);
+        List<String> itemData = readCsv(fileCsv, formatId).getFst();
+        for (String s : itemData) {
+            E e = formater.apply(s);
+            loadDAO.accept(e);
         }
     }
     
