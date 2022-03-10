@@ -247,7 +247,7 @@ public class Controller {
         backupData(backupFolder, () -> ProviderDAO.getProviders(), p -> FormatUtils.providerToCsv(p), 
                 FixedData.getProviderAppFormat(), "providers");
         //sectors backup
-        backupData(backupFolder, () -> SectorDAO.getSectors(), s -> s, FixedData.getSectorAppFormat(), "sectors");
+        backupData(backupFolder, () -> SectorDAO.getSectors(), s -> s + ";", FixedData.getSectorAppFormat(), "sectors");
         //dollar prices backup
         backupData(backupFolder, () -> DollarPriceDAO.getPrices(), p -> FormatUtils.dollarPriceToCsv(p), 
                 FixedData.getDollarPriceFileFormat(), "prices");
@@ -261,7 +261,7 @@ public class Controller {
         File sectorCsv = new File(folder, "sectors.csv");
         List<String> sectorsData = readCsv(sectorCsv, "sectorBackup").getFst();
         for (String s : sectorsData) {
-            SectorDAO.addSector(s);
+            SectorDAO.addSector(s.split(";")[0]);
         }
         
         File providerCsv = new File(folder, "providers.csv");
@@ -275,7 +275,7 @@ public class Controller {
         List<String> ticketsData = readCsv(ticketCsv, "ticketBackup").getFst();
         for (String s : ticketsData) {
             Ticket t = new Ticket(FormatUtils.ticketCsvBackupToDict(s));
-            TicketDAO.addTicket(t);
+            createTicketOnDB(t);
         }
         
     }

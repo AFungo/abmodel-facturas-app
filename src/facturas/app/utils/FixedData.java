@@ -47,11 +47,11 @@ public class FixedData {
     }
     
     public static String getTicketAppFormat() {
-        return "date;number;providerDoc;iva;profits;delivered;sector;type;numberTo;authCode;exchangeType;exchangeMoney;netAmountWI;netAmountWOI;amountImpEx;ivaTax;totalAmount;issuedByMe";
+        return "date;number;providerDoc;iva;profits;delivered;sector;type;numberTo;authCode;exchangeType;exchangeMoney;netAmountWI;netAmountWOI;amountImpEx;ivaTax;totalAmount;issuedByMe;";
     }
     
     public static String getWithholdingAppFormat() {
-        return "date;number;providerDoc;iva;profits;sector;delivered";
+        return "date;number;providerDoc;iva;profits;sector;delivered;";
     }
     
     public static String getProviderAppFormat() {
@@ -59,7 +59,7 @@ public class FixedData {
     }
     
     public static String getSectorAppFormat() {
-        return "name";
+        return "name;";
     }
     
     public static boolean validType(String type) {

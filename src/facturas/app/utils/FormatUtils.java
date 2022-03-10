@@ -91,32 +91,32 @@ public class FormatUtils {
         Map<String, String> dict = new HashMap<>();
         
         dict.put("date", data[0]);
-        dict.put("number", data[1]+data[2]);
-        dict.put("providerDoc", data[3]);
-        String iva = data[4];
+        dict.put("number", data[1]);
+        dict.put("docNo", data[2]);
+        String iva = data[3];
         if (!iva.isEmpty()) dict.put("iva", iva);
-        String profits = data[5];
+        String profits = data[4];
         if (!profits.isEmpty()) dict.put("profits", profits);
-        dict.put("delivered", data[6]);
-        String sector = data[7];
+        dict.put("delivered", data[5]);
+        String sector = data[6];
         if (!sector.isEmpty()) dict.put("sector", sector);
-        dict.put("type", data[8]);
-        String numberTo = data[9];
+        dict.put("type", data[7]);
+        String numberTo = data[8];
         if (!numberTo.isEmpty()) dict.put("numberTo", numberTo);
-        String authCode = data[10];
+        String authCode = data[9];
         if (!authCode.isEmpty()) dict.put("authCode", authCode);
-        dict.put("exchangeType", data[11]);
-        dict.put("exchangeMoney", data[12]);
-        String netAmountWI = data[13];
+        dict.put("exchangeType", data[10]);
+        dict.put("exchangeMoney", data[11]);
+        String netAmountWI = data[12];
         if (!netAmountWI.isEmpty()) dict.put("netAmountWI", netAmountWI);
-        String netAmountWIO = data[14];
+        String netAmountWIO = data[13];
         if (!netAmountWIO.isEmpty()) dict.put("netAmountWOI", netAmountWIO);
-        String amountImpEx = data[15];
+        String amountImpEx = data[14];
         if (!amountImpEx.isEmpty()) dict.put("amountImpEx", amountImpEx);
-        String ivaTax = data[16];
+        String ivaTax = data[15];
         if (!ivaTax.isEmpty()) dict.put("ivaTax", ivaTax);
-        dict.put("totalAmount", data[17]);
-        dict.put("issuedByMe", data[18]);
+        dict.put("totalAmount", data[16]);
+        dict.put("issuedByMe", data[17]);
         
         return dict;
     }
@@ -130,7 +130,8 @@ public class FormatUtils {
                 + ";" + dict.get("profits") + ";" + dict.get("delivered") + ";" + dict.get("sector") + ";" + dict.get("type") + ";" 
                 + dict.get("numberTo") + ";" + dict.get("authCode") + ";" + dict.get("exchangeType") + ";" 
                 + dict.get("exchangeMoney") + ";" + dict.get("netAmountWI") + ";" + dict.get("netAmountWOI") + ";" 
-                + dict.get("amountImpEx") + ";" + dict.get("ivaTax") + ";" + dict.get("totalAmount") + ";" + dict.get("issuedByMe");
+                + dict.get("amountImpEx") + ";" + dict.get("ivaTax") + ";" + dict.get("totalAmount") + ";" 
+                + dict.get("issuedByMe") + ";";
         
         result = result.replace("null", "");
         return result;
@@ -203,7 +204,7 @@ public class FormatUtils {
         String result = "";
         
         result += dict.get("date") + ";" + dict.get("number") + ";" + provider.getValues().get("docNo") + ";" + dict.get("iva") 
-                + ";" + dict.get("profits") + ";" + dict.get("sector") + ";" + dict.get("delivered");
+                + ";" + dict.get("profits") + ";" + dict.get("sector") + ";" + dict.get("delivered") + ";";
         
         result = result.replace("null", "");
         return result;
@@ -230,7 +231,7 @@ public class FormatUtils {
     
     public static String dollarPriceToCsv(DollarPrice p) {
         Map<String, Object> dict = p.getValues();
-        String result = dict.get("date") + ";" + dict.get("buy") + ";" + dict.get("sell");
+        String result = dict.get("date") + ";" + dict.get("buy") + ";" + dict.get("sell") + ";";
         
         result = result.replace("null", "");
         return result;
@@ -286,8 +287,8 @@ public class FormatUtils {
         Map<String, String> dict = p.getValues();
         String result = "";
         
-        result += dict.get("docNo") + ";" + dict.get("name") + ";" + dict.get("direction") 
-                + ";" + dict.get("sector") + ";" + dict.get("alias") + ";" + dict.get("docType");
+        result += dict.get("docNo") + ";" + dict.get("name") + ";" + dict.get("direction") + ";" + dict.get("sector") + ";" 
+                + dict.get("alias") + ";" + dict.get("docType") + ";";
         
         result = result.replace("null", "");
         return result;
