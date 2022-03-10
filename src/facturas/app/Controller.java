@@ -278,6 +278,12 @@ public class Controller {
             createTicketOnDB(t);
         }
         
+        File withholdingCsv = new File(folder, "withholdings.csv");
+        List<String> withholdingsData = readCsv(withholdingCsv, "withholdingBackup").getFst();
+        for (String s : withholdingsData) {
+            Withholding w = new Withholding(FormatUtils.withholdingCsvBackupToDict(s));
+            WithholdingDAO.addWithholding(w);
+        }
     }
     
     private <E> void backupData(File backupFolder, Supplier<List<E>> dao, Function<E,String> formater, 

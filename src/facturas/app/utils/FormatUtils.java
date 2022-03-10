@@ -198,11 +198,28 @@ public class FormatUtils {
         return values;
     }
     
+    public static Map<String, String> withholdingCsvBackupToDict(String s) {
+        String[] data = s.split(";");
+        Map<String, String> dict = new HashMap<>();
+        
+        dict.put("date", data[0]);
+        dict.put("number", data[1]);
+        dict.put("docNo", data[2]);
+        String iva = data[3];
+        if (!iva.isEmpty()) dict.put("iva", iva);
+        String profits = data[4];
+        if (!profits.isEmpty()) dict.put("profits", profits);
+        String sector = data[5];
+        if (!sector.isEmpty()) dict.put("sector", sector);
+        dict.put("delivered", data[6]);
+        
+        return dict;
+    }
+    
     public static String withholdingToCsv(Withholding w) { 
         Map<String, Object> dict = w.getValues();
         Provider provider = (Provider)dict.get("provider");
         String result = "";
-        
         result += dict.get("date") + ";" + dict.get("number") + ";" + provider.getValues().get("docNo") + ";" + dict.get("iva") 
                 + ";" + dict.get("profits") + ";" + dict.get("sector") + ";" + dict.get("delivered") + ";";
         
