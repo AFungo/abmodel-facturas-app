@@ -259,6 +259,9 @@ public class Controller {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
         }
+        //load dollar prices
+        loadBackupData(folder,"prices.csv", "price", e -> DollarPriceDAO.addDollarPrice(e), 
+                s -> new DollarPrice(FormatUtils.dollarPriceCsvBackupToDict(s)));  //function removes the ; at the end of the sector name
         //load sectors
         loadBackupData(folder,"sectors.csv", "sectorBackup", e -> SectorDAO.addSector(e), 
                 s -> s.split(";")[0]);  //function removes the ; at the end of the sector name

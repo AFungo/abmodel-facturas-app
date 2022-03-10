@@ -246,6 +246,17 @@ public class FormatUtils {
         return new Pair<>(attributes, values);
     }
     
+    public static Map<String, String> dollarPriceCsvBackupToDict(String s) {
+        String[] data = s.split(";");
+        Map<String, String> dict = new HashMap<>();
+        
+        dict.put("date", data[0]);
+        dict.put("buy", data[1]);
+        dict.put("sell", data[2]);
+        
+        return dict;
+    }
+    
     public static String dollarPriceToCsv(DollarPrice p) {
         Map<String, Object> dict = p.getValues();
         String result = dict.get("date") + ";" + dict.get("buy") + ";" + dict.get("sell") + ";";
