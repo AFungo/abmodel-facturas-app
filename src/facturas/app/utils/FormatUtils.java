@@ -9,8 +9,6 @@ import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
-import java.math.BigInteger;
-
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,9 +37,6 @@ public class FormatUtils {
     }
      
     public static Object[] ticketToForm(Withholding t) {
-        if (!(t instanceof Ticket))
-            return withholdingToForm(t);
-        
         Map<String, Object> dict = t.getValues();
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
@@ -60,7 +55,7 @@ public class FormatUtils {
     }
     
     public static Map<String, String> ticketCsvToDict(String strTicket, boolean issuedByMe) {
-        String[ ] data = strTicket.replace("\"", "").split(",");
+        String[] data = strTicket.replace("\"", "").split(",");
         Map<String, String> dict = new HashMap<>();
         
         dict.put("date", data[0]);
@@ -88,6 +83,57 @@ public class FormatUtils {
         return dict;
     }
     
+    public static Map<String, String> ticketCsvBackupToDict(String s) {
+        String[] data = s.split(";");
+        Map<String, String> dict = new HashMap<>();
+        
+        dict.put("date", data[0]);
+        dict.put("number", data[1]);
+        dict.put("docNo", data[2]);
+        String iva = data[3];
+        if (!iva.isEmpty()) dict.put("iva", iva);
+        String profits = data[4];
+        if (!profits.isEmpty()) dict.put("profits", profits);
+        dict.put("delivered", data[5]);
+        String sector = data[6];
+        if (!sector.isEmpty()) dict.put("sector", sector);
+        dict.put("type", data[7]);
+        String numberTo = data[8];
+        if (!numberTo.isEmpty()) dict.put("numberTo", numberTo);
+        String authCode = data[9];
+        if (!authCode.isEmpty()) dict.put("authCode", authCode);
+        dict.put("exchangeType", data[10]);
+        dict.put("exchangeMoney", data[11]);
+        String netAmountWI = data[12];
+        if (!netAmountWI.isEmpty()) dict.put("netAmountWI", netAmountWI);
+        String netAmountWIO = data[13];
+        if (!netAmountWIO.isEmpty()) dict.put("netAmountWOI", netAmountWIO);
+        String amountImpEx = data[14];
+        if (!amountImpEx.isEmpty()) dict.put("amountImpEx", amountImpEx);
+        String ivaTax = data[15];
+        if (!ivaTax.isEmpty()) dict.put("ivaTax", ivaTax);
+        dict.put("totalAmount", data[16]);
+        dict.put("issuedByMe", data[17]);
+        
+        return dict;
+    }
+    
+    public static String ticketToCsv(Ticket t) {
+        Map<String, Object> dict = t.getValues();
+        Provider provider = (Provider)dict.get("provider");
+        String result = "";
+        
+        result += dict.get("date") + ";" + dict.get("number") + ";" + provider.getValues().get("docNo") + ";" + dict.get("iva") 
+                + ";" + dict.get("profits") + ";" + dict.get("delivered") + ";" + dict.get("sector") + ";" + dict.get("type") + ";" 
+                + dict.get("numberTo") + ";" + dict.get("authCode") + ";" + dict.get("exchangeType") + ";" 
+                + dict.get("exchangeMoney") + ";" + dict.get("netAmountWI") + ";" + dict.get("netAmountWOI") + ";" 
+                + dict.get("amountImpEx") + ";" + dict.get("ivaTax") + ";" + dict.get("totalAmount") + ";" 
+                + dict.get("issuedByMe") + ";";
+        
+        result = result.replace("null", "");
+        return result;
+    }
+    
     public static Pair<String, String> withholdingToSQL(Withholding w) { 
         Map<String, Object> dict = w.getValues();
         String attributes = "", values = "";
@@ -100,22 +146,6 @@ public class FormatUtils {
         values += optionals.getSnd();
 
         return new Pair<>(attributes, values);
-    }
-
-    private static Object[] withholdingToForm(Withholding w) {
-        Map<String, Object> dict = w.getValues();
-        Provider provider = (Provider)dict.get("provider");
-        String sector = (String)dict.get("sector");
-        if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
-            sector = provider.getValues().get("provSector");
-        }
-        Boolean delivered = (Boolean) (dict.get("delivered"));
-        
-        //so we should check if iva and/or profits have a value and then return the type properly, if both present we should make 2 rows
-        Object[] values = {dict.get("id"), dict.get("date"), null, dict.get("number"), null, null, provider.getValues().get("docNo"), 
-        provider.getValues().get("name"), null, null, null, null, null, null, sector, null, delivered ? "SI" : "NO"};
-        //null values are necessary so the array fits in the table of the view
-        return values;
     }
 
     public static Pair<Object[],Object[]> retrieveInternalWithholdingsToForm(Withholding w) {
@@ -149,8 +179,37 @@ public class FormatUtils {
         return values;
     }
     
+    public static Map<String, String> withholdingCsvBackupToDict(String s) {
+        String[] data = s.split(";");
+        Map<String, String> dict = new HashMap<>();
+        
+        dict.put("date", data[0]);
+        dict.put("number", data[1]);
+        dict.put("docNo", data[2]);
+        String iva = data[3];
+        if (!iva.isEmpty()) dict.put("iva", iva);
+        String profits = data[4];
+        if (!profits.isEmpty()) dict.put("profits", profits);
+        String sector = data[5];
+        if (!sector.isEmpty()) dict.put("sector", sector);
+        dict.put("delivered", data[6]);
+        
+        return dict;
+    }
+    
+    public static String withholdingToCsv(Withholding w) { 
+        Map<String, Object> dict = w.getValues();
+        Provider provider = (Provider)dict.get("provider");
+        String result = "";
+        result += dict.get("date") + ";" + dict.get("number") + ";" + provider.getValues().get("docNo") + ";" + dict.get("iva") 
+                + ";" + dict.get("profits") + ";" + dict.get("sector") + ";" + dict.get("delivered") + ";";
+        
+        result = result.replace("null", "");
+        return result;
+    }
+    
     public static Map<String, String> dollarPriceCsvToDict(String priceStr) {
-        String[ ] data = priceStr.replace(",", ".").split(";");
+        String[] data = priceStr.replace(",", ".").split(";");
         Map<String, String> dict = new HashMap<>();
         dict.put("date", data[0]);
         dict.put("buy", data[1]);
@@ -168,6 +227,25 @@ public class FormatUtils {
         return new Pair<>(attributes, values);
     }
     
+    public static Map<String, String> dollarPriceCsvBackupToDict(String s) {
+        String[] data = s.split(";");
+        Map<String, String> dict = new HashMap<>();
+        
+        dict.put("date", data[0]);
+        dict.put("buy", data[1]);
+        dict.put("sell", data[2]);
+        
+        return dict;
+    }
+    
+    public static String dollarPriceToCsv(DollarPrice p) {
+        Map<String, Object> dict = p.getValues();
+        String result = dict.get("date") + ";" + dict.get("buy") + ";" + dict.get("sell") + ";";
+        
+        result = result.replace("null", "");
+        return result;
+    }
+
     public static Pair<String, String> providerToSQL(Provider p) {
         Map<String, String> dict = p.getValues();
         String attributes = "", values = "";
@@ -196,6 +274,34 @@ public class FormatUtils {
 
         return values;
     }
+    
+    public static Map<String, String> providerCsvBackupToDict(String s) {
+        String[] data = s.split(";");
+        Map<String, String> dict = new HashMap<>();
+        
+        dict.put("docNo", data[0]);
+        dict.put("name", data[1]);
+        String direction = data[2];
+        if (!direction.isEmpty()) dict.put("direction", direction);
+        String sector = data[3];
+        if (!sector.isEmpty()) dict.put("provSector", sector);
+        String alias = data[4];
+        if (!alias.isEmpty()) dict.put("alias", alias);
+        dict.put("docType", data[5]);
+        
+        return dict;
+    }
+            
+    public static String providerToCsv(Provider p) {
+        Map<String, String> dict = p.getValues();
+        String result = "";
+        
+        result += dict.get("docNo") + ";" + dict.get("name") + ";" + dict.get("direction") + ";" + dict.get("sector") + ";" 
+                + dict.get("alias") + ";" + dict.get("docType") + ";";
+        
+        result = result.replace("null", "");
+        return result;
+    }
 
     private static Pair<String, String> addOptionalAttributes(Map<String, ? extends Object> dict, String[] keys, String[] commaKeys) {
         String attributes = "", values = "";
@@ -222,16 +328,37 @@ public class FormatUtils {
             initialLine = initialLine.substring(1); //remove special char
         }
         
-        if ("ticket".equals(mode)) {
-            String expectedLineEmitter = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
-            String expectedLineReceptor = "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Receptor\",\"Nro. Doc. Receptor\",\"Denominación Receptor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
-            return initialLine.contentEquals(expectedLineEmitter) || initialLine.contentEquals(expectedLineReceptor);
-        } else if ("price".equals(mode)) {
-            String expectedLine = "Fecha cotizacion;Compra;Venta;";
-            return initialLine.contentEquals(expectedLine);
+        boolean valid;
+        switch (mode) {
+            case "ticket": String expectedLineEmitter = FixedData.getTicketEmitterFileFormat();
+                            String expectedLineReceptor = FixedData.getTicketReceptorFileFormat();
+                            valid = initialLine.contentEquals(expectedLineEmitter) || initialLine.contentEquals(expectedLineReceptor);
+                            break;
+           
+            case "price": String expectedLine = FixedData.getDollarPriceFileFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            case "ticketBackup": expectedLine = FixedData.getTicketAppFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            case "withholdingBackup": expectedLine = FixedData.getWithholdingAppFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            case "providerBackup": expectedLine = FixedData.getProviderAppFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            case "sectorBackup": expectedLine = FixedData.getSectorAppFormat();
+                            valid = initialLine.contentEquals(expectedLine);
+                            break;
+                            
+            default: throw new IllegalArgumentException("invalid mode: " + mode);
         }
         
-        return false;
+        return valid;
     }
 
     public static <E> Vector<E> listToVector(List<E> list) {
@@ -240,47 +367,6 @@ public class FormatUtils {
             vector.addElement(e);
         }
         return vector;
-    }
-    
-    public static boolean[] validTicketInput(Map<String, String> values, boolean ticket) {
-        boolean[] validations;
-        if (ticket) 
-            validations = new boolean[11];
-        else
-            validations = new boolean[3];
-        
-        int i = 0;
-        validations[i++] = tryParse(values.get("number"), "Integer");
-        validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), "Float");
-        validations[i++] = values.get("profits").isEmpty() ? true : tryParse(values.get("profits"), "Float");
-        if (ticket) {
-            validations[i++] = values.get("amountImpEx").isEmpty() ? true : tryParse(values.get("amountImpEx"), "Float");
-            validations[i++] = values.get("exchangeType").isEmpty() ? true : tryParse(values.get("exchangeType"), "Float");
-            validations[i++] = values.get("ivaTax").isEmpty() ? true : tryParse(values.get("ivaTax"), "Float");
-            validations[i++] = values.get("ivaTax1").isEmpty() ? true : tryParse(values.get("ivaTax1"), "Float");
-            validations[i++] = values.get("ivaTax2").isEmpty() ? true : tryParse(values.get("ivaTax2"), "Float");
-            validations[i++] = values.get("netAmountWI").isEmpty() ? true : tryParse(values.get("netAmountWI"), "Float");
-            validations[i++] = values.get("netAmountWOI").isEmpty() ? true : tryParse(values.get("netAmountWOI"), "Float");
-            validations[i++] = tryParse(values.get("totalAmount"), "Float");
-        }
-
-        return validations;
-    }
-    
-    public static boolean tryParse(String value, String expectedClass) {
-        try { 
-            if (expectedClass == "Float") {
-                Float.parseFloat(value);
-            } else if (expectedClass == "Integer"){
-                new BigInteger(value);
-            } else {
-                System.out.println("class wrongly passed, " + expectedClass + " is not valid");
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
     
     //this method takes a String and returns a Date.

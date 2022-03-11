@@ -7,7 +7,9 @@ package facturas.app.utils;
 
 import facturas.app.database.Condition;
 import facturas.app.database.SQLFilter;
+import facturas.app.models.Provider;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +42,18 @@ public class FilterUtils {
         filter.add("number", "=", noTicket, String.class);
         String docNo = values.get("docNo");
         filter.add("providerDoc", "=", docNo, String.class);
+        
+        return filter;
+    }
+    
+    public static SQLFilter createTicketFilter(Map<String, String> values, Provider prov, java.util.Date date) {
+        SQLFilter filter = new SQLFilter();
+        filter.add("providerDoc", "=", prov.getValues().get("docNo"), String.class);
+        filter.add("number", "=", values.get("number"), String.class);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date formatedDate = FormatUtils.dateGen(sdf.format(date));
+        filter.add("date", "=", formatedDate, Date.class);
         
         return filter;
     }

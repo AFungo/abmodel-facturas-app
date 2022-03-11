@@ -13,6 +13,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +32,13 @@ public class DollarPriceDAO extends DAO {
         executeQuery(query, true, true);
     }
     
+    public static List<DollarPrice> getPrices() {
+        String query = "SELECT * FROM DollarPrice";
+        ResultSet result = executeQuery(query, false, true);
+        List<DollarPrice> price = buildDollarPrices(result);
+        return price;
+    }
+    
     public static DollarPrice getPrice(Date date) {
         String query = "SELECT * FROM DollarPrice WHERE date = '" + date.toString() + "'";
         ResultSet result = executeQuery(query, false, true);
@@ -37,6 +46,7 @@ public class DollarPriceDAO extends DAO {
         return price;
     }
     
+    //returns true if there is no price loaded at any date
     public static boolean noPrices() {
         String query = "SELECT COUNT(date) FROM DollarPrice";
         ResultSet result = executeQuery(query, false, true);
@@ -53,6 +63,7 @@ public class DollarPriceDAO extends DAO {
         return noPrices;
     }
     
+    //gets the price of the closest date to the given date
     public static DollarPrice getAproximatePrice(Date date) {
         String query = "SELECT * FROM DollarPrice WHERE date = (SELECT MAX(date) FROM DollarPrice WHERE "
                 + "date < '" + date.toString() + "')";
@@ -88,20 +99,27 @@ public class DollarPriceDAO extends DAO {
         return afterAbs <= beforeAbs ? priceAfter : priceBefore;
     }
     
-    private static DollarPrice buildDollarPrice(ResultSet result) {
-        DollarPrice price = null;
+    private static List<DollarPrice> buildDollarPrices(ResultSet result) {
+        List<DollarPrice> pricesList = new LinkedList<>();
         try {
-            if (!result.next()) {
-                return null;
+            while(result.next()) {
+                Map<String, String> priceAttributes = new HashMap<>();
+                priceAttributes.put("date", result.getString(1));
+                priceAttributes.put("buy", result.getString(2));
+                priceAttributes.put("sell", result.getString(3));
+                pricesList.add(new DollarPrice(priceAttributes));
             }
-            Map<String, String> priceAttributes = new HashMap<>();
-            priceAttributes.put("date", result.getString(1));
-            priceAttributes.put("buy", result.getString(2));
-            priceAttributes.put("sell", result.getString(3));
-            price = new DollarPrice(priceAttributes);
         } catch (SQLException ex) {
             Logger.getLogger(DollarPriceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return price;
+        return pricesList;
+    }
+    
+    private static DollarPrice buildDollarPrice(ResultSet result) {
+        List<DollarPrice> pricesList = buildDollarPrices(result);
+        if (pricesList.isEmpty()) {
+            return null;
+        }
+        return pricesList.get(0);
     }
 }

@@ -9,26 +9,33 @@ import facturas.app.database.DBManager;
 import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
+import facturas.app.database.SectorDAO;
 import facturas.app.database.TicketDAO;
 import facturas.app.database.WithholdingDAO;
 import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
+import facturas.app.utils.FilterUtils;
+import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PricesList;
+import facturas.app.utils.Validate;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.function.Consumer;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -82,140 +89,24 @@ public class Controller {
     }
     
     public String validateProviderParam(Map<String, String> values, JComboBox<String> sectorsComboBox){
-        String message = "<html>", invalidations = "";
-        List<String> sectors = getItemsFromComboBox(sectorsComboBox);
-                
-        if(values.get("name").isEmpty()){ invalidations += "<br/> Nombre no introducido";}
-        if(values.get("docNo").isEmpty()){
-            invalidations += "<br/> Numero documento no introducido";
-        } else if (!FormatUtils.tryParse(values.get("docNo"), "Integer")){ 
-            invalidations += "<br/> Numero documento mal escrito";
-        }
-        
-        if(values.get("docType").isEmpty()){ invalidations += "<br/> Tipo de documento no introdcido";}
-        
-        String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
-        if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
-            invalidations += "<br/>El rubro del comprobante no existe";
-        }
-        
-        if (invalidations.isEmpty()) {
-            SQLFilter filter = new SQLFilter();
-            filter.add("docNo", "=", values.get("docNo"), String.class);
-            if (ProviderDAO.providerExist(filter)) {
-                invalidations += "<br/>El proveedor " + values.get("name") + " con nro documento " + values.get("docNo") + " ya esta cargado";
-            }
-        }
-        
-        if (invalidations.isEmpty()) {
-            return null;
-        } else {
-            invalidations += "</html>";
-            return message + invalidations;
-        }
+        String message = Validate.providerInput(values, sectorsComboBox);
+        return message;
     }
     
     //ticket is a boolean representing if the validation is for ticket or withholding
     public String validateParam(java.util.Date date, Map<String, String> values, boolean ticket, 
             JComboBox<String> sectorsComboBox, List<Provider> selectedProvider) {
         
-        List<String> sectors = getItemsFromComboBox(sectorsComboBox);
-        String message = "<html>", invalidations = "";
-        
-        if (date == null) {
-            invalidations += "<br/>Fecha no introducida";
+        String message = Validate.withholdingInput(date, sectorsComboBox, values, selectedProvider);
+        if (ticket) {
+            message += Validate.ticketInput(date, values);
         }
         
-        if (selectedProvider.isEmpty()) {
-            invalidations += "<br/>Proveedor no introducido";
-        } else if (selectedProvider.size() > 1) {
-            invalidations += "<br/>El proveedor elegido no es unico, especifique su documento";
+        if (!message.isEmpty()) {
+            return "<html>" + message + "</html>";
         }
-        
-        String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
-        if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector))) {
-            invalidations += "<br/>El rubro del comprobante no existe";
-        }
-        
-        if (ticket && (values.get("type") == null || values.get("type").isEmpty())) {
-            invalidations += "<br/>No se especifico el tipo de comprobante";
-        }
-        
-        if (ticket && values.get("exchangeMoney").isEmpty()) {
-            invalidations += "<br/>No se introdujo el tipo de moneda";
-        }
-        
-        boolean[] numerics = FormatUtils.validTicketInput(values, ticket);
-        invalidations += addInvalidNumerics(numerics, ticket);
-        
-        if (!invalidations.isEmpty()) {
-            invalidations += "</html>";
-            return message + invalidations;
-        }
-        
-        String iva = values.get("iva"), profits = values.get("profits");
-        if ((!ticket) && (iva.isEmpty() || Float.valueOf(iva) == 0) && 
-                (profits.isEmpty() || Float.valueOf(profits) == 0)) {
-            invalidations += "<br/>No se introdujo ningun ningun importe en la retencion";
-        }
-        
-        if (invalidations.isEmpty()) {
-            SQLFilter filter = new SQLFilter();
-            Provider prov = selectedProvider.get(0);
-            filter.add("providerDoc", "=", prov.getValues().get("docNo"), String.class);
-            filter.add("number", "=", values.get("number"), String.class);
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date formatedDate = FormatUtils.dateGen(sdf.format(date));
-            filter.add("date", "=", formatedDate, Date.class);
-            if (WithholdingDAO.exists(filter)) { 
-                invalidations += "<br/>El comprobante de proveedor " + prov.getValues().get("name") + ", numero " + 
-                        values.get("number") + " y fecha " + formatedDate + " ya esta cargado";
-            }
-        }
-        
-        if (invalidations.isEmpty()) {
-            return null;
-        } else {
-            invalidations += "</html>";
-            return message + invalidations;
-        }
-    }
-    
-    private String addInvalidNumerics(boolean[] numerics, boolean ticket) {
-        String invalidations = "";
-        int i = 0;
-        if (!numerics[i++])
-            invalidations += "<br/>Numero de ticket mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>retencion iva mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>retencion ganancias mal escrito";
-        if (!ticket) //case of withholding
-            return invalidations;
-        //otherwise check for ticket inputs
-        if (!numerics[i++])
-            invalidations += "<br/>Importe Op. Exentas mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>Tipo de cambio mal escrito";
-        if (!numerics[i++] || !numerics[i++] || !numerics[i++])
-            invalidations += "<br/>algunos de los Ivas mal escritos";
-        if (!numerics[i++])
-            invalidations += "<br/>Importe neto gravado mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>Importe neto no gravado mal escrito";
-        if (!numerics[i++])
-            invalidations += "<br/>Importe total mal escrito";
-        
-        return invalidations;
-    }
-    
-    private List<String> getItemsFromComboBox(JComboBox<String> sectorsComboBox) {
-        List<String> items = new LinkedList<>();
-        for (int i = 0; i < sectorsComboBox.getItemCount(); i++) {
-            items.add(sectorsComboBox.getItemAt(i));
-        }
-        return items;
+        return null;
     }
     
     public PricesList getProfit(SQLFilter ticketsFilters, SQLFilter withholdingsFilters, boolean inDollars) {
@@ -254,12 +145,17 @@ public class Controller {
         return ProviderDAO.getProviders();
     }
 
-    public void changeTicketAttribute(SQLFilter filter, String attribute, String value){
-        TicketDAO.changeAttribute(filter, attribute, value);
+    public void changeTicketAttribute(SQLFilter filter, String attribute, String value, boolean quotes){
+        //getting id of withholding
+        SQLFilter withholdingFilter = FilterUtils.getWithholdingFilter(filter);
+        List<Withholding> withholdings = WithholdingDAO.getWithholdings(withholdingFilter);
+        filter.add("id", "=", withholdings.get(0).getValues().get("id"), Integer.class);
+        
+        TicketDAO.changeAttribute(filter, attribute, value, quotes);
     }
     
-    public void changeWithholdingAttribute(SQLFilter filter, String attribute, String value){
-        WithholdingDAO.changeAttribute(filter, attribute, value);
+    public void changeWithholdingAttribute(SQLFilter filter, String attribute, String value, boolean quotes){
+        WithholdingDAO.changeAttribute(filter, attribute, value, quotes);
     }
     
     public void deleteWithholdingAttribute(SQLFilter filter, String attribute){
@@ -292,7 +188,7 @@ public class Controller {
         return ProviderDAO.getProviders(filters);
     }
 
-    public void changeAttributeProviderDAO(SQLFilter filters, String attribute, String value){
+    public void changeProviderAttribute(SQLFilter filters, String attribute, String value){
         ProviderDAO.changeAttribute(filters, attribute, value);
     }
     
@@ -335,6 +231,108 @@ public class Controller {
         ProviderDAO.addProvider(provider);
     }
     
+    public void createBackup(File folder) {
+        if (folder == null) {
+            throw new IllegalArgumentException("File is null");
+        }
+        //create backup folder (could be several backups in the folder)
+        File backupFolder = new File(folder, "\\backup--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\");
+        backupFolder.mkdir();
+        
+        //tickets backup
+        backupData(backupFolder, () -> TicketDAO.getTickets(), t -> FormatUtils.ticketToCsv(t), 
+                FixedData.getTicketAppFormat(), "tickets");
+        //withholdings backup
+        backupData(backupFolder, () -> WithholdingDAO.getWithholdingsWithNoTicket(), 
+                w -> FormatUtils.withholdingToCsv(w), FixedData.getWithholdingAppFormat(), "withholdings");
+        //providers backup
+        backupData(backupFolder, () -> ProviderDAO.getProviders(), p -> FormatUtils.providerToCsv(p), 
+                FixedData.getProviderAppFormat(), "providers");
+        //sectors backup
+        backupData(backupFolder, () -> SectorDAO.getSectors(), s -> s + ";", FixedData.getSectorAppFormat(), "sectors");
+        //dollar prices backup
+        backupData(backupFolder, () -> DollarPriceDAO.getPrices(), p -> FormatUtils.dollarPriceToCsv(p), 
+                FixedData.getDollarPriceFileFormat(), "prices");
+    }
+    
+    public void loadBackup(File folder) {
+        if (folder == null) {
+            throw new IllegalArgumentException("File is null");
+        } else if (!folder.getName().contains("backup--")) {
+            throw new IllegalArgumentException("Folder " + folder.getPath() + " is not a valid backup folder");
+        }
+        //load dollar prices
+        loadBackupData(folder,"prices.csv", "price", e -> DollarPriceDAO.addDollarPrice(e), 
+                s -> new DollarPrice(FormatUtils.dollarPriceCsvBackupToDict(s)));  //function removes the ; at the end of the sector name
+        //load sectors
+        loadBackupData(folder,"sectors.csv", "sectorBackup", e -> SectorDAO.addSector(e), 
+                s -> s.split(";")[0]);  //function removes the ; at the end of the sector name
+        //load providers
+        loadBackupData(folder,"providers.csv", "providerBackup", e -> ProviderDAO.addProvider(e), 
+                s -> new Provider(FormatUtils.providerCsvBackupToDict(s)));
+        //load tickets
+        loadBackupData(folder,"tickets.csv", "ticketBackup", e -> createTicketOnDB(e), 
+                s -> new Ticket(FormatUtils.ticketCsvBackupToDict(s)));
+        //load withholdings
+        loadBackupData(folder,"withholdings.csv", "withholdingBackup", e -> WithholdingDAO.addWithholding(e), 
+                s -> new Withholding(FormatUtils.withholdingCsvBackupToDict(s)));
+    }
+    
+    private <E> void loadBackupData(File parentFolder, String filename, String formatId, Consumer<E> loadDAO,
+            Function<String,E> formater) {
+        File fileCsv = new File(parentFolder, filename);
+        if (fileCsv.exists()) {
+            List<String> itemData = readCsv(fileCsv, formatId).getFst();
+            for (String s : itemData) {
+                E e = formater.apply(s);
+                loadDAO.accept(e);
+            }
+        }
+    }
+    
+    private <E> void backupData(File backupFolder, Supplier<List<E>> dao, Function<E,String> formater, 
+            String format, String itemName) {
+        List<E> items = dao.get();
+        if (items.isEmpty()) {   //if there is no items we don't save anything
+            System.out.println("no " + itemName + " to backup");
+            return ;
+        }
+        File dataBackup = createFile(backupFolder, itemName + ".csv");
+        writeToFile(dataBackup, formater, format, items, itemName);
+    }
+    
+    private File createFile(File parentFolder, String filename) {
+        File file = new File(parentFolder, filename);
+        try {
+            file.createNewFile();
+        } catch (IOException ex) {
+            throw new IllegalStateException("failed to create file at : " + file.getAbsolutePath() + "\n" + ex.toString());
+        }
+        return file;
+    }
+    
+    private <E> void writeToFile(File fileToWrite, Function<E,String> formater, String format, List<E> items, 
+            String itemName) {
+        FileWriter writer;
+        try {
+            writer = new FileWriter(fileToWrite);
+            writer.write(format);    //first line gives format to be identified at loading
+            for (E s : items) {
+                writer.append("\n" + formater.apply(s));
+            }
+            writer.close();
+            System.out.println(itemName + " backup done succesfully");
+            
+        } catch (IOException ex) {
+            throw new IllegalStateException("failed to write on file: " + fileToWrite.getAbsolutePath() + "\n" + ex.toString());
+        }
+    }
+    
+    private String currentTimeMinutesHours() {
+        LocalTime current = LocalTime.now();
+        return current.getHour() + "-" + current.getMinute();
+    }
+    
     private Pair<List<String>,Boolean> readCsv(File f, String type) {
         if (f == null) {
             throw new IllegalArgumentException("File is null");
@@ -344,7 +342,7 @@ public class Controller {
         try {
             stringItems = Files.readAllLines(f.toPath(), Charset.forName("UTF-8"));
         } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IllegalStateException(ex.toString());
         }
         
         String initialLine = stringItems.remove(0); //Remove the first row of the file for checking

@@ -71,8 +71,9 @@ public class View extends javax.swing.JFrame {
         popupMenu = new javax.swing.JPopupMenu();
         sectorMenuItem = new javax.swing.JMenuItem();
         deliveredMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
+        exchangeTypeMenuItem = new javax.swing.JMenuItem();
         deleteSectorMenuItem = new javax.swing.JMenuItem();
+        deleteMenuItem = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         ticketsTableScroll = new javax.swing.JScrollPane();
         ticketsTable = new javax.swing.JTable();
@@ -102,6 +103,8 @@ public class View extends javax.swing.JFrame {
         tools = new javax.swing.JMenu();
         filters = new javax.swing.JMenuItem();
         columnSelector = new javax.swing.JMenuItem();
+        createBackup = new javax.swing.JMenuItem();
+        loadBackup = new javax.swing.JMenuItem();
 
         sectorMenuItem.setText("Modificar rubro");
         sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -119,13 +122,13 @@ public class View extends javax.swing.JFrame {
         });
         popupMenu.add(deliveredMenuItem);
 
-        deleteMenuItem.setText("Eliminar");
-        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        exchangeTypeMenuItem.setText("Modificar tipo de cambio");
+        exchangeTypeMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteMenuItemActionPerformed(evt);
+                exchangeTypeMenuItemActionPerformed(evt);
             }
         });
-        popupMenu.add(deleteMenuItem);
+        popupMenu.add(exchangeTypeMenuItem);
 
         deleteSectorMenuItem.setText("Eliminar rubro");
         deleteSectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -134,6 +137,14 @@ public class View extends javax.swing.JFrame {
             }
         });
         popupMenu.add(deleteSectorMenuItem);
+
+        deleteMenuItem.setText("Eliminar");
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(deleteMenuItem);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
 
@@ -239,8 +250,7 @@ public class View extends javax.swing.JFrame {
         inDollars.setText("Precio en dolares");
 
         resetDBButton.setText("Reset DB");
-        resetDBButton.setVisible(false);
-        resetDBButton.setEnabled(false);
+        resetDBButton.setVisible(true);
         resetDBButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetDBButtonActionPerformed(evt);
@@ -338,6 +348,22 @@ public class View extends javax.swing.JFrame {
             }
         });
         tools.add(columnSelector);
+
+        createBackup.setText("Crear backup");
+        createBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBackupActionPerformed(evt);
+            }
+        });
+        tools.add(createBackup);
+
+        loadBackup.setText("Cargar backup");
+        loadBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadBackupActionPerformed(evt);
+            }
+        });
+        tools.add(loadBackup);
 
         menuBar.add(tools);
 
@@ -549,7 +575,7 @@ public class View extends javax.swing.JFrame {
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             
             String sector = (String)sectorComboBox.getSelectedItem();
-            controller.changeWithholdingAttribute(filter, "sector", sector);
+            controller.changeWithholdingAttribute(filter, "sector", sector, true);
         
             ticketsTable.setValueAt(sector, row, 14);   //column 14 is for sector
         }
@@ -564,7 +590,7 @@ public class View extends javax.swing.JFrame {
         SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
         
         String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
-            controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
+            controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true", true);
         
         ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
@@ -651,6 +677,49 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteSectorMenuItemActionPerformed
 
+    private void exchangeTypeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeTypeMenuItemActionPerformed
+        int row = ticketsTable.getSelectedRow();
+        Float exchangeType = (Float)ticketsTable.getValueAt(row, 8); //column 8 is for exchange type
+        String userInput = JOptionPane.showInputDialog(this, "Tipo de cambio: ", exchangeType);
+        if (userInput != null) {
+            updateAttribute("exchangeType", userInput, 8); //column 8 is for exchange type
+        }
+    }//GEN-LAST:event_exchangeTypeMenuItemActionPerformed
+
+    private void createBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBackupActionPerformed
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setDialogTitle("Elije una carpeta donde guardar el backup");   
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            controller.createBackup(file);
+        }
+    }//GEN-LAST:event_createBackupActionPerformed
+
+    private void loadBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBackupActionPerformed
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setDialogTitle("Seleccione la carpeta de backup a cargar");   
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            controller.loadBackup(file);
+            loadTicketsInTable();
+        }
+    }//GEN-LAST:event_loadBackupActionPerformed
+
+    private void updateAttribute(String attribute, String value, int column) {
+        int row = ticketsTable.getSelectedRow();
+        SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+        controller.changeTicketAttribute(filter, attribute, value, false);    //update db
+        ticketsTable.setValueAt(Float.parseFloat(value), row, column);  //update view
+    }
+    
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -736,16 +805,19 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem addProviderMenuItem;
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
+    private javax.swing.JMenuItem createBackup;
     private javax.swing.JButton createPdf;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenuItem deleteSectorMenuItem;
     private javax.swing.JMenuItem deliveredMenuItem;
     private javax.swing.JMenu edit;
+    private javax.swing.JMenuItem exchangeTypeMenuItem;
     private javax.swing.JMenu files;
     private javax.swing.JMenuItem filters;
     private javax.swing.JCheckBox inDollars;
     private javax.swing.JTextField ivaTaxLabel;
     private javax.swing.JTextField ivaTaxTextField;
+    private javax.swing.JMenuItem loadBackup;
     private javax.swing.JMenuItem loadDollarValue;
     private javax.swing.JMenuItem loadTicketManually;
     private javax.swing.JMenuItem loadTickets;
