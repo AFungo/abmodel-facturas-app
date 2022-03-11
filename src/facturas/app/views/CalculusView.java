@@ -14,6 +14,7 @@ import facturas.app.utils.PricesList;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -77,6 +78,7 @@ public class CalculusView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("OPERACIONES");
+        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Retenciones");

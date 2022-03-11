@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -125,6 +126,7 @@ public class ProvidersView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
+        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
         setLocation(new java.awt.Point(700, 350));
 
         providersTable.setModel(new javax.swing.table.DefaultTableModel(

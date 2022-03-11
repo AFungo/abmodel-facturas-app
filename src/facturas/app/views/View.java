@@ -150,7 +150,7 @@ public class View extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ADMINISTRADOR CONTABLE ABMODEL");
-        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-original.png")).getImage()
+        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage()
         );
         setSize(new java.awt.Dimension(0, 0));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -271,7 +271,7 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        files.setText("File");
+        files.setText("Cargar");
 
         multipleLoad.setText("Cargar (.csv)...");
 
@@ -311,7 +311,7 @@ public class View extends javax.swing.JFrame {
 
         menuBar.add(files);
 
-        edit.setText("Edit");
+        edit.setText("Editar");
 
         sectorsViewItem.setText("Agregar/Borrar rubro");
         sectorsViewItem.addActionListener(new java.awt.event.ActionListener() {
