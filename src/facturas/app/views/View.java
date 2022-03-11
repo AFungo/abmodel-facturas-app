@@ -17,6 +17,7 @@ import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PdfCreator;
 import facturas.app.utils.PricesList;
+import java.awt.Container;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -31,9 +32,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SpringLayout;
 import org.apache.commons.io.FilenameUtils;
 /**
  *
@@ -708,8 +712,18 @@ public class View extends javax.swing.JFrame {
 
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
+
+            JFrame frame = new JFrame("Cargando datos...");
+            JProgressBar backupProgressBar = new JProgressBar(1, 100);
+            controller.createProgressBarInFrame(frame, backupProgressBar);
+            backupProgressBar.setVisible(true);
+            frame.setVisible(true);
+            
             controller.loadBackup(file);
+            backupProgressBar.setValue(50);
             loadTicketsInTable();
+            backupProgressBar.setValue(100);
+            frame.dispose();    //load finished, progress bar removed
         }
     }//GEN-LAST:event_loadBackupActionPerformed
 

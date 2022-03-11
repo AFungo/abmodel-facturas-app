@@ -22,6 +22,7 @@ import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PricesList;
 import facturas.app.utils.Validate;
+import java.awt.Container;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,8 +38,11 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 /**
  *
@@ -211,6 +215,25 @@ public class Controller {
         String id = WithholdingDAO.addWithholding(ticket);
         ticket.addId(id);
         TicketDAO.addTicket(ticket);
+    }
+    
+    public void createProgressBarInFrame(JFrame frame, JProgressBar progressBar) {
+            //setting up frame
+            Container contentPane = frame.getContentPane();
+            contentPane.setLayout(new SpringLayout());
+            
+            //setting up progress bar
+            progressBar.setValue(0);
+            progressBar.setStringPainted(true);
+            progressBar.setString("cargando datos");
+            progressBar.setSize(500, 40);
+            
+            //adding progress bar to frame
+            frame.getContentPane().add(progressBar);
+            
+            //setting sizes
+            frame.setLocation(400, 300);
+            frame.setSize(300, 100);
     }
     
     public JTable createTableToDelete(Object[] rowToDelete) {
