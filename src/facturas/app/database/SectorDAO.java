@@ -20,7 +20,7 @@ public class SectorDAO extends DAO {
     
     public static void remove(String name) {
         String query = "DELETE FROM Sector WHERE name = '" + name + "'";
-        executeQuery(query, true, true);
+        executeQuery(query, true, false);
     }
     
     public static boolean exist(String name) {

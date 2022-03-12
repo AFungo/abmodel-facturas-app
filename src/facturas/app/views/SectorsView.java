@@ -7,7 +7,6 @@ package facturas.app.views;
 import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
-import facturas.app.database.TicketDAO;
 import facturas.app.database.WithholdingDAO;
 import facturas.app.utils.AutoSuggestor;
 import java.util.List;
@@ -151,8 +150,7 @@ public class SectorsView extends javax.swing.JFrame {
             SQLFilter filter = new SQLFilter();
             filter.add("sector", "=", sectorsAutoSuggestor.getText(), String.class);
             SectorDAO.add(userInput);
-            TicketDAO.update(filter, "sector", userInput);
-            WithholdingDAO.update(filter, "sector", userInput);
+            WithholdingDAO.update(filter, "sector", userInput, true);
             ProviderDAO.update(filter, "sector", userInput);
             SectorDAO.remove(sectorsAutoSuggestor.getText());
             sectorsAutoSuggestor.setText("");

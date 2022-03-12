@@ -74,9 +74,13 @@ public class TicketDAO extends DAO {
      * @param filter filter used for search tickets
      * @param attribute attribute of the tickets that will be updated
      * @param value value used for the update
+     * @param quotes true iff the values require quotes
      */
-    public static void update(SQLFilter filter, String attribute, String value) {
-        String query = "UPDATE Ticket SET " + attribute + " = '" + value + "' " + filter.get();
+    public static void update(SQLFilter filter, String attribute, String value, boolean quotes) {
+        if (quotes) {
+            value = "'" + value + "'";
+        }
+        String query = "UPDATE Ticket SET " + attribute + " = " + value + filter.get();
         executeQuery(query, true, false);
     }
 

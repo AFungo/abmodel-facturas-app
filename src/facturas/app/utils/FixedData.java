@@ -5,14 +5,15 @@
  */
 package facturas.app.utils;
 
+import java.util.Arrays;
+
 /**
  *
  * @author nacho
  */
 public class FixedData {
     
-    public static String[] getTicketTypes() {
-        String[] types = {"1 - Factura A", "2 - Nota de Debito A", "3 - Nota de Credito A", "4 - Recibo A", 
+    private static final String[] types = {"1 - Factura A", "2 - Nota de Debito A", "3 - Nota de Credito A", "4 - Recibo A", 
             "5 - Nota de Venta al Contado A", "6 - Factura B", "7 - Nota de Debito B", "8 - Nota de Credito B", 
             "9 - Recibo B", "10 - Nota de Venta al Contado B", "11 - Factura C", "12 - Nota de Debito C", 
             "13 - Nota de Credito C", "15 - Recibo C", "16 - Nota de Venta al Contado C", 
@@ -28,8 +29,42 @@ public class FixedData {
             "115 - Tique Nota de Debito A", "116 - Tique Nota de Debito B", "117 - Tique Nota de Debito C", "118 - Tique Factura M", 
             "119 - Tique Nota de Credito M", "120 - Tique Nota de Debito M", "331 - Liquidacion Secundaria de Granos", 
             "332 - Certificacion Electronica (Granos)"};
-        
+    
+    public static String[] getTicketTypes() {
         return types;
+    }
+
+    public static String getTicketEmitterFileFormat() {
+        return "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Emisor\",\"Nro. Doc. Emisor\",\"Denominación Emisor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+    }
+    
+    public static String getTicketReceptorFileFormat() {
+        return "\"Fecha\",\"Tipo\",\"Punto de Venta\",\"Número Desde\",\"Número Hasta\",\"Cód. Autorización\",\"Tipo Doc. Receptor\",\"Nro. Doc. Receptor\",\"Denominación Receptor\",\"Tipo Cambio\",\"Moneda\",\"Imp. Neto Gravado\",\"Imp. Neto No Gravado\",\"Imp. Op. Exentas\",\"IVA\",\"Imp. Total\"";
+    }
+    
+    public static String getDollarPriceFileFormat() {
+        return "Fecha cotizacion;Compra;Venta;";
+    }
+    
+    public static String getTicketAppFormat() {
+        return "date;number;providerDoc;iva;profits;delivered;sector;type;numberTo;authCode;exchangeType;exchangeMoney;netAmountWI;netAmountWOI;amountImpEx;ivaTax;totalAmount;issuedByMe;";
+    }
+    
+    public static String getWithholdingAppFormat() {
+        return "date;number;providerDoc;iva;profits;sector;delivered;";
+    }
+    
+    public static String getProviderAppFormat() {
+        return "docNo;name;direction;sector;alias;documentType;";
+    }
+    
+    public static String getSectorAppFormat() {
+        return "name;";
+    }
+    
+    public static boolean validType(String type) {
+        boolean value = Arrays.asList(types).contains(type);
+        return value;
     }
     
 }

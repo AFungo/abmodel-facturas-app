@@ -39,9 +39,10 @@ public abstract class DAO {
             }
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {
-                throw new IllegalStateException("<23505> duplicate item: " + e.toString());
+                throw new IllegalStateException("query: " + query + "\n" + "<23505> duplicate item: " + e.toString());
+
             } else {
-                throw new IllegalStateException(e.toString());
+                throw new IllegalStateException("query: " + query + "\n" + e.toString());
             }
         }
     }

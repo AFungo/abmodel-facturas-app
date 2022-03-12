@@ -56,7 +56,7 @@ public class WithholdingDAO {
      * @param filter filter that will be used in the query
      * @return true iff the result if not empty
      */
-    public static boolean exist(SQLFilter filter) {
+    public static boolean exist(SQLFilter filter) {    
         String query = "SELECT * FROM Withholding " + filter.get();
         ResultSet result = executeQuery(query, false, true);
         try {
@@ -65,6 +65,14 @@ public class WithholdingDAO {
             throw new IllegalStateException(e.toString());
         }
     }
+    
+    public static List<Withholding> getWithholdingsWithNoTicket() {
+        String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id WHERE Ticket.id IS NULL";
+        ResultSet result = executeQuery(query , false, true);
+        List<Withholding> withholdingsList = getWithholdingsList(result);
+        return withholdingsList;
+    }
+
     
     /**
      * Withholding's getter
@@ -101,9 +109,13 @@ public class WithholdingDAO {
      * @param filter filter used for search withholding's
      * @param attribute attribute of the withholding's that will be updated
      * @param value value used for the update
+     * @param quotes true iff the values require quotes
      */
-    public static void update(SQLFilter filter, String attribute, String value) {
-        String query = "UPDATE Withholding SET " + attribute + " = '" + value  + "' " + filter.get();
+    public static void update(SQLFilter filter, String attribute, String value, boolean quotes) {
+        if (quotes) {
+            value = "'" + value + "'";
+        }
+        String query = "UPDATE Withholding SET " + attribute + " = " + value  + filter.get();
         executeQuery(query, true, false);
     }
     
