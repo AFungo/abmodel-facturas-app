@@ -64,7 +64,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     
     // FIXME: Maybe we should use the controller here
     private List<String> getSectors() {
-        return SectorDAO.getSectors();
+        return SectorDAO.get();
     }
 
     /**
@@ -564,7 +564,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
             filter.add("docNo", "=", docNoComboBox.getSelectedItem(), String.class);
         }
         
-        List<Provider> providersCheck = ProviderDAO.getProviders(filter);
+        List<Provider> providersCheck = ProviderDAO.get(filter);
 
         String errorMessage = controller.validateParam(dateDateChooser.getDate(), values, true, 
                 sectorsComboBox, providersCheck);
@@ -639,7 +639,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         if (providersComboBox.getSelectedItem() != null) {
             SQLFilter filters = new SQLFilter();
             filters.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-            List<Provider> providersList = ProviderDAO.getProviders(filters);
+            List<Provider> providersList = ProviderDAO.get(filters);
             if (providersList.size() > 1) {
                 docNoComboBox.removeAllItems();
                 docNoComboBox.setEnabled(true);

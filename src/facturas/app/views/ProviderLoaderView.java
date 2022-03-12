@@ -35,7 +35,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
     }
     
      private List<String> getSectors() {
-        return SectorDAO.getSectors();
+        return SectorDAO.get();
     }
     public void updateSuggestions() {
         sectorsAutoSuggestor.setSuggestions(getSectors());

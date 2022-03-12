@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package facturas.app.database;
 
 import java.sql.ResultSet;
@@ -12,23 +8,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author agustinnolasco
+ * Data Access Object used for the Sector's table of the database
  */
 public class SectorDAO extends DAO {
     
-    public static void addSector(String name) {
+    public static void add(String name) {
         String query = "INSERT INTO Sector (name) "
             + "VALUES ('"+ name + "')";
         executeQuery(query, true, true);
     }
     
-    public static void deleteSector(String name) {
+    public static void remove(String name) {
         String query = "DELETE FROM Sector WHERE name = '" + name + "'";
         executeQuery(query, true, true);
     }
     
-    public static boolean sectorExist(String name) {
+    public static boolean exist(String name) {
         String query = "SELECT * FROM Sector WHERE name = '" + name + "'";
         ResultSet result = executeQuery(query, false, true);
         try {
@@ -38,7 +33,7 @@ public class SectorDAO extends DAO {
         }
     }
     
-    public static List<String> getSectors() {
+    public static List<String> get() {
         ResultSet result = executeQuery("SELECT * FROM Sector", false, true);
         List<String> providers = new LinkedList<>();
         try {

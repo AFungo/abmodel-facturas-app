@@ -39,7 +39,7 @@ public class SectorsView extends javax.swing.JFrame {
     
     // FIXME: Maybe we should use the controller here
     private List<String> getSectors() {
-        return SectorDAO.getSectors();
+        return SectorDAO.get();
     }
 
     /**
@@ -120,8 +120,8 @@ public class SectorsView extends javax.swing.JFrame {
 
     private void addSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSectorActionPerformed
         String newSector = sectorsAutoSuggestor.getText();
-        if (!newSector.trim().isEmpty() && !SectorDAO.sectorExist(newSector)) {
-            SectorDAO.addSector(sectorsAutoSuggestor.getText());
+        if (!newSector.trim().isEmpty() && !SectorDAO.exist(newSector)) {
+            SectorDAO.add(sectorsAutoSuggestor.getText());
             updateSuggestions();
             sectorsAutoSuggestor.setText("");
         } else {
@@ -132,13 +132,13 @@ public class SectorsView extends javax.swing.JFrame {
 
     private void deleteSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorActionPerformed
         String sector = sectorsAutoSuggestor.getText();
-        if (sector != null && SectorDAO.sectorExist(sector)) {
+        if (sector != null && SectorDAO.exist(sector)) {
             int userInput = JOptionPane.showConfirmDialog(this, 
                     "¿Seguro que desea eliminar el rubro " + sector + "?", 
                     "Confirmacion", 0, 2
             );
             if (userInput == 0) {
-                SectorDAO.deleteSector(sectorsAutoSuggestor.getText());
+                SectorDAO.remove(sectorsAutoSuggestor.getText());
                 updateSuggestions();
                 sectorsAutoSuggestor.setText("");
             }
@@ -150,11 +150,11 @@ public class SectorsView extends javax.swing.JFrame {
         if (userInput != null && sectorsAutoSuggestor.getText() != null) {
             SQLFilter filter = new SQLFilter();
             filter.add("sector", "=", sectorsAutoSuggestor.getText(), String.class);
-            SectorDAO.addSector(userInput);
-            TicketDAO.changeAttribute(filter, "sector", userInput);
-            WithholdingDAO.changeAttribute(filter, "sector", userInput);
-            ProviderDAO.changeAttribute(filter, "sector", userInput);
-            SectorDAO.deleteSector(sectorsAutoSuggestor.getText());
+            SectorDAO.add(userInput);
+            TicketDAO.update(filter, "sector", userInput);
+            WithholdingDAO.update(filter, "sector", userInput);
+            ProviderDAO.update(filter, "sector", userInput);
+            SectorDAO.remove(sectorsAutoSuggestor.getText());
             sectorsAutoSuggestor.setText("");
             updateSuggestions();
         }

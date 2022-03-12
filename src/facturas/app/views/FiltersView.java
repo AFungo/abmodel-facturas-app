@@ -43,13 +43,13 @@ public class FiltersView extends javax.swing.JFrame {
         initComponents();
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, SectorDAO.getSectors());
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, SectorDAO.get());
         sectorsAutoSuggestor.autoSuggest();
     }
     
     public void updateSuggestions() {
         providersAutoSuggestor.setSuggestions(getProvidersName());
-        sectorsAutoSuggestor.setSuggestions(SectorDAO.getSectors());
+        sectorsAutoSuggestor.setSuggestions(SectorDAO.get());
     }
     
     private List<String> getProvidersName() {
@@ -409,7 +409,7 @@ public class FiltersView extends javax.swing.JFrame {
         String selectedProvider = providersAutoSuggestor.getText();
         if (selectedProvider != null && !selectedProvider.isEmpty()) {
             providersDoc.add("name", "=", selectedProvider, String.class);
-            if (!ProviderDAO.providerExist(providersDoc)) {
+            if (!ProviderDAO.exist(providersDoc)) {
                 throw new IllegalArgumentException("provider doesn't exists");
             }
             selectedFilters.addDisjunction("providerDoc", "=", 
@@ -418,7 +418,7 @@ public class FiltersView extends javax.swing.JFrame {
         
         String selectedSector = sectorsAutoSuggestor.getText();
         if (selectedSector != null && !selectedSector.isEmpty()) {
-            if (!SectorDAO.sectorExist(selectedSector)) {
+            if (!SectorDAO.exist(selectedSector)) {
                 throw new IllegalArgumentException("sector doesn't exists");
             }
             selectedFilters.add("sector", "=", selectedSector, String.class);

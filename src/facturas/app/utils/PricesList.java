@@ -31,7 +31,7 @@ public class PricesList {
         calculator = new ProfitCalculator ();
         datePrices = new HashMap<> ();
         missingPrices = new LinkedList();
-        if (DollarPriceDAO.noPrices() && inDollars) {
+        if (DollarPriceDAO.isEmpty() && inDollars) {
             throw new IllegalStateException("No dollar prices loaded");
         }
     }
@@ -70,7 +70,7 @@ public class PricesList {
         boolean dayPriceMissing = false;
         
         if (price == null) {    //take price from database and load it in hashmap
-             price = DollarPriceDAO.getPrice(ticketDate);
+             price = DollarPriceDAO.get(ticketDate);
              if (price == null) {
                 price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
                 dayPriceMissing = true;

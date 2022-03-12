@@ -65,7 +65,7 @@ public class Controller {
     }
     
     public void loadWithholding(Map<String, String> values) {
-        WithholdingDAO.addWithholding(new Withholding(values));
+        WithholdingDAO.add(new Withholding(values));
     }
     
     public void loadDollarPrices(File f) {
@@ -77,7 +77,7 @@ public class Controller {
         }
             
         for (DollarPrice p : prices) {
-            DollarPriceDAO.addDollarPrice(p);
+            DollarPriceDAO.add(p);
         }
     }
     
@@ -94,7 +94,7 @@ public class Controller {
         
         if(values.get("docType").isEmpty()){ invalidations += "<br/> Tipo de documento no introdcido";}
         
-        String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
+        String providerSector = values.get("provSector"); //if not null or empty and doesn't exist
         if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
             invalidations += "<br/>El rubro del comprobante no existe";
         }
@@ -102,7 +102,7 @@ public class Controller {
         if (invalidations.isEmpty()) {
             SQLFilter filter = new SQLFilter();
             filter.add("docNo", "=", values.get("docNo"), String.class);
-            if (ProviderDAO.providerExist(filter)) {
+            if (ProviderDAO.exist(filter)) {
                 invalidations += "<br/>El proveedor " + values.get("name") + " con nro documento " + values.get("docNo") + " ya esta cargado";
             }
         }
@@ -132,7 +132,7 @@ public class Controller {
             invalidations += "<br/>El proveedor elegido no es unico, especifique su documento";
         }
         
-        String ticketSector = values.get("sector"); //if not null or empty and doesn't exists
+        String ticketSector = values.get("sector"); //if not null or empty and doesn't exist
         if (ticketSector != null && (!ticketSector.isEmpty()) && (!sectors.contains(ticketSector))) {
             invalidations += "<br/>El rubro del comprobante no existe";
         }
@@ -168,7 +168,7 @@ public class Controller {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date formatedDate = FormatUtils.dateGen(sdf.format(date));
             filter.add("date", "=", formatedDate, Date.class);
-            if (WithholdingDAO.exists(filter)) { 
+            if (WithholdingDAO.exist(filter)) { 
                 invalidations += "<br/>El comprobante de proveedor " + prov.getValues().get("name") + ", numero " + 
                         values.get("number") + " y fecha " + formatedDate + " ya esta cargado";
             }
@@ -241,33 +241,33 @@ public class Controller {
     }
 
     public List<Ticket> getTickets(SQLFilter filters) {
-        if (filters.isEmpty()) return TicketDAO.getTickets();
-        else return TicketDAO.getTickets(filters);            
+        if (filters.isEmpty()) return TicketDAO.get();
+        else return TicketDAO.get(filters);            
     }
 
     public List<Withholding> getWithholdings(SQLFilter selectedFilters) {
-        if(selectedFilters.isEmpty()) return WithholdingDAO.getWithholdings();
-        else return WithholdingDAO.getWithholdings(selectedFilters);
+        if(selectedFilters.isEmpty()) return WithholdingDAO.get();
+        else return WithholdingDAO.get(selectedFilters);
     }
    
     public List<Provider> getProviders() {
-        return ProviderDAO.getProviders();
+        return ProviderDAO.get();
     }
 
     public void changeTicketAttribute(SQLFilter filter, String attribute, String value){
-        TicketDAO.changeAttribute(filter, attribute, value);
+        TicketDAO.update(filter, attribute, value);
     }
     
     public void changeWithholdingAttribute(SQLFilter filter, String attribute, String value){
-        WithholdingDAO.changeAttribute(filter, attribute, value);
+        WithholdingDAO.update(filter, attribute, value);
     }
     
     public void deleteWithholdingAttribute(SQLFilter filter, String attribute){
-        WithholdingDAO.deleteAttribute(filter, attribute);
+        WithholdingDAO.setNull(filter, attribute);
     }
 
     public void deleteProviderAttribute(SQLFilter filter, String attribute){
-        ProviderDAO.deleteAttribute(filter, attribute);
+        ProviderDAO.setNull(filter, attribute);
     }
     
     public void removeItem(SQLFilter filter, boolean isTicket) {
@@ -289,11 +289,11 @@ public class Controller {
     }
 
     public List<Provider> getProviders(SQLFilter filters){
-        return ProviderDAO.getProviders(filters);
+        return ProviderDAO.get(filters);
     }
 
     public void changeAttributeProviderDAO(SQLFilter filters, String attribute, String value){
-        ProviderDAO.changeAttribute(filters, attribute, value);
+        ProviderDAO.update(filters, attribute, value);
     }
     
     public JTable createMissingPricesTable(List<Pair<Date,String>> data) {
@@ -312,9 +312,9 @@ public class Controller {
     }
     
     private void createTicketOnDB(Ticket ticket) {
-        String id = WithholdingDAO.addWithholding(ticket);
+        String id = WithholdingDAO.add(ticket);
         ticket.addId(id);
-        TicketDAO.addTicket(ticket);
+        TicketDAO.add(ticket);
     }
     
     public JTable createTableToDelete(Object[] rowToDelete) {
@@ -332,7 +332,7 @@ public class Controller {
     
     public void addProvider(Map<String, String> values){
         Provider provider = new Provider(values);
-        ProviderDAO.addProvider(provider);
+        ProviderDAO.add(provider);
     }
     
     private Pair<List<String>,Boolean> readCsv(File f, String type) {

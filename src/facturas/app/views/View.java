@@ -135,7 +135,7 @@ public class View extends javax.swing.JFrame {
         });
         popupMenu.add(deleteSectorMenuItem);
 
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
+        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ADMINISTRADOR CONTABLE ABMODEL");

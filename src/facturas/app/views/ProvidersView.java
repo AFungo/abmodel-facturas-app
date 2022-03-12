@@ -114,7 +114,7 @@ public class ProvidersView extends javax.swing.JFrame {
         });
         popupMenu.add(deleteSectorMenuItem);
 
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
+        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
