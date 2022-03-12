@@ -50,7 +50,7 @@ public class WithholdingDAO {
     }
     
     /**
-     * Given a filter, checks if the executed query gets return an empty set 
+     * Given a filter, checks if the executed query returns an empty set 
      * or not
      * 
      * @param filter filter that will be used in the query
@@ -66,13 +66,17 @@ public class WithholdingDAO {
         }
     }
     
+    /**
+     * Getter of withholding's that has no tickets associated
+     * 
+     * @return all withholding's that has no tickets associated
+     */
     public static List<Withholding> getWithholdingsWithNoTicket() {
         String query = "SELECT Withholding.* FROM Withholding LEFT JOIN Ticket ON Withholding.id = Ticket.id WHERE Ticket.id IS NULL";
         ResultSet result = executeQuery(query , false, true);
         List<Withholding> withholdingsList = getWithholdingsList(result);
         return withholdingsList;
     }
-
     
     /**
      * Withholding's getter
@@ -134,7 +138,7 @@ public class WithholdingDAO {
     /**
      * Given a filter, search the withholding's and delete them
      * 
-     * @param filter filter used for search withholding's
+     * @param filter filter used for the withholding's search
      */
     public static void remove(SQLFilter filter) {
         String query = "DELETE FROM Withholding " + filter.get();

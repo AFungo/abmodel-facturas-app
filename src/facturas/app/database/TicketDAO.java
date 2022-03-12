@@ -87,7 +87,7 @@ public class TicketDAO extends DAO {
     /**
      * Given a filter, search the tickets and delete them
      * 
-     * @param filter filter used for search tickets
+     * @param filter filter used for the tickets search
      */
     public static void remove(SQLFilter filter) {
         String query = "DELETE FROM Ticket " + filter.get();

@@ -77,7 +77,12 @@ public class DollarPriceDAO extends DAO {
         return noPrices;
     }
     
-    //gets the price of the closest date to the given date
+    /**
+    * Gets the price of the closest date to the given date
+    * 
+     * @param date date used in the search
+     * @return the price of the closest date to the given date
+    */
     public static DollarPrice getAproximatePrice(Date date) {
         String query = "SELECT * FROM DollarPrice WHERE date = (SELECT MAX(date) FROM DollarPrice WHERE "
                 + "date < '" + date.toString() + "')";

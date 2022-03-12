@@ -12,17 +12,24 @@ import java.util.logging.Logger;
  */
 public class SectorDAO extends DAO {
     
+    /**
+     * Add a new sector to the database
+     *
+     * @param name name of the sector to be added
+     */
     public static void add(String name) {
         String query = "INSERT INTO Sector (name) "
             + "VALUES ('"+ name + "')";
         executeQuery(query, true, true);
     }
     
-    public static void remove(String name) {
-        String query = "DELETE FROM Sector WHERE name = '" + name + "'";
-        executeQuery(query, true, false);
-    }
-    
+    /**
+     * Given a name, checks if the executed query returns an empty set 
+     * or not
+     * 
+     * @param name name that will be used in the query
+     * @return true iff the result if not empty
+     */
     public static boolean exist(String name) {
         String query = "SELECT * FROM Sector WHERE name = '" + name + "'";
         ResultSet result = executeQuery(query, false, true);
@@ -33,6 +40,11 @@ public class SectorDAO extends DAO {
         }
     }
     
+    /**
+     * Sectors getter
+     *
+     * @return a list of all sectors
+     */
     public static List<String> get() {
         ResultSet result = executeQuery("SELECT * FROM Sector", false, true);
         List<String> providers = new LinkedList<>();
@@ -46,4 +58,15 @@ public class SectorDAO extends DAO {
             throw new IllegalStateException(ex.toString());
         }
     }
+    
+    /**
+     * Given a name, search the sectors and delete them
+     * 
+     * @param name name used for the sectors search
+     */
+    public static void remove(String name) {
+        String query = "DELETE FROM Sector WHERE name = '" + name + "'";
+        executeQuery(query, true, false);
+    }
+    
 }

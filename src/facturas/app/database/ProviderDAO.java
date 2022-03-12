@@ -30,7 +30,7 @@ public class ProviderDAO extends DAO {
     }
     
     /**
-     * Given a filter, checks if the executed query gets return an empty set 
+     * Given a filter, checks if the executed query returns an empty set 
      * or not
      * 
      * @param filter filter that will be used in the query
