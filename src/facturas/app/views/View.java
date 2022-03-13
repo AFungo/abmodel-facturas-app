@@ -17,7 +17,7 @@ import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PdfCreator;
 import facturas.app.utils.PricesList;
-import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -32,12 +32,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SpringLayout;
 import org.apache.commons.io.FilenameUtils;
 /**
  *
@@ -464,12 +461,14 @@ public class View extends javax.swing.JFrame {
     
     //calculates profit of tickets
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
         try {
             pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
         } catch (IllegalStateException e) {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
                 "Error", JOptionPane.ERROR_MESSAGE);
             return ;
@@ -480,15 +479,18 @@ public class View extends javax.swing.JFrame {
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = controller.createMissingPricesTable(missingPrices);
             int daysLimit = controller.getDaysLimit();
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
                 " dias para redondear el dolar", JOptionPane.WARNING_MESSAGE);
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         }
         
         String money = dollar ? " USD" : " ARS";
         profitTax.setText(numberFormat.format(values.get("totalProfitTax")) + money);
         ivaTaxTextField.setText(numberFormat.format(values.get("totalIva"))+ money);
         total.setText(numberFormat.format(values.get("profitWTax")) + money);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any
@@ -501,7 +503,9 @@ public class View extends javax.swing.JFrame {
 
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         loadTicketsInTable();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
@@ -514,18 +518,25 @@ public class View extends javax.swing.JFrame {
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
-
-        controller.loadTickets(chooser.getSelectedFile());
-        // FIXME: Maybe we can update the suggestions only 
-        // when we know that a providers was added
-        providersView.updateSuggestions();
+        
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        try {
+            controller.loadTickets(chooser.getSelectedFile());
+            // FIXME: Maybe we can update the suggestions only 
+            // when we know that a providers was added
+            providersView.updateSuggestions();
+        } catch (Exception e) {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            throw e;
+        }
         
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
             names.add(p.getValues().get("name"));
         }
         updateProviders(names);
-        showTicketsActionPerformed(evt);
+        loadTicketsInTable();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadTicketsActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
@@ -547,8 +558,10 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_columnSelectorActionPerformed
 
     private void resetDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDBButtonActionPerformed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         controller.resetDB();
         cleanTable((DefaultTableModel)ticketsTable.getModel());
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_resetDBButtonActionPerformed
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
@@ -699,7 +712,9 @@ public class View extends javax.swing.JFrame {
 
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             controller.createBackup(file);
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_createBackupActionPerformed
 
@@ -713,17 +728,15 @@ public class View extends javax.swing.JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
 
-            JFrame frame = new JFrame("Cargando datos...");
-            JProgressBar backupProgressBar = new JProgressBar(1, 100);
-            controller.createProgressBarInFrame(frame, backupProgressBar);
-            backupProgressBar.setVisible(true);
-            frame.setVisible(true);
-            
-            controller.loadBackup(file);
-            backupProgressBar.setValue(50);
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            try {
+                controller.loadBackup(file);
+            } catch (Exception e) {
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                throw e;
+            }
             loadTicketsInTable();
-            backupProgressBar.setValue(100);
-            frame.dispose();    //load finished, progress bar removed
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_loadBackupActionPerformed
 
