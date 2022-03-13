@@ -105,6 +105,37 @@ public class SQLFilter {
     }
     
     /**
+     * Get all the conditions with a specific attribute
+     * 
+     * @param attr attribute used to search the conditions to get
+     * @return the list of gotten conditions
+     */
+    public List<Condition> getCondition(String attr) {
+        List<Condition> condition = conditions.get(attr);
+        if (condition == null) {
+            condition = new LinkedList<>();
+        }
+        
+        return condition;
+    }
+    
+    /**
+     * Get all the disjunctions conditions with a specific attribute
+     * 
+     * @param attr attribute used to search the conditions to get
+     * @return returns a list of list because it could be several or conditions of the same attribute
+     */
+    public List<List<Condition>> getOrCondition(String attr) {
+        List<List<Condition>> conditions = new LinkedList<>();
+        List<Condition> cond = orConditions.get(attr);
+        while (cond != null) {
+            conditions.add(cond);
+            cond = orConditions.get(cond);
+        }
+        return conditions;
+    }
+    
+    /**
      * Gets the WHERE clause for SQL using the conditions added
      * 
      * @return the string corresponding to "CONDITION" of WHERE clause of SQL
