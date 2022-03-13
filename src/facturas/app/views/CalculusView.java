@@ -9,6 +9,8 @@ import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import facturas.app.Controller;
+import facturas.app.database.SQLFilter;
+import facturas.app.utils.FilterUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PricesList;
 import java.sql.Date;
@@ -357,7 +359,9 @@ public class CalculusView extends javax.swing.JFrame {
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
         try {
-            pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
+            SQLFilter ticketFilter = filtersView.getFilters();
+            SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
+            pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
             optionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
                 "Error", optionPane.ERROR_MESSAGE);

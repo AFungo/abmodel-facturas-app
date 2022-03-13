@@ -14,6 +14,7 @@ import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
@@ -338,8 +339,10 @@ public class FiltersView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
-        List<Withholding> tickets = controller.getWithholdings(getFilters(false));
-        tickets.addAll(controller.getTickets(getFilters(true)));
+        SQLFilter ticketFilter = getFilters();
+        SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
+        List<Withholding> tickets = controller.getWithholdings(ticketFilter);
+        tickets.addAll(controller.getTickets(withholdingFilter));
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
@@ -384,22 +387,18 @@ public class FiltersView extends javax.swing.JFrame {
         ticketTypesList.clearSelection();
     }//GEN-LAST:event_cleanFiltersActionPerformed
 
-    public SQLFilter getFilters(boolean isTicket) {
+    public SQLFilter getFilters() {
         SQLFilter selectedFilters = new SQLFilter();
         
         if (Validate.tryParse(idTextField.getText(), Integer.class, false)) {
-            String idField = "id";
-            if (isTicket) {
-                idField = "Ticket.id";
-            }
-            selectedFilters.add(idField, "=", Integer.parseInt(idTextField.getText()), Integer.class);
+            selectedFilters.add("id", "=", Integer.parseInt(idTextField.getText()), Integer.class);
         }
         if (Validate.tryParse(noTicketWithholdingTextField.getText(), Integer.class, false)) {
             selectedFilters.add("number", "=", noTicketWithholdingTextField.getText(), String.class);
         }
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        if(minDateChooser.getDate()!=null) {
+        if(minDateChooser.getDate()!= null) {
             selectedFilters.add("date", ">=", FormatUtils.dateGen(sdf.format(minDateChooser.getDate())), Date.class);
         } 
         if(maxDateChooser.getDate()!=null) {
@@ -429,10 +428,6 @@ public class FiltersView extends javax.swing.JFrame {
             selectedFilters.add("providerDoc", "=", docNoTextField.getText(), String.class);
         }
         
-        if (!isTicket) {
-            return selectedFilters;
-        }
-                     
         if (Validate.tryParse(minTotalAmountTextField.getText(), Float.class, false)) {
             selectedFilters.add("totalAmount", ">=", Float.parseFloat(minTotalAmountTextField.getText()), Float.class);
         }

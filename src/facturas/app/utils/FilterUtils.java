@@ -61,10 +61,20 @@ public class FilterUtils {
     /*
         removes filters of attributes of withholding and puts them in a new filter
     */
-    public static SQLFilter getWithholdingFilter(SQLFilter filter) {
+    public static SQLFilter separateWithholdingFilter(SQLFilter filter) {
         SQLFilter withholdingFilter = new SQLFilter();
         String[] attributesToRemove = {"id", "date", "number", "providerDoc", "delivered", "sector"};
         transferFilters(withholdingFilter, filter, attributesToRemove);
+        
+        return withholdingFilter;
+    }
+
+    public static SQLFilter separateWithholdingSpecialFilter(SQLFilter filter) {
+        SQLFilter withholdingFilter = new SQLFilter();
+        String[] attributesToRemove = {"iva", "profits"};
+        String[] attributesToCopy = {"id", "date", "number", "providerDoc", "delivered", "sector"};
+        transferFilters(withholdingFilter, filter, attributesToRemove);
+        copyFilters(withholdingFilter, filter, attributesToRemove);
         
         return withholdingFilter;
     }
@@ -75,6 +85,17 @@ public class FilterUtils {
                 filterToAdd.add(cond);  //transfering and conditions
             }
             for (List<Condition> cond : filterToRemove.removeOrCondition(attr)) {
+                filterToAdd.addDisjunction(cond, attr); //transfering or conditions
+            }
+        }
+    }
+    
+    private static void copyFilters(SQLFilter filterToAdd, SQLFilter filterToCopy, String[] attributes) {
+        for (String attr : attributes) {
+            for (Condition cond : filterToCopy.getCondition(attr)) {
+                filterToAdd.add(cond);  //transfering and conditions
+            }
+            for (List<Condition> cond : filterToCopy.getOrCondition(attr)) {
                 filterToAdd.addDisjunction(cond, attr); //transfering or conditions
             }
         }

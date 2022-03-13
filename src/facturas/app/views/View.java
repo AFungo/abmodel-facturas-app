@@ -466,7 +466,9 @@ public class View extends javax.swing.JFrame {
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
         try {
-            pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
+            SQLFilter ticketFilter = filtersView.getFilters();
+            SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
+            pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
