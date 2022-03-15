@@ -340,9 +340,13 @@ public class FiltersView extends javax.swing.JFrame {
 
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
         SQLFilter ticketFilter = getFilters();
-        SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
-        List<Withholding> tickets = controller.getWithholdings(ticketFilter);
-        tickets.addAll(controller.getTickets(withholdingFilter));
+        SQLFilter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
+        SQLFilter ivaAndProfitsFilter = FilterUtils.removeIvaAndProfits(withholdingFilter);
+        
+        List<Withholding> tickets = controller.getWithholdings(withholdingFilter);
+        tickets.addAll(controller.getTickets(ticketFilter));
+        
+        controller.filterWithholdings(ivaAndProfitsFilter, tickets);
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);

@@ -5,6 +5,7 @@
  */
 package facturas.app;
 
+import facturas.app.database.Condition;
 import facturas.app.database.DBManager;
 import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
@@ -211,6 +212,69 @@ public class Controller {
         String id = WithholdingDAO.add(ticket);
         ticket.addId(id);
         TicketDAO.add(ticket);
+    }
+    
+    public void filterWithholdings(SQLFilter filter, List<Withholding> tickets) {
+        Float minIva = null; 
+        Float maxIva = null; 
+        Float minProfits = null; 
+        Float maxProfits = null;
+        
+        List<Condition> ivas = filter.getCondition("iva");
+        for (Condition i : ivas) {
+            if (i.getComparison() == ">=") {
+                minIva = (Float) i.getVal();
+            } else if (i.getComparison() == "<=") {
+                maxIva = (Float) i.getVal();
+            }
+        }
+        
+        List<Condition> profits = filter.getCondition("profits");
+        for (Condition i : profits) {
+            if (i.getComparison() == ">=") {
+                minProfits = (Float) i.getVal();
+            } else if (i.getComparison() == "<=") {
+                maxProfits = (Float) i.getVal();
+            }
+        }
+        
+        for (Withholding w : tickets) {
+            removeValuesOutOfFilters(w, minIva, maxIva, minProfits, maxProfits);
+        }
+        
+    }
+    
+    private void removeValuesOutOfFilters(Withholding w, Float minIva, Float maxIva, Float minProfits, Float maxProfits) {
+        Map<String,Object> values = w.getValues();
+        
+        if (values.get("iva") != null) {
+            Float iva = (Float) values.get("iva");
+            if (minIva != null) {
+                if (iva < minIva) {
+                    w.deleteIva();
+                }
+            }
+            if (maxIva !=  null) {
+                if (maxIva < iva) {
+                    w.deleteIva();
+                }
+            }
+        }
+        
+        if (values.get("profits") != null) {
+            Float profits = (Float) values.get("profits");
+            if (minProfits != null) {
+                if (profits < minProfits) {
+                    w.deleteProfits();
+                }
+            }
+            if (maxProfits !=  null) {
+                if (maxProfits < profits) {
+                    w.deleteProfits();
+                }
+            }
+        }
+        
     }
     
     public JTable createTableToDelete(Object[] rowToDelete) {
