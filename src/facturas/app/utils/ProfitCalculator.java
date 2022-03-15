@@ -19,14 +19,14 @@ public class ProfitCalculator {
     
     private Transaction purchases;
     private Transaction sales;
-    private Transaction retentionIva;
-    private Transaction retentionGan;
+    private Float withholdingIva;
+    private Float withholdingProfits;
     
     public ProfitCalculator() {
         purchases = new Transaction();
         sales = new Transaction();
-        retentionIva = new Transaction();
-        retentionGan = new Transaction();
+        withholdingIva = 0.0f;
+        withholdingProfits = 0.0f;
     }
     
     public void addTicket(Ticket t) {
@@ -77,10 +77,10 @@ public class ProfitCalculator {
         }
         
         if (iva != null && (Float) iva != 0.0f) {
-            retentionIva.addTransaction((Float) iva, 0.0f, 0.0f);
+            withholdingIva += (Float) iva;
         }
         if (profits != null && (Float) profits != 0.0f) {
-            retentionGan.addTransaction((Float) profits, 0.0f, 0.0f);
+            withholdingProfits += (Float) profits;
         }
     }
     
@@ -96,13 +96,13 @@ public class ProfitCalculator {
         //iva
         values.put("issuedIva",(Float)sales.getTransactions().get("iva"));
         values.put("receivedIva", (Float)purchases.getTransactions().get("iva"));
-        values.put("withheldIva", (Float) retentionIva.getTransactions().get("totalAmount"));
+        values.put("withheldIva", withholdingIva);
         values.put("totalIva", this.getIva());
         
         //profitTax
         values.put("issuedNetAmount",(Float)sales.getTransactions().get("netAmountWI"));
         values.put("receivedNetAmount",(Float)purchases.getTransactions().get("netAmountWI"));
-        values.put("withheldProfit",(Float) retentionGan.getTransactions().get("totalAmount"));
+        values.put("withheldProfit", withholdingProfits);
         values.put("totalProfitTax", this.getGanancia());
         
         return values;
@@ -113,15 +113,15 @@ public class ProfitCalculator {
     }
 
     public Float getProfitWTax(){//calculate the profit with taxes
-        return ((Float)sales.getTransactions().get("totalAmount") - (Float)purchases.getTransactions().get("totalAmount") - (Float) retentionIva.getTransactions().get("totalAmount") - (Float) retentionGan.getTransactions().get("totalAmount"));     
+        return ((Float)sales.getTransactions().get("totalAmount") - (Float)purchases.getTransactions().get("totalAmount") - withholdingIva - withholdingProfits);
     }
     
     public Float getIva(){
-        return (-(Float)sales.getTransactions().get("iva") + (Float)purchases.getTransactions().get("iva") + (Float) retentionIva.getTransactions().get("totalAmount"));
+        return (-(Float)sales.getTransactions().get("iva") + (Float)purchases.getTransactions().get("iva") + withholdingIva);
     }
     
     public Float getGanancia(){//falta restarle las retenciones para que te quede el numero.
-        return (-(Float)sales.getTransactions().get("netAmountWI") + (Float)purchases.getTransactions().get("netAmountWI") + (Float) retentionGan.getTransactions().get("totalAmount"));
+        return (-(Float)sales.getTransactions().get("netAmountWI") + (Float)purchases.getTransactions().get("netAmountWI") + withholdingProfits);
     }
     
     private void addTransaction(boolean isIncome, boolean issuedByMe, Float totalAmount, Float iva, Float netAmountWI){
