@@ -63,7 +63,7 @@ public class FilterUtils {
     */
     public static SQLFilter separateWithholdingFilter(SQLFilter filter) {
         SQLFilter withholdingFilter = new SQLFilter();
-        String[] attributesToRemove = {"id", "date", "number", "providerDoc", "delivered", "sector"};
+        String[] attributesToRemove = {"id", "date", "number", "providerDoc", "delivered", "sector", "iva", "profits"};
         transferFilters(withholdingFilter, filter, attributesToRemove);
         
         return withholdingFilter;
@@ -74,9 +74,17 @@ public class FilterUtils {
         String[] attributesToRemove = {"iva", "profits"};
         String[] attributesToCopy = {"id", "date", "number", "providerDoc", "delivered", "sector"};
         transferFilters(withholdingFilter, filter, attributesToRemove);
-        copyFilters(withholdingFilter, filter, attributesToRemove);
+        copyFilters(withholdingFilter, filter, attributesToCopy);
         
         return withholdingFilter;
+    }
+    
+    public static SQLFilter removeIvaAndProfits(SQLFilter filter) {
+        SQLFilter ivaProfitFilter = new SQLFilter();
+        String[] attributesToRemove = {"iva", "profits"};
+        transferFilters(ivaProfitFilter, filter, attributesToRemove);
+
+        return ivaProfitFilter;
     }
     
     private static void transferFilters(SQLFilter filterToAdd, SQLFilter filterToRemove, String[] attributes) {
