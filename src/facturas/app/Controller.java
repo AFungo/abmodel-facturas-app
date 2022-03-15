@@ -215,66 +215,34 @@ public class Controller {
     }
     
     public void filterWithholdings(SQLFilter filter, List<Withholding> tickets) {
-        Float minIva = null; 
-        Float maxIva = null; 
-        Float minProfits = null; 
-        Float maxProfits = null;
+        Pair<Float,Float> ivaBounds = FilterUtils.getFilterValues(filter, "iva");
+        Pair<Float,Float> profitsBounds = FilterUtils.getFilterValues(filter, "profits");
         
-        List<Condition> ivas = filter.getCondition("iva");
-        for (Condition i : ivas) {
-            if (i.getComparison() == ">=") {
-                minIva = (Float) i.getVal();
-            } else if (i.getComparison() == "<=") {
-                maxIva = (Float) i.getVal();
-            }
+        for (Withholding t : tickets) {
+            filterWithholdingValue(t, "iva", ivaBounds.getFst(), ivaBounds.getSnd(), w -> w.deleteIva());
+            filterWithholdingValue(t, "profits", profitsBounds.getFst(), profitsBounds.getSnd(), w -> w.deleteProfits());
         }
-        
-        List<Condition> profits = filter.getCondition("profits");
-        for (Condition i : profits) {
-            if (i.getComparison() == ">=") {
-                minProfits = (Float) i.getVal();
-            } else if (i.getComparison() == "<=") {
-                maxProfits = (Float) i.getVal();
-            }
-        }
-        
-        for (Withholding w : tickets) {
-            removeValuesOutOfFilters(w, minIva, maxIva, minProfits, maxProfits);
-        }
-        
     }
     
-    private void removeValuesOutOfFilters(Withholding w, Float minIva, Float maxIva, Float minProfits, Float maxProfits) {
+    private void filterWithholdingValue(Withholding w, String attr, Float minVal, Float maxVal, 
+            Consumer<Withholding> deleteAttr) {
         Map<String,Object> values = w.getValues();
         
-        if (values.get("iva") != null) {
-            Float iva = (Float) values.get("iva");
-            if (minIva != null) {
-                if (iva < minIva) {
-                    w.deleteIva();
+        if (values.get(attr) != null) {
+            Float val = (Float) values.get(attr);
+            if (minVal != null) {
+                if (val < minVal) {
+                    deleteAttr.accept(w);
+                    return;
                 }
             }
-            if (maxIva !=  null) {
-                if (maxIva < iva) {
-                    w.deleteIva();
-                }
-            }
-        }
-        
-        if (values.get("profits") != null) {
-            Float profits = (Float) values.get("profits");
-            if (minProfits != null) {
-                if (profits < minProfits) {
-                    w.deleteProfits();
-                }
-            }
-            if (maxProfits !=  null) {
-                if (maxProfits < profits) {
-                    w.deleteProfits();
+            if (maxVal !=  null) {
+                if (maxVal < val) {
+                    deleteAttr.accept(w);
+                    return;
                 }
             }
         }
-        
     }
     
     public JTable createTableToDelete(Object[] rowToDelete) {

@@ -117,4 +117,18 @@ public class FilterUtils {
         
         return conditions;
     }
+
+    public static Pair<Float,Float> getFilterValues(SQLFilter filter, String attr) {
+        List<Condition> conditions = filter.getCondition(attr);
+        Pair<Float,Float> result = new Pair<> (null, null);
+        for (Condition c : conditions) {
+            if (c.getComparison() == ">=") {
+                result.setFst((Float) c.getVal());
+            } else if (c.getComparison() == "<=") {
+                result.setSnd((Float) c.getVal());
+            }
+        }
+        
+        return result;
+    }
 }
