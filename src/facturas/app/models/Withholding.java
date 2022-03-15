@@ -47,6 +47,14 @@ public class Withholding {
         dollarPrice = price;
     }
     
+    public void deleteIva() {
+        this.iva = null;
+    }
+    
+    public void deleteProfits() {
+        this.profits = null;
+    }
+    
     public Map<String, Object> getValues() {
         Map<String, Object> dict = new HashMap<>();
         dict.put("date", date);
