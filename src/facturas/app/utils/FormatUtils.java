@@ -16,12 +16,18 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- *
- * @author nacho
+ * Class used to transform objects into a string with certain format
  */
 public class FormatUtils {
     
-     public static Pair<String, String> ticketToSQL(Ticket t) {
+    /**
+     * Transforms ticket data into a SQL format data
+     * 
+     * @param t ticket with data to transform
+     * @return a pair of strings containing the attributes to insert and the actual values
+     * to insert to those attributes
+     */
+    public static Pair<String, String> ticketToSQL(Ticket t) {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
         attributes += "id, exchangeType, exchangeMoney, issuedByMe, type, totalAmount";
@@ -36,6 +42,12 @@ public class FormatUtils {
         return new Pair<>(attributes, values);
     }
      
+    /**
+     * Transforms ticket data into a form format data
+     * 
+     * @param t ticket with data to transform
+     * @return an object array containing the attributes to show
+     */
     public static Object[] ticketToForm(Withholding t) {
         Map<String, Object> dict = t.getValues();
         Provider provider = (Provider)dict.get("provider");
@@ -54,6 +66,13 @@ public class FormatUtils {
         return values;
     }
     
+    /**
+     * Transforms CSV line containing ticket data into a map
+     * 
+     * @param strTicket String with CSV format containing ticket data
+     * @param issuedByMe boolean representing extra ticketData
+     * @return a map from String to String of the ticket data
+     */
     public static Map<String, String> ticketCsvToDict(String strTicket, boolean issuedByMe) {
         String[] data = strTicket.replace("\"", "").split(",");
         Map<String, String> dict = new HashMap<>();
@@ -83,6 +102,12 @@ public class FormatUtils {
         return dict;
     }
     
+    /**
+     * Transforms CSV line containing ticket backup data into a map
+     * 
+     * @param s String with CSV format containing ticket data
+     * @return a map from String to String of the ticket data
+     */
     public static Map<String, String> ticketCsvBackupToDict(String s) {
         String[] data = s.split(";");
         Map<String, String> dict = new HashMap<>();
@@ -118,6 +143,12 @@ public class FormatUtils {
         return dict;
     }
     
+    /**
+     * Transforms ticket data into a CSV format
+     * 
+     * @param t ticket to transform
+     * @return a string in CSV format with the ticket data
+     */
     public static String ticketToCsv(Ticket t) {
         Map<String, Object> dict = t.getValues();
         Provider provider = (Provider)dict.get("provider");
@@ -133,7 +164,14 @@ public class FormatUtils {
         result = result.replace("null", "");
         return result;
     }
-    
+   
+    /**
+     * Transforms withholding data into a SQL format data
+     * 
+     * @param w withholding with data to transform
+     * @return a pair of strings containing the attributes to insert and the actual values
+     * to insert to those attributes
+     */
     public static Pair<String, String> withholdingToSQL(Withholding w) { 
         Map<String, Object> dict = w.getValues();
         String attributes = "", values = "";
@@ -148,6 +186,13 @@ public class FormatUtils {
         return new Pair<>(attributes, values);
     }
 
+    /**
+     * Transforms withholding data into a form format data
+     * 
+     * @param w withholding with data to transform
+     * @return a Pair of Object arrays, were first is a row of iva withholding and second
+     * is a row of profits withholding
+     */
     public static Pair<Object[],Object[]> retrieveInternalWithholdingsToForm(Withholding w) {
         Map<String, Object> dict = w.getValues();
         Provider provider = (Provider)dict.get("provider");
@@ -179,6 +224,12 @@ public class FormatUtils {
         return values;
     }
     
+    /**
+     * Transforms CSV line containing withholding backup data into a map
+     * 
+     * @param s String with CSV format containing withholding data
+     * @return a map from String to String of the withholding data
+     */
     public static Map<String, String> withholdingCsvBackupToDict(String s) {
         String[] data = s.split(";");
         Map<String, String> dict = new HashMap<>();
@@ -197,6 +248,12 @@ public class FormatUtils {
         return dict;
     }
     
+    /**
+     * Transforms withholding data into a CSV format
+     * 
+     * @param w withholding to transform
+     * @return a string in CSV format with the withholding data
+     */
     public static String withholdingToCsv(Withholding w) { 
         Map<String, Object> dict = w.getValues();
         Provider provider = (Provider)dict.get("provider");
@@ -208,6 +265,12 @@ public class FormatUtils {
         return result;
     }
     
+    /**
+     * Transforms CSV line containing dollar price data into a map
+     * 
+     * @param priceStr String with CSV format containing dollar price data
+     * @return a map from String to String of the dollar price data
+     */
     public static Map<String, String> dollarPriceCsvToDict(String priceStr) {
         String[] data = priceStr.replace(",", ".").split(";");
         Map<String, String> dict = new HashMap<>();
@@ -218,6 +281,13 @@ public class FormatUtils {
         return dict;
     }
     
+    /**
+     * Transforms price data into a SQL format data
+     * 
+     * @param price price with data to transform
+     * @return a pair of strings containing the attributes to insert and the actual values
+     * to insert to those attributes
+     */
     public static Pair<String, String> dollarPriceToSQL(DollarPrice price) {
         Map<String, Object> dict = price.getValues();
         String attributes = "", values = "";
@@ -227,6 +297,12 @@ public class FormatUtils {
         return new Pair<>(attributes, values);
     }
     
+    /**
+     * Transforms CSV line containing dollar price backup data into a map
+     * 
+     * @param s String with CSV format containing dollar price data
+     * @return a map from String to String of the dollar price data
+     */
     public static Map<String, String> dollarPriceCsvBackupToDict(String s) {
         String[] data = s.split(";");
         Map<String, String> dict = new HashMap<>();
@@ -238,6 +314,12 @@ public class FormatUtils {
         return dict;
     }
     
+    /**
+     * Transforms dollar price data into a CSV format
+     * 
+     * @param p dollar price to transform
+     * @return a string in CSV format with the dollar price data
+     */
     public static String dollarPriceToCsv(DollarPrice p) {
         Map<String, Object> dict = p.getValues();
         String result = dict.get("date") + ";" + dict.get("buy") + ";" + dict.get("sell") + ";";
@@ -245,7 +327,14 @@ public class FormatUtils {
         result = result.replace("null", "");
         return result;
     }
-
+    
+    /**
+     * Transforms provider data into a SQL format data
+     * 
+     * @param p provider with data to transform
+     * @return a pair of strings containing the attributes to insert and the actual values
+     * to insert to those attributes
+     */
     public static Pair<String, String> providerToSQL(Provider p) {
         Map<String, String> dict = p.getValues();
         String attributes = "", values = "";
@@ -259,6 +348,12 @@ public class FormatUtils {
         return new Pair<>(attributes, values);
     }
     
+    /**
+     * Transforms provider data into a form format data
+     * 
+     * @param prov provider with data to transform
+     * @return an object array containing the attributes to show
+     */
     public static Object[] providerToForm(Provider prov) {
         Map<String, String> dict = prov.getValues();
         Object[] values = new Object[6];
@@ -275,6 +370,12 @@ public class FormatUtils {
         return values;
     }
     
+    /**
+     * Transforms CSV line with containing provider backup data into a map
+     * 
+     * @param s String with CSV format containing provider data
+     * @return a map from String to String of the provider data
+     */
     public static Map<String, String> providerCsvBackupToDict(String s) {
         String[] data = s.split(";");
         Map<String, String> dict = new HashMap<>();
@@ -292,6 +393,12 @@ public class FormatUtils {
         return dict;
     }
             
+    /**
+     * Transforms provider data into a CSV format
+     * 
+     * @param p provider to transform
+     * @return a string in CSV format with the provider data
+     */
     public static String providerToCsv(Provider p) {
         Map<String, String> dict = p.getValues();
         String result = "";
@@ -322,6 +429,13 @@ public class FormatUtils {
         return new Pair<String, String> (attributes, values);
     }
     
+    /**
+     * Determines if the initial line matches the format of the given mode
+     * 
+     * @param initialLine first line of a CSV file that contains the format of the file
+     * @param mode a string representing the format that the first line should have
+     * @return a boolean representing if the format is valid or not
+     */
     public static boolean validFormat(String initialLine, String mode) {
         char initialChar = initialLine.charAt(0);
         if ((int)initialChar == 65279) {  //special char that may come with utf-8 files
@@ -361,6 +475,12 @@ public class FormatUtils {
         return valid;
     }
 
+    /**
+     * Transforms a list into a vector
+     * 
+     * @param list list of generic type
+     * @return a vector of generic type containig all the elements of {@code list}
+     */
     public static <E> Vector<E> listToVector(List<E> list) {
         Vector<E> vector = new Vector<>();
         for (E e : list) {
@@ -369,7 +489,12 @@ public class FormatUtils {
         return vector;
     }
     
-    //this method takes a String and returns a Date.
+    /**
+     * Transfroms a string with date format into a Date
+     * 
+     * @param dateStr string with format date
+     * @return a Date based on {@code dateStr} data
+     */
     public static Date dateGen(String dateStr) {
         String[] fields = dateStr.split("/"); //d-m-y
         if (fields.length != 3) {
@@ -381,7 +506,14 @@ public class FormatUtils {
         String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
         return Date.valueOf(formatedDate);
     }
-        public static Map<String, String> objectToStringMap(Map<String, Object> values){
+    
+    /**
+     * Transforms a map of string to object into a map of string to string
+     * 
+     * @param values the map to transform
+     * @return a map of string to string
+     */
+    public static Map<String, String> objectToStringMap(Map<String, Object> values){
         Map<String, String> v = new HashMap();
         Provider provider = (Provider) values.get("provider");
         v.putAll(provider.getValues());
