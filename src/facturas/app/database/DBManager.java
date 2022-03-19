@@ -162,6 +162,7 @@ public class DBManager {
                                         + "ON DELETE SET NULL,"
                                         + "PRIMARY KEY (date, number, providerDoc),"
                                         + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (providerDoc) REFERENCES Provider(docNo)"
+                                        + "ON UPDATE CASCADE"
                                         + ")";
                                         break;
         
