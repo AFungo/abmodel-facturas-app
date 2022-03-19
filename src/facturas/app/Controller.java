@@ -5,7 +5,6 @@
  */
 package facturas.app;
 
-import facturas.app.database.Condition;
 import facturas.app.database.DBManager;
 import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
@@ -317,7 +316,13 @@ public class Controller {
             List<String> itemData = readCsv(fileCsv, formatId).getFst();
             for (String s : itemData) {
                 E e = formater.apply(s);
-                loadDAO.accept(e);
+                try {
+                    loadDAO.accept(e);  //we don't care about repeated item exceptions
+                } catch (IllegalStateException ex) {//if the exception is not for repeated item throw it
+                    if (!ex.getMessage().contains("<23505> duplicate item")) {
+                        throw ex;
+                    }
+                }
             }
         }
     }
