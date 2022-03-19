@@ -662,7 +662,8 @@ public class View extends javax.swing.JFrame {
                 controller.removeItem(filter, false);
             else
                 controller.removeItem(filter, true);
-
+            
+            row = ticketsTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
             ((DefaultTableModel)ticketsTable.getModel()).removeRow(row); //remove row from view
         }
     }//GEN-LAST:event_deleteMenuItemActionPerformed
