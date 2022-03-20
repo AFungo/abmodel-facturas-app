@@ -14,6 +14,7 @@ import facturas.app.utils.ConfigManager;
 import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.PdfCreator;
+import facturas.app.utils.Validate;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.LinkedList;
@@ -76,6 +77,7 @@ public class ProvidersView extends javax.swing.JFrame {
         modifyName = new javax.swing.JMenuItem();
         deleteSector = new javax.swing.JMenuItem();
         modifyDocumentType = new javax.swing.JMenuItem();
+        modifyNoDoc = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         providersTable = new javax.swing.JTable();
@@ -131,6 +133,14 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         });
         popupMenu.add(modifyDocumentType);
+
+        modifyNoDoc.setText("Modificar numero documento");
+        modifyNoDoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyNoDocActionPerformed(evt);
+            }
+        });
+        popupMenu.add(modifyNoDoc);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
 
@@ -361,6 +371,24 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_modifyDocumentTypeActionPerformed
 
+    private void modifyNoDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyNoDocActionPerformed
+        String noDoc = getAttribute(0); //column 0 is for docNo
+        String userInput = JOptionPane.showInputDialog(this, "Numero documento: ", noDoc);
+        if (userInput != null) {
+            if (!Validate.tryParse(userInput, Integer.class, false)) {
+                JOptionPane.showMessageDialog(this, "El documento introducido esta mal escrito", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            int row = providersTable.getSelectedRow();
+            if (controller.updateProviderDoc(userInput, selectedDoc)) {
+                providersTable.setValueAt(userInput, row, 0);  //update view
+            } else {
+                JOptionPane.showMessageDialog(this, "El numero de documento elegido ya existe", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_modifyNoDocActionPerformed
+
     private String getAttribute(int column) {
         int row = providersTable.getSelectedRow();
         return (String)providersTable.getValueAt(row, column);
@@ -416,6 +444,7 @@ public class ProvidersView extends javax.swing.JFrame {
     private javax.swing.JMenuItem modifyDirection;
     private javax.swing.JMenuItem modifyDocumentType;
     private javax.swing.JMenuItem modifyName;
+    private javax.swing.JMenuItem modifyNoDoc;
     private javax.swing.JMenuItem modifySector;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable providersTable;

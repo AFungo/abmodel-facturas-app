@@ -213,6 +213,29 @@ public class Controller {
         TicketDAO.add(ticket);
     }
     
+    public boolean updateProviderDoc(String newDoc, String oldDoc) {
+        //looking if new doc is not used already
+        SQLFilter filter = new SQLFilter();
+        filter.add("docNo", "=", newDoc, String.class);
+        if (ProviderDAO.exist(filter)) {
+            return false;
+        }
+        //creation of new provider
+        filter.removeCondition("docNo");
+        filter.add("docNo", "=", oldDoc, String.class);
+        Provider prov = ProviderDAO.get(filter).get(0);
+        prov.modifyDocNo(newDoc);
+        ProviderDAO.add(prov);
+        //moving tickets from old doc to new doc
+        SQLFilter withholdingFilter = new SQLFilter();
+        withholdingFilter.add("providerDoc", "=", oldDoc, String.class);
+        WithholdingDAO.update(withholdingFilter, "providerDoc", newDoc, true);
+        //deleting old provider
+        ProviderDAO.delete(filter);
+        
+        return true;
+    }
+    
     public void filterWithholdings(SQLFilter filter, List<Withholding> tickets) {
         Pair<Float,Float> ivaBounds = FilterUtils.getFilterValues(filter, "iva");
         Pair<Float,Float> profitsBounds = FilterUtils.getFilterValues(filter, "profits");

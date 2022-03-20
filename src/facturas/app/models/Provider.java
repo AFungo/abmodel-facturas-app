@@ -30,6 +30,10 @@ public class Provider {
         alias = values.get("alias");      //may be null
     }
     
+    public void modifyDocNo(String newDoc) {
+        docNo = newDoc;
+    }
+    
     public void addDirection(String direction) {
         if (direction != null)
             this.direction = direction;
