@@ -9,6 +9,7 @@ import facturas.app.Controller;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
+import facturas.app.utils.FixedData;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("CARGAR PROVEEDOR");
 
-        providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUIT", "CUIL" }));
+        providerDocTypeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(FixedData.getDocumentTypes()));
 
         jLabel2.setText("Razon social");
 
