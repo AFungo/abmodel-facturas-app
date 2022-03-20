@@ -141,6 +141,19 @@ public class ProviderDAO extends DAO {
         executeQuery(query, true, false);
     }
     
+    /**
+     * Given a non-empty filter deletes the providers that matches filter
+     * 
+     * @param filter filter used for delete providers
+     */
+    public static void delete(SQLFilter filter) {
+        if (filter.isEmpty()) {
+            throw new IllegalArgumentException("cannot delete provider without filter");
+        }
+        String query = "DELETE FROM Provider" + filter.get();
+        executeQuery(query, true, false);
+    }
+    
     private static Provider createProvider(ResultSet result) throws SQLException {
         Map<String, String> values = new HashMap<>();
         values.put("docNo", result.getString(1));
