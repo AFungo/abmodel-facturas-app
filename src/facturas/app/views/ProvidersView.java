@@ -11,6 +11,7 @@ import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.ConfigManager;
+import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.PdfCreator;
 import java.awt.event.MouseEvent;
@@ -69,11 +70,12 @@ public class ProvidersView extends javax.swing.JFrame {
     private void initComponents() {
 
         popupMenu = new javax.swing.JPopupMenu();
-        directionMenuItem = new javax.swing.JMenuItem();
-        sectorMenuItem = new javax.swing.JMenuItem();
-        aliasMenuItem = new javax.swing.JMenuItem();
-        nameMenuItem = new javax.swing.JMenuItem();
-        deleteSectorMenuItem = new javax.swing.JMenuItem();
+        modifyDirection = new javax.swing.JMenuItem();
+        modifySector = new javax.swing.JMenuItem();
+        modifyAlias = new javax.swing.JMenuItem();
+        modifyName = new javax.swing.JMenuItem();
+        deleteSector = new javax.swing.JMenuItem();
+        modifyDocumentType = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         providersTable = new javax.swing.JTable();
@@ -82,45 +84,53 @@ public class ProvidersView extends javax.swing.JFrame {
         showAllProviders = new javax.swing.JButton();
         createPdf = new javax.swing.JButton();
 
-        directionMenuItem.setText("Modificar direccion");
-        directionMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        modifyDirection.setText("Modificar direccion");
+        modifyDirection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                directionMenuItemActionPerformed(evt);
+                modifyDirectionActionPerformed(evt);
             }
         });
-        popupMenu.add(directionMenuItem);
+        popupMenu.add(modifyDirection);
 
-        sectorMenuItem.setText("Modificar rubro");
-        sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        modifySector.setText("Modificar rubro");
+        modifySector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sectorMenuItemActionPerformed(evt);
+                modifySectorActionPerformed(evt);
             }
         });
-        popupMenu.add(sectorMenuItem);
+        popupMenu.add(modifySector);
 
-        aliasMenuItem.setText("Modificar alias");
-        aliasMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        modifyAlias.setText("Modificar alias");
+        modifyAlias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aliasMenuItemActionPerformed(evt);
+                modifyAliasActionPerformed(evt);
             }
         });
-        popupMenu.add(aliasMenuItem);
+        popupMenu.add(modifyAlias);
 
-        nameMenuItem.setText("Modificar nombre");
-        nameMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        modifyName.setText("Modificar nombre");
+        modifyName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameMenuItemActionPerformed(evt);
+                modifyNameActionPerformed(evt);
             }
         });
-        popupMenu.add(nameMenuItem);
+        popupMenu.add(modifyName);
 
-        deleteSectorMenuItem.setText("Eliminar rubro");
-        deleteSectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        deleteSector.setText("Eliminar rubro");
+        deleteSector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteSectorMenuItemActionPerformed(evt);
+                deleteSectorActionPerformed(evt);
             }
         });
-        popupMenu.add(deleteSectorMenuItem);
+        popupMenu.add(deleteSector);
+
+        modifyDocumentType.setText("Modificar tipo documento");
+        modifyDocumentType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyDocumentTypeActionPerformed(evt);
+            }
+        });
+        popupMenu.add(modifyDocumentType);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
 
@@ -266,7 +276,7 @@ public class ProvidersView extends javax.swing.JFrame {
             if (evt.isPopupTrigger() && providersTable.getSelectedRowCount() != 0) {
                 selectedDoc = (String)providersTable.getValueAt(row, 0); //0 is the cuit column
                 String sector = (String)providersTable.getValueAt(row, 5); //5 is the sector column
-                deleteSectorMenuItem.setEnabled(sector == null || sector.isEmpty() ? false : true);
+                deleteSector.setEnabled(sector == null || sector.isEmpty() ? false : true);
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
@@ -277,29 +287,29 @@ public class ProvidersView extends javax.swing.JFrame {
         providersTableMouseReleased(evt);
     }//GEN-LAST:event_providersTableMousePressed
 
-    private void aliasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aliasMenuItemActionPerformed
+    private void modifyAliasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyAliasActionPerformed
         String alias = getAttribute(2);
         String userInput = JOptionPane.showInputDialog(this, "alias: ", alias);
         if (userInput != null) {
             updateAttribute("alias", userInput, 2); //column 2 is for alias
         }
-    }//GEN-LAST:event_aliasMenuItemActionPerformed
+    }//GEN-LAST:event_modifyAliasActionPerformed
 
-    private void sectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorMenuItemActionPerformed
+    private void modifySectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifySectorActionPerformed
         int selection = JOptionPane.showConfirmDialog(this, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             String sector = (String)sectorComboBox.getSelectedItem();
             updateAttribute("sector", sector, 5);   //column 5 is for sector
         }
-    }//GEN-LAST:event_sectorMenuItemActionPerformed
+    }//GEN-LAST:event_modifySectorActionPerformed
 
-    private void directionMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_directionMenuItemActionPerformed
+    private void modifyDirectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyDirectionActionPerformed
         String direction = getAttribute(4);
         String userInput = JOptionPane.showInputDialog(this, "Dirección: ", direction);
         if (userInput != null) {
             updateAttribute("direction", userInput, 4); //column 4 is for direction
         }
-    }//GEN-LAST:event_directionMenuItemActionPerformed
+    }//GEN-LAST:event_modifyDirectionActionPerformed
 
     private void createPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPdfActionPerformed
         JFrame parentFrame = new JFrame();
@@ -322,8 +332,8 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_createPdfActionPerformed
 
-    private void deleteSectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorMenuItemActionPerformed
-        int selection = JOptionPane.showConfirmDialog(this, "se le removera el rubro al proveedor", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
+    private void deleteSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorActionPerformed
+        int selection = JOptionPane.showConfirmDialog(this, "Se le removera el rubro al proveedor", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = providersTable.getSelectedRow();
             SQLFilter filter = new SQLFilter();
@@ -331,15 +341,25 @@ public class ProvidersView extends javax.swing.JFrame {
             controller.deleteProviderAttribute(filter, "sector");
             providersTable.setValueAt(null, row, 5);   //column 5 is for sector
         }
-    }//GEN-LAST:event_deleteSectorMenuItemActionPerformed
+    }//GEN-LAST:event_deleteSectorActionPerformed
 
-    private void nameMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameMenuItemActionPerformed
+    private void modifyNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyNameActionPerformed
         String name = getAttribute(1);
         String userInput = JOptionPane.showInputDialog(this, "nombre: ", name);
         if (userInput != null) {
             updateAttribute("name", userInput, 1); //column 1 is for name
         }
-    }//GEN-LAST:event_nameMenuItemActionPerformed
+    }//GEN-LAST:event_modifyNameActionPerformed
+
+    private void modifyDocumentTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyDocumentTypeActionPerformed
+        javax.swing.JComboBox<String> documentTypesComboBox = new javax.swing.JComboBox<>(
+                new javax.swing.DefaultComboBoxModel<>(FixedData.getDocumentTypes()));
+        int selection = JOptionPane.showConfirmDialog(this, documentTypesComboBox, "Seleccione el tipo de documento: ", JOptionPane.OK_CANCEL_OPTION);
+        if (selection == JOptionPane.OK_OPTION) {
+            String type = (String)documentTypesComboBox.getSelectedItem();
+            updateAttribute("documentType", type, 3); //column 3 is for document type
+        }
+    }//GEN-LAST:event_modifyDocumentTypeActionPerformed
 
     private String getAttribute(int column) {
         int row = providersTable.getSelectedRow();
@@ -388,18 +408,19 @@ public class ProvidersView extends javax.swing.JFrame {
     private AutoSuggestor providersAutoSuggestor;
     private String selectedDoc;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem aliasMenuItem;
     private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JButton createPdf;
-    private javax.swing.JMenuItem deleteSectorMenuItem;
-    private javax.swing.JMenuItem directionMenuItem;
+    private javax.swing.JMenuItem deleteSector;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JMenuItem nameMenuItem;
+    private javax.swing.JMenuItem modifyAlias;
+    private javax.swing.JMenuItem modifyDirection;
+    private javax.swing.JMenuItem modifyDocumentType;
+    private javax.swing.JMenuItem modifyName;
+    private javax.swing.JMenuItem modifySector;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JTable providersTable;
     private javax.swing.JButton searchProvider;
     private javax.swing.JComboBox<String> sectorComboBox;
-    private javax.swing.JMenuItem sectorMenuItem;
     private javax.swing.JButton showAllProviders;
     // End of variables declaration//GEN-END:variables
 }
