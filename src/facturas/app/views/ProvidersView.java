@@ -6,6 +6,7 @@
 package facturas.app.views;
 
 import facturas.app.Controller;
+import facturas.app.database.ProviderDAO;
 import facturas.app.database.SQLFilter;
 import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
@@ -78,6 +79,7 @@ public class ProvidersView extends javax.swing.JFrame {
         deleteSector = new javax.swing.JMenuItem();
         modifyDocumentType = new javax.swing.JMenuItem();
         modifyNoDoc = new javax.swing.JMenuItem();
+        deleteProvider = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         providersTable = new javax.swing.JTable();
@@ -141,6 +143,14 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         });
         popupMenu.add(modifyNoDoc);
+
+        deleteProvider.setText("Borrar proveedor");
+        deleteProvider.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteProviderActionPerformed(evt);
+            }
+        });
+        popupMenu.add(deleteProvider);
 
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
 
@@ -284,9 +294,10 @@ public class ProvidersView extends javax.swing.JFrame {
             providersTable.addRowSelectionInterval(rowPoint, rowPoint);
             int row = providersTable.getSelectedRow();
             if (evt.isPopupTrigger() && providersTable.getSelectedRowCount() != 0) {
-                selectedDoc = (String)providersTable.getValueAt(row, 0); //0 is the cuit column
+                selectedDoc = getAttribute(0); //0 is the cuit column
                 String sector = (String)providersTable.getValueAt(row, 5); //5 is the sector column
-                deleteSector.setEnabled(sector == null || sector.isEmpty() ? false : true);
+                deleteSector.setEnabled(!(sector == null || sector.isEmpty()));
+                deleteProvider.setEnabled(!controller.providerHasTickets(selectedDoc));
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
@@ -389,6 +400,19 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_modifyNoDocActionPerformed
 
+    private void deleteProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteProviderActionPerformed
+        String name = getAttribute(1);
+        int selection = JOptionPane.showConfirmDialog(this, "El proveedor " + name + " sera eliminado", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
+        if (selection == JOptionPane.OK_OPTION) {
+            int row = providersTable.getSelectedRow();
+            SQLFilter filter = new SQLFilter();
+            filter.add("docNo", "=", selectedDoc, String.class);
+            ProviderDAO.delete(filter);
+            row = providersTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
+            ((DefaultTableModel)providersTable.getModel()).removeRow(row); //remove row from view
+        }
+    }//GEN-LAST:event_deleteProviderActionPerformed
+
     private String getAttribute(int column) {
         int row = providersTable.getSelectedRow();
         return (String)providersTable.getValueAt(row, column);
@@ -438,6 +462,7 @@ public class ProvidersView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JButton createPdf;
+    private javax.swing.JMenuItem deleteProvider;
     private javax.swing.JMenuItem deleteSector;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem modifyAlias;
