@@ -285,6 +285,12 @@ public class Controller {
         ProviderDAO.add(provider);
     }
     
+    public boolean providerHasTickets(String docNo) {
+        SQLFilter filter = new SQLFilter();
+        filter.add("providerDoc", "=", docNo, String.class);
+        return WithholdingDAO.exist(filter);
+    }
+    
     public void createBackup(File folder) {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
