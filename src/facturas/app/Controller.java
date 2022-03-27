@@ -406,7 +406,7 @@ public class Controller {
             
         List<String> stringItems = new LinkedList<>();
         try {
-            stringItems = Files.readAllLines(f.toPath(), Charset.forName("UTF-8"));
+            stringItems = Files.readAllLines(f.toPath(), Charset.forName("ISO-8859-1"));
         } catch (IOException ex) {
             throw new IllegalStateException(ex.toString());
         }
