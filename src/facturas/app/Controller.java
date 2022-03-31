@@ -313,12 +313,17 @@ public class Controller {
         return WithholdingDAO.exist(filter);
     }
     
-    public void createBackup(File folder) {
+    public void createBackup(File folder, String filename) {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
         }
+        
+        if (filename == null || filename.equals("")) {
+            filename = FixedData.getBackupFolderName("backup");
+        }
         //create backup folder (could be several backups in the folder)
-        File backupFolder = new File(folder, "\\backup--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\");
+        File backupFolder = new File(folder, filename);
+        System.out.println("file at: " + backupFolder.getAbsolutePath() + "\nand: " + backupFolder.getPath());
         backupFolder.mkdir();
         
         //tickets backup
@@ -414,11 +419,6 @@ public class Controller {
         } catch (IOException ex) {
             throw new IllegalStateException("failed to write on file: " + fileToWrite.getAbsolutePath() + "\n" + ex.toString());
         }
-    }
-    
-    private String currentTimeMinutesHours() {
-        LocalTime current = LocalTime.now();
-        return current.getHour() + "-" + current.getMinute();
     }
     
     private Pair<List<String>,Boolean> readCsv(File f, String type) {

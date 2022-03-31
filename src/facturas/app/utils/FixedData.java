@@ -5,6 +5,8 @@
  */
 package facturas.app.utils;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 /**
@@ -66,9 +68,18 @@ public class FixedData {
         return "name;";
     }
     
+    public static String getBackupFolderName(String name) {
+        return "\\" + name + "--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\";
+    }
+    
     public static boolean validType(String type) {
         boolean value = Arrays.asList(types).contains(type);
         return value;
+    }
+    
+    private static String currentTimeMinutesHours() {
+        LocalTime current = LocalTime.now();
+        return current.getHour() + "-" + current.getMinute();
     }
     
 }
