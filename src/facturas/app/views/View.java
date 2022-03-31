@@ -5,6 +5,7 @@
  */
 package facturas.app.views;
 
+import concurrency.Lock;
 import facturas.app.Controller;
 import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
@@ -31,6 +32,8 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -522,14 +525,29 @@ public class View extends javax.swing.JFrame {
         chooser.showOpenDialog(this);
         
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        Lock backupLock = new Lock();
         try {
-            controller.loadTickets(chooser.getSelectedFile());
+            backupLock.lock();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                        controller.loadTickets(chooser.getSelectedFile(), backupLock);
+                }
+            }).start();
+            
+            backupLock.lock();
+            System.out.println("se ejecuto el lock de la view");
+            //create backup at this point
+            backupLock.unlock();
+            
             // FIXME: Maybe we can update the suggestions only 
             // when we know that a providers was added
             providersView.updateSuggestions();
         } catch (Exception e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            throw e;
+            throw new IllegalStateException(e.getMessage());
+        } finally {
+            backupLock.finalUnlock();
         }
         
         List<String> names = new LinkedList<>();

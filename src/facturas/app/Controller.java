@@ -5,6 +5,7 @@
  */
 package facturas.app;
 
+import concurrency.Lock;
 import facturas.app.database.DBManager;
 import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
@@ -36,6 +37,8 @@ import java.time.LocalTime;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -52,19 +55,38 @@ public class Controller {
         return daysLimit;
     }
     
-    public void loadTickets(File f) {
-        Pair<List<String>,Boolean> csvContent = readCsv(f, "ticket");
-        List<String> stringTickets = csvContent.getFst();
-        boolean issuedByMe = csvContent.getSnd();
-        
-        List<Ticket> tickets = new LinkedList<>();
-        for (String strTicket : stringTickets) {
-            tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket, issuedByMe)));
-        }
+    //the lock comes already locked
+    public void loadTickets(File f, Lock backupLock) {
+        try {
+            System.out.println("se ejecuto el lock del controller");
+            Pair<List<String>,Boolean> csvContent = readCsv(f, "ticket");
+            List<String> stringTickets = csvContent.getFst();
+            boolean issuedByMe = csvContent.getSnd();
 
-        tickets.forEach((ticket) -> {
-            createTicketOnDB(ticket);
-        });
+            List<Ticket> tickets = new LinkedList<>();
+            for (String strTicket : stringTickets) {
+                tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket, issuedByMe)));
+            }
+            System.out.println("se solto el lock");
+            backupLock.unlock();
+            backupLock.lock();
+            System.out.println("se ejecuto el lock al final del controller");
+            tickets.forEach((ticket) -> {
+                try {
+                    createTicketOnDB(ticket);
+                } catch (IllegalStateException ex) {//if the exception is not for repeated item throw it
+                    if (!ex.getMessage().contains("<23505> duplicate item")) {
+                        throw ex;
+                    }
+                }
+            });
+        } catch (InterruptedException ex) {
+            backupLock.finalUnlock();
+            System.out.println("se solto el lock por una exception en el controller");
+            throw new IllegalStateException(ex.getMessage());
+        } finally {
+            backupLock.finalUnlock();
+        }
     }
     
     public void loadTicket(Map<String, String> values) {
@@ -406,7 +428,7 @@ public class Controller {
             
         List<String> stringItems = new LinkedList<>();
         try {
-            stringItems = Files.readAllLines(f.toPath(), Charset.forName("ISO-8859-1"));
+            stringItems = Files.readAllLines(f.toPath(), Charset.forName("UTF-8"));
         } catch (IOException ex) {
             throw new IllegalStateException(ex.toString());
         }
