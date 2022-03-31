@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author nacho
+ * Create and modify a file.cfg with the configuration of the app
  */
 public class ConfigManager {
     
@@ -25,6 +24,10 @@ public class ConfigManager {
     private static String configFolderPath = System.getenv("APPDATA") + "\\Facturas App\\";
     private static String configPath = isMac ? "config.txt" : System.getenv("APPDATA") + "\\Facturas App\\" + "config.txt";
     
+    /**
+     * read the current config file of the app
+     * @return a map with the configuration
+     */
     public static Map<String, Boolean> readConfig() {
         File configsFile = new File(configPath);
         if ((!configsFile.exists()) || configsFile.length() == 0) {
@@ -49,6 +52,10 @@ public class ConfigManager {
         return configs;
     }
 
+    /**
+     * Save the changes in thefile of configurations of the app
+     * @param configs is a map with the newest configurations of the app
+     */
     public static void saveConfig(Map<String, Boolean> configs) {
         String fileContent = "\n[selected columns]";
         for (Map.Entry<String, Boolean> line : configs.entrySet()) {
@@ -64,6 +71,9 @@ public class ConfigManager {
         }
     }
     
+    /*
+     *Create a new file.cfg with default configurations of the app  
+     */
     private static void initializeConfig() {
         File configsFolder = new File(configFolderPath);
         if (!configsFolder.exists() && !isMac) {    //creating directory if not exists
@@ -78,6 +88,9 @@ public class ConfigManager {
         }
     }
     
+    /*
+    * returns a map with the default configurations of the app
+    */
     private static Map<String, Boolean> initialConfig() {
         Map<String, Boolean> configs = new HashMap<String, Boolean>();
         //ticket
