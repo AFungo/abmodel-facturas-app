@@ -25,6 +25,9 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+/**
+ * Class for create a pdf document with a jtable
+ */
 public class PdfCreator {
 
     private JFrame frame;
@@ -36,25 +39,43 @@ public class PdfCreator {
     private String pathToFile;
     private boolean[] selectedColumns;
 
+    /**
+     * Constructor of the class
+     * @param pathToFile
+     * @param table
+     */
     public PdfCreator (String pathToFile, JTable table) {
         this.pathToFile = pathToFile;
         this.table = table;
     }
 
+    /**
+     * @param selectedColumns
+     */
     public void setSelectedColumns(boolean[] selectedColumns) {
         this.selectedColumns = selectedColumns;
     }
     
+    /**
+     * open pdf document to write
+     */
     public void openPdf() throws FileNotFoundException, DocumentException {
         document = new Document(PageSize.A4, 0f, 0f, 30, 30);
         writer = PdfWriter.getInstance(document, new FileOutputStream(pathToFile));
         document.open();
     }
 
+    /**
+     * close the pdf
+     */
     public void closePdf() {
         document.close();
     }
 
+    /**
+     * add the data to pdf table
+     * @param pdfTable table where put the information
+     */
     public void addData(PdfPTable pdfTable) throws DocumentException {
         pdfTable.setHeaderRows(1);
         
@@ -93,6 +114,9 @@ public class PdfCreator {
         document.add(pdfTable);
     }
 
+    /*
+     * count the amount of columns of selected columns 
+     */
     private int getColumnCount() {
         if (selectedColumns == null) {
             return table.getColumnCount();
@@ -107,6 +131,9 @@ public class PdfCreator {
         }
     }
     
+    /**
+     * Creates a new pdf document
+     */
     public void createPDF() {
         try {
             PdfPTable pdfTable = new PdfPTable(getColumnCount());
