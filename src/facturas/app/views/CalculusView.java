@@ -88,15 +88,15 @@ public class CalculusView extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setText("Calculos");
 
-        jLabel5.setText("Iva emitido");
+        jLabel5.setText("Iva ventas");
 
-        jLabel6.setText("Iva recibido");
+        jLabel6.setText("Iva compra");
 
         jLabel7.setText("Total retenido iva");
 
-        jLabel8.setText("Importe neto emitido");
+        jLabel8.setText("Importe neto venta");
 
-        jLabel9.setText("Importe neto recibido");
+        jLabel9.setText("Importe neto compra");
 
         jLabel10.setText("Total retenido gananacias");
 
@@ -164,12 +164,12 @@ public class CalculusView extends javax.swing.JFrame {
         grossMarginTextField.setEditable(false);
         grossMarginTextField.setBorder(null);
 
-        jLabel15.setText("Total retencion ganancias");
+        jLabel15.setText("Total ganancias");
 
         totalProfitTaxTextField.setEditable(false);
         totalProfitTaxTextField.setBorder(null);
 
-        jLabel16.setText("Total retencion iva");
+        jLabel16.setText("Total iva");
 
         totalIvaTaxTextField.setEditable(false);
         totalIvaTaxTextField.setBorder(null);

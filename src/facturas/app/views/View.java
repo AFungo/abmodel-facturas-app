@@ -238,12 +238,12 @@ public class View extends javax.swing.JFrame {
 
         ivaTaxLabel.setEditable(false);
         ivaTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        ivaTaxLabel.setText("Iva:");
+        ivaTaxLabel.setText("Total IVA:");
         ivaTaxLabel.setBorder(null);
 
         profitTaxLabel.setEditable(false);
         profitTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        profitTaxLabel.setText("Ganancias:");
+        profitTaxLabel.setText("Total ganancias:");
         profitTaxLabel.setBorder(null);
 
         totalLabel.setEditable(false);

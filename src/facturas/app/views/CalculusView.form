@@ -265,12 +265,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Iva emitido"/>
+        <Property name="text" type="java.lang.String" value="Iva ventas"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Iva recibido"/>
+        <Property name="text" type="java.lang.String" value="Iva compra"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
@@ -280,12 +280,12 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Importe neto emitido"/>
+        <Property name="text" type="java.lang.String" value="Importe neto venta"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Importe neto recibido"/>
+        <Property name="text" type="java.lang.String" value="Importe neto compra"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel10">
@@ -443,7 +443,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel15">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Total retencion ganancias"/>
+        <Property name="text" type="java.lang.String" value="Total ganancias"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="totalProfitTaxTextField">
@@ -456,7 +456,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel16">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Total retencion iva"/>
+        <Property name="text" type="java.lang.String" value="Total iva"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="totalIvaTaxTextField">
