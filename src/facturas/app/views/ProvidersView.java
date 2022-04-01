@@ -39,7 +39,8 @@ public class ProvidersView extends javax.swing.JFrame {
      * Creates new form ProvidersView
      * @param controller
      */
-    public ProvidersView(Controller controller) {
+    public ProvidersView(Controller controller, View mainView) {
+        this.mainView = mainView;
         this.controller = controller;
         initComponents();
         providersAutoSuggestor = new AutoSuggestor(comboBox, getProvidersName());
@@ -411,6 +412,7 @@ public class ProvidersView extends javax.swing.JFrame {
             row = providersTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
             ((DefaultTableModel)providersTable.getModel()).removeRow(row); //remove row from view
         }
+        mainView.updateProviders(getProvidersName());
     }//GEN-LAST:event_deleteProviderActionPerformed
 
     private String getAttribute(int column) {
@@ -459,6 +461,7 @@ public class ProvidersView extends javax.swing.JFrame {
     private Controller controller;
     private AutoSuggestor providersAutoSuggestor;
     private String selectedDoc;
+    private View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboBox;
     private javax.swing.JButton createPdf;
