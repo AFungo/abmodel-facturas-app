@@ -587,6 +587,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         
         controller.loadTicket(values);
         cleanTextFields();
+        docNoComboBox.setSelectedIndex(-1);//clean provider doc no
         updateLastTicketLoaded(values);
     }//GEN-LAST:event_loadTicketActionPerformed
 
