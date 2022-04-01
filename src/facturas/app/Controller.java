@@ -6,7 +6,6 @@
 package facturas.app;
 
 import concurrency.Lock;
-import concurrency.Lock.FailCause;
 import facturas.app.database.DBManager;
 import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;

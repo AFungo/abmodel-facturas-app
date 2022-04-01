@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author nacho
+ * class for manage the price of the dollar
+ * 
  */
 public class PricesList {
     //values such iva, total amount, etc
@@ -27,6 +27,10 @@ public class PricesList {
     //list of prices that exceed the days limit
     private List<Pair<Date,String>> missingPrices;
     
+    /**
+     * constructor of the class
+     * @param inDollars 
+     */
     public PricesList(boolean inDollars) {
         calculator = new ProfitCalculator ();
         datePrices = new HashMap<> ();
@@ -36,14 +40,26 @@ public class PricesList {
         }
     }
     
+    /**
+     * @return a map with the values
+     */
     public Map<String,Float> getValues() {
         return calculator.getValues();
     }
     
+    /**
+     * @return a list of pairs with the missing prices
+     */
     public List<Pair<Date,String>> getMissingPrices() {
         return missingPrices;
     }
     
+    /**
+     * load the ticket values in a ProfitCalculator with the amounts in dollars or  in pesos
+     * @param t a ticket for load
+     * @param daysLimit maximum days betwen missing dollars prices
+     * @param inDollars if we want the amounts in dollars or not
+     */
     public void loadTicketValues(Ticket t, int daysLimit, boolean inDollars) {
         if (!inDollars) {
             calculator.addTicket((Ticket)t);
@@ -57,6 +73,12 @@ public class PricesList {
         }
     }
     
+    /**
+     * load the withholding values in a ProfitCalculator with the amounts in dollars or in pesos
+     * @param w withholding who want to charge in profit calculator
+     * @param daysLimit maximum days between missing dollar prices
+     * @param inDollars if we want the amount in dollars or not
+     */
     public void loadPriceInWithholding(Withholding w, int daysLimit, boolean inDollars) {
         if (inDollars) {
             setDollarPrice(w, daysLimit);
@@ -64,6 +86,9 @@ public class PricesList {
         calculator.addRetention(w, inDollars);
     }
     
+    /*
+    * set the dollar price in days who the price is missed
+    */
     private void setDollarPrice(Withholding t, int daysLimit) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = datePrices.get(ticketDate);
@@ -84,6 +109,9 @@ public class PricesList {
         }
     }
     
+    /**
+     * check the days distance between missed dollars prices  
+     */
     private void checkDaysDistance(int daysLimit, Date ticketDate, DollarPrice price) {
         long limit = 86400000 * (daysLimit + 1);
         long currentTime = ticketDate.getTime();

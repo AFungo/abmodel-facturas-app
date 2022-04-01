@@ -16,11 +16,17 @@ import java.util.Map;
 import javax.swing.JComboBox;
 
 /**
- *
- * @author nacho
+ * this class provides a methods for check if the values are correct 
+ * 
  */
 public class Validate {
- 
+    
+    /**
+     * Check if the provider input are valid
+     * @param values of the provider
+     * @param sectorsComboBox combo box with the sector for the provider
+     * @return if the inputs are invalid return a string with invalidations or returns a empty string 
+     */
     public static String providerInput(Map<String, String> values, JComboBox<String> sectorsComboBox) {
         String message = "<html>", invalidations = "";
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
@@ -55,6 +61,12 @@ public class Validate {
         }
     }
 
+    /**
+     * Check if the ticket input are valid
+     * @param date date of the ticket
+     * @param values values of the ticket
+     * @return a string with the invalidatios if all values of the ticket are valid string can be empty
+     */
     public static String ticketInput(java.util.Date date, Map<String, String> values) {
         
         String invalidations = "";
@@ -71,9 +83,17 @@ public class Validate {
         
         return invalidations;
     }
-    
+
+    /**
+     * Check if the withholding input are valid
+     * @param date date of the withholding
+     * @param sectorsComboBox sector of the withholding
+     * @param values values of the withholding
+     * @param selectedProvider provider of the withholding
+     * @return a string with the invalidatios if all values of the withholdings are valid string can be empty
+     */    
     public static String withholdingInput(java.util.Date date, JComboBox<String> sectorsComboBox, 
-            Map<String, String> values, List<Provider> selectedProvider) {
+        Map<String, String> values, List<Provider> selectedProvider) {
         
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
         String invalidations = "";
@@ -107,7 +127,10 @@ public class Validate {
         
         return invalidations;
     }
-    
+
+    /*
+     * return a list of items of the combobox 
+     */
     private static List<String> getItemsFromComboBox(JComboBox<String> sectorsComboBox) {
         List<String> items = new LinkedList<>();
         for (int i = 0; i < sectorsComboBox.getItemCount(); i++) {
@@ -116,6 +139,9 @@ public class Validate {
         return items;
     }
  
+    /*
+    * check if the values of the ticket are valid
+    */
     private static boolean[] validTicketValues(Map<String, String> values) {
         boolean[] validations = new boolean[8];
 
@@ -132,6 +158,9 @@ public class Validate {
         return validations;
     }
     
+    /*
+    * check if the values of withholding are valid
+    */
     private static boolean[] validWithholdingValues(Map<String, String> values) {
         boolean[] validations = new boolean[4];
         
@@ -148,6 +177,9 @@ public class Validate {
         return validations;
     }
     
+    /*
+    * add invalid ticket messages
+    */
     private static String addInvalidTicketMessages(boolean[] numerics) {
         String invalidations = "";
         int i = 0;
@@ -167,6 +199,9 @@ public class Validate {
         return invalidations;
     }
     
+    /*
+    * add invalid withholding messages
+    */
     private static String addInvalidWithholdingMessages(boolean[] numerics) {
         String invalidations = "";
         int i = 0;
@@ -182,6 +217,13 @@ public class Validate {
         return invalidations;
     }
     
+    /**
+    * check if a value can be pase to a class
+    * @param value value want to parse
+    * @param expectedClass class who can try to parse the value
+    * @param notZero
+    * @return if the value can be parse or not
+    */
     public static boolean tryParse(String value, Class expectedClass, boolean notZero) {
         try { 
             if (expectedClass == Float.class) {

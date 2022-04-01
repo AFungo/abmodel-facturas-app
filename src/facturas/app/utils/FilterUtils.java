@@ -17,11 +17,17 @@ import java.util.Map;
 import javax.swing.JTable;
 
 /**
- *
- * @author nacho
+ * Methods to manipulate the filters 
+ * 
  */
 public class FilterUtils {
     
+    /**
+     * creates a ticket filter
+     * @param row ¿?
+     * @param ticketsTable ¿? 
+     * @return a new SQLFilter
+     */
     public static SQLFilter createTicketFilter(int row, JTable ticketsTable) {
         SQLFilter filter = new SQLFilter();
         Date date = (Date)ticketsTable.getValueAt(row, 1); //1 is the date column
@@ -34,6 +40,11 @@ public class FilterUtils {
         return filter;
     }
     
+    /**
+     * Creates a new tickets filter
+     * @param values a map who have the values for the filter
+     * @return the new SQLFilter with the upgrade of the paramas
+     */
     public static SQLFilter createTicketFilter(Map<String, String> values) {
         SQLFilter filter = new SQLFilter();
         Date date = FormatUtils.dateGen(values.get("date"));
@@ -46,6 +57,13 @@ public class FilterUtils {
         return filter;
     }
     
+    /**
+     * Creates a new ticket filter
+     * @param values a map with the values
+     * @param prov provider who want to filter
+     * @param date date who want to filter
+     * @return a SQLFilter with the new values
+     */ 
     public static SQLFilter createTicketFilter(Map<String, String> values, Provider prov, java.util.Date date) {
         SQLFilter filter = new SQLFilter();
         filter.add("providerDoc", "=", prov.getValues().get("docNo"), String.class);
@@ -58,8 +76,10 @@ public class FilterUtils {
         return filter;
     }
     
-    /*
-        removes filters of attributes of withholding and puts them in a new filter
+    /**
+    * removes filters of attributes of withholding and puts them in a new filter
+    * @param filter filter who we want to separate the withholding filters
+    * @return a new SQLFilter with only withholdings filters
     */
     public static SQLFilter separateWithholdingFilter(SQLFilter filter) {
         SQLFilter withholdingFilter = new SQLFilter();
@@ -69,6 +89,9 @@ public class FilterUtils {
         return withholdingFilter;
     }
 
+    /**
+     * nacho review the documentation??
+     */
     public static SQLFilter separateWithholdingSpecialFilter(SQLFilter filter) {
         SQLFilter withholdingFilter = new SQLFilter();
         String[] attributesToRemove = {"iva", "profits"};
@@ -79,6 +102,11 @@ public class FilterUtils {
         return withholdingFilter;
     }
     
+    /**
+     * remove of the filter iva and profits
+     * @param filter SQLFilter who have the current filter
+     * @return a SQLFilter without iva and profit
+     */
     public static SQLFilter removeIvaAndProfits(SQLFilter filter) {
         SQLFilter ivaProfitFilter = new SQLFilter();
         String[] attributesToRemove = {"iva", "profits"};
@@ -87,6 +115,12 @@ public class FilterUtils {
         return ivaProfitFilter;
     }
     
+    /**
+     * ¿¿¿¿¿¿¿¿¿¿¿??????????????
+     * @param filterToAdd
+     * @param filterToRemove
+     * @param attributes
+     */
     private static void transferFilters(SQLFilter filterToAdd, SQLFilter filterToRemove, String[] attributes) {
         for (String attr : attributes) {
             for (Condition cond : filterToRemove.removeCondition(attr)) {
@@ -98,6 +132,12 @@ public class FilterUtils {
         }
     }
     
+    /**
+     * ¿¿¿¿¿¿¿¿¿¿??????????
+     * @param filterToAdd
+     * @param filterToCopy
+     * @param attributes
+     */
     private static void copyFilters(SQLFilter filterToAdd, SQLFilter filterToCopy, String[] attributes) {
         for (String attr : attributes) {
             for (Condition cond : filterToCopy.getCondition(attr)) {
@@ -108,7 +148,11 @@ public class FilterUtils {
             }
         }
     }
-    
+    /**
+     * get a collection of list of conditions and make a only one list
+     * @param lists it's the collection of list who we want to concatenate
+     * @return a list with the concatenation of the list
+     */
     public static List<Condition> concatenateLists(Collection<List<Condition>> lists) { 
         List<Condition> conditions = new LinkedList<> ();
         for (List<Condition> cond : lists) {
@@ -117,7 +161,12 @@ public class FilterUtils {
         
         return conditions;
     }
-
+    /**
+     * get a values of a specific filter
+     * @param filter a SQLFilter with all the filter
+     * @param attr the name of the filter who we want to get the values
+     * @return a pair with the values of the specific filter
+     */
     public static Pair<Float,Float> getFilterValues(SQLFilter filter, String attr) {
         List<Condition> conditions = filter.getCondition(attr);
         Pair<Float,Float> result = new Pair<> (null, null);
