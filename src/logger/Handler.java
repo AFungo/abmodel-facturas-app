@@ -9,7 +9,6 @@ import facturas.app.views.View;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +59,9 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
             String msg = e.getMessage();
             if (msg.contains("<23505> duplicate item")) {
                 view.showError(e, "El item que se intento cargar ya estaba cargado");
+            } else if (msg.contains("File is null")) {  //do nothing
+            } else if (msg.contains("File does not have a valid format to be loaded")) {
+                view.showError(e, "El archivo no tiene un formato valido para cargarse");
             } else {
                 unexpectedError(e);
             }

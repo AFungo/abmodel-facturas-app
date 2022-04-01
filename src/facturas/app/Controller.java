@@ -6,6 +6,7 @@
 package facturas.app;
 
 import concurrency.Lock;
+import concurrency.Lock.FailCause;
 import facturas.app.database.DBManager;
 import facturas.app.database.DollarPriceDAO;
 import facturas.app.database.ProviderDAO;
@@ -32,13 +33,9 @@ import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -80,10 +77,9 @@ public class Controller {
                     }
                 }
             });
-        } catch (InterruptedException ex) {
-            backupLock.finalUnlock();
+        } catch (Exception ex) {
             System.out.println("se solto el lock por una exception en el controller");
-            throw new IllegalStateException(ex.getMessage());
+            backupLock.fail(ex);
         } finally {
             backupLock.finalUnlock();
         }
@@ -345,7 +341,7 @@ public class Controller {
     public void loadBackup(File folder) {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
-        } else if (!folder.getName().contains("backup--")) {
+        } else if (!folder.getName().contains("backup-")) {
             throw new IllegalArgumentException("Folder " + folder.getPath() + " is not a valid backup folder");
         }
         //load dollar prices
