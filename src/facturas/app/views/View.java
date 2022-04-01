@@ -14,6 +14,7 @@ import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.ConfigManager;
 import facturas.app.utils.FilterUtils;
+import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PdfCreator;
@@ -32,8 +33,6 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -533,7 +532,9 @@ public class View extends javax.swing.JFrame {
             
             backupLock.lock();
             System.out.println("se ejecuto el lock de la view");
-            //create backup at this point
+            File folder = new File("./");   //folder at local 
+            String filename = FixedData.getBackupFolderName("backup-carga-tickets");
+            controller.createBackup(folder, filename);
             backupLock.unlock();
             
             // FIXME: Maybe we can update the suggestions only 
@@ -709,7 +710,7 @@ public class View extends javax.swing.JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            controller.createBackup(file);
+            controller.createBackup(file, null);    //null filename will create default backup filename
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_createBackupActionPerformed

@@ -5,6 +5,8 @@
  */
 package facturas.app.utils;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Arrays;
 
 /**
@@ -96,6 +98,14 @@ public class FixedData {
     }
     
     /**
+     * @param name the name for the backup file
+     * @return the backup file name format
+     */
+    public static String getBackupFolderName(String name) {
+        return "\\" + name + "--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\";
+    }
+    
+    /**
      * check if the value of a string is a valid ticket type
      * @param type the string who want to check if is a valid type
      * @return a boolean who said is valid or not
@@ -103,6 +113,11 @@ public class FixedData {
     public static boolean validType(String type) {
         boolean value = Arrays.asList(types).contains(type);
         return value;
+    }
+    
+    private static String currentTimeMinutesHours() {
+        LocalTime current = LocalTime.now();
+        return current.getHour() + "-" + current.getMinute();
     }
     
 }

@@ -32,13 +32,9 @@ import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -80,10 +76,9 @@ public class Controller {
                     }
                 }
             });
-        } catch (InterruptedException ex) {
-            backupLock.finalUnlock();
+        } catch (Exception ex) {
             System.out.println("se solto el lock por una exception en el controller");
-            throw new IllegalStateException(ex.getMessage());
+            backupLock.fail(ex);
         } finally {
             backupLock.finalUnlock();
         }
@@ -313,12 +308,17 @@ public class Controller {
         return WithholdingDAO.exist(filter);
     }
     
-    public void createBackup(File folder) {
+    public void createBackup(File folder, String filename) {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
         }
+        
+        if (filename == null || filename.equals("")) {
+            filename = FixedData.getBackupFolderName("backup");
+        }
         //create backup folder (could be several backups in the folder)
-        File backupFolder = new File(folder, "\\backup--" + LocalDate.now() + "--" + currentTimeMinutesHours() + "\\");
+        File backupFolder = new File(folder, filename);
+        System.out.println("file at: " + backupFolder.getAbsolutePath() + "\nand: " + backupFolder.getPath());
         backupFolder.mkdir();
         
         //tickets backup
@@ -340,7 +340,7 @@ public class Controller {
     public void loadBackup(File folder) {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
-        } else if (!folder.getName().contains("backup--")) {
+        } else if (!folder.getName().contains("backup-")) {
             throw new IllegalArgumentException("Folder " + folder.getPath() + " is not a valid backup folder");
         }
         //load dollar prices
@@ -414,11 +414,6 @@ public class Controller {
         } catch (IOException ex) {
             throw new IllegalStateException("failed to write on file: " + fileToWrite.getAbsolutePath() + "\n" + ex.toString());
         }
-    }
-    
-    private String currentTimeMinutesHours() {
-        LocalTime current = LocalTime.now();
-        return current.getHour() + "-" + current.getMinute();
     }
     
     private Pair<List<String>,Boolean> readCsv(File f, String type) {

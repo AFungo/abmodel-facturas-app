@@ -90,7 +90,9 @@ public class FilterUtils {
     }
 
     /**
-     * nacho review the documentation??
+     * removes iva and profits attributes from filter and copies but doesn't 
+     * remove the rest, all is put in a new filter
+     * @param filter filter that we want to separate into withholding filter
      */
     public static SQLFilter separateWithholdingSpecialFilter(SQLFilter filter) {
         SQLFilter withholdingFilter = new SQLFilter();
@@ -115,11 +117,10 @@ public class FilterUtils {
         return ivaProfitFilter;
     }
     
-    /**
-     * ¿¿¿¿¿¿¿¿¿¿¿??????????????
-     * @param filterToAdd
-     * @param filterToRemove
-     * @param attributes
+    /*
+     removes filter attributes from one filter and puts them in another
+     takes two filters one to remove from and other to add to, also takes an
+     array containing the attributes to transfer
      */
     private static void transferFilters(SQLFilter filterToAdd, SQLFilter filterToRemove, String[] attributes) {
         for (String attr : attributes) {
@@ -132,11 +133,10 @@ public class FilterUtils {
         }
     }
     
-    /**
-     * ¿¿¿¿¿¿¿¿¿¿??????????
-     * @param filterToAdd
-     * @param filterToCopy
-     * @param attributes
+    /*
+     copies filter attributes from one filter to another
+     takes two filters one to copy from and other to add to, also takes an
+     array containing the attributes to copy
      */
     private static void copyFilters(SQLFilter filterToAdd, SQLFilter filterToCopy, String[] attributes) {
         for (String attr : attributes) {
