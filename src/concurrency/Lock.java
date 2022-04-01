@@ -10,12 +10,18 @@ package concurrency;
  * @author nacho
  */
 public class Lock {
+    
     private boolean isLocked = false;
-
-    public synchronized void lock() throws InterruptedException {
+    private boolean failed = false;
+    private Exception exception;
+    
+    public synchronized void lock() throws InterruptedException, Exception {
         while(isLocked) {
             System.out.println("lock ocupado, esperando");
             wait();
+        }
+        if (failed) {   //throws the exception of the fail
+            throw exception;
         }
         System.out.println("lock libre, ahora en uso");
         isLocked = true;
@@ -34,5 +40,12 @@ public class Lock {
         isLocked = false;
         System.out.println("lock desbloqueado, notificando a los demas usuarios");
         notify();
+    }
+    
+    //set the lock as process fail and saves the exception thrown
+    public synchronized void fail(Exception e) {
+        failed = true;
+        this.exception = e;
+        System.out.println("fallo el proceso");
     }
 }
