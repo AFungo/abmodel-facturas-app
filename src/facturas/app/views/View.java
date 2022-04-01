@@ -93,7 +93,6 @@ public class View extends javax.swing.JFrame {
         inDollars = new javax.swing.JCheckBox();
         resetDBButton = new javax.swing.JButton();
         viewMoreCalculusButton = new javax.swing.JButton();
-        createPdf = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         multipleLoad = new javax.swing.JMenu();
@@ -109,6 +108,7 @@ public class View extends javax.swing.JFrame {
         columnSelector = new javax.swing.JMenuItem();
         createBackup = new javax.swing.JMenuItem();
         loadBackup = new javax.swing.JMenuItem();
+        createPDFMenuItem = new javax.swing.JMenuItem();
 
         sectorMenuItem.setText("Modificar rubro");
         sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -268,13 +268,6 @@ public class View extends javax.swing.JFrame {
             }
         });
 
-        createPdf.setText("Crear PDF");
-        createPdf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createPdfActionPerformed(evt);
-            }
-        });
-
         files.setText("Cargar");
 
         multipleLoad.setText("Cargar (.csv)...");
@@ -369,6 +362,14 @@ public class View extends javax.swing.JFrame {
         });
         tools.add(loadBackup);
 
+        createPDFMenuItem.setText("Crear PDF");
+        createPDFMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createPDFMenuItemActionPerformed(evt);
+            }
+        });
+        tools.add(createPDFMenuItem);
+
         menuBar.add(tools);
 
         setJMenuBar(menuBar);
@@ -382,9 +383,7 @@ public class View extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(206, 206, 206)
-                                .addComponent(createPdf)
-                                .addGap(188, 188, 188)
+                                .addGap(475, 475, 475)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
@@ -443,11 +442,8 @@ public class View extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(showTickets)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(createPdf)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(showProviders)
-                                .addGap(2, 2, 2)))))
+                        .addComponent(showProviders)
+                        .addGap(2, 2, 2)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -647,27 +643,6 @@ public class View extends javax.swing.JFrame {
         ticketsTableMouseReleased(evt);
     }//GEN-LAST:event_ticketsTableMousePressed
 
-    private void createPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPdfActionPerformed
-                JFrame parentFrame = new JFrame();
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Specify a file to save");   
-
-        int userSelection = fileChooser.showSaveDialog(parentFrame);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("pdf")) {
-                file = new File(file.toString() + ".pdf");
-                file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".pdf");
-            }
-                   
-            PdfCreator pdfCreator = new PdfCreator(file.getAbsolutePath(), ticketsTable);
-            pdfCreator.setSelectedColumns(getSelectedColumns());
-            pdfCreator.createPDF();
-        }
-    }//GEN-LAST:event_createPdfActionPerformed
-
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
         JTable toDelete = createToDeleteTable(row);
@@ -760,6 +735,27 @@ public class View extends javax.swing.JFrame {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_loadBackupActionPerformed
+
+    private void createPDFMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPDFMenuItemActionPerformed
+        JFrame parentFrame = new JFrame();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("pdf")) {
+                file = new File(file.toString() + ".pdf");
+                file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".pdf");
+            }
+                   
+            PdfCreator pdfCreator = new PdfCreator(file.getAbsolutePath(), ticketsTable);
+            pdfCreator.setSelectedColumns(getSelectedColumns());
+            pdfCreator.createPDF();
+        }
+    }//GEN-LAST:event_createPDFMenuItemActionPerformed
 
     private void updateAttribute(String attribute, String value, int column) {
         int row = ticketsTable.getSelectedRow();
@@ -854,7 +850,7 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
     private javax.swing.JMenuItem createBackup;
-    private javax.swing.JButton createPdf;
+    private javax.swing.JMenuItem createPDFMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenuItem deleteSectorMenuItem;
     private javax.swing.JMenuItem deliveredMenuItem;
