@@ -561,12 +561,14 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
     private void loadDollarValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarValueActionPerformed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
 
         controller.loadDollarPrices(chooser.getSelectedFile());
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
     private void columnSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectorActionPerformed

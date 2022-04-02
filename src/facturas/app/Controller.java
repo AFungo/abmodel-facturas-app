@@ -97,7 +97,14 @@ public class Controller {
         }
             
         for (DollarPrice p : prices) {
-            DollarPriceDAO.add(p);
+            try {
+                    DollarPriceDAO.add(p);
+                } catch (IllegalStateException ex) {//if the exception is not for repeated item throw it
+                    System.out.println("se repitio un item");
+                    if (!ex.getMessage().contains("<23505> duplicate item")) {
+                        throw ex;
+                    }
+                }
         }
     }
     
