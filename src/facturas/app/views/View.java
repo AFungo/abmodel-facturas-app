@@ -523,23 +523,19 @@ public class View extends javax.swing.JFrame {
         Lock backupLock = new Lock();
         try {
             backupLock.lock();
-            new Thread(new Runnable() {
+            new Thread(new Runnable() { //new thread to run the file load
                 @Override
                 public void run() {
                         controller.loadTickets(chooser.getSelectedFile(), backupLock);
                 }
             }).start();
             
-            backupLock.lock();
-            System.out.println("se ejecuto el lock de la view");
+            backupLock.lock(); //once data is checked to be valid, backup is made
             File folder = new File("./");   //folder at local 
             String filename = FixedData.getBackupFolderName("backup-carga-tickets");
             controller.createBackup(folder, filename);
-            backupLock.unlock();
-            
-            // FIXME: Maybe we can update the suggestions only 
-            // when we know that a providers was added
-            providersView.updateSuggestions();
+            backupLock.unlock();    //backup done, now load csv data
+            backupLock.lock();      //to ensure the load process has finished
         } catch (Exception e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             throw new IllegalStateException(e.getMessage());
@@ -547,6 +543,9 @@ public class View extends javax.swing.JFrame {
             backupLock.finalUnlock();
         }
         
+        // FIXME: Maybe we can update the suggestions only 
+        // when we know that a providers was added
+        providersView.updateSuggestions();
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
             names.add(p.getValues().get("name"));

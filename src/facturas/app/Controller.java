@@ -54,7 +54,6 @@ public class Controller {
     //the lock comes already locked
     public void loadTickets(File f, Lock backupLock) {
         try {
-            System.out.println("se ejecuto el lock del controller");
             Pair<List<String>,Boolean> csvContent = readCsv(f, "ticket");
             List<String> stringTickets = csvContent.getFst();
             boolean issuedByMe = csvContent.getSnd();
@@ -63,10 +62,8 @@ public class Controller {
             for (String strTicket : stringTickets) {
                 tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket, issuedByMe)));
             }
-            System.out.println("se solto el lock");
             backupLock.unlock();
             backupLock.lock();
-            System.out.println("se ejecuto el lock al final del controller");
             tickets.forEach((ticket) -> {
                 try {
                     createTicketOnDB(ticket);
@@ -77,7 +74,6 @@ public class Controller {
                 }
             });
         } catch (Exception ex) {
-            System.out.println("se solto el lock por una exception en el controller");
             backupLock.fail(ex);
         } finally {
             backupLock.finalUnlock();
