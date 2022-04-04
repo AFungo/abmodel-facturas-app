@@ -12,23 +12,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
- * @author nacho
+ *It does all the calculations that it shows in the view.
+ * 
  */
 public class ProfitCalculator {
     
     private Transaction purchases;
     private Transaction sales;
-    private Transaction retentionIva;
-    private Transaction retentionGan;
-    
+    private Float withholdingIva;
+    private Float withholdingProfits;
+   
+        /**
+     * Constructor
+     */
     public ProfitCalculator() {
         purchases = new Transaction();
         sales = new Transaction();
-        retentionIva = new Transaction();
-        retentionGan = new Transaction();
+        withholdingIva = 0.0f;
+        withholdingProfits = 0.0f;
     }
     
+    /**
+     * Add new ticket to transactions
+     * @param t Ticket to be added
+     */
     public void addTicket(Ticket t) {
         Map<String, Object> values = t.getValues();
         
@@ -45,6 +52,10 @@ public class ProfitCalculator {
         addTransaction(t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
     }
   
+    /**
+    *Add new ticket to transaction but the values are in dollars 
+    * @param t ticket to be added
+    */
     public void addTicketInDollars(Ticket t) {
         Map<String, Object> values = t.getValues();
         Float sellPrice = 1.0f;
@@ -64,6 +75,11 @@ public class ProfitCalculator {
         addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
     }
     
+    /**
+     * Add new withholding to transactions
+     * @param r whithholding to be added 
+     * @param dollars boolean if the values is need to be in dollars or not
+     */
     public void addRetention(Withholding r, boolean dollars){
         Map<String, Object> dict = r.getValues();
         Float iva = (Float) dict.get("iva");
@@ -77,13 +93,17 @@ public class ProfitCalculator {
         }
         
         if (iva != null && (Float) iva != 0.0f) {
-            retentionIva.addTransaction((Float) iva, 0.0f, 0.0f);
+            withholdingIva += (Float) iva;
         }
         if (profits != null && (Float) profits != 0.0f) {
-            retentionGan.addTransaction((Float) profits, 0.0f, 0.0f);
+            withholdingProfits += (Float) profits;
         }
     }
     
+    /**
+     * retun the values of all data and calculus 
+     * @return return Map<> who have all the data 
+     */
     public Map<String, Float> getValues(){
         Map<String, Float> values = new HashMap();
         //totals
@@ -96,34 +116,53 @@ public class ProfitCalculator {
         //iva
         values.put("issuedIva",(Float)sales.getTransactions().get("iva"));
         values.put("receivedIva", (Float)purchases.getTransactions().get("iva"));
-        values.put("withheldIva", (Float) retentionIva.getTransactions().get("totalAmount"));
+        values.put("withheldIva", withholdingIva);
         values.put("totalIva", this.getIva());
         
         //profitTax
         values.put("issuedNetAmount",(Float)sales.getTransactions().get("netAmountWI"));
         values.put("receivedNetAmount",(Float)purchases.getTransactions().get("netAmountWI"));
-        values.put("withheldProfit",(Float) retentionGan.getTransactions().get("totalAmount"));
+        values.put("withheldProfit", withholdingProfits);
         values.put("totalProfitTax", this.getGanancia());
         
         return values;
     }
     
+    /**
+     * calculate the profit with out taxes
+     * @return a float of the profit with out tax
+     */
     public Float getProfitWOTax(){//calculate the profit with out taxes
         return ((Float)sales.getTransactions().get("totalAmount") - (Float)purchases.getTransactions().get("totalAmount"));    
     }
 
+    /**
+     * calculate the profit with taxes
+     * @return return the profit with taxes
+     */
     public Float getProfitWTax(){//calculate the profit with taxes
-        return ((Float)sales.getTransactions().get("totalAmount") - (Float)purchases.getTransactions().get("totalAmount") - (Float) retentionIva.getTransactions().get("totalAmount") - (Float) retentionGan.getTransactions().get("totalAmount"));     
+        return ((Float)sales.getTransactions().get("totalAmount") - (Float)purchases.getTransactions().get("totalAmount") - withholdingIva - withholdingProfits);
     }
     
+    /**
+     * Calculate the difference of iva between sales, purchases and withholding
+     * @return float with iva tax 
+     */
     public Float getIva(){
-        return (-(Float)sales.getTransactions().get("iva") + (Float)purchases.getTransactions().get("iva") + (Float) retentionIva.getTransactions().get("totalAmount"));
+        return (-(Float)sales.getTransactions().get("iva") + (Float)purchases.getTransactions().get("iva") + withholdingIva);
     }
     
+    /**
+     * Calculate the difference of net total amounts between sales, purchases and withholding
+     * @return float whit the profit tax
+     */
     public Float getGanancia(){//falta restarle las retenciones para que te quede el numero.
-        return (-(Float)sales.getTransactions().get("netAmountWI") + (Float)purchases.getTransactions().get("netAmountWI") + (Float) retentionGan.getTransactions().get("totalAmount"));
+        return (-(Float)sales.getTransactions().get("netAmountWI") + (Float)purchases.getTransactions().get("netAmountWI") + withholdingProfits);
     }
     
+    /*
+     * get a ticket or withholding and add to transactions
+     */
     private void addTransaction(boolean isIncome, boolean issuedByMe, Float totalAmount, Float iva, Float netAmountWI){
         
         if (issuedByMe) {
@@ -141,6 +180,9 @@ public class ProfitCalculator {
         }
     }
     
+   /*
+    *return the the dollar proce who need the ticket
+    */
     private Float inDollars(boolean dollars, Float exchangeType, DollarPrice price){
         if (dollars && exchangeType == 1.0f) {  //if dollars are required and exchange type is pesos          
             if (price != null) {    //if price was loaded (it may not be in db)
@@ -150,6 +192,9 @@ public class ProfitCalculator {
         return 1.0f;
     }            
 
+    /*
+    *Caculates the gross margin
+    */
     private Float getGrossMargin() {
         return  (Float)sales.getTransactions().get("netAmountWI") - (Float)purchases.getTransactions().get("netAmountWI");
     }

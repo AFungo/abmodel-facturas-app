@@ -5,6 +5,7 @@
  */
 package facturas.app.views;
 
+import concurrency.Lock;
 import facturas.app.Controller;
 import facturas.app.models.Withholding;
 import facturas.app.database.SQLFilter;
@@ -13,10 +14,12 @@ import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.utils.ConfigManager;
 import facturas.app.utils.FilterUtils;
+import facturas.app.utils.FixedData;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
 import facturas.app.utils.PdfCreator;
 import facturas.app.utils.PricesList;
+import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -50,7 +53,7 @@ public class View extends javax.swing.JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.controller = controller;
         initComponents();
-        providersView = new ProvidersView(controller);
+        providersView = new ProvidersView(controller, this);
         filtersView = new FiltersView(controller, ticketsTable);
         columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
         ticketLoaderView = new TicketLoaderView(controller, this);
@@ -71,8 +74,9 @@ public class View extends javax.swing.JFrame {
         popupMenu = new javax.swing.JPopupMenu();
         sectorMenuItem = new javax.swing.JMenuItem();
         deliveredMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
+        exchangeTypeMenuItem = new javax.swing.JMenuItem();
         deleteSectorMenuItem = new javax.swing.JMenuItem();
+        deleteMenuItem = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         ticketsTableScroll = new javax.swing.JScrollPane();
         ticketsTable = new javax.swing.JTable();
@@ -88,7 +92,6 @@ public class View extends javax.swing.JFrame {
         inDollars = new javax.swing.JCheckBox();
         resetDBButton = new javax.swing.JButton();
         viewMoreCalculusButton = new javax.swing.JButton();
-        createPdf = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         files = new javax.swing.JMenu();
         multipleLoad = new javax.swing.JMenu();
@@ -102,6 +105,9 @@ public class View extends javax.swing.JFrame {
         tools = new javax.swing.JMenu();
         filters = new javax.swing.JMenuItem();
         columnSelector = new javax.swing.JMenuItem();
+        createBackup = new javax.swing.JMenuItem();
+        loadBackup = new javax.swing.JMenuItem();
+        createPDFMenuItem = new javax.swing.JMenuItem();
 
         sectorMenuItem.setText("Modificar rubro");
         sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -119,13 +125,13 @@ public class View extends javax.swing.JFrame {
         });
         popupMenu.add(deliveredMenuItem);
 
-        deleteMenuItem.setText("Eliminar");
-        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        exchangeTypeMenuItem.setText("Modificar tipo de cambio");
+        exchangeTypeMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteMenuItemActionPerformed(evt);
+                exchangeTypeMenuItemActionPerformed(evt);
             }
         });
-        popupMenu.add(deleteMenuItem);
+        popupMenu.add(exchangeTypeMenuItem);
 
         deleteSectorMenuItem.setText("Eliminar rubro");
         deleteSectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -135,7 +141,15 @@ public class View extends javax.swing.JFrame {
         });
         popupMenu.add(deleteSectorMenuItem);
 
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getSectors())));
+        deleteMenuItem.setText("Eliminar");
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteMenuItemActionPerformed(evt);
+            }
+        });
+        popupMenu.add(deleteMenuItem);
+
+        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ADMINISTRADOR CONTABLE ABMODEL");
@@ -223,12 +237,12 @@ public class View extends javax.swing.JFrame {
 
         ivaTaxLabel.setEditable(false);
         ivaTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        ivaTaxLabel.setText("Iva:");
+        ivaTaxLabel.setText("Total IVA:");
         ivaTaxLabel.setBorder(null);
 
         profitTaxLabel.setEditable(false);
         profitTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        profitTaxLabel.setText("Ganancias:");
+        profitTaxLabel.setText("Total ganancias:");
         profitTaxLabel.setBorder(null);
 
         totalLabel.setEditable(false);
@@ -239,8 +253,7 @@ public class View extends javax.swing.JFrame {
         inDollars.setText("Precio en dolares");
 
         resetDBButton.setText("Reset DB");
-        resetDBButton.setVisible(false);
-        resetDBButton.setEnabled(false);
+        resetDBButton.setVisible(true);
         resetDBButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetDBButtonActionPerformed(evt);
@@ -251,13 +264,6 @@ public class View extends javax.swing.JFrame {
         viewMoreCalculusButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewMoreCalculusButtonActionPerformed(evt);
-            }
-        });
-
-        createPdf.setText("Crear PDF");
-        createPdf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createPdfActionPerformed(evt);
             }
         });
 
@@ -339,6 +345,30 @@ public class View extends javax.swing.JFrame {
         });
         tools.add(columnSelector);
 
+        createBackup.setText("Crear backup");
+        createBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createBackupActionPerformed(evt);
+            }
+        });
+        tools.add(createBackup);
+
+        loadBackup.setText("Cargar backup");
+        loadBackup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadBackupActionPerformed(evt);
+            }
+        });
+        tools.add(loadBackup);
+
+        createPDFMenuItem.setText("Crear PDF");
+        createPDFMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createPDFMenuItemActionPerformed(evt);
+            }
+        });
+        tools.add(createPDFMenuItem);
+
         menuBar.add(tools);
 
         setJMenuBar(menuBar);
@@ -352,9 +382,7 @@ public class View extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(206, 206, 206)
-                                .addComponent(createPdf)
-                                .addGap(188, 188, 188)
+                                .addGap(475, 475, 475)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
@@ -393,7 +421,7 @@ public class View extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ticketsTableScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 32615, Short.MAX_VALUE)
+                .addComponent(ticketsTableScroll)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -413,11 +441,8 @@ public class View extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(showTickets)
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(createPdf)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(showProviders)
-                                .addGap(2, 2, 2)))))
+                        .addComponent(showProviders)
+                        .addGap(2, 2, 2)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -434,12 +459,16 @@ public class View extends javax.swing.JFrame {
     
     //calculates profit of tickets
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
         try {
-            pricesList = controller.getProfit(filtersView.getFilters(true), filtersView.getFilters(false), dollar);
+            SQLFilter ticketFilter = filtersView.getFilters();
+            SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
+            pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
                 "Error", JOptionPane.ERROR_MESSAGE);
             return ;
@@ -450,15 +479,18 @@ public class View extends javax.swing.JFrame {
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = controller.createMissingPricesTable(missingPrices);
             int daysLimit = controller.getDaysLimit();
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
                 " dias para redondear el dolar", JOptionPane.WARNING_MESSAGE);
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         }
         
         String money = dollar ? " USD" : " ARS";
         profitTax.setText(numberFormat.format(values.get("totalProfitTax")) + money);
         ivaTaxTextField.setText(numberFormat.format(values.get("totalIva"))+ money);
         total.setText(numberFormat.format(values.get("profitWTax")) + money);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     //show providers if any
@@ -471,7 +503,9 @@ public class View extends javax.swing.JFrame {
 
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         loadTicketsInTable();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
@@ -484,18 +518,41 @@ public class View extends javax.swing.JFrame {
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
-
-        controller.loadTickets(chooser.getSelectedFile());
+        
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        Lock backupLock = new Lock();
+        try {
+            backupLock.lock();
+            new Thread(new Runnable() { //new thread to run the file load
+                @Override
+                public void run() {
+                        controller.loadTickets(chooser.getSelectedFile(), backupLock);
+                }
+            }).start();
+            
+            backupLock.lock(); //once data is checked to be valid, backup is made
+            File folder = new File("./");   //folder at local 
+            String filename = FixedData.getBackupFolderName("backup-carga-tickets");
+            controller.createBackup(folder, filename);
+            backupLock.unlock();    //backup done, now load csv data
+            backupLock.lock();      //to ensure the load process has finished
+        } catch (Exception e) {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            throw new IllegalStateException(e.getMessage());
+        } finally {
+            backupLock.finalUnlock();
+        }
+        
         // FIXME: Maybe we can update the suggestions only 
         // when we know that a providers was added
         providersView.updateSuggestions();
-        
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
             names.add(p.getValues().get("name"));
         }
         updateProviders(names);
-        showTicketsActionPerformed(evt);
+        loadTicketsInTable();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadTicketsActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
@@ -504,12 +561,14 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
     private void loadDollarValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarValueActionPerformed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
 
         controller.loadDollarPrices(chooser.getSelectedFile());
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
     private void columnSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectorActionPerformed
@@ -517,8 +576,10 @@ public class View extends javax.swing.JFrame {
     }//GEN-LAST:event_columnSelectorActionPerformed
 
     private void resetDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDBButtonActionPerformed
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         controller.resetDB();
         cleanTable((DefaultTableModel)ticketsTable.getModel());
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_resetDBButtonActionPerformed
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
@@ -549,7 +610,7 @@ public class View extends javax.swing.JFrame {
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             
             String sector = (String)sectorComboBox.getSelectedItem();
-            controller.changeWithholdingAttribute(filter, "sector", sector);
+            controller.changeWithholdingAttribute(filter, "sector", sector, true);
         
             ticketsTable.setValueAt(sector, row, 14);   //column 14 is for sector
         }
@@ -564,7 +625,7 @@ public class View extends javax.swing.JFrame {
         SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
         
         String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
-            controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
+            controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true", true);
         
         ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
@@ -584,27 +645,6 @@ public class View extends javax.swing.JFrame {
         ticketsTableMouseReleased(evt);
     }//GEN-LAST:event_ticketsTableMousePressed
 
-    private void createPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPdfActionPerformed
-                JFrame parentFrame = new JFrame();
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Specify a file to save");   
-
-        int userSelection = fileChooser.showSaveDialog(parentFrame);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("pdf")) {
-                file = new File(file.toString() + ".pdf");
-                file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".pdf");
-            }
-                   
-            PdfCreator pdfCreator = new PdfCreator(file.getAbsolutePath(), ticketsTable);
-            pdfCreator.setSelectedColumns(getSelectedColumns());
-            pdfCreator.createPDF();
-        }
-    }//GEN-LAST:event_createPdfActionPerformed
-
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
         JTable toDelete = createToDeleteTable(row);
@@ -617,7 +657,8 @@ public class View extends javax.swing.JFrame {
                 controller.removeItem(filter, false);
             else
                 controller.removeItem(filter, true);
-
+            
+            row = ticketsTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
             ((DefaultTableModel)ticketsTable.getModel()).removeRow(row); //remove row from view
         }
     }//GEN-LAST:event_deleteMenuItemActionPerformed
@@ -651,6 +692,80 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteSectorMenuItemActionPerformed
 
+    private void exchangeTypeMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeTypeMenuItemActionPerformed
+        int row = ticketsTable.getSelectedRow();
+        Float exchangeType = (Float)ticketsTable.getValueAt(row, 8); //column 8 is for exchange type
+        String userInput = JOptionPane.showInputDialog(this, "Tipo de cambio: ", exchangeType);
+        if (userInput != null) {
+            updateAttribute("exchangeType", userInput, 8); //column 8 is for exchange type
+        }
+    }//GEN-LAST:event_exchangeTypeMenuItemActionPerformed
+
+    private void createBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createBackupActionPerformed
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setDialogTitle("Elije una carpeta donde guardar el backup");   
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            controller.createBackup(file, null);    //null filename will create default backup filename
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
+    }//GEN-LAST:event_createBackupActionPerformed
+
+    private void loadBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBackupActionPerformed
+        JFrame parentFrame = new JFrame();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        fileChooser.setDialogTitle("Seleccione la carpeta de backup a cargar");   
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            try {
+                controller.loadBackup(file);
+            } catch (Exception e) {
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                throw e;
+            }
+            loadTicketsInTable();
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
+    }//GEN-LAST:event_loadBackupActionPerformed
+
+    private void createPDFMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPDFMenuItemActionPerformed
+        JFrame parentFrame = new JFrame();
+
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Specify a file to save");   
+
+        int userSelection = fileChooser.showSaveDialog(parentFrame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("pdf")) {
+                file = new File(file.toString() + ".pdf");
+                file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".pdf");
+            }
+                   
+            PdfCreator pdfCreator = new PdfCreator(file.getAbsolutePath(), ticketsTable);
+            pdfCreator.setSelectedColumns(getSelectedColumns());
+            pdfCreator.createPDF();
+        }
+    }//GEN-LAST:event_createPDFMenuItemActionPerformed
+
+    private void updateAttribute(String attribute, String value, int column) {
+        int row = ticketsTable.getSelectedRow();
+        SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+        controller.changeTicketAttribute(filter, attribute, value, false);    //update db
+        ticketsTable.setValueAt(Float.parseFloat(value), row, column);  //update view
+    }
+    
     public void updateSectors(List<String> sectors) {
         sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
         providersView.updateSectors(sectors);
@@ -736,16 +851,19 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem addProviderMenuItem;
     private javax.swing.JButton calculateButton;
     private javax.swing.JMenuItem columnSelector;
-    private javax.swing.JButton createPdf;
+    private javax.swing.JMenuItem createBackup;
+    private javax.swing.JMenuItem createPDFMenuItem;
     private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JMenuItem deleteSectorMenuItem;
     private javax.swing.JMenuItem deliveredMenuItem;
     private javax.swing.JMenu edit;
+    private javax.swing.JMenuItem exchangeTypeMenuItem;
     private javax.swing.JMenu files;
     private javax.swing.JMenuItem filters;
     private javax.swing.JCheckBox inDollars;
     private javax.swing.JTextField ivaTaxLabel;
     private javax.swing.JTextField ivaTaxTextField;
+    private javax.swing.JMenuItem loadBackup;
     private javax.swing.JMenuItem loadDollarValue;
     private javax.swing.JMenuItem loadTicketManually;
     private javax.swing.JMenuItem loadTickets;

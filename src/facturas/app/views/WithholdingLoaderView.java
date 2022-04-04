@@ -59,7 +59,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     
     // FIXME: Maybe we should use the controller here
     private List<String> getSectors() {
-        return SectorDAO.getSectors();
+        return SectorDAO.get();
     }
 
     /**
@@ -393,7 +393,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         if (docNoComboBox.isEnabled() && docNoComboBox.getSelectedItem() != null) {
             filter.add("docNo", "=", docNoComboBox.getSelectedItem(), String.class);
         }
-        List<Provider> providerCheck = ProviderDAO.getProviders(filter);
+        List<Provider> providerCheck = ProviderDAO.get(filter);
         
         String errorMessage = controller.validateParam(dateChooser.getDate(), values, false, 
                 sectorsComboBox, providerCheck);
@@ -421,7 +421,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         if (providersComboBox.getSelectedItem() != null) {
             SQLFilter filters = new SQLFilter();
             filters.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-            List<Provider> providersList = ProviderDAO.getProviders(filters);
+            List<Provider> providersList = ProviderDAO.get(filters);
             if (providersList.size() > 1) {
                 docNoComboBox.removeAllItems();
                 docNoComboBox.setEnabled(true);

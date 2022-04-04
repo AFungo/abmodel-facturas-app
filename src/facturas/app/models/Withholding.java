@@ -47,16 +47,23 @@ public class Withholding {
         dollarPrice = price;
     }
     
+    public void deleteIva() {
+        this.iva = null;
+    }
+    
+    public void deleteProfits() {
+        this.profits = null;
+    }
+    
     public Map<String, Object> getValues() {
         Map<String, Object> dict = new HashMap<>();
-        dict.put("id", id);
         dict.put("date", date);
         dict.put("provider", provider);
         dict.put("number", number);
         dict.put("sector", sector);
+        if (id != null) dict.put("id", id);
         if (iva != null) dict.put("iva", iva);
         if (profits != null) dict.put("profits", profits);
-        if (id != null) dict.put("id", id);
         if (delivered != null) dict.put("delivered", delivered);
         return dict;
     }                  
@@ -64,4 +71,10 @@ public class Withholding {
     public DollarPrice getDollarPrice() {
         return dollarPrice;
     }
- }
+    
+    @Override
+    public String toString() {
+        return "Id" + id + "\nFecha" + date + "\nProveedor" + provider + "\nNum Fact" + number + "\nRubro" + sector 
+                + "\nIva" + iva + "\nGanancias" + profits + "\nEnviado al contador" + delivered + "\n"; 
+    }
+}

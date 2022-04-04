@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facturas.app.database;
 
 import facturas.app.utils.FilterUtils;
@@ -13,14 +8,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author Agustin
+ * Class used to represent a set of condition for a SQL query
  */
 public class SQLFilter {
     
     Map<String,List<Condition>> conditions = new HashMap<>();
     Map<String,List<Condition>> orConditions = new HashMap<>();
     
+    /**
+     * Add a condition to the set of conditions
+     * 
+     * @param attr attribute of the table
+     * @param comparison comparison operator that will be used
+     * @param val value to which the attribute will be compared
+     * @param valClass class of the value/attribute
+     */
     public final void add(String attr, String comparison, Object val, Class<?> valClass) {
         List<Condition> conds = conditions.get(attr);
         if (conds == null) {
@@ -30,6 +32,11 @@ public class SQLFilter {
         conditions.put(attr, conds);
     }
     
+    /**
+     * Add a condition to the set of conditions
+     * 
+     * @param condition condition to be added to the set
+     */
     public final void add(Condition condition) {
         String attr = condition.getAttr();
         List<Condition> conds = conditions.get(attr);
@@ -40,6 +47,14 @@ public class SQLFilter {
         conditions.put(attr, conds);
     }
     
+    /**
+     * Add a complex condition with several disjunctions
+     * 
+     * @param attr attribute of the table
+     * @param comparison comparison operator that will be used
+     * @param vals values to which the attribute will be compared
+     * @param valClass class of the values/attribute
+     */
     public void addDisjunction(String attr, String comparison, Object vals, Class<?> valClass) {    
         List<Condition> orFilter = new LinkedList<>();
         for (Object v : (List<Object>)vals) {
@@ -48,10 +63,22 @@ public class SQLFilter {
         orConditions.put(attr, orFilter);
     }
     
+    /**
+     * Add a complex condition with several disjunctions
+     * 
+     * @param condition complex condition
+     * @param attr attribute of the table
+     */
     public void addDisjunction(List<Condition> condition, String attr) {    
         orConditions.put(attr, condition);
     }
     
+    /**
+     * Remove all the conditions with a specific attribute
+     * 
+     * @param attr attribute used to search the conditions to remove
+     * @return the list of removed conditions
+     */
     public List<Condition> removeCondition(String attr) {
         List<Condition> removed = conditions.remove(attr);
         if (removed == null) {
@@ -61,7 +88,12 @@ public class SQLFilter {
         return removed;
     }
     
-    //returns a list of list because it could be several or conditions of the same attribute
+    /**
+     * Remove all the disjunctions conditions with a specific attribute
+     * 
+     * @param attr attribute used to search the conditions to remove
+     * @return returns a list of list because it could be several or conditions of the same attribute
+     */
     public List<List<Condition>> removeOrCondition(String attr) {
         List<List<Condition>> removed = new LinkedList<>();
         List<Condition> cond = orConditions.remove(attr);
@@ -73,6 +105,39 @@ public class SQLFilter {
     }
     
     /**
+     * Get all the conditions with a specific attribute
+     * 
+     * @param attr attribute used to search the conditions to get
+     * @return the list of gotten conditions
+     */
+    public List<Condition> getCondition(String attr) {
+        List<Condition> condition = conditions.get(attr);
+        if (condition == null) {
+            condition = new LinkedList<>();
+        }
+        
+        return condition;
+    }
+    
+    /**
+     * Get all the disjunctions conditions with a specific attribute
+     * 
+     * @param attr attribute used to search the conditions to get
+     * @return returns a list of list because it could be several or conditions of the same attribute
+     */
+    public List<List<Condition>> getOrCondition(String attr) {
+        List<List<Condition>> conditions = new LinkedList<>();
+        List<Condition> cond = orConditions.get(attr);
+        while (cond != null) {
+            conditions.add(cond);
+            cond = orConditions.get(cond);
+        }
+        return conditions;
+    }
+    
+    /**
+     * Gets the WHERE clause for SQL using the conditions added
+     * 
      * @return the string corresponding to "CONDITION" of WHERE clause of SQL
      */
     public String get() {
@@ -125,6 +190,11 @@ public class SQLFilter {
         return sqlCode;
     }
     
+    /**
+     * Checks if the filter is empty
+     * 
+     * @return return true iff the SQFilter is empty
+     */
     public boolean isEmpty() {
         return conditions.isEmpty() && orConditions.isEmpty();
     }

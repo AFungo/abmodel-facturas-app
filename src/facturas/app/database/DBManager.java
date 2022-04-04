@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facturas.app.database;
 
 import java.sql.Connection;
@@ -13,11 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *
- * @author Agustin
+ * Class used to manage the database setup
  */
 public class DBManager {
     
+    /**
+     * Enumerated type for represent the types of databases
+     */
     public static enum TypeDB {
         PRODUCTION, TESTING
     }
@@ -26,6 +23,11 @@ public class DBManager {
     private static String JDBC_URL;
     private static Connection connection = null;
     
+    /**
+     * Create a new connection to the database
+     * 
+     * @param type type of database
+     */
     public static void createConnection(TypeDB type) {
         if (type == TypeDB.TESTING) {
             JDBC_URL = "jdbc:derby:test-db;create=true";
@@ -41,17 +43,28 @@ public class DBManager {
         }
     }
     
+    /**
+     * Throws and exception if the connection was not established
+     */
     private static void checkConnection() {
         if (connection == null) {
             throw new IllegalStateException("the connection was not established");
         }
     }
     
+    /**
+     * Connection getter
+     * 
+     * @return the actual connection
+     */
     public static Connection getConnection() {
         checkConnection();
         return connection;
     }
     
+    /**
+     * Close the actual connection
+     */
     public static void closeConnection() {
         try {
             DriverManager.getConnection("jdbc:derby:;shutdown=true");

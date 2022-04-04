@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facturas.app.database;
 
 import static facturas.app.database.DAO.executeQuery;
@@ -13,31 +8,60 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author nacho
+ * Data Access Object used for the DollarPrice's table of the database
  */
 public class DollarPriceDAO extends DAO {
     
-    public static void addDollarPrice(DollarPrice price) {
+    /**
+     * Add a new dollar price to the database
+     * 
+     * @param price dollar price to be added
+     */
+    public static void add(DollarPrice price) {
         Pair<String, String> sqlValues = FormatUtils.dollarPriceToSQL(price);
         String query = "INSERT INTO DollarPrice (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
         executeQuery(query, true, true);
     }
+        
+    /**
+     * Dollar prices getter
+     * 
+     * @return a list with all dollar prices
+     */
+    public static List<DollarPrice> get() {
+        String query = "SELECT * FROM DollarPrice";
+        ResultSet result = executeQuery(query, false, true);
+        List<DollarPrice> price = buildDollarPrices(result);
+        return price;
+    }
     
-    public static DollarPrice getPrice(Date date) {
+    /**
+     * Dollar prices getter using the date as filter
+     *
+     * @param date date used as filter
+     * @return a dollar price of a specific date
+     */
+    public static DollarPrice get(Date date) {
         String query = "SELECT * FROM DollarPrice WHERE date = '" + date.toString() + "'";
         ResultSet result = executeQuery(query, false, true);
         DollarPrice price = buildDollarPrice(result);
         return price;
     }
     
-    public static boolean noPrices() {
+    /**
+     * Check if the database has prices stored
+     * 
+     * @return true iff the database has no prices stored 
+     */
+    public static boolean isEmpty() {
         String query = "SELECT COUNT(date) FROM DollarPrice";
         ResultSet result = executeQuery(query, false, true);
         boolean noPrices = true;
@@ -53,6 +77,12 @@ public class DollarPriceDAO extends DAO {
         return noPrices;
     }
     
+    /**
+    * Gets the price of the closest date to the given date
+    * 
+     * @param date date used in the search
+     * @return the price of the closest date to the given date
+    */
     public static DollarPrice getAproximatePrice(Date date) {
         String query = "SELECT * FROM DollarPrice WHERE date = (SELECT MAX(date) FROM DollarPrice WHERE "
                 + "date < '" + date.toString() + "')";
@@ -88,20 +118,27 @@ public class DollarPriceDAO extends DAO {
         return afterAbs <= beforeAbs ? priceAfter : priceBefore;
     }
     
-    private static DollarPrice buildDollarPrice(ResultSet result) {
-        DollarPrice price = null;
+    private static List<DollarPrice> buildDollarPrices(ResultSet result) {
+        List<DollarPrice> pricesList = new LinkedList<>();
         try {
-            if (!result.next()) {
-                return null;
+            while(result.next()) {
+                Map<String, String> priceAttributes = new HashMap<>();
+                priceAttributes.put("date", result.getString(1));
+                priceAttributes.put("buy", result.getString(2));
+                priceAttributes.put("sell", result.getString(3));
+                pricesList.add(new DollarPrice(priceAttributes));
             }
-            Map<String, String> priceAttributes = new HashMap<>();
-            priceAttributes.put("date", result.getString(1));
-            priceAttributes.put("buy", result.getString(2));
-            priceAttributes.put("sell", result.getString(3));
-            price = new DollarPrice(priceAttributes);
         } catch (SQLException ex) {
             Logger.getLogger(DollarPriceDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return price;
+        return pricesList;
+    }
+    
+    private static DollarPrice buildDollarPrice(ResultSet result) {
+        List<DollarPrice> pricesList = buildDollarPrices(result);
+        if (pricesList.isEmpty()) {
+            return null;
+        }
+        return pricesList.get(0);
     }
 }
