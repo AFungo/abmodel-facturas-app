@@ -253,7 +253,8 @@ public class View extends javax.swing.JFrame {
         inDollars.setText("Precio en dolares");
 
         resetDBButton.setText("Reset DB");
-        resetDBButton.setVisible(true);
+        resetDBButton.setVisible(false);
+        resetDBButton.setEnabled(false);
         resetDBButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 resetDBButtonActionPerformed(evt);
@@ -441,12 +442,10 @@ public class View extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(showTickets)
                         .addGap(18, 18, 18)
-                        .addComponent(showProviders)
-                        .addGap(2, 2, 2)))
+                        .addComponent(showProviders)))
+                .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(inDollars))
+                    .addComponent(inDollars)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(resetDBButton)))
