@@ -24,8 +24,10 @@ import facturas.app.utils.Pair;
 import facturas.app.utils.PricesList;
 import facturas.app.utils.Validate;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.sql.Date;
@@ -404,9 +406,9 @@ public class Controller {
     
     private <E> void writeToFile(File fileToWrite, Function<E,String> formater, String format, List<E> items, 
             String itemName) {
-        FileWriter writer;
+        Writer writer;
         try {
-            writer = new FileWriter(fileToWrite);
+            writer = new OutputStreamWriter(new FileOutputStream(fileToWrite), Charset.forName("UTF-8"));
             writer.write(format);    //first line gives format to be identified at loading
             for (E s : items) {
                 writer.append("\n" + formater.apply(s));
