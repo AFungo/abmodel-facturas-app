@@ -323,7 +323,6 @@ public class Controller {
         }
         //create backup folder (could be several backups in the folder)
         File backupFolder = new File(folder, filename);
-        System.out.println("file at: " + backupFolder.getAbsolutePath() + "\nand: " + backupFolder.getPath());
         backupFolder.mkdir();
         
         //tickets backup
