@@ -23,11 +23,12 @@ public class Provider {
 
     public Provider(Map<String, String> values){
         docNo = values.get("docNo");
-        name = values.get("name");
+        name = values.get("name").replace("\'", " ");   //this replace is to avoid errors during db insertion
         docType = values.get("docType");
         direction = values.get("direction");    //may be null
         sector = values.get("provSector");      //may be null
         alias = values.get("alias");      //may be null
+        
     }
     
     public void modifyDocNo(String newDoc) {
