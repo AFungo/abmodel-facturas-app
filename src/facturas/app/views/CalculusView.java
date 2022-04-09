@@ -358,9 +358,9 @@ public class CalculusView extends javax.swing.JFrame {
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
+        SQLFilter ticketFilter = filtersView.getFilters();
+        SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
         try {
-            SQLFilter ticketFilter = filtersView.getFilters();
-            SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
             pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
             optionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
