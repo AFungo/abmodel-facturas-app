@@ -119,7 +119,7 @@ public class Controller {
     public String validateParam(java.util.Date date, Map<String, String> values, boolean ticket, 
         JComboBox<String> sectorsComboBox, List<Provider> selectedProvider) {
 
-        String message = Validate.withholdingInput(date, sectorsComboBox, values, selectedProvider);
+        String message = Validate.withholdingInput(date, sectorsComboBox, values, selectedProvider, ticket);
         if (ticket) {
             message += Validate.ticketInput(date, values);
         }

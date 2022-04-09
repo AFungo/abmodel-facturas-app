@@ -90,10 +90,11 @@ public class Validate {
      * @param sectorsComboBox sector of the withholding
      * @param values values of the withholding
      * @param selectedProvider provider of the withholding
+     * @param forTicket tells if the validation is for a ticket or a withholding only
      * @return a string with the invalidatios if all values of the withholdings are valid string can be empty
      */    
     public static String withholdingInput(java.util.Date date, JComboBox<String> sectorsComboBox, 
-        Map<String, String> values, List<Provider> selectedProvider) {
+        Map<String, String> values, List<Provider> selectedProvider, boolean forTicket) {
         
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
         String invalidations = "";
@@ -113,7 +114,7 @@ public class Validate {
             invalidations += "<br/>El rubro del comprobante no existe";
         }
         
-        boolean[] numerics = validWithholdingValues(values);
+        boolean[] numerics = validWithholdingValues(values, forTicket);
         invalidations += addInvalidWithholdingMessages(numerics);
         
         if (invalidations.isEmpty()) {
@@ -161,7 +162,7 @@ public class Validate {
     /*
     * check if the values of withholding are valid
     */
-    private static boolean[] validWithholdingValues(Map<String, String> values) {
+    private static boolean[] validWithholdingValues(Map<String, String> values, boolean forTicket) {
         boolean[] validations = new boolean[4];
         
         int i = 0;
@@ -169,10 +170,11 @@ public class Validate {
         validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), Float.class, false);
         validations[i++] = values.get("profits").isEmpty() ? true : tryParse(values.get("profits"), Float.class, false);
         
-        if (values.get("iva").isEmpty() && values.get("profits").isEmpty()) {   //cannot be both empty
-            validations[i++] = false;
-        }else { //also cannot be both 0 
-            validations[i++] = tryParse(values.get("iva"), Float.class, true) || tryParse(values.get("profits"), Float.class, true);
+        String iva = values.get("iva"), profits = values.get("profits");
+        if (!forTicket) {   //if we are validating for a withholding only, we need at least one of the values present
+            validations[i++] = tryParse(iva, Float.class, true) || tryParse(profits, Float.class, true);
+        } else {    //if we are validating withholding for a ticket we don't care about iva and profits except they are correctly parsed
+            validations[i++] = true;
         }
         return validations;
     }
