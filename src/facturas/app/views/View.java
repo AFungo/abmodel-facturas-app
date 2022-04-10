@@ -503,8 +503,11 @@ public class View extends javax.swing.JFrame {
     //show tickets
     private void showTicketsActionPerformed(java.awt.event.ActionEvent evt) {                                             
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        loadTicketsInTable();
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        try {
+            loadTicketsInTable();
+        } finally {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
