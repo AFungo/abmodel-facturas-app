@@ -166,11 +166,12 @@ public class Validate {
         boolean[] validations = new boolean[4];
         
         int i = 0;
-        validations[i++] = tryParse(values.get("number"), Integer.class, false);
-        validations[i++] = values.get("iva").isEmpty() ? true : tryParse(values.get("iva"), Float.class, false);
-        validations[i++] = values.get("profits").isEmpty() ? true : tryParse(values.get("profits"), Float.class, false);
-        
         String iva = values.get("iva"), profits = values.get("profits");
+        
+        validations[i++] = tryParse(values.get("number"), Integer.class, false);
+        validations[i++] = iva.isEmpty() ? true : tryParse(iva, Float.class, false);
+        validations[i++] = profits.isEmpty() ? true : tryParse(profits, Float.class, false);
+        
         if (!forTicket) {   //if we are validating for a withholding only, we need at least one of the values present
             validations[i++] = tryParse(iva, Float.class, true) || tryParse(profits, Float.class, true);
         } else {    //if we are validating withholding for a ticket we don't care about iva and profits except they are correctly parsed
@@ -223,26 +224,27 @@ public class Validate {
     * check if a value can be pase to a class
     * @param value value want to parse
     * @param expectedClass class who can try to parse the value
-    * @param notZero
-    * @return if the value can be parse or not
+    * @param notZero indicates that the value must not be zero, in such case false is returned
+    * @return true if the value can be parsed and its not negative
     */
     public static boolean tryParse(String value, Class expectedClass, boolean notZero) {
         try { 
             if (expectedClass == Float.class) {
                 Float i = Float.parseFloat(value);
                 if (notZero) {
-                    return i != 0;
+                    return i > 0;
                 }
+                return i >= 0;
             } else if (expectedClass == Integer.class){
                 BigInteger i = new BigInteger(value);
                 if (notZero) {
-                    return i.signum() != 0;
+                    return i.signum() > 0;
                 }
+                return i.signum() >= 0;
             } else {
                 System.out.println("class wrongly passed, " + expectedClass + " is not valid");
                 return false;
             }
-            return true;
         } catch (Exception e) {
             return false;
         }
