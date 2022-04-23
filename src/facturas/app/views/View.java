@@ -465,7 +465,7 @@ public class View extends javax.swing.JFrame {
         PricesList pricesList;
         try {
             SQLFilter ticketFilter = filtersView.getFilters();
-            SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
+            SQLFilter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
             pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
