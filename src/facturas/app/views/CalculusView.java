@@ -359,7 +359,7 @@ public class CalculusView extends javax.swing.JFrame {
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
         SQLFilter ticketFilter = filtersView.getFilters();
-        SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(ticketFilter);
+        SQLFilter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
         try {
             pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
