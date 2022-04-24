@@ -191,6 +191,23 @@ public class SQLFilter {
     }
     
     /**
+     * Returns a copy of this filter
+     * 
+     * @return an SQLFilter object with the same data as this
+     */
+    public SQLFilter clone() {
+        SQLFilter clone = new SQLFilter();
+        //creating a hashmap for conditions because clone method can just be invoked in a HashMap
+        HashMap<String,List<Condition>> conditionsClone = (HashMap<String,List<Condition>>) this.conditions;
+        clone.conditions = (Map<String, List<Condition>>) conditionsClone.clone();
+        
+        HashMap<String,List<Condition>> orConditionsClone = (HashMap<String,List<Condition>>) this.orConditions;
+        clone.orConditions = (Map<String, List<Condition>>) orConditionsClone.clone();
+        
+        return clone;
+    }
+    
+    /**
      * Checks if the filter is empty
      * 
      * @return return true iff the SQFilter is empty

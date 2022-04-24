@@ -47,6 +47,7 @@ public class FiltersView extends javax.swing.JFrame {
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, SectorDAO.get());
         sectorsAutoSuggestor.autoSuggest();
+        currentFilters = new SQLFilter();
     }
     
     public void updateSuggestions() {
@@ -339,7 +340,9 @@ public class FiltersView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
-        SQLFilter ticketFilter = getFilters();
+        currentFilters = readFilters();
+        
+        SQLFilter ticketFilter = currentFilters.clone();
         SQLFilter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
         SQLFilter ivaAndProfitsFilter = FilterUtils.removeIvaAndProfits(withholdingFilter);
         
@@ -392,6 +395,10 @@ public class FiltersView extends javax.swing.JFrame {
     }//GEN-LAST:event_cleanFiltersActionPerformed
 
     public SQLFilter getFilters() {
+        return currentFilters.clone();
+    }
+    
+    public SQLFilter readFilters() {
         SQLFilter selectedFilters = new SQLFilter();
         
         if (Validate.tryParse(idTextField.getText(), Integer.class, false)) {
@@ -480,6 +487,7 @@ public class FiltersView extends javax.swing.JFrame {
             model.removeRow(i);
     }
     
+    private SQLFilter currentFilters;
     private Controller controller;
     private JTable ticketsTable;
     private AutoSuggestor providersAutoSuggestor;
