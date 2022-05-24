@@ -29,7 +29,9 @@ public class Withholding {
     public Withholding(Map<String, String> data) {
         date = FormatUtils.dateGen(data.get("date"));
         number = data.get("number");
-        provider = ProviderDAO.get(data.get("docNo"));
+        //data can contain name (csv with new tickets) or not (loading backup, provider data is in DB)
+        if (data.containsKey("name") && data.containsKey("docType")) provider = new Provider(data); 
+        else provider = ProviderDAO.get(data.get("docNo"));
         sector = data.get("sector");
         String iva = data.get("iva");
         if (iva != null && !iva.isEmpty()) this.iva = Float.parseFloat(iva);
