@@ -5,6 +5,7 @@
  */
 package facturas.app.models;
 
+import facturas.app.database.ProviderDAO;
 import facturas.app.utils.FormatUtils;
 import java.util.Map;
 import java.util.HashMap;
@@ -28,7 +29,9 @@ public class Withholding {
     public Withholding(Map<String, String> data) {
         date = FormatUtils.dateGen(data.get("date"));
         number = data.get("number");
-        provider = new Provider(data);
+        //data can contain name (csv with new tickets) or not (loading backup, provider data is in DB)
+        if (data.containsKey("name") && data.containsKey("docType")) provider = new Provider(data); 
+        else provider = ProviderDAO.get(data.get("docNo"));
         sector = data.get("sector");
         String iva = data.get("iva");
         if (iva != null && !iva.isEmpty()) this.iva = Float.parseFloat(iva);
