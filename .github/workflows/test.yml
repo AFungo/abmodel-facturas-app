@@ -1,6 +1,14 @@
 name: Test
 
-on: [push, pull_request]
+on: 
+  push:
+    paths:       
+      - '**/main/*'
+      - '**/test/*'
+  pull_request:    
+    paths:       
+      - '**/main/*'
+      - '**/test/*'
 
 permissions:
   contents: read
