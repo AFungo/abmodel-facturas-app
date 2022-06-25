@@ -118,7 +118,7 @@ public class FiltersView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("FILTROS");
-        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
+        //setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
         setLocation(new java.awt.Point(0, 350));
 
         minDateLabel.setText("Fecha Minino");

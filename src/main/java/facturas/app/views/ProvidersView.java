@@ -33,7 +33,7 @@ import org.apache.commons.io.FilenameUtils;
  *
  * @author Agustin
  */
-public class ProvidersView extends javax.swing.JFrame {
+public class ProvidersView extends JFrame {
 
     /**
      * Creates new form ProvidersView
@@ -157,10 +157,10 @@ public class ProvidersView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
-        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
+        //setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
         setLocation(new java.awt.Point(700, 350));
 
-        providersTable.setModel(new javax.swing.table.DefaultTableModel(
+        providersTable.setModel(new DefaultTableModel(
             new Object [][] {
 
             },
@@ -184,10 +184,10 @@ public class ProvidersView extends javax.swing.JFrame {
             }
         });
         providersTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
+            public void mousePressed(MouseEvent evt) {
                 providersTableMousePressed(evt);
             }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(MouseEvent evt) {
                 providersTableMouseReleased(evt);
             }
         });
@@ -288,7 +288,7 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_showAllProvidersActionPerformed
 
-    private void providersTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_providersTableMouseReleased
+    private void providersTableMouseReleased(MouseEvent evt) {//GEN-FIRST:event_providersTableMouseReleased
         if (evt.getButton() == MouseEvent.BUTTON3) {//right click
             int rowPoint = providersTable.rowAtPoint(evt.getPoint());
             providersTable.clearSelection();
@@ -304,7 +304,7 @@ public class ProvidersView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_providersTableMouseReleased
 
-    private void providersTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_providersTableMousePressed
+    private void providersTableMousePressed(MouseEvent evt) {//GEN-FIRST:event_providersTableMousePressed
         //just to make it work on mac
         providersTableMouseReleased(evt);
     }//GEN-LAST:event_providersTableMousePressed
@@ -375,7 +375,7 @@ public class ProvidersView extends javax.swing.JFrame {
 
     private void modifyDocumentTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyDocumentTypeActionPerformed
         javax.swing.JComboBox<String> documentTypesComboBox = new javax.swing.JComboBox<>(
-                new javax.swing.DefaultComboBoxModel<>(FixedData.getDocumentTypes()));
+                new DefaultComboBoxModel<>(FixedData.getDocumentTypes()));
         int selection = JOptionPane.showConfirmDialog(this, documentTypesComboBox, "Seleccione el tipo de documento: ", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             String type = (String)documentTypesComboBox.getSelectedItem();

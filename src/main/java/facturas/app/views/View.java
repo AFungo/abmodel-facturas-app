@@ -33,16 +33,18 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
+import java.util.Objects;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import org.apache.commons.io.FilenameUtils;
+
 /**
  *
  * @author Agustin
  */
-public class View extends javax.swing.JFrame {
+public class View extends JFrame {
 
     /**
      * Creates new form MainWindow
@@ -78,8 +80,8 @@ public class View extends javax.swing.JFrame {
         deleteSectorMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
-        ticketsTableScroll = new javax.swing.JScrollPane();
-        ticketsTable = new javax.swing.JTable();
+        ticketsTableScroll = new JScrollPane();
+        ticketsTable = new JTable();
         total = new javax.swing.JTextField();
         ivaTaxTextField = new javax.swing.JTextField();
         calculateButton = new javax.swing.JButton();
@@ -153,16 +155,15 @@ public class View extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ADMINISTRADOR CONTABLE ABMODEL");
-        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage()
-        );
+        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("images/icono-facturas-app-opcion-dos.png"))).getImage());
         setSize(new java.awt.Dimension(0, 0));
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
+            public void windowClosing(WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
 
-        ticketsTable.setModel(new javax.swing.table.DefaultTableModel(
+        ticketsTable.setModel(new DefaultTableModel(
             new Object [][] {
 
             },
@@ -185,13 +186,13 @@ public class View extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        ticketsTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        ticketsTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         ticketsTable.getTableHeader().setReorderingAllowed(false);
         ticketsTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
+            public void mousePressed(MouseEvent evt) {
                 ticketsTableMousePressed(evt);
             }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
+            public void mouseReleased(MouseEvent evt) {
                 ticketsTableMouseReleased(evt);
             }
         });
@@ -590,7 +591,7 @@ public class View extends javax.swing.JFrame {
         sectorsView.updateSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
 
-    private void ticketsTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
+    private void ticketsTableMouseReleased(MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
         if (evt.getButton() == MouseEvent.BUTTON3) {//right click
             int rowPoint = ticketsTable.rowAtPoint(evt.getPoint());
             ticketsTable.clearSelection();
@@ -619,7 +620,7 @@ public class View extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+    private void formWindowClosing(WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         columnSelectorView.dispatchEvent(new WindowEvent(columnSelectorView, WindowEvent.WINDOW_CLOSING));
     }//GEN-LAST:event_formWindowClosing
 
@@ -643,7 +644,7 @@ public class View extends javax.swing.JFrame {
         calculusView.setVisible(true);
     }//GEN-LAST:event_viewMoreCalculusButtonActionPerformed
 
-    private void ticketsTableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ticketsTableMousePressed
+    private void ticketsTableMousePressed(MouseEvent evt) {//GEN-FIRST:event_ticketsTableMousePressed
         //just to make it work on mac
         ticketsTableMouseReleased(evt);
     }//GEN-LAST:event_ticketsTableMousePressed
@@ -882,8 +883,8 @@ public class View extends javax.swing.JFrame {
     private javax.swing.JMenuItem sectorsViewItem;
     private javax.swing.JButton showProviders;
     private javax.swing.JButton showTickets;
-    private javax.swing.JTable ticketsTable;
-    private javax.swing.JScrollPane ticketsTableScroll;
+    private JTable ticketsTable;
+    private JScrollPane ticketsTableScroll;
     private javax.swing.JMenu tools;
     private javax.swing.JTextField total;
     private javax.swing.JTextField totalLabel;

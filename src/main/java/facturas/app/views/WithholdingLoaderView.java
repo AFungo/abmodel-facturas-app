@@ -15,10 +15,7 @@ import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FilterUtils;
 import facturas.app.utils.FormatUtils;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -74,8 +71,8 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        numberTextField = new javax.swing.JTextField();
-        profitsTextField = new javax.swing.JTextField();
+        numberTextField = new JTextField();
+        profitsTextField = new JTextField();
         loadWithholding = new javax.swing.JButton();
         dateChooser = new com.toedter.calendar.JDateChooser();
         providersComboBox = new javax.swing.JComboBox<>();
@@ -86,26 +83,26 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         addProvider = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        showLastProviderTextField = new javax.swing.JTextField();
-        showLastDateTextField = new javax.swing.JTextField();
+        showLastProviderTextField = new JTextField();
+        showLastDateTextField = new JTextField();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        showLastTicketNumberTextField = new javax.swing.JTextField();
+        showLastTicketNumberTextField = new JTextField();
         jLabel18 = new javax.swing.JLabel();
-        showLastIvaTextField = new javax.swing.JTextField();
+        showLastIvaTextField = new JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        showLastIDTextField = new javax.swing.JTextField();
+        showLastIDTextField = new JTextField();
         docNoComboBox = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
-        ivaTextField = new javax.swing.JTextField();
+        ivaTextField = new JTextField();
         jLabel20 = new javax.swing.JLabel();
-        showLastProfitsTextField = new javax.swing.JTextField();
+        showLastProfitsTextField = new JTextField();
         jLabel21 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CARGAR COMPROBANTE");
-        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
+        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("images/icono-facturas-app-opcion-dos.png"))).getImage());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Fecha");
@@ -469,7 +466,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dateChooser;
     private javax.swing.JCheckBox deliveredCheckBox;
     private javax.swing.JComboBox<String> docNoComboBox;
-    private javax.swing.JTextField ivaTextField;
+    private JTextField ivaTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel16;
@@ -486,15 +483,15 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton loadWithholding;
-    private javax.swing.JTextField numberTextField;
-    private javax.swing.JTextField profitsTextField;
+    private JTextField numberTextField;
+    private JTextField profitsTextField;
     private javax.swing.JComboBox<String> providersComboBox;
     private javax.swing.JComboBox<String> sectorsComboBox;
-    private javax.swing.JTextField showLastDateTextField;
-    private javax.swing.JTextField showLastIDTextField;
-    private javax.swing.JTextField showLastIvaTextField;
-    private javax.swing.JTextField showLastProfitsTextField;
-    private javax.swing.JTextField showLastProviderTextField;
-    private javax.swing.JTextField showLastTicketNumberTextField;
+    private JTextField showLastDateTextField;
+    private JTextField showLastIDTextField;
+    private JTextField showLastIvaTextField;
+    private JTextField showLastProfitsTextField;
+    private JTextField showLastProviderTextField;
+    private JTextField showLastTicketNumberTextField;
     // End of variables declaration//GEN-END:variables
 }

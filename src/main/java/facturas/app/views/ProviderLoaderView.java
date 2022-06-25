@@ -10,10 +10,8 @@ import facturas.app.database.SectorDAO;
 import facturas.app.models.Provider;
 import facturas.app.utils.AutoSuggestor;
 import facturas.app.utils.FixedData;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -59,7 +57,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        providerAddressTextField = new javax.swing.JTextField();
+        providerAddressTextField = new JTextField();
         providerDocTypeComboBox = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -67,15 +65,15 @@ public class ProviderLoaderView extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        providerNameTextField = new javax.swing.JTextField();
-        providerDocTextField = new javax.swing.JTextField();
-        providerAliasTextField = new javax.swing.JTextField();
+        providerNameTextField = new JTextField();
+        providerDocTextField = new JTextField();
+        providerAliasTextField = new JTextField();
         sectorsComboBox = new javax.swing.JComboBox<>();
         addProvider = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("CARGAR PROVEEDOR");
-        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
+        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("images/icono-facturas-app-opcion-dos.png"))).getImage());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("CARGAR PROVEEDOR");
@@ -223,11 +221,11 @@ public class ProviderLoaderView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JTextField providerAddressTextField;
-    private javax.swing.JTextField providerAliasTextField;
-    private javax.swing.JTextField providerDocTextField;
+    private JTextField providerAddressTextField;
+    private JTextField providerAliasTextField;
+    private JTextField providerDocTextField;
     private javax.swing.JComboBox<String> providerDocTypeComboBox;
-    private javax.swing.JTextField providerNameTextField;
+    private JTextField providerNameTextField;
     private javax.swing.JComboBox<String> sectorsComboBox;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,9 +13,9 @@ import facturas.app.views.WithholdingLoaderView;
 import static org.assertj.swing.core.matcher.JTextComponentMatcher.withName;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -25,7 +25,7 @@ public class WithholdingLoaderTests {
     
     private FrameFixture demo;
     
-    @Before
+    @BeforeEach
     public void setUp() {
         // Create the connection with the db using the type TESTING
         DBManager.createConnection(TypeDB.TESTING);
@@ -49,7 +49,7 @@ public class WithholdingLoaderTests {
         demo.show();
     }
     
-    @After
+    @AfterEach
     public void tearDown() {
         // reset the db and close the connection
         DBManager.deleteDB();

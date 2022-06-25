@@ -80,7 +80,7 @@ public class CalculusView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("OPERACIONES");
-        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/images/icono-facturas-app-opcion-dos.png")).getImage());
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Retenciones");
