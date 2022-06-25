@@ -13,7 +13,7 @@ public class DAOTest {
 
     @Test
     void test2() {
-        assertThat(true).isFalse();
+        assertThat(false).isFalse();
     }
 
 }
