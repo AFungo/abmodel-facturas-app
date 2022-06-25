@@ -11,4 +11,9 @@ public class DAOTest {
         assertThat(true).isTrue();
     }
 
+    @Test
+    void test2() {
+        assertThat(false).isFalse();
+    }
+
 }
