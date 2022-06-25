@@ -1,25 +1,11 @@
-package facturas.app.database;
+package facturas.app.databaserefactor;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import facturas.app.database.DBManager;
 
-/**
- * Abstract class that implements a unique method used in all
- * concrete DAO classes
- */
-public abstract class DAO {
+import java.sql.*;
 
-    /**
-     * Execute the requested query
-     *
-     * @param query the query to be executed
-     * @param update Boolean argument that check if the query is an update
-     * @param returnKeys Boolean argument that check if return keys will be used
-     * @return the requested values from the database
-     */
+public class DatabaseUtils {
+
     protected static ResultSet executeQuery(String query, boolean update, boolean returnKeys) {
         try {
             Connection connection = DBManager.getConnection();
@@ -46,5 +32,6 @@ public abstract class DAO {
             }
         }
     }
+
 
 }

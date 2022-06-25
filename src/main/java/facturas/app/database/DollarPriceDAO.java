@@ -1,6 +1,5 @@
 package facturas.app.database;
 
-import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.DollarPrice;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;

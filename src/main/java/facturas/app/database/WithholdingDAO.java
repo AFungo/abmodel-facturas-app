@@ -1,7 +1,6 @@
 package facturas.app.database;
 
 import facturas.app.Controller;
-import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.Provider;
 import facturas.app.models.Withholding;
 import facturas.app.utils.Pair;
@@ -18,7 +17,7 @@ import java.util.logging.Logger;
 /**
  * Data Access Object used for table Withholding's table of the database
  */
-public class WithholdingDAO {
+public class WithholdingDAO extends DAO {
 
     /**
      * Add a new withholding to the database
