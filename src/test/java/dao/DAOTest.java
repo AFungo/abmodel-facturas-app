@@ -16,4 +16,9 @@ public class DAOTest {
         assertThat(false).isFalse();
     }
 
+    @Test
+    void test3() {
+        assertThat(true).isNotEqualTo(false);g
+    }
+
 }
