@@ -508,6 +508,24 @@ public class FormatUtils {
         return Date.valueOf(formatedDate);
     }
     
+    /** 
+     * Transforms a map into a string with a SQL form as follows:
+     * attr1 = value1, attr2 = value2 ...
+     * 
+     * @param params map from attribute names to values
+     * @return a string representing the map in a SQL form
+     */
+    public static String mapToSQLValues(Map<String, Object> params) {
+        String values = "";
+        for (Map.Entry<String,Object> entry : params.entrySet()) {
+            values += entry.getKey() + " = " + entry.getValue() + ", ";
+        }
+
+        values = values.substring(0, values.length() - 3);   //removing the last ", "
+        
+        return values;
+    }
+
     /**
      * Transforms a map of string to object into a map of string to string
      * 
@@ -515,7 +533,7 @@ public class FormatUtils {
      * @return a map of string to string
      */
     public static Map<String, String> objectToStringMap(Map<String, Object> values){
-        Map<String, String> v = new HashMap();
+        Map<String, String> v = new HashMap<>();
         Provider provider = (Provider) values.get("provider");
         v.putAll(provider.getValues());
         v.put("id", values.get("id").toString());
