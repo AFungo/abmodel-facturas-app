@@ -11,7 +11,7 @@ public class TicketDAO implements DAO<Ticket> {
     private static TicketDAO instance;
 
     private final Set<Ticket> cache;
-    private final boolean cacheWasLoaded;
+    private final boolean cacheLoaded;
 
     public static TicketDAO getInstance() {
         if (instance == null) {
@@ -22,7 +22,7 @@ public class TicketDAO implements DAO<Ticket> {
 
     private TicketDAO() {
         cache = new HashSet<>();
-        cacheWasLoaded = false;
+        cacheLoaded = false;
     }
 
     /**
@@ -33,7 +33,7 @@ public class TicketDAO implements DAO<Ticket> {
      */
     @Override
     public Set<Ticket> getAll() {
-        if (!cacheWasLoaded) {
+        if (!cacheLoaded) {
             loadCache();
         }
         return cache;

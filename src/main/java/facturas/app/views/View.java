@@ -786,7 +786,7 @@ public class View extends JFrame {
         withholdingLoaderView.updateProviders(names);
     }
     
-    public void showError(Throwable e, String message) {
+    public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
