@@ -62,11 +62,11 @@ public class WithholdingDAO implements DAO<Withholding> {
         String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
-        try {
-            DatabaseUtils.executeQuery(query, true, false);
-        } catch(Exception e) {
-            return false;//if no success to load in database we return false and don't load in the cache
+        ResultSet operationResult = DatabaseUtils.executeQuery(query, true, false);
+        if (operationResult == null) {
+            return false;
         }
+
         cache.add(withholding);
         //add item to cache if executeQuery was successful
 
@@ -86,11 +86,12 @@ public class WithholdingDAO implements DAO<Withholding> {
     public boolean update(Withholding withholding, Map<String, Object> params) {
         String query = "UPDATE Withholding SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
         + withholding.getValues().get("id");
-        try {
-            DatabaseUtils.executeQuery(query, true, false);
-        } catch(Exception e) {
+        
+        ResultSet operationResult = DatabaseUtils.executeQuery(query, true, false);
+        if (operationResult == null) {
             return false;
         }
+
         //update cache if executeQuery was successful
         cache.remove(withholding);//los set no tienen para updatear un objeto
         withholding.setValues(params);
@@ -108,17 +109,15 @@ public class WithholdingDAO implements DAO<Withholding> {
      */
     @Override
     public boolean delete(Withholding withholding) {
-        String query = "DELETE FROM Withholding WHERE id = " + withholding.getValues().get("id");
+        String query = "DELETE FROM Withholding WHERE id = " + withholding.getValues().get("id");    
         
-        try{
-            DatabaseUtils.executeQuery(query, true, true);
-        }catch(Exception e){
+        ResultSet operationResult = DatabaseUtils.executeQuery(query, true, true);
+        if (operationResult == null) {
             return false;
         }
         
         cache.remove(withholding);
         return true;
-    
     }
 
     /**
@@ -154,20 +153,3 @@ public class WithholdingDAO implements DAO<Withholding> {
     
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
