@@ -1,63 +1,58 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package facturas.app.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
- * @author Lenovo
+ * @author Agustin Nolasco
  */
 public class Provider {
-    private String docNo;
-    private String name;
-    private String docType;
-    private String direction;
-    private String sector;
-    private String alias;
 
-    public Provider(Map<String, String> values){
-        docNo = values.get("docNo");
-        name = values.get("name").replace("\'", " ");   //this replace is to avoid errors during db insertion
-        docType = values.get("docType");
-        direction = values.get("direction");    //may be null
-        sector = values.get("provSector");      //may be null
-        alias = values.get("alias");      //may be null
-        
+    Map<String, Object> values;
+
+    public Provider(Map<String, Object> values) {
+        this.values = new HashMap<>(values);
+        assert repOk();
     }
-    
-    public void modifyDocNo(String newDoc) {
-        docNo = newDoc;
+
+    public void setValues(Map<String, String> values) {
+        for (String s : values.keySet()) {
+            this.values.replace(s, values.get(s));
+        }
+        assert repOk();
     }
-    
-    public void addDirection(String direction) {
-        if (direction != null)
-            this.direction = direction;
+
+    public Map<String, Object> getValues() {
+        return new HashMap<>(values);
     }
-    
-    public void addSector(String sector) {
-        if (sector != null)
-            this.sector = sector;
+
+    private boolean repOk() {
+        Set<String> requiredKeys = Stream.of
+                ("docNo", "name", "docType", "direction", "provSector", "alias")
+                .collect(Collectors.toSet());
+        if (!values.keySet().containsAll(requiredKeys)) {
+            return false;
+        }
+        return values.get("docNo") != null && values.get("name") != null && values.get("docType") != null;
     }
-    
+
     @Override
-    public String toString(){
-        return "Nombre: " + name + ", Cuit: " + docNo + ", direccion: " + direction + ", sector: " + sector; 
-    }          
-    
-    public Map<String, String> getValues() {
-        Map<String, String> values = new HashMap<>();
-        values.put("docNo", docNo);
-        values.put("name", name);
-        values.put("docType", docType);
-        if (direction != null) values.put("direction", direction);
-        if (sector != null) values.put("sector", sector);
-        if (alias != null) values.put("alias", alias);
-        return values;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Provider provider = (Provider) o;
+
+        return values.equals(provider.values);
     }
+
+    @Override
+    public int hashCode() {
+        return values.hashCode();
+    }
+
 }

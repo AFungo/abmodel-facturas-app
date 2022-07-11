@@ -1,44 +1,47 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facturas.app.models;
 
-import facturas.app.utils.FormatUtils;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
- * @author nacho
+ * @author Agustin Nolasco
  */
 public class DollarPrice {
-    
-    private Date date;
-    private Float buy;
-    private Float sell;
-    
-    public DollarPrice(Map<String, String> data) {
-        this.date = FormatUtils.dateGen(data.get("date"));
-        this.buy = Float.parseFloat(data.get("buy"));
-        this.sell = Float.parseFloat(data.get("sell"));
+
+    private final Map<String, Object> values;
+
+    public DollarPrice(Map<String, Object> values) {
+        this.values = new HashMap<>(values);
+        assert repOk();
     }
-    
+
+    private boolean repOk() {
+        Set<String> requiredValues = Stream.of("date", "buy", "sell").collect(Collectors.toSet());
+        if (!values.keySet().containsAll(requiredValues) && values.keySet().size() != requiredValues.size()) {
+            return false;
+        }
+
+        for (String key : requiredValues) {
+            if (values.get(key) == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void setValues(Map<String, Object> values) {
+        for (String key : values.keySet()) {
+            this.values.replace(key, values.get(key));
+        }
+        assert repOk();
+    }
+
     public Map<String, Object> getValues() {
-        Map<String, Object> dict = new HashMap<>();
-        dict.put("date", date);
-        dict.put("buy", buy);
-        dict.put("sell", sell);
-        return dict;
+        return new HashMap<>(values);
     }
-    
-    public Date getDate() {
-        return date;
-    }
-    
-    public String toString() {
-        return "Fecha: " + date + "\n" + "Compra: " + buy + "\n" + "Venta: " + sell + "\n"; 
-    }
+
 }
