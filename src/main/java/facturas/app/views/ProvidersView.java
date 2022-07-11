@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -58,7 +57,7 @@ public class ProvidersView extends JFrame {
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
-            names.add(p.getValues().get("name"));
+            names.add((String) p.getValues().get("name"));
         }
         return names;
     }

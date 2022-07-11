@@ -552,7 +552,7 @@ public class View extends JFrame {
         providersView.updateSuggestions();
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
-            names.add(p.getValues().get("name"));
+            names.add((String) p.getValues().get("name"));
         }
         updateProviders(names);
         loadTicketsInTable();
@@ -804,7 +804,7 @@ public class View extends JFrame {
                 }
                 model.addRow(FormatUtils.ticketToForm(t));
             } else {
-                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingsToForm(t);
+                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingToForm(t);
                 if (withholdings.getFst() != null) {
                     model.addRow(withholdings.getFst());
                 }

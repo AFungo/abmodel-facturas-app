@@ -98,12 +98,12 @@ public class TicketDAO extends DAO {
         List<Ticket> ticketsList = new LinkedList<>();
         try {
             while (result.next()) {
-                Map<String, String> ticketAttributes = new HashMap<>();
+                Map<String, Object> ticketAttributes = new HashMap<>();
                 ticketAttributes.put("id", result.getString(1));
                 ticketAttributes.put("date", result.getString(2));
                 ticketAttributes.put("number", result.getString(3));
                 //provider
-                Map<String, String> prov = ProviderDAO.get(result.getString(4)).getValues();
+                Map<String, Object> prov = ProviderDAO.get(result.getString(4)).getValues();
                 ticketAttributes.put("docType", prov.get("docType"));
                 ticketAttributes.put("docNo", prov.get("docNo"));
                 ticketAttributes.put("name", prov.get("name"));

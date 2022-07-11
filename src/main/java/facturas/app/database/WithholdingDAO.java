@@ -145,14 +145,14 @@ public class WithholdingDAO extends DAO {
     }
     
     private static List<Withholding> getWithholdingsList(ResultSet result) {
-        List<Withholding> whithholdingList = new LinkedList<>();
+        List<Withholding> withholdingList = new LinkedList<>();
         try {
             while(result.next()) {
-                Map<String, String> WithholdingAttributes = new HashMap<>();
+                Map<String, Object> WithholdingAttributes = new HashMap<>();
                 WithholdingAttributes.put("id", result.getString(1));
                 WithholdingAttributes.put("date", result.getString(2));
                 WithholdingAttributes.put("number", result.getString(3));
-                Map<String, String> prov = ProviderDAO.get(result.getString(4)).getValues();
+                Map<String, Object> prov = ProviderDAO.get(result.getString(4)).getValues();
                 WithholdingAttributes.put("docType", prov.get("docType"));
                 WithholdingAttributes.put("docNo", prov.get("docNo"));
                 WithholdingAttributes.put("name", prov.get("name"));
@@ -163,11 +163,11 @@ public class WithholdingDAO extends DAO {
                 WithholdingAttributes.put("profits", result.getString(6));
                 WithholdingAttributes.put("delivered", result.getString(7));
                 WithholdingAttributes.put("sector", result.getString(8));
-                whithholdingList.add(new Withholding(WithholdingAttributes));
+                withholdingList.add(new Withholding(WithholdingAttributes));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return whithholdingList;
+        return withholdingList;
     }
 }

@@ -42,7 +42,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for(Provider p : controller.getProviders()) {
-            names.add(p.getValues().get("name"));
+            names.add((String) p.getValues().get("name"));
         }
         return names;
     }
@@ -180,7 +180,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
 
     private void addProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderActionPerformed
         //provider attributes
-        Map<String, String> values = new HashMap();
+        Map<String, Object> values = new HashMap();
         values.put("docNo", providerDocTextField.getText());
         values.put("name", providerNameTextField.getText());
         values.put("direction, ", providerAddressTextField.getText()); // may be null
