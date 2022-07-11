@@ -542,7 +542,7 @@ public class View extends JFrame {
             backupLock.lock();      //to ensure the load process has finished
         } catch (Exception e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e.getMessage(), e);
         } finally {
             backupLock.finalUnlock();
         }
