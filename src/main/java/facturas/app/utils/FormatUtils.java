@@ -11,10 +11,7 @@ import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Class used to transform objects into a string with certain format
@@ -90,14 +87,15 @@ public class FormatUtils {
         /* Use this data for search or create a new provider */
         ProviderDAO dao = ProviderDAO.getInstance();
         String docNo = data[7];
-        if (dao.getAll().stream().noneMatch(p -> p.getValues().get("docNo").equals(docNo))) {
-            Map<String, Object> providerValues = new HashMap<>();
-            providerValues.put("docType", data[6]);
-            providerValues.put("docNo", docNo);
-            providerValues.put("name", data[8].replace("'", ""));
-            dict.put("provider", new Provider(providerValues));
+        Optional<Provider> provider = dao.getAll().stream().filter(p -> p.getValues().get("docNo").equals(docNo)).findFirst();
+        if (provider.isPresent()) {
+            dict.put("provider", provider.get());
         } else {
-            dict.put("provider", dao.getAll().stream().filter(p -> p.getValues().get("docNo").equals(docNo)).findFirst().get());
+            dict.put("provider", new HashMap<String, Object>() {{
+                            put("docType", data[6]);
+                            put("docNo", docNo);
+                            put("name", data[8].replace("'", ""));
+                        }});
         }
         dict.put("exchangeType", data[9]);
         dict.put("exchangeMoney", data[10]);
@@ -251,7 +249,7 @@ public class FormatUtils {
         dict.put("number", data[1]);
         dict.put("docNo", data[2]);
         String iva = data[3];
-        if (!iva.isEmpty()) dict.put("iva", iva);
+        if (!iva.isEmpty()) dict.put("iva", Float.parseFloat(iva));
         String profits = data[4];
         if (!profits.isEmpty()) dict.put("profits", Float.parseFloat(profits));
         String sector = data[5];
