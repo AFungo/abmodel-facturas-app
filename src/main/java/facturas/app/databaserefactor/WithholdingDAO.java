@@ -10,12 +10,7 @@ import java.sql.Date;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,17 +58,14 @@ public class WithholdingDAO implements DAO<Withholding> {
     @Override
     public boolean save(Withholding withholding) {
         Pair<String, String> sqlValues = FormatUtils.withholdingToSQL(withholding);
-        Provider provider = (Provider)withholding.getValues().get("provider");
-        
-        SQLFilter filter = new SQLFilter();
-        filter.add("docNo", "=", provider.getValues().get("docNo"), String.class);
-        
+
         String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-        try{
+
+        try {
             DatabaseUtils.executeQuery(query, true, false);
-        }catch(Exception e){
-            return false;//if no succes to load in database we return false and don't load in the cache
+        } catch(Exception e) {
+            return false;//if no success to load in database we return false and don't load in the cache
         }
         cache.add(withholding);
         //add item to cache if executeQuery was successful
@@ -94,14 +86,14 @@ public class WithholdingDAO implements DAO<Withholding> {
     public boolean update(Withholding withholding, Map<String, Object> params) {
         String query = "UPDATE Withholding SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
         + withholding.getValues().get("id");
-        try{
+        try {
             DatabaseUtils.executeQuery(query, true, false);
-        }catch(Exception e){
+        } catch(Exception e) {
             return false;
         }
         //update cache if executeQuery was successful
         cache.remove(withholding);//los set no tienen para updatear un objeto
-        whitholding.set(params);
+        withholding.setValues(params);
         cache.add(withholding);
         return true;
     }
@@ -133,27 +125,31 @@ public class WithholdingDAO implements DAO<Withholding> {
      * This method must load the cache with the data from the database
      *///para mi deberia retornar un booleano
     private void loadCache() {
-
         String query = "SELECT * FROM Withholding";
         ResultSet result = DatabaseUtils.executeQuery(query , false, true);
         try {
             while(result.next()) {
-                Map<String, Object> WithholdingAttributes = new HashMap<>();
-                WithholdingAttributes.put("id", Integer.parseInt(result.getString(1)));
-                WithholdingAttributes.put("date", Date.valueOf(result.getString(2)));
-                WithholdingAttributes.put("number", result.getString(3));
-                Provider prov = Provider.get(result.getString(4));//ver esto deberia ser el id del provider y necesito saber donde buscar
-                WithholdingAttributes.put("iva", Float.parseFloat(result.getString(5)));
-                WithholdingAttributes.put("profits", Float.parseFloat(result.getString(6)));
-                WithholdingAttributes.put("delivered", Boolean.valueOf(result.getString(7)));
-                WithholdingAttributes.put("sector", result.getString(8));
-                cache.add(new Withholding(WithholdingAttributes));
+                String docNo = result.getString(4);
+                Optional<Provider> provider = ProviderDAO.getInstance().getAll()
+                        .stream().filter(p -> p.getValues().get("docNo").equals(docNo)).findFirst();
+                cache.add(new Withholding(new HashMap<String, Object>() {{
+                    put("id", Integer.parseInt(result.getString(1)));
+                    put("date", Date.valueOf(result.getString(2)));
+                    put("number", result.getString(3));
+                    if (!provider.isPresent()) {
+                        throw new IllegalStateException("Cannot find provider");
+                    }
+                    put("provider", provider.get());
+                    put("iva", Float.parseFloat(result.getString(5)));
+                    put("profits", Float.parseFloat(result.getString(6)));
+                    put("delivered", Boolean.valueOf(result.getString(7)));
+                    put("sector", result.getString(8));
+                }}));
             }
         } catch (SQLException ex) {
             cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        }        
-    
+        }
     }
     
 
