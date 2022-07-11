@@ -36,7 +36,7 @@ public class Ticket extends Withholding {
     }
 
     private boolean repOk() {
-        if (!values.keySet().containsAll(requiredKeys()) || values.keySet().size() != requiredKeys().size()) {
+        if (!requiredKeys().containsAll(values.keySet())) {
             return false;
         }
         return values.get("exchangeType") != null && values.get("totalAmount") != null

@@ -34,7 +34,7 @@ public class Provider {
         Set<String> requiredKeys = Stream.of
                 ("docNo", "name", "docType", "direction", "provSector", "alias")
                 .collect(Collectors.toSet());
-        if (!values.keySet().containsAll(requiredKeys)) {
+        if (!requiredKeys.containsAll(values.keySet())) {
             return false;
         }
         return values.get("docNo") != null && values.get("name") != null && values.get("docType") != null;

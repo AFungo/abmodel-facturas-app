@@ -20,12 +20,12 @@ public class DollarPrice {
     }
 
     private boolean repOk() {
-        Set<String> requiredValues = Stream.of("date", "buy", "sell").collect(Collectors.toSet());
-        if (!values.keySet().containsAll(requiredValues) && values.keySet().size() != requiredValues.size()) {
+        Set<String> requiredKeys = Stream.of("date", "buy", "sell").collect(Collectors.toSet());
+        if (!requiredKeys.containsAll(values.keySet())) {
             return false;
         }
 
-        for (String key : requiredValues) {
+        for (String key : requiredKeys) {
             if (values.get(key) == null) {
                 return false;
             }

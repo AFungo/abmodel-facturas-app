@@ -36,10 +36,10 @@ public class Withholding {
     }
 
     private boolean repOk() {
-        if (!values.keySet().containsAll(requiredKeys()) || values.keySet().size() != requiredKeys().size()) {
+        if (!requiredKeys().containsAll(values.keySet())) {
             return false;
         }
-        return values.get("data") != null && values.get("number") != null
+        return values.get("date") != null && values.get("number") != null
                 && values.get("provider") != null && values.get("sector") != null;
     }
 
