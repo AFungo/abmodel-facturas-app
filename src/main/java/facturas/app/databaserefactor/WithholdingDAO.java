@@ -1,15 +1,23 @@
 package facturas.app.databaserefactor;
 
+import facturas.app.Controller;
 import facturas.app.database.SQLFilter;
 import facturas.app.models.Provider;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import java.sql.Date;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WithholdingDAO implements DAO<Withholding> {
 
@@ -62,8 +70,12 @@ public class WithholdingDAO implements DAO<Withholding> {
         
         String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-        DatabaseUtils.executeQuery(query, true, false);
-        
+        try{
+            DatabaseUtils.executeQuery(query, true, false);
+        }catch(Exception e){
+            return false;//if no succes to load in database we return false and don't load in the cache
+        }
+        cache.add(withholding);
         //add item to cache if executeQuery was successful
 
         return true;
@@ -82,10 +94,15 @@ public class WithholdingDAO implements DAO<Withholding> {
     public boolean update(Withholding withholding, Map<String, Object> params) {
         String query = "UPDATE Withholding SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
         + withholding.getValues().get("id");
-        ResultSet queryResult = DatabaseUtils.executeQuery(query, true, false);
-
+        try{
+            DatabaseUtils.executeQuery(query, true, false);
+        }catch(Exception e){
+            return false;
+        }
         //update cache if executeQuery was successful
-
+        cache.remove(withholding);//los set no tienen para updatear un objeto
+        whitholding.set(params);
+        cache.add(withholding);
         return true;
     }
 
@@ -99,14 +116,62 @@ public class WithholdingDAO implements DAO<Withholding> {
      */
     @Override
     public boolean delete(Withholding withholding) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "DELETE FROM Withholding WHERE id = " + withholding.getValues().get("id");
+        
+        try{
+            DatabaseUtils.executeQuery(query, true, true);
+        }catch(Exception e){
+            return false;
+        }
+        
+        cache.remove(withholding);
+        return true;
+    
     }
 
     /**
      * This method must load the cache with the data from the database
-     */
+     *///para mi deberia retornar un booleano
     private void loadCache() {
-        throw new UnsupportedOperationException("TODO: Implement");
+
+        String query = "SELECT * FROM Withholding";
+        ResultSet result = DatabaseUtils.executeQuery(query , false, true);
+        try {
+            while(result.next()) {
+                Map<String, Object> WithholdingAttributes = new HashMap<>();
+                WithholdingAttributes.put("id", Integer.parseInt(result.getString(1)));
+                WithholdingAttributes.put("date", Date.valueOf(result.getString(2)));
+                WithholdingAttributes.put("number", result.getString(3));
+                Provider prov = Provider.get(result.getString(4));//ver esto deberia ser el id del provider y necesito saber donde buscar
+                WithholdingAttributes.put("iva", Float.parseFloat(result.getString(5)));
+                WithholdingAttributes.put("profits", Float.parseFloat(result.getString(6)));
+                WithholdingAttributes.put("delivered", Boolean.valueOf(result.getString(7)));
+                WithholdingAttributes.put("sector", result.getString(8));
+                cache.add(new Withholding(WithholdingAttributes));
+            }
+        } catch (SQLException ex) {
+            cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    
     }
+    
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
