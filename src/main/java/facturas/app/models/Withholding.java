@@ -39,8 +39,7 @@ public class Withholding {
         if (!requiredKeys().containsAll(values.keySet())) {
             return false;
         }
-        return values.get("date") != null && values.get("number") != null
-                && values.get("provider") != null && values.get("sector") != null;
+        return values.get("date") != null && values.get("number") != null && values.get("provider") != null;
     }
 
 }
