@@ -13,7 +13,7 @@ import java.util.Set;
 
 /**
  *
- * 
+ * this class implements DAO interface for Sectors table
  */
 public class SectorDAO implements DAO<Sector>{
     
@@ -34,12 +34,6 @@ public class SectorDAO implements DAO<Sector>{
         cacheWasLoaded = false;
     }
 
-    /**
-     * This method return all the sectors stored in the cache,
-     * if the cache is not loaded then it must be loaded first.
-     *
-     * @return a set of sectors from the cache
-     */
     @Override
     public Set<Sector> getAll() {
         if (!cacheWasLoaded) {
@@ -48,41 +42,16 @@ public class SectorDAO implements DAO<Sector>{
         return cache;
     }
 
-    /**
-     * Given a sector, this is saved in the database, and if
-     * this could be saved then is added to the cache and
-     * return true, else return false.
-     *
-     * @param sector to be saved
-     * @return true iff the sector was saved
-     */
     @Override
     public boolean save(Sector sector) {
         throw new UnsupportedOperationException("TODO: Implement");
     }
 
-    /**
-     * Given a sector and a set of values, this is updated
-     * in the database, and if this could be updated, then is
-     * updated in the cache and return true, else return false
-     *
-     * @param sector to be updated
-     * @param params to be used in the update process
-     * @return true iff the sector was updated
-     */
     @Override
     public boolean update(Sector sector, Map<String, Object> params) {
         throw new UnsupportedOperationException("TODO: Implement");
     }
 
-    /**
-     * Given a sector, this is deleted from the database,
-     * and if this could be deleted, then is deleted in
-     * the cache too and return true, else return false
-     *
-     * @param sector to be deleted
-     * @return true iff the sector was deleted
-     */
     @Override
     public boolean delete(Sector sector) {
         throw new UnsupportedOperationException("TODO: Implement");
