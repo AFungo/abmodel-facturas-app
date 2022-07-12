@@ -47,6 +47,8 @@ public class ProviderDAO implements DAO<Provider>{
     }
 
     public boolean save(Provider provider) {
+        prepareCache();
+
         Pair<String, String> sqlValues = FormatUtils.providerToSQL(provider);
         String query = "INSERT INTO Provider (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
@@ -56,7 +58,6 @@ public class ProviderDAO implements DAO<Provider>{
             return false;
         }
         
-        prepareCache();
         cache.add(provider);
         //add item to cache if executeQuery was successful
         return true;
@@ -64,6 +65,8 @@ public class ProviderDAO implements DAO<Provider>{
 
     @Override
     public boolean update(Provider provider, Map<String, Object> params) {
+        prepareCache();
+      
         String query = "UPDATE Provider SET " + FormatUtils.mapToSQLValues(params)  
         + "' " + provider.getValues().get("docNo");
 
@@ -72,7 +75,6 @@ public class ProviderDAO implements DAO<Provider>{
             return false;
         }
         
-        prepareCache();
         //update cache if executeQuery was successful
         cache.remove(provider);
         provider.setValues(params); //remove and add for rehashing
@@ -82,6 +84,8 @@ public class ProviderDAO implements DAO<Provider>{
 
     @Override
     public boolean delete(Provider provider) {
+        prepareCache();
+        
         String query = "DELETE FROM Provider WHERE docNo = '" + provider.getValues().get("docNo") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
@@ -89,7 +93,6 @@ public class ProviderDAO implements DAO<Provider>{
             return false;
         }
         
-        prepareCache();
         cache.remove(provider);
         return true;
     }
@@ -112,7 +115,7 @@ public class ProviderDAO implements DAO<Provider>{
                 }}));
             }
         } catch (SQLException ex) {
-            cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
+            cache.clear();  //in case of failing the cache is emptied, everything is loaded or nothing is loaded
             Handler.logUnexpectedError(ex);
         }
     }    

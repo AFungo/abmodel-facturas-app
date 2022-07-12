@@ -43,8 +43,9 @@ public class WithholdingDAO implements DAO<Withholding> {
 
     @Override
     public boolean save(Withholding withholding) {
-        Pair<String, String> sqlValues = FormatUtils.withholdingToSQL(withholding);
+        prepareCache();
 
+        Pair<String, String> sqlValues = FormatUtils.withholdingToSQL(withholding);
         String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
@@ -53,7 +54,6 @@ public class WithholdingDAO implements DAO<Withholding> {
             return false;
         }
 
-        prepareCache();
         cache.add(withholding);
         //add item to cache if executeQuery was successful
         return true;
@@ -61,6 +61,8 @@ public class WithholdingDAO implements DAO<Withholding> {
 
     @Override
     public boolean update(Withholding withholding, Map<String, Object> params) {
+        prepareCache();
+
         String query = "UPDATE Withholding SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
         + withholding.getValues().get("id");
         
@@ -69,7 +71,6 @@ public class WithholdingDAO implements DAO<Withholding> {
             return false;
         }
 
-        prepareCache();
         //update cache if executeQuery was successful
         cache.remove(withholding);
         withholding.setValues(params);  //remove and add for rehashing
@@ -79,6 +80,8 @@ public class WithholdingDAO implements DAO<Withholding> {
 
     @Override
     public boolean delete(Withholding withholding) {
+        prepareCache();
+
         String query = "DELETE FROM Withholding WHERE id = " + withholding.getValues().get("id");    
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
@@ -86,7 +89,6 @@ public class WithholdingDAO implements DAO<Withholding> {
             return false;
         }
         
-        prepareCache();
         cache.remove(withholding);
         return true;
     }
