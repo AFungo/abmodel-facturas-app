@@ -31,6 +31,10 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
             }
         }
     
+    /**
+     * Creates the handler with a view to show errors
+     * @param view is the view where the errors will popup
+     */
     public Handler(View view) {
         this.view = view;
         initializeLogger();
@@ -41,6 +45,15 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
         logger.addHandler(fileHandler);
     }
     
+    /**
+     * Looks for known information in the exception
+     * if found a custom message is shown in a view 
+     * and exception is not logged
+     * else a default error message is shown in a view
+     * and the exception is logged
+     * @param t the thread where the exception occurred
+     * @param e the exception that was raised
+     */
     public void uncaughtException(Thread t, Throwable e) {
         if (e instanceof IllegalArgumentException) {
             String msg = e.getMessage();
@@ -74,6 +87,11 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
         }
     }
     
+    /**
+     * Logs the stacktrace of the exception and shows 
+     * an error message in the view
+     * @param e the exception that will be logged
+     */
     public static void logUnexpectedError(Throwable e) {
         view.showError("Ocurrio un error inesperado");
         StringWriter sw = new StringWriter();
@@ -82,15 +100,27 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
         logger.info(sw.toString());
     }
     
-    public static void logUnexpectedError(Throwable e, String customMessage) {
+    /**
+     * Logs the stacktrace of the exception along with 
+     * additional info and shows an error message in the view
+     * @param e the exception that will be logged
+     * @param additionalInfo additional information about the 
+     * cause of the exception that will be logged along with 
+     * the stacktrace
+     */
+    public static void logUnexpectedError(Throwable e, String additionalInfo) {
         view.showError("Ocurrio un error inesperado");
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        Exception ex = new Exception(customMessage, e);
+        Exception ex = new Exception(additionalInfo, e);
         ex.printStackTrace(pw);
         logger.info(sw.toString());
     }
     
+    /**
+     * Shows an error message in the settled view
+     * @param errorMessage is the message to show
+     */
     public static void showErrorMessage(String errorMessage) {
         view.showError(errorMessage);
     }
