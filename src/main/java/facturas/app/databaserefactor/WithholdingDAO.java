@@ -36,15 +36,12 @@ public class WithholdingDAO implements DAO<Withholding> {
     /**
      * This method return all the withholdings stored in the cache,
      * if the cache is not loaded then it must be loaded first.
-     *
+     *  
      * @return a set of withholding from the cache
      */
     @Override
     public Set<Withholding> getAll() {
-        if (!cacheLoaded) {
-            loadCache();
-            cacheLoaded = true;
-        }
+        prepareCache();
         return cache;
     }
 
@@ -68,6 +65,7 @@ public class WithholdingDAO implements DAO<Withholding> {
             return false;
         }
 
+        prepareCache();
         cache.add(withholding);
         //add item to cache if executeQuery was successful
 
@@ -93,6 +91,7 @@ public class WithholdingDAO implements DAO<Withholding> {
             return false;
         }
 
+        prepareCache();
         //update cache if executeQuery was successful
         cache.remove(withholding);//los set no tienen para updatear un objeto
         withholding.setValues(params);
@@ -117,6 +116,7 @@ public class WithholdingDAO implements DAO<Withholding> {
             return false;
         }
         
+        prepareCache();
         cache.remove(withholding);
         return true;
     }
@@ -152,5 +152,11 @@ public class WithholdingDAO implements DAO<Withholding> {
         }
     }
     
+    private void prepareCache() {
+        if (!cacheLoaded) {
+            loadCache();
+            cacheLoaded = true;
+        }
+    }
 
 }
