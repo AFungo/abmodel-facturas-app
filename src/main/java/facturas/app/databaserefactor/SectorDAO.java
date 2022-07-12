@@ -5,6 +5,8 @@
  */
 package facturas.app.databaserefactor;
 
+import facturas.app.models.Sector;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -13,11 +15,11 @@ import java.util.Set;
  *
  * 
  */
-public class SectorDAO implements DAO<String>{
+public class SectorDAO implements DAO<Sector>{
     
     private static SectorDAO instance;
 
-    private final Set<String> cache;
+    private final Set<Sector> cache;
     private final boolean cacheWasLoaded;
 
     public static SectorDAO getInstance() {
@@ -39,7 +41,7 @@ public class SectorDAO implements DAO<String>{
      * @return a set of sectors from the cache
      */
     @Override
-    public Set<String> getAll() {
+    public Set<Sector> getAll() {
         if (!cacheWasLoaded) {
             loadCache();
         }
@@ -55,7 +57,7 @@ public class SectorDAO implements DAO<String>{
      * @return true iff the sector was saved
      */
     @Override
-    public boolean save(String sector) {
+    public boolean save(Sector sector) {
         throw new UnsupportedOperationException("TODO: Implement");
     }
 
@@ -69,7 +71,7 @@ public class SectorDAO implements DAO<String>{
      * @return true iff the sector was updated
      */
     @Override
-    public boolean update(String sector, Map<String, Object> params) {
+    public boolean update(Sector sector, Map<String, Object> params) {
         throw new UnsupportedOperationException("TODO: Implement");
     }
 
@@ -82,7 +84,7 @@ public class SectorDAO implements DAO<String>{
      * @return true iff the sector was deleted
      */
     @Override
-    public boolean delete(String sector) {
+    public boolean delete(Sector sector) {
         throw new UnsupportedOperationException("TODO: Implement");
     }
 
