@@ -19,6 +19,17 @@ public class DollarPrice {
         assert repOk();
     }
 
+    public void setValues(Map<String, Object> values) {
+        for (String key : values.keySet()) {
+            this.values.replace(key, values.get(key));
+        }
+        assert repOk();
+    }
+
+    public Map<String, Object> getValues() {
+        return new HashMap<>(values);
+    }
+
     private boolean repOk() {
         Set<String> requiredKeys = Stream.of("date", "buy", "sell").collect(Collectors.toSet());
         if (!requiredKeys.containsAll(values.keySet())) {
@@ -33,15 +44,19 @@ public class DollarPrice {
         return true;
     }
 
-    public void setValues(Map<String, Object> values) {
-        for (String key : values.keySet()) {
-            this.values.replace(key, values.get(key));
-        }
-        assert repOk();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DollarPrice dollarPrice = (DollarPrice) o;
+
+        return values.equals(dollarPrice.values);
     }
 
-    public Map<String, Object> getValues() {
-        return new HashMap<>(values);
+    @Override
+    public int hashCode() {
+        return values.hashCode();
     }
 
 }

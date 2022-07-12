@@ -21,6 +21,31 @@ public class Ticket extends Withholding {
         assert repOk();
     }
 
+    @Override
+    public void setValues(Map<String, Object> values) {
+        Map<String, Object> newWithholdingValues = new HashMap<>(values);
+        newWithholdingValues.keySet().retainAll(Withholding.requiredKeys());
+        super.setValues(newWithholdingValues);
+        Map<String, Object> newTicketValues = new HashMap<>(values);
+        newTicketValues.keySet().retainAll(requiredKeys());
+        for (String s : newTicketValues.keySet()) {
+            this.values.replace(s, values.get(s));
+        }
+        assert repOk();
+    }
+
+    @Override
+    public Map<String, Object> getValues() {
+        Map<String, Object> values = new HashMap<>(this.values);
+        values.putAll(super.getValues());
+        return values;
+    }
+
+    public boolean isIncome() {
+        boolean isCredit = !((String) values.get("type")).contains("Crédito");
+        return (Boolean) values.get("issuedByMe") == isCredit;
+    }
+
     private static Map<String, Object> withholdingValues(Map<String, Object> values) {
         Map<String, Object> withholdingValues = new HashMap<>();
         for (String key : Withholding.requiredKeys()) {
@@ -44,28 +69,18 @@ public class Ticket extends Withholding {
     }
 
     @Override
-    public void setValues(Map<String, Object> values) {
-        Map<String, Object> newWithholdingValues = new HashMap<>(values);
-        newWithholdingValues.keySet().retainAll(Withholding.requiredKeys());
-        super.setValues(newWithholdingValues);
-        Map<String, Object> newTicketValues = new HashMap<>(values);
-        newTicketValues.keySet().retainAll(requiredKeys());
-        for (String s : newTicketValues.keySet()) {
-            this.values.replace(s, values.get(s));
-        }
-        assert repOk();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Ticket ticket = (Ticket) o;
+
+        return values.equals(ticket.values);
     }
 
     @Override
-    public Map<String, Object> getValues() {
-        Map<String, Object> values = new HashMap<>(this.values);
-        values.putAll(super.getValues());
-        return values;
-    }
-
-    public boolean isIncome(){
-        boolean isCredit = !((String) values.get("type")).contains("Crédito");
-        return (Boolean) values.get("issuedByMe") == isCredit;
+    public int hashCode() {
+        return values.hashCode();
     }
 
 }

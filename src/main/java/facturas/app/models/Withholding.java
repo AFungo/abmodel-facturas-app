@@ -42,4 +42,19 @@ public class Withholding {
         return values.get("date") != null && values.get("number") != null && values.get("provider") != null;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Withholding withholding = (Withholding) o;
+
+        return values.equals(withholding.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return values.hashCode();
+    }
+
 }
