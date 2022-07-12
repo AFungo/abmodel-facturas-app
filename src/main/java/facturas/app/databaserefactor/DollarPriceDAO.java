@@ -9,6 +9,7 @@ import facturas.app.Controller;
 import facturas.app.models.DollarPrice;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -111,9 +112,9 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
         try {
             while(result.next()) {
                 cache.add(new DollarPrice(new HashMap<String, Object>() {{
-                    put("date", result.getString(1));
-                    put("buy", result.getString(2));
-                    put("sell", result.getString(3));
+                    put("date", Date.valueOf(result.getString(1)));
+                    put("buy", Float.parseFloat(result.getString(2)));
+                    put("sell", Float.parseFloat(result.getString(3)));
                 }}));
             }
         } catch (SQLException ex) {
