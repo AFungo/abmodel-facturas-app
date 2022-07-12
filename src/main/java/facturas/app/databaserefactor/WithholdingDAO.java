@@ -1,18 +1,16 @@
 package facturas.app.databaserefactor;
 
-import facturas.app.Controller;
-import facturas.app.database.SQLFilter;
 import facturas.app.models.Provider;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import logger.Handler;
+
 import java.sql.Date;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class WithholdingDAO implements DAO<Withholding> {
 
@@ -68,7 +66,6 @@ public class WithholdingDAO implements DAO<Withholding> {
         prepareCache();
         cache.add(withholding);
         //add item to cache if executeQuery was successful
-
         return true;
     }
 
@@ -93,8 +90,8 @@ public class WithholdingDAO implements DAO<Withholding> {
 
         prepareCache();
         //update cache if executeQuery was successful
-        cache.remove(withholding);//los set no tienen para updatear un objeto
-        withholding.setValues(params);
+        cache.remove(withholding);
+        withholding.setValues(params);  //remove and add for rehashing
         cache.add(withholding);
         return true;
     }
@@ -148,7 +145,7 @@ public class WithholdingDAO implements DAO<Withholding> {
             }
         } catch (SQLException ex) {
             cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Handler.logUnexpectedError(ex);
         }
     }
     

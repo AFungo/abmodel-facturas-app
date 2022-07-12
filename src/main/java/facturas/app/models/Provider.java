@@ -19,7 +19,7 @@ public class Provider {
         assert repOk();
     }
 
-    public void setValues(Map<String, String> values) {
+    public void setValues(Map<String, Object> values) {
         for (String s : values.keySet()) {
             this.values.replace(s, values.get(s));
         }

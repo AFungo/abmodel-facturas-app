@@ -6,7 +6,13 @@
 package facturas.app.databaserefactor;
 
 import facturas.app.models.Provider;
+import facturas.app.utils.FormatUtils;
+import facturas.app.utils.Pair;
+import logger.Handler;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +26,7 @@ public class ProviderDAO implements DAO<Provider>{
     private static ProviderDAO instance;
 
     private final Set<Provider> cache;
-    private final boolean cacheWasLoaded;
+    private boolean cacheLoaded;
 
     public static ProviderDAO getInstance() {
         if (instance == null) {
@@ -31,7 +37,7 @@ public class ProviderDAO implements DAO<Provider>{
 
     private ProviderDAO() {
         cache = new HashSet<>();
-        cacheWasLoaded = false;
+        cacheLoaded = false;
     }
 
     /**
@@ -42,9 +48,7 @@ public class ProviderDAO implements DAO<Provider>{
      */
     @Override
     public Set<Provider> getAll() {
-        if (!cacheWasLoaded) {
-            loadCache();
-        }
+        prepareCache();
         return cache;
     }
 
@@ -57,7 +61,19 @@ public class ProviderDAO implements DAO<Provider>{
      * @return true iff the provider was saved
      */
     public boolean save(Provider provider) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        Pair<String, String> sqlValues = FormatUtils.providerToSQL(provider);
+        String query = "INSERT INTO Provider (" + sqlValues.getFst() + ") "
+            + "VALUES (" + sqlValues.getSnd() + ")";
+            
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+        
+        prepareCache();
+        cache.add(provider);
+        //add item to cache if executeQuery was successful
+        return true;
     }
 
     /**
@@ -71,7 +87,20 @@ public class ProviderDAO implements DAO<Provider>{
      */
     @Override
     public boolean update(Provider provider, Map<String, Object> params) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "UPDATE Provider SET " + FormatUtils.mapToSQLValues(params)  
+        + "' " + provider.getValues().get("docNo");
+
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+        
+        prepareCache();
+        //update cache if executeQuery was successful
+        cache.remove(provider);
+        provider.setValues(params); //remove and add for rehashing
+        cache.add(provider);
+        return true;
     }
 
     /**
@@ -84,13 +113,46 @@ public class ProviderDAO implements DAO<Provider>{
      */
     @Override
     public boolean delete(Provider provider) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "DELETE FROM Provider WHERE docNo = '" + provider.getValues().get("docNo") + "'";
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+        
+        prepareCache();
+        cache.remove(provider);
+        return true;
     }
 
     /**
      * This method must load the cache with the data from the database
      */
     private void loadCache() {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "SELECT * FROM Provider";
+        ResultSet result = DatabaseUtils.executeQuery(query);
+        try {
+            while(result.next()) {
+                cache.add(new Provider(new HashMap<String, Object>() {{
+                    put("docNo", result.getString(1));
+                    put("name", result.getString(2));
+                    put("docType", result.getString(3));
+                    put("direction", result.getString(4));
+                    put("provSector", result.getString(5));
+                    put("alias", result.getString(6));
+                }}));
+            }
+        } catch (SQLException ex) {
+            cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
+            Handler.logUnexpectedError(ex);
+        }
     }    
+
+    private void prepareCache() {
+        if (!cacheLoaded) {
+            loadCache();
+            cacheLoaded = true;
+        }
+    }   
+
 }
