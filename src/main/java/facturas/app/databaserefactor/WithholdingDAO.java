@@ -19,7 +19,7 @@ public class WithholdingDAO implements DAO<Withholding> {
     private static WithholdingDAO instance;
 
     private final Set<Withholding> cache;
-    private final boolean cacheLoaded;
+    private boolean cacheLoaded;
 
     public static WithholdingDAO getInstance() {
         if (instance == null) {
@@ -43,6 +43,7 @@ public class WithholdingDAO implements DAO<Withholding> {
     public Set<Withholding> getAll() {
         if (!cacheLoaded) {
             loadCache();
+            cacheLoaded = true;
         }
         return cache;
     }
