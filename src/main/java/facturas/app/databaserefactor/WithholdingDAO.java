@@ -12,6 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * this class implements DAO interface for Withholding model
+ *
+ */
 public class WithholdingDAO implements DAO<Withholding> {
 
     private static WithholdingDAO instance;
@@ -31,26 +35,12 @@ public class WithholdingDAO implements DAO<Withholding> {
         cacheLoaded = false;
     }
 
-    /**
-     * This method return all the withholdings stored in the cache,
-     * if the cache is not loaded then it must be loaded first.
-     *  
-     * @return a set of withholding from the cache
-     */
     @Override
     public Set<Withholding> getAll() {
         prepareCache();
         return cache;
     }
 
-    /**
-     * Given a withholding, this is saved in the database, and if
-     * this could be saved then is added to the cache and
-     * return true, else return false.
-     *
-     * @param withholding to be saved
-     * @return true iff the withholding was saved
-     */
     @Override
     public boolean save(Withholding withholding) {
         Pair<String, String> sqlValues = FormatUtils.withholdingToSQL(withholding);
@@ -69,15 +59,6 @@ public class WithholdingDAO implements DAO<Withholding> {
         return true;
     }
 
-    /**
-     * Given a withholding and a set of values, this is updated
-     * in the database, and if this could be updated, then is
-     * updated in the cache and return true, else return false
-     *
-     * @param withholding to be updated
-     * @param params column names with the new values to update
-     * @return true iff the withholding was updated
-     */
     @Override
     public boolean update(Withholding withholding, Map<String, Object> params) {
         String query = "UPDATE Withholding SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
@@ -96,14 +77,6 @@ public class WithholdingDAO implements DAO<Withholding> {
         return true;
     }
 
-    /**
-     * Given a withholding, this is deleted from the database,
-     * and if this could be deleted, then is deleted in
-     * the cache too and return true, else return false
-     *
-     * @param withholding to be deleted
-     * @return true iff the withholding was deleted
-     */
     @Override
     public boolean delete(Withholding withholding) {
         String query = "DELETE FROM Withholding WHERE id = " + withholding.getValues().get("id");    

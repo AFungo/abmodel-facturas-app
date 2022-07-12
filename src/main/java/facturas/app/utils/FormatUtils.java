@@ -8,6 +8,7 @@ package facturas.app.utils;
 import facturas.app.databaserefactor.ProviderDAO;
 import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
+import facturas.app.models.Sector;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import java.sql.Date;
@@ -175,7 +176,7 @@ public class FormatUtils {
         result = result.replace("null", "");
         return result;
     }
-   
+    
     /**
      * Transforms withholding data into a SQL format data
      * 
@@ -196,7 +197,15 @@ public class FormatUtils {
 
         return new Pair<>(attributes, values);
     }
+    public static Pair<String, String> sectorToSQL(Sector s){
+        Map<String, Object> dict = s.getValues();
 
+        String attributes = "", values = "";
+        attributes += "name";
+        values += "'" + dict.get("name") + "'";
+
+        return new Pair<>(attributes, values);
+    }
     /**
      * Transforms withholding data into a form format data
      * 

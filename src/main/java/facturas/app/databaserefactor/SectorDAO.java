@@ -5,22 +5,30 @@
  */
 package facturas.app.databaserefactor;
 
+import facturas.app.Controller;
 import facturas.app.models.Sector;
+import facturas.app.utils.FormatUtils;
+import facturas.app.utils.Pair;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
- * 
+ * this class implements DAO interface for Sectors table
  */
 public class SectorDAO implements DAO<Sector>{
     
     private static SectorDAO instance;
 
     private final Set<Sector> cache;
-    private final boolean cacheWasLoaded;
+    private boolean cacheLoaded;
 
     public static SectorDAO getInstance() {
         if (instance == null) {
@@ -31,67 +39,91 @@ public class SectorDAO implements DAO<Sector>{
 
     private SectorDAO() {
         cache = new HashSet<>();
-        cacheWasLoaded = false;
+        cacheLoaded = false;
     }
 
-    /**
-     * This method return all the sectors stored in the cache,
-     * if the cache is not loaded then it must be loaded first.
-     *
-     * @return a set of sectors from the cache
-     */
     @Override
     public Set<Sector> getAll() {
-        if (!cacheWasLoaded) {
+        if (!cacheLoaded) {
             loadCache();
         }
         return cache;
     }
 
-    /**
-     * Given a sector, this is saved in the database, and if
-     * this could be saved then is added to the cache and
-     * return true, else return false.
-     *
-     * @param sector to be saved
-     * @return true iff the sector was saved
-     */
     @Override
     public boolean save(Sector sector) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        Pair<String, String> sqlValues = FormatUtils.sectorToSQL(sector);
+
+        String query = "INSERT INTO Sector (" + sqlValues.getFst() + ") "
+            + "VALUES (" + sqlValues.getSnd() + ")";
+
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+
+        prepareCache();
+        cache.add(sector);
+        //add item to cache if executeQuery was successful
+
+        return true;
     }
 
-    /**
-     * Given a sector and a set of values, this is updated
-     * in the database, and if this could be updated, then is
-     * updated in the cache and return true, else return false
-     *
-     * @param sector to be updated
-     * @param params to be used in the update process
-     * @return true iff the sector was updated
-     */
     @Override
     public boolean update(Sector sector, Map<String, Object> params) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "UPDATE Sector SET " + FormatUtils.mapToSQLValues(params) + " WHERE name = " 
+        + sector.getValues().get("name");
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+
+        prepareCache();
+        //update cache if executeQuery was successful
+        cache.remove(sector);//los set no tienen para updatear un objeto
+        sector.setValues(params);
+        cache.add(sector);
+        return true;
+
     }
 
-    /**
-     * Given a sector, this is deleted from the database,
-     * and if this could be deleted, then is deleted in
-     * the cache too and return true, else return false
-     *
-     * @param sector to be deleted
-     * @return true iff the sector was deleted
-     */
     @Override
     public boolean delete(Sector sector) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "DELETE FROM Sector WHERE name = " + sector.getValues().get("id");    
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+        
+        prepareCache();
+        cache.remove(sector);
+        return true;
     }
 
     /**
      * This method must load the cache with the data from the database
      */
     private void loadCache() {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "SELECT * FROM Sector";
+        ResultSet result = DatabaseUtils.executeQuery(query);
+        try {
+            while(result.next()) {
+                cache.add(new Sector(new HashMap<String, Object>() {{
+                    put("name", result.getString(1));
+                    }}));
+            }
+        } catch (SQLException ex) {
+            cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
+
+    private void prepareCache() {
+        if (!cacheLoaded) {
+            loadCache();
+            cacheLoaded = true;
+        }
+    }
 }

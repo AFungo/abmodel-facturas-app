@@ -19,7 +19,7 @@ import java.util.Set;
 
 /**
  *
- * 
+ * this class implements DAO interface for Provider model
  */
 public class ProviderDAO implements DAO<Provider>{
     
@@ -40,26 +40,12 @@ public class ProviderDAO implements DAO<Provider>{
         cacheLoaded = false;
     }
 
-    /**
-     * This method return all the providers stored in the cache,
-     * if the cache is not loaded then it must be loaded first.
-     *
-     * @return a set of provider from the cache
-     */
     @Override
     public Set<Provider> getAll() {
         prepareCache();
         return cache;
     }
 
-    /**
-     * Given a provider, this is saved in the database, and if
-     * this could be saved then is added to the cache and
-     * return true, else return false.
-     *
-     * @param provider to be saved
-     * @return true iff the provider was saved
-     */
     public boolean save(Provider provider) {
         Pair<String, String> sqlValues = FormatUtils.providerToSQL(provider);
         String query = "INSERT INTO Provider (" + sqlValues.getFst() + ") "
@@ -76,15 +62,6 @@ public class ProviderDAO implements DAO<Provider>{
         return true;
     }
 
-    /**
-     * Given a provider and a set of values, this is updated
-     * in the database, and if this could be updated, then is
-     * updated in the cache and return true, else return false
-     *
-     * @param provider to be updated
-     * @param params to be used in the update process
-     * @return true iff the provider was updated
-     */
     @Override
     public boolean update(Provider provider, Map<String, Object> params) {
         String query = "UPDATE Provider SET " + FormatUtils.mapToSQLValues(params)  
@@ -103,14 +80,6 @@ public class ProviderDAO implements DAO<Provider>{
         return true;
     }
 
-    /**
-     * Given a provider, this is deleted from the database,
-     * and if this could be deleted, then is deleted in
-     * the cache too and return true, else return false
-     *
-     * @param provider to be deleted
-     * @return true iff the provider was deleted
-     */
     @Override
     public boolean delete(Provider provider) {
         String query = "DELETE FROM Provider WHERE docNo = '" + provider.getValues().get("docNo") + "'";
