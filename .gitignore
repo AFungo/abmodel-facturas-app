@@ -8,7 +8,7 @@
 # DB files
 db/
 test-db/
-log
+log*
 config.txt
 
 # User-specific stuff
