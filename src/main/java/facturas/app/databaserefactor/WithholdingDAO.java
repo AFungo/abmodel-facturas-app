@@ -62,8 +62,8 @@ public class WithholdingDAO implements DAO<Withholding> {
         String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
-        ResultSet operationResult = DatabaseUtils.executeQuery(query, true, false);
-        if (operationResult == null) {
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
             return false;
         }
 
@@ -87,8 +87,8 @@ public class WithholdingDAO implements DAO<Withholding> {
         String query = "UPDATE Withholding SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
         + withholding.getValues().get("id");
         
-        ResultSet operationResult = DatabaseUtils.executeQuery(query, true, false);
-        if (operationResult == null) {
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
             return false;
         }
 
@@ -111,8 +111,8 @@ public class WithholdingDAO implements DAO<Withholding> {
     public boolean delete(Withholding withholding) {
         String query = "DELETE FROM Withholding WHERE id = " + withholding.getValues().get("id");    
         
-        ResultSet operationResult = DatabaseUtils.executeQuery(query, true, true);
-        if (operationResult == null) {
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
             return false;
         }
         
@@ -125,7 +125,7 @@ public class WithholdingDAO implements DAO<Withholding> {
      *///para mi deberia retornar un booleano
     private void loadCache() {
         String query = "SELECT * FROM Withholding";
-        ResultSet result = DatabaseUtils.executeQuery(query , false, true);
+        ResultSet result = DatabaseUtils.executeQuery(query);
         try {
             while(result.next()) {
                 String docNo = result.getString(4);
