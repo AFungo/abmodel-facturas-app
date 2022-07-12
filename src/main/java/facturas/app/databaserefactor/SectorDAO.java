@@ -5,11 +5,19 @@
  */
 package facturas.app.databaserefactor;
 
+import facturas.app.Controller;
 import facturas.app.models.Sector;
+import facturas.app.utils.FormatUtils;
+import facturas.app.utils.Pair;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,7 +28,7 @@ public class SectorDAO implements DAO<Sector>{
     private static SectorDAO instance;
 
     private final Set<Sector> cache;
-    private final boolean cacheWasLoaded;
+    private boolean cacheLoaded;
 
     public static SectorDAO getInstance() {
         if (instance == null) {
@@ -31,12 +39,12 @@ public class SectorDAO implements DAO<Sector>{
 
     private SectorDAO() {
         cache = new HashSet<>();
-        cacheWasLoaded = false;
+        cacheLoaded = false;
     }
 
     @Override
     public Set<Sector> getAll() {
-        if (!cacheWasLoaded) {
+        if (!cacheLoaded) {
             loadCache();
         }
         return cache;
@@ -44,23 +52,78 @@ public class SectorDAO implements DAO<Sector>{
 
     @Override
     public boolean save(Sector sector) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        Pair<String, String> sqlValues = FormatUtils.sectorToSQL(sector);
+
+        String query = "INSERT INTO Sector (" + sqlValues.getFst() + ") "
+            + "VALUES (" + sqlValues.getSnd() + ")";
+
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+
+        prepareCache();
+        cache.add(sector);
+        //add item to cache if executeQuery was successful
+
+        return true;
     }
 
     @Override
     public boolean update(Sector sector, Map<String, Object> params) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "UPDATE Sector SET " + FormatUtils.mapToSQLValues(params) + " WHERE name = " 
+        + sector.getValues().get("name");
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+
+        prepareCache();
+        //update cache if executeQuery was successful
+        cache.remove(sector);//los set no tienen para updatear un objeto
+        sector.setValues(params);
+        cache.add(sector);
+        return true;
+
     }
 
     @Override
     public boolean delete(Sector sector) {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "DELETE FROM Sector WHERE name = " + sector.getValues().get("id");    
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+        
+        prepareCache();
+        cache.remove(sector);
+        return true;
     }
 
     /**
      * This method must load the cache with the data from the database
      */
     private void loadCache() {
-        throw new UnsupportedOperationException("TODO: Implement");
+        String query = "SELECT * FROM Sector";
+        ResultSet result = DatabaseUtils.executeQuery(query);
+        try {
+            while(result.next()) {
+                cache.add(new Sector(new HashMap<String, Object>() {{
+                    put("name", result.getString(1));
+                    }}));
+            }
+        } catch (SQLException ex) {
+            cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }    
+
+    private void prepareCache() {
+        if (!cacheLoaded) {
+            loadCache();
+            cacheLoaded = true;
+        }
+    }
 }
