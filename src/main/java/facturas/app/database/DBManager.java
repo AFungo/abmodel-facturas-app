@@ -68,6 +68,7 @@ public class DBManager {
     public static void closeConnection() {
         try {
             DriverManager.getConnection("jdbc:derby:;shutdown=true");
+            connection = null;
         }catch (SQLException e) {
             System.out.println("Connection was closed");
         }
@@ -110,7 +111,7 @@ public class DBManager {
             case "Provider": query = "CREATE TABLE Provider ("
                                             + "docNo VARCHAR(30) PRIMARY KEY,"
                                             + "name VARCHAR(100),"
-                                            + "documentType VARCHAR(20),"
+                                            + "docType VARCHAR(20),"
                                             + "direction VARCHAR(50),"
                                             + "sector VARCHAR(50),"
                                             + "alias VARCHAR(100),"

@@ -4,9 +4,7 @@ import facturas.app.database.DBManager;
 import facturas.app.databaserefactor.DAO;
 import facturas.app.databaserefactor.ProviderDAO;
 import facturas.app.models.Provider;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -19,9 +17,13 @@ public class ProviderDAOTest {
     DAO<Provider> dao;
     Provider p;
 
+    @BeforeAll
+    static void createConnection() {
+        DBManager.createConnection(DBManager.TypeDB.TESTING);
+    }
+
     @BeforeEach
     void setUp() {
-        DBManager.createConnection(DBManager.TypeDB.TESTING);
         DBManager.initializeDB();
         dao = ProviderDAO.getInstance();
         p = new Provider(new HashMap<String, Object>() {{
@@ -31,17 +33,17 @@ public class ProviderDAOTest {
         }});
     }
 
+    @AfterAll
+    static void closeConnection() {
+        DBManager.closeConnection();
+    }
+
     @AfterEach
     void resetSingleton() throws NoSuchFieldException, IllegalAccessException {
         Field instance = ProviderDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
-    }
-
-    @AfterEach
-    void tearDown() {
         DBManager.deleteDB();
-        DBManager.closeConnection();
     }
 
     @Test

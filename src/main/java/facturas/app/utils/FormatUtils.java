@@ -13,6 +13,7 @@ import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import java.sql.Date;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class used to transform objects into a string with certain format
@@ -358,7 +359,7 @@ public class FormatUtils {
     public static Pair<String, String> providerToSQL(Provider p) {
         Map<String, Object> dict = p.getValues();
         String attributes = "", values = "";
-        attributes += "docNo, name, documentType";
+        attributes += "docNo, name, docType";
         values += "'" + dict.get("docNo") + "', '" + dict.get("name") + "', '" + dict.get("docType") + "'";
         
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {}, new String[] {"direction", "sector", "alias"});
@@ -533,14 +534,12 @@ public class FormatUtils {
      * @return a string representing the map in a SQL form
      */
     public static String mapToSQLValues(Map<String, Object> params) {
-        String values = "";
-        for (Map.Entry<String,Object> entry : params.entrySet()) {
-            values += entry.getKey() + " = " + entry.getValue() + ", ";
+        List<String> values = new LinkedList<>();
+        for (String key : params.keySet()) {
+            values.add(key + " = '" + params.get(key) + "'");
         }
 
-        values = values.substring(0, values.length() - 3);   //removing the last ", "
-        
-        return values;
+        return String.join(", ", values);
     }
 
     /**

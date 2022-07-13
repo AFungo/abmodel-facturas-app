@@ -109,7 +109,9 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
      * the stacktrace
      */
     public static void logUnexpectedError(Throwable e, String additionalInfo) {
-        view.showError("Ocurrio un error inesperado");
+        if (view != null) {
+            view.showError("Ocurrio un error inesperado");
+        }
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         Exception ex = new Exception(additionalInfo, e);
@@ -122,7 +124,9 @@ public  class Handler implements Thread.UncaughtExceptionHandler {
      * @param errorMessage is the message to show
      */
     public static void showErrorMessage(String errorMessage) {
-        view.showError(errorMessage);
+        if (view != null) {
+            view.showError(errorMessage);
+        }
     }
 }
     
