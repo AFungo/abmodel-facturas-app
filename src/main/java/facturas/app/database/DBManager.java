@@ -67,8 +67,8 @@ public class DBManager {
      */
     public static void closeConnection() {
         try {
-            DriverManager.getConnection("jdbc:derby:;shutdown=true");
-            connection = null;
+            //DriverManager.getConnection("jdbc:derby:;shutdown=true");
+            connection.close();
         }catch (SQLException e) {
             System.out.println("Connection was closed");
         }
