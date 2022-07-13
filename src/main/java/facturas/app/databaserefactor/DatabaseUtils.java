@@ -34,6 +34,38 @@ public class DatabaseUtils {
      * @return the number of rows affected, 0 if an error 
      * occurred or no rows were affected
      */
+    protected static int executeCreate(String query) {
+        try {
+            Connection connection = DBManager.getConnection();
+            PreparedStatement stm;
+            stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            int affectedRows = stm.executeUpdate();
+        
+            if (affectedRows == 0) {
+                return 0;
+            }
+            ResultSet generatedKeys = stm.getGeneratedKeys();
+            generatedKeys.next();
+            int id = generatedKeys.getInt(1);
+            
+            return id;
+        
+        } catch (SQLException e) {
+            if (e.getSQLState().equals("23505")) {  //duplicate item
+                Handler.showErrorMessage("El item que se intento cargar ya estaba cargado");
+            } else {                                //unknown error
+                Handler.logUnexpectedError(e, "query: " + query + "\n" + e.toString());
+            }
+            return 0;
+        }
+    }
+
+    /**
+     * Executes the requested update/insertion/deletion
+     * @param query the query to be executed
+     * @return the number of rows affected, 0 if an error 
+     * occurred or no rows were affected
+     */
     protected static int executeUpdate(String query) {
         try {
             Connection connection = DBManager.getConnection();
