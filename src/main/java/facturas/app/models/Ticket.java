@@ -10,35 +10,24 @@ import java.util.stream.Stream;
  *
  * @author Agustin Nolasco
  */
-public class Ticket extends Withholding {
+public class Ticket {
 
     private final Map<String, Object> values;
 
     public Ticket(Map<String, Object> values) {
-        super(withholdingValues(values));
         this.values = new HashMap<>(values);
-        this.values.keySet().removeAll(Withholding.requiredKeys());
         assert repOk();
     }
 
-    @Override
     public void setValues(Map<String, Object> values) {
-        Map<String, Object> newWithholdingValues = new HashMap<>(values);
-        newWithholdingValues.keySet().retainAll(Withholding.requiredKeys());
-        super.setValues(newWithholdingValues);
-        Map<String, Object> newTicketValues = new HashMap<>(values);
-        newTicketValues.keySet().retainAll(requiredKeys());
-        for (String s : newTicketValues.keySet()) {
+        for (String s : values.keySet()) {
             this.values.put(s, values.get(s));
         }
         assert repOk();
     }
 
-    @Override
     public Map<String, Object> getValues() {
-        Map<String, Object> values = new HashMap<>(this.values);
-        values.putAll(super.getValues());
-        return values;
+        return new HashMap<>(this.values);
     }
 
     public boolean isIncome() {
@@ -46,17 +35,9 @@ public class Ticket extends Withholding {
         return (Boolean) values.get("issuedByMe") == isCredit;
     }
 
-    private static Map<String, Object> withholdingValues(Map<String, Object> values) {
-        Map<String, Object> withholdingValues = new HashMap<>();
-        for (String key : Withholding.requiredKeys()) {
-            withholdingValues.put(key, values.get(key));
-        }
-        return withholdingValues;
-    }
-
     protected static Set<String> requiredKeys() {
         return Stream.of("numberTo", "authCode", "exchangeType", "totalAmount", "exchangeMoney", "type", "netAmountWI",
-                        "netAmountWOI", "amountImpEx", "ivaTax", "issuedByMe")
+                        "netAmountWOI", "amountImpEx", "ivaTax", "issuedByMe", "withholding")
                 .collect(Collectors.toSet());
     }
 
@@ -64,8 +45,8 @@ public class Ticket extends Withholding {
         if (!requiredKeys().containsAll(values.keySet())) {
             return false;
         }
-        return values.get("exchangeType") != null && values.get("totalAmount") != null
-                && values.get("exchangeMoney") != null && values.get("type") != null;
+        return values.get("exchangeType") != null && values.get("totalAmount") != null &&
+                values.get("exchangeMoney") != null && values.get("type") != null && values.get("withholding") !=null;
     }
 
     @Override

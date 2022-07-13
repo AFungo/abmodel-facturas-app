@@ -1,6 +1,7 @@
 package facturas.app.databaserefactor;
 
 import facturas.app.models.Provider;
+import facturas.app.models.Sector;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
@@ -105,6 +106,9 @@ public class WithholdingDAO implements DAO<Withholding> {
                 String docNo = result.getString(4);
                 Optional<Provider> provider = ProviderDAO.getInstance().getAll()
                         .stream().filter(p -> p.getValues().get("docNo").equals(docNo)).findFirst();
+                String sectorName = result.getString(8);
+                Optional<Sector> sector = SectorDAO.getInstance().getAll()
+                        .stream().filter(s -> s.getValues().get("sector").equals(sectorName)).findFirst();
                 cache.add(new Withholding(new HashMap<String, Object>() {{
                     put("id", Integer.parseInt(result.getString(1)));
                     put("date", Date.valueOf(result.getString(2)));
@@ -116,7 +120,7 @@ public class WithholdingDAO implements DAO<Withholding> {
                     put("iva", Parser.parseFloat(result.getString(5)));
                     put("profits", Parser.parseFloat(result.getString(6)));
                     put("delivered", Parser.parseBool(result.getString(7)));
-                    put("sector", result.getString(8));
+                    sector.ifPresent(value -> put("sector", value));
                 }}));
             }
         } catch (SQLException ex) {
