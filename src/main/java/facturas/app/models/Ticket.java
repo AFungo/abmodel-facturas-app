@@ -29,7 +29,7 @@ public class Ticket extends Withholding {
         Map<String, Object> newTicketValues = new HashMap<>(values);
         newTicketValues.keySet().retainAll(requiredKeys());
         for (String s : newTicketValues.keySet()) {
-            this.values.replace(s, values.get(s));
+            this.values.put(s, values.get(s));
         }
         assert repOk();
     }

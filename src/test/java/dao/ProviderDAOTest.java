@@ -14,8 +14,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProviderDAOTest {
 
-    DAO<Provider> dao;
-    Provider p;
+    private DAO<Provider> dao;
+    private Provider p;
 
     @BeforeAll
     static void createConnection() {

@@ -4,8 +4,10 @@ import facturas.app.database.DBManager;
 import facturas.app.databaserefactor.DAO;
 import facturas.app.databaserefactor.ProviderDAO;
 import facturas.app.databaserefactor.TicketDAO;
+import facturas.app.databaserefactor.WithholdingDAO;
 import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
+import facturas.app.models.Withholding;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +21,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TicketDAOTest {
 
-    DAO<Ticket> dao;
-    Ticket t;
+    private DAO<Ticket> dao;
+    private Ticket t;
 
     @BeforeEach
     void setUp() {
@@ -33,7 +35,16 @@ public class TicketDAOTest {
             put("docType", "CUIT");
         }});
         ProviderDAO.getInstance().save(provider);
+
+        Withholding withholding = new Withholding(new HashMap<String, Object>() {{
+            put("date", Date.valueOf("2018-12-25"));
+            put("number", "0123456789");
+            put("provider", provider);
+        }});
+        WithholdingDAO.getInstance().save(withholding);
+
         t = new Ticket(new HashMap<String, Object>() {{
+            put("id", withholding.getValues().get("id"));
             put("date", Date.valueOf("2022-5-25"));
             put("number", "0123456789");
             put("provider", provider);
@@ -41,6 +52,7 @@ public class TicketDAOTest {
             put("exchangeType", 1.5f);
             put("exchangeMoney", "$");
             put("totalAmount", 1000.0f);
+            put("issuedByMe", true);
         }});
     }
 
@@ -76,7 +88,7 @@ public class TicketDAOTest {
     @Test
     void updateTest() {
         Map<String, Object> params = new HashMap<String, Object>() {{
-            put("date", Date.valueOf("2021-7-9"));
+            put("totalAmount", 2535.6f);
             put("type", "3 - Factura C");
         }};
         dao.save(t);

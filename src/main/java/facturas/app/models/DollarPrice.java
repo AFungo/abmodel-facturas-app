@@ -21,7 +21,7 @@ public class DollarPrice {
 
     public void setValues(Map<String, Object> values) {
         for (String key : values.keySet()) {
-            this.values.replace(key, values.get(key));
+            this.values.put(key, values.get(key));
         }
         assert repOk();
     }

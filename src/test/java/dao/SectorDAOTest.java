@@ -7,7 +7,6 @@ import facturas.app.models.Sector;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,22 +15,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SectorDAOTest {
     
-    DAO<Sector> dao;
-    Sector s;
-    static Connection connection;
-
+    private DAO<Sector> dao;
+    private Sector s;
 
     @BeforeAll
     static void createConnection() {
         DBManager.createConnection(DBManager.TypeDB.TESTING);
-        connection = DBManager.getConnection();
     }
 
     @BeforeEach
     void setUp() {
         DBManager.initializeDB();
         dao = SectorDAO.getInstance();
-        s = new Sector(Collections.singletonMap("name", "Farmacos"));
+        s = new Sector(Collections.singletonMap("name", "droga"));
     }
 
     @AfterAll

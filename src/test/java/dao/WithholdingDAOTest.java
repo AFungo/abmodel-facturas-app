@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class WithholdingDAOTest {
 
-    DAO<Withholding> dao;
-    Withholding w;
+    private DAO<Withholding> dao;
+    private Withholding w;
 
     @BeforeAll
     static void createConnection() {

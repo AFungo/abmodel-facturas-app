@@ -17,7 +17,7 @@ public class Sector {
 
     public void setValues(Map<String, Object> values) {
         for (String s : values.keySet()) {
-            this.values.replace(s, values.get(s));
+            this.values.put(s, values.get(s));
         }
         assert repOk();
     }
