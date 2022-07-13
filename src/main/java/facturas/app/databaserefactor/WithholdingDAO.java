@@ -49,11 +49,15 @@ public class WithholdingDAO implements DAO<Withholding> {
         String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
-        int affectedRows = DatabaseUtils.executeUpdate(query);
-        if (affectedRows == 0) {
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
             return false;
         }
 
+        //add id to withholding
+        withholding.setValues(new HashMap<String, Object>() {{
+            put("id", String.valueOf(generatedId));
+        }});
         cache.add(withholding);
         //add item to cache if executeQuery was successful
         return true;
