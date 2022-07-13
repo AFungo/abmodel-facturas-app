@@ -1,8 +1,10 @@
 package facturas.app.databaserefactor;
 
 import facturas.app.models.Ticket;
+import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import facturas.app.utils.Parser;
 import logger.Handler;
 
 import java.sql.ResultSet;
@@ -101,27 +103,23 @@ public class TicketDAO implements DAO<Ticket> {
         ResultSet result = DatabaseUtils.executeQuery(query);
         try {
             while(result.next()) {
+                String id = result.getString(1);
+                Optional<Withholding> withholding = WithholdingDAO.getInstance().getAll()
+                        .stream().filter(p -> p.getValues().get("id").equals(id)).findFirst();
                 cache.add(new Ticket(new HashMap<String, Object>() {{
-                    put("id", Integer.parseInt(result.getString(1)));
-                    put("type", result.getString(2));
-                    if (result.getString(3) != null) {
-                        put("numberTo", Integer.parseInt(result.getString(3)));
+                    if (!withholding.isPresent()) {
+                        throw new IllegalStateException("Cannot find withholding");
                     }
+                    put("id", withholding);
+                    put("type", result.getString(2));
+                    put("numberTo", Parser.parseInt(result.getString(3)));
                     put("authCode", result.getString(4));
                     put("exchangeType", Float.parseFloat(result.getString(5)));
                     put("exchangeMoney", result.getString(6));
-                    if (result.getString(7) != null) {
-                        put("netAmountWI", Float.parseFloat(result.getString(7)));
-                    }
-                    if (result.getString(8) != null) {
-                        put("netAmountWOI", Float.parseFloat(result.getString(8)));
-                    }
-                    if (result.getString(9) != null) {
-                        put("amountImpEx", Float.parseFloat(result.getString(9)));
-                    }
-                    if (result.getString(10) != null) {
-                        put("ivaTax", Float.parseFloat(result.getString(10)));
-                    }
+                    put("netAmountWI", Parser.parseFloat(result.getString(7)));
+                    put("netAmountWOI", Parser.parseFloat(result.getString(8)));
+                    put("amountImpEx", Parser.parseFloat(result.getString(9)));
+                    put("ivaTax", Parser.parseFloat(result.getString(10)));
                     put("totalAmount", Float.parseFloat(result.getString(11)));
                     put("issuedByMe", Boolean.valueOf(result.getString(12)));            
                 }}));
