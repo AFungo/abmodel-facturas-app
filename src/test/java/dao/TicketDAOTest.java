@@ -58,7 +58,11 @@ public class TicketDAOTest {
         Field instance = TicketDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
-        DBManager.deleteDB();
+        try {
+            DBManager.deleteDB();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         DBManager.closeConnection();
     }
 

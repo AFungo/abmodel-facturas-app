@@ -37,7 +37,11 @@ public class DollarPriceDAOTest {
         Field instance = DollarPriceDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
-        DBManager.deleteDB();
+        try {
+            DBManager.deleteDB();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         DBManager.closeConnection();
     }
 

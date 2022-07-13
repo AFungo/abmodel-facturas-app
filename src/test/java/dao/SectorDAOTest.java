@@ -33,7 +33,11 @@ public class SectorDAOTest {
         Field instance = SectorDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
-        DBManager.deleteDB();
+        try {
+            DBManager.deleteDB();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         DBManager.closeConnection();
     }
 
