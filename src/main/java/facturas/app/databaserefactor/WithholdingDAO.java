@@ -4,6 +4,7 @@ import facturas.app.models.Provider;
 import facturas.app.models.Withholding;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import facturas.app.utils.Parser;
 import logger.Handler;
 
 import java.sql.Date;
@@ -112,9 +113,9 @@ public class WithholdingDAO implements DAO<Withholding> {
                         throw new IllegalStateException("Cannot find provider");
                     }
                     put("provider", provider.get());
-                    put("iva", Float.parseFloat(result.getString(5)));
-                    put("profits", Float.parseFloat(result.getString(6)));
-                    put("delivered", Boolean.valueOf(result.getString(7)));
+                    put("iva", Parser.parseFloat(result.getString(5)));
+                    put("profits", Parser.parseFloat(result.getString(6)));
+                    put("delivered", Parser.parseBool(result.getString(7)));
                     put("sector", result.getString(8));
                 }}));
             }

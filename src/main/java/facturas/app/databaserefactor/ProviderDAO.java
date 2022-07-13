@@ -110,7 +110,7 @@ public class ProviderDAO implements DAO<Provider>{
                     put("docNo", result.getString(1));
                     put("name", result.getString(2));
                     put("docType", result.getString(3));
-                    put("direction", result.getString(4));
+                    put("address", result.getString(4));
                     put("provSector", result.getString(5));
                     put("alias", result.getString(6));
                 }}));
