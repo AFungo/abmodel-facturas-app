@@ -536,7 +536,11 @@ public class FormatUtils {
     public static String mapToSQLValues(Map<String, Object> params) {
         List<String> values = new LinkedList<>();
         for (String key : params.keySet()) {
-            values.add(key + " = '" + params.get(key) + "'");
+            if (params.get(key).getClass() == String.class) {
+                values.add(key + " = '" + params.get(key) + "'");
+            } else {
+                values.add(key + " = " + params.get(key));
+            }
         }
 
         return String.join(", ", values);
