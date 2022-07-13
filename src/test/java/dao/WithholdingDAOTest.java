@@ -6,9 +6,7 @@ import facturas.app.databaserefactor.ProviderDAO;
 import facturas.app.databaserefactor.WithholdingDAO;
 import facturas.app.models.Provider;
 import facturas.app.models.Withholding;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
@@ -22,9 +20,13 @@ public class WithholdingDAOTest {
     DAO<Withholding> dao;
     Withholding w;
 
+    @BeforeAll
+    static void createConnection() {
+        DBManager.createConnection(DBManager.TypeDB.TESTING);
+    }
+
     @BeforeEach
     void setUp() {
-        DBManager.createConnection(DBManager.TypeDB.TESTING);
         DBManager.initializeDB();
         dao = WithholdingDAO.getInstance();
         Provider provider = new Provider(new HashMap<String, Object>() {{
@@ -40,17 +42,17 @@ public class WithholdingDAOTest {
         }});
     }
 
+    @AfterAll
+    static void closeConnection() {
+        DBManager.closeConnection();
+    }
+
     @AfterEach
     void resetSingleton() throws NoSuchFieldException, IllegalAccessException {
         Field instance = WithholdingDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
-    }
-
-    @AfterEach
-    void tearDown() {
         DBManager.deleteDB();
-        DBManager.closeConnection();
     }
 
     @Test

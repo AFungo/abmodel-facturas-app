@@ -4,9 +4,7 @@ import facturas.app.database.DBManager;
 import facturas.app.databaserefactor.DAO;
 import facturas.app.databaserefactor.SectorDAO;
 import facturas.app.models.Sector;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -20,12 +18,21 @@ public class SectorDAOTest {
     DAO<Sector> dao;
     Sector s;
 
+    @BeforeAll
+    static void createConnection() {
+        DBManager.createConnection(DBManager.TypeDB.TESTING);
+    }
+
     @BeforeEach
     void setUp() {
-        DBManager.createConnection(DBManager.TypeDB.TESTING);
         DBManager.initializeDB();
         dao = SectorDAO.getInstance();
         s = new Sector(Collections.singletonMap("name", "Farmacos"));
+    }
+
+    @AfterAll
+    static void closeConnection() {
+        DBManager.closeConnection();
     }
 
     @AfterEach
@@ -33,12 +40,7 @@ public class SectorDAOTest {
         Field instance = SectorDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
-    }
-
-    @AfterEach
-    void tearDown() {
         DBManager.deleteDB();
-        DBManager.closeConnection();
     }
 
     @Test

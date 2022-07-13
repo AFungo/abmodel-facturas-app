@@ -90,7 +90,7 @@ public class SectorDAO implements DAO<Sector>{
 
     @Override
     public boolean delete(Sector sector) {
-        String query = "DELETE FROM Sector WHERE name = " + sector.getValues().get("id");    
+        String query = "DELETE FROM Sector WHERE name = '" + sector.getValues().get("name") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
         if (affectedRows == 0) {
