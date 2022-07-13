@@ -19,8 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TicketDAOTest {
 
-    DAO<Ticket> dao;
-    Ticket t;
+    private DAO<Ticket> dao;
+    private Ticket t;
 
     @BeforeEach
     void setUp() {

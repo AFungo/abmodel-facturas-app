@@ -15,8 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DollarPriceDAOTest {
 
-    DAO<DollarPrice> dao;
-    DollarPrice d;
+    private DAO<DollarPrice> dao;
+    private DollarPrice d;
 
     @BeforeAll
     static void createConnection() {
