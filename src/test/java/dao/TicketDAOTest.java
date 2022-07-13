@@ -9,6 +9,7 @@ import facturas.app.models.Provider;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Isolated
 public class TicketDAOTest {
 
     private DAO<Ticket> dao;

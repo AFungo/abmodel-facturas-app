@@ -5,6 +5,7 @@ import facturas.app.databaserefactor.DAO;
 import facturas.app.databaserefactor.ProviderDAO;
 import facturas.app.models.Provider;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Isolated
 public class ProviderDAOTest {
 
     private DAO<Provider> dao;

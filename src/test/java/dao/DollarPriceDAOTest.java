@@ -5,6 +5,7 @@ import facturas.app.databaserefactor.DAO;
 import facturas.app.databaserefactor.DollarPriceDAO;
 import facturas.app.models.DollarPrice;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Isolated
 public class DollarPriceDAOTest {
 
     private DAO<DollarPrice> dao;
