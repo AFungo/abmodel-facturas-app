@@ -19,6 +19,11 @@ public class Withholding {
         assert repOk();
     }
 
+    // TODO: Remove this, remove the relation of inheritance Ticket -> Withholding
+    public Withholding() {
+        values = null;
+    }
+
     public void setValues(Map<String, Object> values) {
         for (String s : values.keySet()) {
             this.values.put(s, values.get(s));

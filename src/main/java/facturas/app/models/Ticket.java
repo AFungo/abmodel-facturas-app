@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  *
  * @author Agustin Nolasco
  */
-public class Ticket {
+public class Ticket extends Withholding {
 
     private final Map<String, Object> values;
 

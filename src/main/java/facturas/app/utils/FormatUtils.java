@@ -31,7 +31,7 @@ public class FormatUtils {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
         attributes += "id, exchangeType, exchangeMoney, issuedByMe, type, totalAmount";
-        values += dict.get("id") + ", " + dict.get("exchangeType") + ", '" + dict.get("exchangeMoney") 
+        values += ((Withholding)dict.get("withholding")).getValues().get("id") + ", " + dict.get("exchangeType") + ", '" + dict.get("exchangeMoney")
                 + "', " + dict.get("issuedByMe") + ", '" + dict.get("type") + "', " + dict.get("totalAmount");
 
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"ivaTax", "netAmountWI", 

@@ -49,10 +49,7 @@ public class TicketDAOTest {
         WithholdingDAO.getInstance().save(withholding);
 
         t = new Ticket(new HashMap<String, Object>() {{
-            put("id", withholding.getValues().get("id"));
-            put("date", Date.valueOf("2022-5-25"));
-            put("number", "0123456789");
-            put("provider", provider);
+            put("withholding", withholding);
             put("type", "6 - Factura B");
             put("exchangeType", 1.5f);
             put("exchangeMoney", "$");

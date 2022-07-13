@@ -54,7 +54,6 @@ public class TicketDAO implements DAO<Ticket> {
             return false;
         }
 
-        ticket.setValues(Collections.singletonMap("id", Integer.toString(generatedId)));
         cache.add(ticket);
         return true;
     }
@@ -65,7 +64,7 @@ public class TicketDAO implements DAO<Ticket> {
         prepareCache();
 
         String query = "UPDATE Ticket SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
-        + ticket.getValues().get("id");
+        + ((Withholding)ticket.getValues().get("withholding")).getValues().get("id");
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
 
@@ -84,7 +83,8 @@ public class TicketDAO implements DAO<Ticket> {
     public boolean delete(Ticket ticket) {
         prepareCache();        
 
-        String query = "DELETE FROM Ticket WHERE id = " + ticket.getValues().get("id");    
+        String query = "DELETE FROM Ticket WHERE id = " +
+                ((Withholding)ticket.getValues().get("withholding")).getValues().get("id");
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
         if (affectedRows == 0) {
@@ -110,7 +110,7 @@ public class TicketDAO implements DAO<Ticket> {
                     if (!withholding.isPresent()) {
                         throw new IllegalStateException("Cannot find withholding");
                     }
-                    put("id", withholding);
+                    put("withholding", withholding);
                     put("type", result.getString(2));
                     put("numberTo", Parser.parseInt(result.getString(3)));
                     put("authCode", result.getString(4));
