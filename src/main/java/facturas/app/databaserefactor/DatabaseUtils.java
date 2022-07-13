@@ -70,7 +70,7 @@ public class DatabaseUtils {
         try {
             Connection connection = DBManager.getConnection();
             PreparedStatement stm;
-            stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            stm = connection.prepareStatement(query);
             int affectedRows = stm.executeUpdate();
         
             return affectedRows;
@@ -80,6 +80,7 @@ public class DatabaseUtils {
                 Handler.showErrorMessage("El item que se intento cargar ya estaba cargado");
             } else {                                //unknown error
                 Handler.logUnexpectedError(e, "query: " + query + "\n" + e.toString());
+                System.out.println("Error: " + e.toString());
             }
             return 0;
         }
