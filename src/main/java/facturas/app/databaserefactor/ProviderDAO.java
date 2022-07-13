@@ -67,8 +67,8 @@ public class ProviderDAO implements DAO<Provider>{
     public boolean update(Provider provider, Map<String, Object> params) {
         prepareCache();
       
-        String query = "UPDATE Provider SET " + FormatUtils.mapToSQLValues(params)
-                + " WHERE docNo = '" + provider.getValues().get("docNo") + "'";
+        String query = "UPDATE Provider SET " + FormatUtils.mapToSQLValues(params) + " WHERE docNo = "
+                + "'" + provider.getValues().get("docNo") + "'";
 
         int affectedRows = DatabaseUtils.executeUpdate(query);
         if (affectedRows == 0) {

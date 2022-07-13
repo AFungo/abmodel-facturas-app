@@ -7,6 +7,7 @@ import facturas.app.models.Sector;
 import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
+import java.sql.Connection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +18,13 @@ public class SectorDAOTest {
     
     DAO<Sector> dao;
     Sector s;
+    static Connection connection;
+
 
     @BeforeAll
     static void createConnection() {
         DBManager.createConnection(DBManager.TypeDB.TESTING);
+        connection = DBManager.getConnection();
     }
 
     @BeforeEach
@@ -52,7 +56,8 @@ public class SectorDAOTest {
 
     @Test
     void deleteTest() {
-        dao.save(s);
+        assertThat(dao.getAll()).doesNotContain(s);
+        assertThat(dao.save(s)).isTrue();
         assertThat(dao.getAll()).contains(s);
         assertThat(dao.delete(s)).isTrue();
         assertThat(dao.getAll()).doesNotContain(s);
@@ -64,7 +69,7 @@ public class SectorDAOTest {
         Map<String, Object> params = new HashMap<String, Object>() {{
             put("name", "Quimicos");
         }};
-        dao.save(s);
+        assertThat(dao.save(s)).isTrue();
         assertThat(dao.getAll()).contains(s);
         Map<String, Object> oldValues = s.getValues();
         assertThat(dao.update(s, params)).isTrue();

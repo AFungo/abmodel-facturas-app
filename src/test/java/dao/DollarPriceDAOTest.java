@@ -56,7 +56,8 @@ public class DollarPriceDAOTest {
 
     @Test
     void deleteTest() {
-        dao.save(d);
+        assertThat(dao.getAll()).doesNotContain(d);
+        assertThat(dao.save(d)).isTrue();
         assertThat(dao.getAll()).contains(d);
         assertThat(dao.delete(d)).isTrue();
         assertThat(dao.getAll()).doesNotContain(d);
@@ -69,7 +70,7 @@ public class DollarPriceDAOTest {
             put("buy", 280.0f);
             put("sell", 233.0f);
         }};
-        dao.save(d);
+        assertThat(dao.save(d)).isTrue();
         assertThat(dao.getAll()).contains(d);
         Map<String, Object> oldValues = d.getValues();
         assertThat(dao.update(d, params)).isTrue();

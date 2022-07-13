@@ -55,7 +55,8 @@ public class ProviderDAOTest {
 
     @Test
     void deleteTest() {
-        dao.save(p);
+        assertThat(dao.getAll()).doesNotContain(p);
+        assertThat(dao.save(p)).isTrue();
         assertThat(dao.getAll()).contains(p);
         assertThat(dao.delete(p)).isTrue();
         assertThat(dao.getAll()).doesNotContain(p);
@@ -68,7 +69,7 @@ public class ProviderDAOTest {
             put("docType", "CUIL");
             put("docNo", "27123147");
         }};
-        dao.save(p);
+        assertThat(dao.save(p)).isTrue();
         assertThat(dao.getAll()).contains(p);
         Map<String, Object> oldValues = p.getValues();
         assertThat(dao.update(p, params)).isTrue();

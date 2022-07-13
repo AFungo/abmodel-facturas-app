@@ -40,6 +40,7 @@ public class DatabaseUtils {
             PreparedStatement stm;
             stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             int affectedRows = stm.executeUpdate();
+            stm.
         
             return affectedRows;
         

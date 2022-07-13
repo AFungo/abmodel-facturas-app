@@ -52,6 +52,8 @@ public class SectorDAO implements DAO<Sector>{
 
     @Override
     public boolean save(Sector sector) {
+        prepareCache();
+
         Pair<String, String> sqlValues = FormatUtils.sectorToSQL(sector);
 
         String query = "INSERT INTO Sector (" + sqlValues.getFst() + ") "
@@ -71,15 +73,16 @@ public class SectorDAO implements DAO<Sector>{
 
     @Override
     public boolean update(Sector sector, Map<String, Object> params) {
-        String query = "UPDATE Sector SET " + FormatUtils.mapToSQLValues(params) + " WHERE name = " 
-        + sector.getValues().get("name");
+        prepareCache();
+
+        String query = "UPDATE Sector SET " + FormatUtils.mapToSQLValues(params) + " WHERE name = "
+                + "'" + sector.getValues().get("name") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
         if (affectedRows == 0) {
             return false;
         }
 
-        prepareCache();
         //update cache if executeQuery was successful
         cache.remove(sector);//los set no tienen para updatear un objeto
         sector.setValues(params);
@@ -90,6 +93,8 @@ public class SectorDAO implements DAO<Sector>{
 
     @Override
     public boolean delete(Sector sector) {
+        prepareCache();
+
         String query = "DELETE FROM Sector WHERE name = '" + sector.getValues().get("name") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
@@ -97,7 +102,6 @@ public class SectorDAO implements DAO<Sector>{
             return false;
         }
         
-        prepareCache();
         cache.remove(sector);
         return true;
     }
