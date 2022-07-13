@@ -81,7 +81,7 @@ public class SectorDAO implements DAO<Sector>{
         }
 
         //update cache if executeQuery was successful
-        cache.remove(sector);//los set no tienen para updatear un objeto
+        cache.remove(sector);
         sector.setValues(params);
         cache.add(sector);
         return true;

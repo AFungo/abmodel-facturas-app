@@ -22,6 +22,7 @@ import java.util.Set;
 /**
  *this class implements DAO interface for DollarPrices model
  * 
+ * 
  */
 public class DollarPriceDAO implements DAO<DollarPrice>{
     

@@ -20,6 +20,7 @@ import java.util.Set;
 /**
  *
  * this class implements DAO interface for Provider model
+ * 
  */
 public class ProviderDAO implements DAO<Provider>{
     
