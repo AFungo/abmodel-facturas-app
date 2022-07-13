@@ -5,10 +5,11 @@
  */
 package facturas.app.databaserefactor;
 
-import facturas.app.Controller;
 import facturas.app.models.Sector;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import logger.Handler;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,8 +17,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -55,7 +54,6 @@ public class SectorDAO implements DAO<Sector>{
         prepareCache();
 
         Pair<String, String> sqlValues = FormatUtils.sectorToSQL(sector);
-
         String query = "INSERT INTO Sector (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
@@ -64,7 +62,6 @@ public class SectorDAO implements DAO<Sector>{
             return false;
         }
 
-        prepareCache();
         cache.add(sector);
         //add item to cache if executeQuery was successful
 
@@ -77,7 +74,7 @@ public class SectorDAO implements DAO<Sector>{
 
         String query = "UPDATE Sector SET " + FormatUtils.mapToSQLValues(params) + " WHERE name = "
                 + "'" + sector.getValues().get("name") + "'";
-        
+
         int affectedRows = DatabaseUtils.executeUpdate(query);
         if (affectedRows == 0) {
             return false;
@@ -94,7 +91,6 @@ public class SectorDAO implements DAO<Sector>{
     @Override
     public boolean delete(Sector sector) {
         prepareCache();
-
         String query = "DELETE FROM Sector WHERE name = '" + sector.getValues().get("name") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
@@ -120,7 +116,7 @@ public class SectorDAO implements DAO<Sector>{
             }
         } catch (SQLException ex) {
             cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Handler.logUnexpectedError(ex);
         }
     }    
 

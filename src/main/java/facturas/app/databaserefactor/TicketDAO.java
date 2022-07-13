@@ -1,9 +1,10 @@
 package facturas.app.databaserefactor;
 
-import facturas.app.Controller;
 import facturas.app.models.Ticket;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import logger.Handler;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -11,8 +12,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * this class implements DAO interface for Tiket model
@@ -47,17 +46,20 @@ public class TicketDAO implements DAO<Ticket> {
 
     @Override
     public boolean save(Ticket ticket) {
+        prepareCache();        
         Pair<String, String> sqlValues = FormatUtils.ticketToSQL(ticket);
-
         String query = "INSERT INTO Ticket (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
-        int affectedRows = DatabaseUtils.executeUpdate(query);
-        if (affectedRows == 0) {
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
             return false;
         }
-        prepareCache();        
 
+        //add id to withholding
+        ticket.setValues(new HashMap<String, Object>() {{
+            put("id", String.valueOf(generatedId));
+        }});
         cache.add(ticket);//add item to cache if executeQuery was successful
 
         return true;
@@ -66,6 +68,8 @@ public class TicketDAO implements DAO<Ticket> {
 
     @Override
     public boolean update(Ticket ticket, Map<String, Object> params) {
+        prepareCache();
+
         String query = "UPDATE Ticket SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
         + ticket.getValues().get("id");
         
@@ -74,8 +78,6 @@ public class TicketDAO implements DAO<Ticket> {
         if (affectedRows == 0) {
             return false;
         }
-
-        prepareCache();        
 
         //update cache if executeQuery was successful
         cache.remove(ticket);
@@ -86,6 +88,8 @@ public class TicketDAO implements DAO<Ticket> {
 
     @Override
     public boolean delete(Ticket ticket) {
+        prepareCache();        
+
         String query = "DELETE FROM Ticket WHERE id = " + ticket.getValues().get("id");    
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
@@ -93,7 +97,6 @@ public class TicketDAO implements DAO<Ticket> {
             return false;
         }
 
-        prepareCache();        
         cache.remove(ticket);
         return true;
     }
@@ -133,7 +136,7 @@ public class TicketDAO implements DAO<Ticket> {
             }
         } catch (SQLException ex) {
             cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Handler.logUnexpectedError(ex);
         }
 
     }

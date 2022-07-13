@@ -101,7 +101,7 @@ public class DBManager {
             stm.executeUpdate(tableQuery);
             return true;
         } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
+            throw new IllegalStateException(e.toString(), e);
         }
     }
     
@@ -197,7 +197,7 @@ public class DBManager {
             stm.executeUpdate(tableDollarPrice);
             return true;
         } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
+            throw new IllegalStateException(e.toString(), e);
         }
     }
     

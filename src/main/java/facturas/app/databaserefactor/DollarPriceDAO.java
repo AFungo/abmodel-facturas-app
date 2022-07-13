@@ -5,10 +5,11 @@
  */
 package facturas.app.databaserefactor;
 
-import facturas.app.Controller;
 import facturas.app.models.DollarPrice;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
+import logger.Handler;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,8 +18,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *this class implements DAO interface for DollarPrices model
@@ -53,8 +52,9 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
 
     @Override
     public boolean save(DollarPrice dollarPrice) {
-        Pair<String, String> sqlValues = FormatUtils.dollarPriceToSQL(dollarPrice);
+        prepareCache();
 
+        Pair<String, String> sqlValues = FormatUtils.dollarPriceToSQL(dollarPrice);
         String query = "INSERT INTO DollarPrice (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
@@ -63,7 +63,6 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
             return false;
         }
 
-        prepareCache();
         cache.add(dollarPrice);
         //add item to cache if executeQuery was successful
 
@@ -73,6 +72,8 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
 
     @Override
     public boolean update(DollarPrice dollarPrice, Map<String, Object> params) {
+        prepareCache();
+        
         String query = "UPDATE DollarPrice SET " + FormatUtils.mapToSQLValues(params) + " WHERE date = " 
         + "'" + dollarPrice.getValues().get("date") + "'";
         
@@ -81,7 +82,6 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
             return false;
         }
 
-        prepareCache();
         //update cache if executeQuery was successful
         cache.remove(dollarPrice);
         dollarPrice.setValues(params);
@@ -91,6 +91,8 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
 
     @Override
     public boolean delete(DollarPrice dollarPrice) {
+        prepareCache();
+
         String query = "DELETE FROM DollarPrice WHERE date = '" + dollarPrice.getValues().get("date") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
@@ -98,7 +100,6 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
             return false;
         }
         
-        prepareCache();
         cache.remove(dollarPrice);
         return true;    
     }
@@ -119,7 +120,7 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
             }
         } catch (SQLException ex) {
             cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Handler.logUnexpectedError(ex);
         }
 }    
     
