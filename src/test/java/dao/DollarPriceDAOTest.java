@@ -4,9 +4,7 @@ import facturas.app.database.DBManager;
 import facturas.app.databaserefactor.DAO;
 import facturas.app.databaserefactor.DollarPriceDAO;
 import facturas.app.models.DollarPrice;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
@@ -20,9 +18,13 @@ public class DollarPriceDAOTest {
     DAO<DollarPrice> dao;
     DollarPrice d;
 
+    @BeforeAll
+    static void createConnection() {
+        DBManager.createConnection(DBManager.TypeDB.TESTING);
+    }
+
     @BeforeEach
     void setUp() {
-        DBManager.createConnection(DBManager.TypeDB.TESTING);
         DBManager.initializeDB();
         dao = DollarPriceDAO.getInstance();
         d = new DollarPrice(new HashMap<String, Object>() {{
@@ -32,17 +34,17 @@ public class DollarPriceDAOTest {
         }});
     }
 
+    @AfterAll
+    static void closeConnection() {
+        DBManager.closeConnection();
+    }
+
     @AfterEach
     void resetSingleton() throws NoSuchFieldException, IllegalAccessException {
         Field instance = DollarPriceDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
-    }
-
-    @AfterEach
-    void tearDown() {
         DBManager.deleteDB();
-        DBManager.closeConnection();
     }
 
     @Test
@@ -64,9 +66,8 @@ public class DollarPriceDAOTest {
     @Test
     void updateTest() {
         Map<String, Object> params = new HashMap<String, Object>() {{
-            put("date", Date.valueOf("2018-8-13"));
-            put("buy", 40.0f);
-            put("sell", 30.0f);
+            put("buy", 280.0f);
+            put("sell", 233.0f);
         }};
         dao.save(d);
         assertThat(dao.getAll()).contains(d);

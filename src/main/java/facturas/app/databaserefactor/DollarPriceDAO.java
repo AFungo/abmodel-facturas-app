@@ -74,7 +74,7 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
     @Override
     public boolean update(DollarPrice dollarPrice, Map<String, Object> params) {
         String query = "UPDATE DollarPrice SET " + FormatUtils.mapToSQLValues(params) + " WHERE date = " 
-        + dollarPrice.getValues().get("date");
+        + "'" + dollarPrice.getValues().get("date") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
         if (affectedRows == 0) {
@@ -91,7 +91,7 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
 
     @Override
     public boolean delete(DollarPrice dollarPrice) {
-        String query = "DELETE FROM DollarPrice WHERE id = " + dollarPrice.getValues().get("date");    
+        String query = "DELETE FROM DollarPrice WHERE date = '" + dollarPrice.getValues().get("date") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
         if (affectedRows == 0) {
