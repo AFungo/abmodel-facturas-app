@@ -112,7 +112,7 @@ public class DBManager {
                                             + "docNo VARCHAR(30) PRIMARY KEY,"
                                             + "name VARCHAR(100),"
                                             + "docType VARCHAR(20),"
-                                            + "direction VARCHAR(50),"
+                                            + "address VARCHAR(50),"
                                             + "sector VARCHAR(50),"
                                             + "alias VARCHAR(100),"
                                             + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
