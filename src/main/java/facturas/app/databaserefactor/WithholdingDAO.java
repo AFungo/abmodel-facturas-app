@@ -54,12 +54,8 @@ public class WithholdingDAO implements DAO<Withholding> {
             return false;
         }
 
-        //add id to withholding
-        withholding.setValues(new HashMap<String, Object>() {{
-            put("id", String.valueOf(generatedId));
-        }});
+        withholding.setValues(Collections.singletonMap("id", Integer.toString(generatedId)));
         cache.add(withholding);
-        //add item to cache if executeQuery was successful
         return true;
     }
 

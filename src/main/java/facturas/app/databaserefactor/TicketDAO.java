@@ -7,11 +7,7 @@ import logger.Handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * this class implements DAO interface for Tiket model
@@ -56,12 +52,8 @@ public class TicketDAO implements DAO<Ticket> {
             return false;
         }
 
-        //add id to withholding
-        ticket.setValues(new HashMap<String, Object>() {{
-            put("id", String.valueOf(generatedId));
-        }});
-        cache.add(ticket);//add item to cache if executeQuery was successful
-
+        ticket.setValues(Collections.singletonMap("id", Integer.toString(generatedId)));
+        cache.add(ticket);
         return true;
     }
 
