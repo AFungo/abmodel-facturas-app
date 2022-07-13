@@ -24,11 +24,6 @@ public class TicketDAOTest {
     private DAO<Ticket> dao;
     private Ticket t;
 
-    @BeforeAll
-    static void createConnection() {
-        DBManager.createConnection(DBManager.TypeDB.TESTING);
-    }
-
     @BeforeEach
     void setUp() {
         DBManager.createConnection(DBManager.TypeDB.TESTING);
@@ -58,17 +53,13 @@ public class TicketDAOTest {
         }});
     }
 
-    @AfterAll
-    static void closeConnection() {
-        DBManager.closeConnection();
-    }
-
     @AfterEach
     void resetSingleton() throws NoSuchFieldException, IllegalAccessException {
         Field instance = TicketDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
         DBManager.deleteDB();
+        DBManager.closeConnection();
     }
 
     @Test

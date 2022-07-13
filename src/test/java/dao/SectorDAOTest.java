@@ -20,21 +20,12 @@ public class SectorDAOTest {
     private DAO<Sector> dao;
     private Sector s;
 
-    @BeforeAll
-    static void createConnection() {
-        DBManager.createConnection(DBManager.TypeDB.TESTING);
-    }
-
     @BeforeEach
     void setUp() {
+        DBManager.createConnection(DBManager.TypeDB.TESTING);
         DBManager.initializeDB();
         dao = SectorDAO.getInstance();
         s = new Sector(Collections.singletonMap("name", "droga"));
-    }
-
-    @AfterAll
-    static void closeConnection() {
-        DBManager.closeConnection();
     }
 
     @AfterEach
@@ -43,6 +34,7 @@ public class SectorDAOTest {
         instance.setAccessible(true);
         instance.set(null, null);
         DBManager.deleteDB();
+        DBManager.closeConnection();
     }
 
     @Test

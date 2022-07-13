@@ -22,13 +22,9 @@ public class WithholdingDAOTest {
     private DAO<Withholding> dao;
     private Withholding w;
 
-    @BeforeAll
-    static void createConnection() {
-        DBManager.createConnection(DBManager.TypeDB.TESTING);
-    }
-
     @BeforeEach
     void setUp() {
+        DBManager.createConnection(DBManager.TypeDB.TESTING);
         DBManager.initializeDB();
         dao = WithholdingDAO.getInstance();
         Provider provider = new Provider(new HashMap<String, Object>() {{
@@ -44,17 +40,13 @@ public class WithholdingDAOTest {
         }});
     }
 
-    @AfterAll
-    static void closeConnection() {
-        DBManager.closeConnection();
-    }
-
     @AfterEach
     void resetSingleton() throws NoSuchFieldException, IllegalAccessException {
         Field instance = WithholdingDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
         DBManager.deleteDB();
+        DBManager.closeConnection();
     }
 
     @Test

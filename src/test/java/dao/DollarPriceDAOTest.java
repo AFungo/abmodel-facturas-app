@@ -20,13 +20,9 @@ public class DollarPriceDAOTest {
     private DAO<DollarPrice> dao;
     private DollarPrice d;
 
-    @BeforeAll
-    static void createConnection() {
-        DBManager.createConnection(DBManager.TypeDB.TESTING);
-    }
-
     @BeforeEach
     void setUp() {
+        DBManager.createConnection(DBManager.TypeDB.TESTING);
         DBManager.initializeDB();
         dao = DollarPriceDAO.getInstance();
         d = new DollarPrice(new HashMap<String, Object>() {{
@@ -36,17 +32,13 @@ public class DollarPriceDAOTest {
         }});
     }
 
-    @AfterAll
-    static void closeConnection() {
-        DBManager.closeConnection();
-    }
-
     @AfterEach
     void resetSingleton() throws NoSuchFieldException, IllegalAccessException {
         Field instance = DollarPriceDAO.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
         DBManager.deleteDB();
+        DBManager.closeConnection();
     }
 
     @Test

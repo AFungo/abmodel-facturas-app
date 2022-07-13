@@ -37,7 +37,6 @@ public class DBManager {
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(JDBC_URL);
-            System.out.println("Connection was established");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e);
         }
@@ -66,26 +65,20 @@ public class DBManager {
      * Close the actual connection
      */
     public static void closeConnection() {
+        //DriverManager.getConnection("jdbc:derby:;shutdown=true");
         try {
-            //DriverManager.getConnection("jdbc:derby:;shutdown=true");
             connection.close();
-        }catch (SQLException e) {
-            System.out.println("Connection was closed");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     public static void initializeDB() {
-        boolean sectorTableCreated = createTable("Sector");
-        boolean providerTableCreated = createTable("Provider");
-        boolean withholdingTableCreated = createTable("Withholding");
-        boolean ticketTableCreated = createTable("Ticket");
-        boolean dollarPriceTableCreated = createTable("DollarPrice");
-        
-        System.out.println("sectorTable " + (sectorTableCreated ? "was created" : "already exists"));
-        System.out.println("providerTable " + (providerTableCreated ? "was created" : "already exists"));
-        System.out.println("withholdingTable " + (withholdingTableCreated ? "was created" : "already exists"));
-        System.out.println("ticketTable " + (ticketTableCreated ? "was created" : "already exists"));
-        System.out.println("dollarPriceTable " + (dollarPriceTableCreated ? "was created" : "already exists"));
+        createTable("Sector");
+        createTable("Provider");
+        createTable("Withholding");
+        createTable("Ticket");
+        createTable("DollarPrice");
     }
     
     private static boolean createTable(String tableName) {
@@ -171,17 +164,11 @@ public class DBManager {
     }
     
     public static void deleteDB() {
-        boolean deletedTicketTable = dropTable("Ticket");
-        boolean deletedWithholdingTable = dropTable("Withholding");
-        boolean deletedProviderTable = dropTable("Provider");
-        boolean deletedDollarPriceTable = dropTable("DollarPrice");
-        boolean deletedSectorTable = dropTable("Sector");
-        
-        System.out.println("withholding " + (deletedWithholdingTable ? "was deleted" : "didn't exist"));
-        System.out.println("ticketTable " + (deletedTicketTable ? "was deleted" : "didn't exist"));
-        System.out.println("providerTable " + (deletedProviderTable ? "was deleted" : "didn't exist"));
-        System.out.println("dollarPriceTable " + (deletedDollarPriceTable ? "was deleted" : "didn't exist"));
-        System.out.println("sectorTable " + (deletedSectorTable ? "was deleted" : "didn't exist"));
+        dropTable("Ticket");
+        dropTable("Withholding");
+        dropTable("Provider");
+        dropTable("DollarPrice");
+        dropTable("Sector");
     }
     
     private static boolean dropTable(String table) {
