@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package databaserefactor;
 
 import models.Provider;
-import utils.FormatUtils;
 import utils.Pair;
 import logger.Handler;
+import utils.sql.SQLUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +45,7 @@ public class ProviderDAO implements DAO<Provider>{
     public boolean save(Provider provider) {
         prepareCache();
 
-        Pair<String, String> sqlValues = FormatUtils.providerToSQL(provider);
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(provider);
         String query = "INSERT INTO Provider (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
             
@@ -68,7 +63,7 @@ public class ProviderDAO implements DAO<Provider>{
     public boolean update(Provider provider, Map<String, Object> params) {
         prepareCache();
       
-        String query = "UPDATE Provider SET " + FormatUtils.mapToSQLValues(params) + " WHERE docNo = "
+        String query = "UPDATE Provider SET " + SQLUtils.mapToSQLValues(params) + " WHERE docNo = "
                 + "'" + provider.getValues().get("docNo") + "'";
 
         int affectedRows = DatabaseUtils.executeUpdate(query);

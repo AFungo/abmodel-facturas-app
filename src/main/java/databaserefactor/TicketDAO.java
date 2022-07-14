@@ -2,10 +2,10 @@ package databaserefactor;
 
 import models.Ticket;
 import models.Withholding;
-import utils.FormatUtils;
 import utils.Pair;
 import utils.Parser;
 import logger.Handler;
+import utils.sql.SQLUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,7 +45,7 @@ public class TicketDAO implements DAO<Ticket> {
     @Override
     public boolean save(Ticket ticket) {
         prepareCache();        
-        Pair<String, String> sqlValues = FormatUtils.ticketToSQL(ticket);
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(ticket);
         String query = "INSERT INTO Ticket (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
@@ -63,7 +63,7 @@ public class TicketDAO implements DAO<Ticket> {
     public boolean update(Ticket ticket, Map<String, Object> params) {
         prepareCache();
 
-        String query = "UPDATE Ticket SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
+        String query = "UPDATE Ticket SET " + SQLUtils.mapToSQLValues(params) + " WHERE id = "
         + ((Withholding)ticket.getValues().get("withholding")).getValues().get("id");
         
         int affectedRows = DatabaseUtils.executeUpdate(query);

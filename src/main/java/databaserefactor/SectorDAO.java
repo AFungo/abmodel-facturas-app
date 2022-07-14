@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package databaserefactor;
 
 import models.Sector;
-import utils.FormatUtils;
 import utils.Pair;
 import logger.Handler;
+import utils.sql.SQLUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +48,7 @@ public class SectorDAO implements DAO<Sector>{
     public boolean save(Sector sector) {
         prepareCache();
 
-        Pair<String, String> sqlValues = FormatUtils.sectorToSQL(sector);
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(sector);
         String query = "INSERT INTO Sector (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
@@ -72,7 +67,7 @@ public class SectorDAO implements DAO<Sector>{
     public boolean update(Sector sector, Map<String, Object> params) {
         prepareCache();
 
-        String query = "UPDATE Sector SET " + FormatUtils.mapToSQLValues(params) + " WHERE name = "
+        String query = "UPDATE Sector SET " + SQLUtils.mapToSQLValues(params) + " WHERE name = "
                 + "'" + sector.getValues().get("name") + "'";
 
         int affectedRows = DatabaseUtils.executeUpdate(query);

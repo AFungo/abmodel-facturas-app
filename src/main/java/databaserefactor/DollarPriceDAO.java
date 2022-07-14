@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package databaserefactor;
 
 import models.DollarPrice;
-import utils.FormatUtils;
 import utils.Pair;
 import logger.Handler;
+import utils.sql.SQLUtils;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -55,7 +50,7 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
     public boolean save(DollarPrice dollarPrice) {
         prepareCache();
 
-        Pair<String, String> sqlValues = FormatUtils.dollarPriceToSQL(dollarPrice);
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(dollarPrice);
         String query = "INSERT INTO DollarPrice (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
@@ -65,17 +60,14 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
         }
 
         cache.add(dollarPrice);
-        //add item to cache if executeQuery was successful
-
         return true;
-
     }
 
     @Override
     public boolean update(DollarPrice dollarPrice, Map<String, Object> params) {
         prepareCache();
         
-        String query = "UPDATE DollarPrice SET " + FormatUtils.mapToSQLValues(params) + " WHERE date = " 
+        String query = "UPDATE DollarPrice SET " + SQLUtils.mapToSQLValues(params) + " WHERE date = "
         + "'" + dollarPrice.getValues().get("date") + "'";
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
@@ -83,7 +75,6 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
             return false;
         }
 
-        //update cache if executeQuery was successful
         cache.remove(dollarPrice);
         dollarPrice.setValues(params);
         cache.add(dollarPrice);

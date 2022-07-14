@@ -28,11 +28,11 @@ public class SQLUtils {
         Map<String, Object> modelValues = model.getValues();
         List<String> attributes = new LinkedList<>(), values = new LinkedList<>();
 
-        for(String key : modelValues.keySet().stream().filter(k -> modelValues.get(k) != null).collect(Collectors.toSet())) {
+        for (String key : modelValues.keySet().stream().filter(k -> modelValues.get(k) != null).collect(Collectors.toSet())) {
             if (modelsTypes.contains(modelValues.get(key).getClass())) {
                 Map<String, Object> subModelValues = ((Model)modelValues.get(key)).getID();
-                for(String idKey : subModelValues.keySet()) {
-                    attributes.add(idKey);
+                for (String idKey : subModelValues.keySet()) {
+                    attributes.add(key);
                     values.add(valueToSQL(subModelValues.get(idKey)));
                 }
             } else {
@@ -59,7 +59,7 @@ public class SQLUtils {
         if (needDoubleQuotes.contains(value.getClass())) {
             return "'" + value + "'";
         }
-        return (String)value;
+        return value.toString();
     }
 
     /** 

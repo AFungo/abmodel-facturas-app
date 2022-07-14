@@ -3,10 +3,10 @@ package databaserefactor;
 import models.Provider;
 import models.Sector;
 import models.Withholding;
-import utils.FormatUtils;
 import utils.Pair;
 import utils.Parser;
 import logger.Handler;
+import utils.sql.SQLUtils;
 
 import java.sql.Date;
 
@@ -47,7 +47,7 @@ public class WithholdingDAO implements DAO<Withholding> {
     public boolean save(Withholding withholding) {
         prepareCache();
 
-        Pair<String, String> sqlValues = FormatUtils.withholdingToSQL(withholding);
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(withholding);
         String query = "INSERT INTO Withholding (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
@@ -65,7 +65,7 @@ public class WithholdingDAO implements DAO<Withholding> {
     public boolean update(Withholding withholding, Map<String, Object> params) {
         prepareCache();
 
-        String query = "UPDATE Withholding SET " + FormatUtils.mapToSQLValues(params) + " WHERE id = " 
+        String query = "UPDATE Withholding SET " + SQLUtils.mapToSQLValues(params) + " WHERE id = "
         + withholding.getValues().get("id");
         
         int affectedRows = DatabaseUtils.executeUpdate(query);

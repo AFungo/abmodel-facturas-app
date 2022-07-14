@@ -147,15 +147,15 @@ public class DBManager {
                     + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
                     + "date DATE NOT NULL,"
                     + "number VARCHAR(30) NOT NULL,"
-                    + "providerDoc VARCHAR(30) NOT NULL,"
+                    + "provider VARCHAR(30) NOT NULL,"
                     + "iva REAL,"
                     + "profits REAL,"
                     + "delivered BOOLEAN DEFAULT false,"
                     + "sector VARCHAR(50),"
                     + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(name)"
                     + "ON DELETE SET NULL,"
-                    + "PRIMARY KEY (date, number, providerDoc),"
-                    + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (providerDoc) REFERENCES Provider(docNo)"
+                    + "PRIMARY KEY (date, number, provider),"
+                    + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (provider) REFERENCES Provider(docNo)"
                     + ")";
                 break;
 
