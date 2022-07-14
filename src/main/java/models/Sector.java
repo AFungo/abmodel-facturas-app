@@ -1,12 +1,13 @@
 package models;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Sector {
+public class Sector implements Model {
 
     private final Map<String, Object> values;
     private Map<String, Class<?>> types;
@@ -38,13 +39,8 @@ public class Sector {
         return new HashMap<>(values);
     }
 
-    /**
-    * @return a Map with the identifiers of the class.
-    */
     public Map<String, Object> getID() {
-        Map<String, Object> id = new HashMap<>();
-        id.put("name", values.get("name"));
-        return id;
+        return Collections.singletonMap("name", values.get("name"));
     }
 
     private boolean repOk() {

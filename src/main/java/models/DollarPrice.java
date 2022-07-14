@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.Date;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
  *
  * @author Agustin Nolasco
  */
-public class DollarPrice {
+public class DollarPrice implements Model {
 
     private final Map<String, Object> values;
     Map<String, Class<?>> types;
@@ -43,6 +44,11 @@ public class DollarPrice {
 
     public Map<String, Object> getValues() {
         return new HashMap<>(values);
+    }
+
+    @Override
+    public Map<String, Object> getID() {
+        return Collections.singletonMap("date", values.get("date"));
     }
 
     private boolean repOk() {

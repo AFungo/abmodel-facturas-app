@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
  *
  * @author Agustin Nolasco
  */
-public class Ticket extends Withholding {
+public class Ticket extends Withholding implements Model{
 
     private final Map<String, Object> values;
     private HashMap<String, Class<?>> types;
@@ -51,6 +52,11 @@ public class Ticket extends Withholding {
 
     public Map<String, Object> getValues() {
         return new HashMap<>(this.values);
+    }
+
+    @Override
+    public Map<String, Object> getID() {
+        return Collections.singletonMap("id", ((Withholding)values.get("withholding")).getID());
     }
 
     public boolean isIncome() {

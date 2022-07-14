@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.Date;
+import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.stream.Stream;
  *
  * @author Agustin Nolasco
  */
-public class Withholding {
+public class Withholding implements Model {
 
     private final Map<String, Object> values;
     private HashMap<String, Class<?>> types;
@@ -53,6 +54,11 @@ public class Withholding {
 
     public Map<String, Object> getValues() {
         return new HashMap<>(values);
+    }
+
+    @Override
+    public Map<String, Object> getID() {
+        return Collections.singletonMap("id", values.get("id"));
     }
 
     protected static Set<String> requiredKeys() {

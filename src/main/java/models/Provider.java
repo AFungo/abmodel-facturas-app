@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
  *
  * @author Agustin Nolasco
  */
-public class Provider {
+public class Provider implements Model {
 
     private final Map<String, Object> values;
     private Map<String, Class<?>> types;
@@ -47,13 +48,8 @@ public class Provider {
         return new HashMap<>(values);
     }
 
-    /**
-    * @return a Map with the identifiers of the class.
-    */
-    public Map<String, Object> getID(){
-        Map<String, Object> id = new HashMap<>();
-        id.put("docNo", values.get("docNo"));
-        return id;
+    public Map<String, Object> getID() {
+        return Collections.singletonMap("docNo", values.get("docNo"));
     }
     
     private boolean repOk() {
