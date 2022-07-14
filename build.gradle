@@ -11,7 +11,7 @@ task run(type: JavaExec) {
 
 jar {
     manifest {
-        attributes "Main-Class": "facturas.app.FacturasApp"
+        attributes "Main-Class": "FacturasApp"
     }
 
     from {

@@ -1,11 +1,11 @@
 package dao;
 
-import facturas.app.database.DBManager;
-import facturas.app.databaserefactor.DAO;
-import facturas.app.databaserefactor.ProviderDAO;
-import facturas.app.databaserefactor.WithholdingDAO;
-import facturas.app.models.Provider;
-import facturas.app.models.Withholding;
+import database.DBManager;
+import databaserefactor.DAO;
+import databaserefactor.ProviderDAO;
+import databaserefactor.WithholdingDAO;
+import models.Provider;
+import models.Withholding;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Isolated;
 

@@ -1,9 +1,9 @@
 package dao;
 
-import facturas.app.database.DBManager;
-import facturas.app.databaserefactor.DAO;
-import facturas.app.databaserefactor.ProviderDAO;
-import facturas.app.models.Provider;
+import database.DBManager;
+import databaserefactor.DAO;
+import databaserefactor.ProviderDAO;
+import models.Provider;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Isolated;
 

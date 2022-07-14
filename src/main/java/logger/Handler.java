@@ -5,7 +5,7 @@
  */
 package logger;
 
-import facturas.app.views.View;
+import views.View;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
