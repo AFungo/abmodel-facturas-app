@@ -29,11 +29,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.sql.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
@@ -83,11 +82,11 @@ public class Controller {
     }
     
     public void loadTicket(Map<String, String> values) {
-        createTicketOnDB(new Ticket(values));
+        createTicketOnDB(new Ticket(convertMap(values)));
     }
     
     public void loadWithholding(Map<String, String> values) {
-        WithholdingDAO.add(new Withholding(values));
+        WithholdingDAO.add(new Withholding(convertMap(values)));
     }
     
     public void loadDollarPrices(File f) {
@@ -95,7 +94,7 @@ public class Controller {
 
         List<DollarPrice> prices = new LinkedList<>();
         for (String priceStr : stringPrices) {
-            prices.add(new DollarPrice(FormatUtils.dollarPriceCsvToDict(priceStr)));
+            prices.add(new DollarPrice(convertMap(FormatUtils.dollarPriceCsvToDict(priceStr))));
         }
             
         for (DollarPrice p : prices) {
@@ -110,7 +109,7 @@ public class Controller {
         }
     }
     
-    public String validateProviderParam(Map<String, String> values, JComboBox<String> sectorsComboBox){
+    public String validateProviderParam(Map<String, Object> values, JComboBox<String> sectorsComboBox){
         String message = Validate.providerInput(values, sectorsComboBox);
         return message;
     }
@@ -192,7 +191,7 @@ public class Controller {
             WithholdingDAO.remove(filter);
     }
     public Ticket makeNegative(Ticket t){
-        Map<String, String> values = FormatUtils.objectToStringMap(t.getValues());
+        Map<String, Object> values = FormatUtils.objectToStringMap(t.getValues());
         values.put("totalAmount", "-" + values.get("totalAmount"));
         if (values.get("netAmountWI") != null) values.put("netAmountWI","-" + values.get("netAmountWI"));
         if (values.get("netAmountWOI") != null) values.put("netAmountWOI","-" + values.get("netAmountWOI"));
@@ -231,7 +230,7 @@ public class Controller {
     
     private void createTicketOnDB(Ticket ticket) {
         String id = WithholdingDAO.add(ticket);
-        ticket.addId(id);
+        ticket.setValues(Collections.singletonMap("id", id));
         TicketDAO.add(ticket);
     }
     
@@ -246,7 +245,7 @@ public class Controller {
         filter.removeCondition("docNo");
         filter.add("docNo", "=", oldDoc, String.class);
         Provider prov = ProviderDAO.get(filter).get(0);
-        prov.modifyDocNo(newDoc);
+        prov.setValues(Collections.singletonMap("docNo", newDoc));
         ProviderDAO.add(prov);
         //moving tickets from old doc to new doc
         SQLFilter withholdingFilter = new SQLFilter();
@@ -258,13 +257,15 @@ public class Controller {
         return true;
     }
     
-    public void filterWithholdings(SQLFilter filter, List<Withholding> tickets) {
+    public void filterWithholding(SQLFilter filter, List<Withholding> tickets) {
         Pair<Float,Float> ivaBounds = FilterUtils.getFilterValues(filter, "iva");
         Pair<Float,Float> profitsBounds = FilterUtils.getFilterValues(filter, "profits");
         
         for (Withholding t : tickets) {
-            filterWithholdingValue(t, "iva", ivaBounds.getFst(), ivaBounds.getSnd(), w -> w.deleteIva());
-            filterWithholdingValue(t, "profits", profitsBounds.getFst(), profitsBounds.getSnd(), w -> w.deleteProfits());
+            filterWithholdingValue(t, "iva", ivaBounds.getFst(), ivaBounds.getSnd(),
+                    w -> w.setValues(Collections.singletonMap("iva", null)));
+            filterWithholdingValue(t, "profits", profitsBounds.getFst(), profitsBounds.getSnd(),
+                    w -> w.setValues(Collections.singletonMap("profits", null)));
         }
     }
     
@@ -302,7 +303,7 @@ public class Controller {
             for(JTextField t : textField) t.setText("");
     }
     
-    public void addProvider(Map<String, String> values){
+    public void addProvider(Map<String, Object> values){
         Provider provider = new Provider(values);
         ProviderDAO.add(provider);
     }
@@ -349,7 +350,7 @@ public class Controller {
         }
         //load dollar prices
         loadBackupData(folder,"prices.csv", "price", e -> DollarPriceDAO.add(e), 
-                s -> new DollarPrice(FormatUtils.dollarPriceCsvBackupToDict(s)));  //function removes the ; at the end of the sector name
+                s -> new DollarPrice(convertMap(FormatUtils.dollarPriceCsvBackupToDict(s))));  //function removes the ; at the end of the sector name
         //load sectors
         loadBackupData(folder,"sectors.csv", "sectorBackup", e -> SectorDAO.add(e), 
                 s -> s.split(";")[0]);  //function removes the ; at the end of the sector name
@@ -427,7 +428,7 @@ public class Controller {
             
         List<String> stringItems = new LinkedList<>();
         try {
-            stringItems = Files.readAllLines(f.toPath(), Charset.forName("UTF-8"));
+            stringItems = Files.readAllLines(f.toPath(), StandardCharsets.UTF_8);
         } catch (IOException ex) {
             throw new IllegalStateException(ex.toString());
         }
@@ -440,4 +441,17 @@ public class Controller {
         Boolean issuedByMe = initialLine.contains("Receptor");
         return new Pair<>(stringItems, issuedByMe);
     }
+
+    /*
+    TODO: this method must be removed, its purpose is connect
+     the new refactored code with the non-refactored views
+    */
+    private Map<String, Object> convertMap(Map<String, String> values) {
+        Map<String, Object> convertedValues = new HashMap<>();
+        for (String key : values.keySet()) {
+            convertedValues.put(key, values.get(key));
+        }
+        return convertedValues;
+    }
+
 }

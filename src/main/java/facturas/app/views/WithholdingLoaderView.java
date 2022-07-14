@@ -49,7 +49,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
-            names.add(p.getValues().get("name"));
+            names.add((String) p.getValues().get("name"));
         }
         return names;
     }
@@ -402,10 +402,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         
         //add providers things
         Provider provider = providerCheck.get(0);
-        values.put("docNo", provider.getValues().get("docNo"));
-        values.put("docType", provider.getValues().get("docType"));
-        values.put("name", provider.getValues().get("name"));
-        values.put("provSector", provider.getValues().get("sector"));
+        values.put("docNo", (String) provider.getValues().get("docNo"));
+        values.put("docType", (String) provider.getValues().get("docType"));
+        values.put("name", (String) provider.getValues().get("name"));
+        values.put("provSector", (String) provider.getValues().get("sector"));
         
         values.put("date", sdf.format(dateChooser.getDate()));
         
@@ -423,7 +423,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
                 docNoComboBox.removeAllItems();
                 docNoComboBox.setEnabled(true);
                 for (Provider p : providersList) {
-                    docNoComboBox.addItem(p.getValues().get("docNo"));
+                    docNoComboBox.addItem((String) p.getValues().get("docNo"));
                 }
                 docNoComboBox.setSelectedItem(null);
             }

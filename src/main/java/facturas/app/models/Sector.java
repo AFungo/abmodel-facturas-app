@@ -1,22 +1,18 @@
 package facturas.app.models;
 
-import java.util.Arrays;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- *
- * @author Agustin Nolasco
- */
-public class Provider {
+public class Sector {
 
     private final Map<String, Object> values;
     private Map<String, Class<?>> types;
 
-    public Provider(Map<String, Object> values) {
+    public Sector(Map<String, Object> values) {
         this.values = new HashMap<>(values);
         setTypes();
         assert repOk();
@@ -24,12 +20,7 @@ public class Provider {
 
     private void setTypes() {
         types = new HashMap<String, Class<?>>() {{
-            put("docNo", String.class);
             put("name", String.class);
-            put("docType", String.class);
-            put("address", String.class);
-            put("provSector", String.class);
-            put("alies", String.class);
         }};
     }
 
@@ -49,9 +40,7 @@ public class Provider {
     }
 
     private boolean repOk() {
-        Set<String> requiredKeys = Stream.of
-                ("docNo", "name", "docType", "address", "provSector", "alias")
-                .collect(Collectors.toSet());
+        Set<String> requiredKeys = Stream.of("name").collect(Collectors.toSet());
         if (!requiredKeys.containsAll(values.keySet())) {
             return false;
         }
@@ -65,7 +54,7 @@ public class Provider {
             }
         }
 
-        return values.get("docNo") != null && values.get("name") != null && values.get("docType") != null;
+        return values.get("name") != null;
     }
 
     @Override
@@ -73,9 +62,9 @@ public class Provider {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Provider provider = (Provider) o;
+        Sector sector = (Sector) o;
 
-        return values.equals(provider.values);
+        return values.equals(sector.values);
     }
 
     @Override

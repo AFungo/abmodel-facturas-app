@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.DefaultListSelectionModel;
-import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -58,7 +57,7 @@ public class FiltersView extends javax.swing.JFrame {
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
-            names.add(p.getValues().get("name"));
+            names.add((String) p.getValues().get("name"));
         }
         return names;
     }
@@ -349,7 +348,7 @@ public class FiltersView extends javax.swing.JFrame {
         List<Withholding> tickets = controller.getWithholdings(withholdingFilter);
         tickets.addAll(controller.getTickets(ticketFilter));
         
-        controller.filterWithholdings(ivaAndProfitsFilter, tickets);
+        controller.filterWithholding(ivaAndProfitsFilter, tickets);
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
@@ -361,7 +360,7 @@ public class FiltersView extends javax.swing.JFrame {
                 model.addRow(FormatUtils.ticketToForm(t));
             }
             if (!(t instanceof Ticket) && (withholdingRadioButton.isSelected() || bothRadioButton2.isSelected())) {
-                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingsToForm(t);
+                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingToForm(t);
                 if (withholdings.getFst() != null) {
                     model.addRow(withholdings.getFst());
                 }
@@ -410,10 +409,10 @@ public class FiltersView extends javax.swing.JFrame {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if(minDateChooser.getDate()!= null) {
-            selectedFilters.add("date", ">=", FormatUtils.dateGen(sdf.format(minDateChooser.getDate())), Date.class);
+            selectedFilters.add("date", ">=", FormatUtils.formatDate(sdf.format(minDateChooser.getDate())), Date.class);
         } 
         if(maxDateChooser.getDate()!=null) {
-            selectedFilters.add("date", "<=", FormatUtils.dateGen(sdf.format(maxDateChooser.getDate())), Date.class);
+            selectedFilters.add("date", "<=", FormatUtils.formatDate(sdf.format(maxDateChooser.getDate())), Date.class);
         }       
         
         SQLFilter providersDoc = new SQLFilter();
@@ -469,7 +468,7 @@ public class FiltersView extends javax.swing.JFrame {
     private List<String> getDocsList(List<Provider> list) {
         List<String> namesList = new LinkedList<>();
         for (Provider p : list) {
-            namesList.add(p.getValues().get("docNo"));
+            namesList.add((String) p.getValues().get("docNo"));
         }
         return namesList;
     }

@@ -14,7 +14,7 @@ public abstract class DAO {
 
     /**
      * Execute the requested query
-     * 
+     *
      * @param query the query to be executed
      * @param update Boolean argument that check if the query is an update
      * @param returnKeys Boolean argument that check if return keys will be used
@@ -29,7 +29,7 @@ public abstract class DAO {
             } else {
                 stm = connection.prepareStatement(query);
             }
-            
+
             if (update) {
                 stm.executeUpdate();
                 return stm.getGeneratedKeys();
@@ -46,5 +46,5 @@ public abstract class DAO {
             }
         }
     }
-    
+
 }

@@ -1,89 +1,100 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package facturas.app.models;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
- * @author ABMODEL
+ * @author Agustin Nolasco
  */
-public class Ticket extends Withholding{   
-    private Float totalAmount;
-    private Float ivaTax;
-    private float exchangeType;
-    private String exchangeMoney;
-    private Float netAmountWI;//with ivaTax
-    private Float netAmountWOI;//without ivaTax
-    private Float amountImpEx;//imp. op. Exentas ver que es
-    private String type;
-    private Integer numberTo;
-    private String authCode;
-    private boolean issuedByMe;
-    private String sector = null;
+public class Ticket extends Withholding {
 
-   public Ticket(Map<String, String> data){
-        super(data);
-        numberTo = data.get("numberTo") != null ? Integer.parseInt(data.get("numberTo")) : null ;
-        authCode =  data.get("authCode") != null ? data.get("authCode") : null;
-        exchangeType = Float.parseFloat(data.get("exchangeType"));
-        totalAmount = Float.parseFloat(data.get("totalAmount"));
-        exchangeMoney = data.get("exchangeMoney");
-        type = data.get("type");
-        String netAmountWI = data.get("netAmountWI");
-        this.netAmountWI = netAmountWI != null && !netAmountWI.isEmpty() ? Float.parseFloat(netAmountWI) : null ;
-        String netAmountWOI = data.get("netAmountWOI");
-        this.netAmountWOI = netAmountWOI != null && !netAmountWOI.isEmpty() ? Float.parseFloat(netAmountWOI) : null ;
-        String amountImpEx = data.get("amountImpEx");
-        this.amountImpEx = amountImpEx != null && !amountImpEx.isEmpty() ? Float.parseFloat(amountImpEx) : null ;
-        String iva = data.get("ivaTax");
-        this.ivaTax = iva != null && !iva.isEmpty() ? Float.parseFloat(iva) : null ;
-        issuedByMe =  data.get("issuedByMe").equals("true");
-  }
+    private final Map<String, Object> values;
+    private HashMap<String, Class<?>> types;
 
-    @Override
-    public Map<String, Object> getValues() {
-        Map<String, Object> dict = super.getValues();
-        if (numberTo != null) dict.put("numberTo", numberTo);
-        dict.put("authCode", authCode);
-        dict.put("type", type);
-        dict.put("provider", provider);
-        dict.put("exchangeType", exchangeType);
-        dict.put("exchangeMoney", exchangeMoney);
-        dict.put("issuedByMe", issuedByMe);
-        dict.put("totalAmount", totalAmount);
-        if (netAmountWI != null) dict.put("netAmountWI", netAmountWI);
-        if (netAmountWOI != null) dict.put("netAmountWOI", netAmountWOI);
-        if (amountImpEx != null) dict.put("amountImpEx", amountImpEx);
-        if (ivaTax != null) dict.put("ivaTax", ivaTax);
-        if (sector != null) dict.put("sector", sector);
-        return dict;
+    public Ticket(Map<String, Object> values) {
+        this.values = new HashMap<>(values);
+        setTypes();
+        assert repOk();
     }
-    
-    public void addSector(String sector) {
-        this.sector = sector;
+
+    private void setTypes() {
+        types = new HashMap<String, Class<?>>() {{
+            put("withholding", Withholding.class);
+            put("type", String.class);
+            put("numberTo", Integer.class);
+            put("authCode", String.class);
+            put("exchangeType", Float.class);
+            put("exchangeMoney", String.class);
+            put("netAmountWI", Float.class);
+            put("netAmountWOI", Float.class);
+            put("amountImpEx", Float.class);
+            put("ivaTax", Float.class);
+            put("totalAmount", Float.class);
+            put("issuedByMe", Boolean.class);
+        }};
     }
-    
-    public void addId(String id) {
-        if (this.id != null)
-            throw new IllegalStateException("Id already set, current id: " + this.id + ", new id: " + id);
-        
-        this.id = Integer.valueOf(id);
+
+    public Map<String, Class<?>> getTypes() {
+        return new HashMap<>(types);
     }
-    
-    public boolean isIncome(){
-        if(issuedByMe){
-            return !this.type.contains("Crédito");
-        }else{ 
-            return this.type.contains("Crédito");
+
+    public void setValues(Map<String, Object> values) {
+        for (String s : values.keySet()) {
+            this.values.put(s, values.get(s));
         }
+        assert repOk();
+    }
+
+    public Map<String, Object> getValues() {
+        return new HashMap<>(this.values);
+    }
+
+    public boolean isIncome() {
+        boolean isCredit = !((String) values.get("type")).contains("Crédito");
+        return (Boolean) values.get("issuedByMe") == isCredit;
+    }
+
+    protected static Set<String> requiredKeys() {
+        return Stream.of("numberTo", "authCode", "exchangeType", "totalAmount", "exchangeMoney", "type", "netAmountWI",
+                        "netAmountWOI", "amountImpEx", "ivaTax", "issuedByMe", "withholding")
+                .collect(Collectors.toSet());
+    }
+
+    private boolean repOk() {
+        if (!requiredKeys().containsAll(values.keySet())) {
+            return false;
+        }
+
+        for (String key : values.keySet()) {
+            Object value = values.get(key);
+            if (value != null) {
+                if (value.getClass() != types.get(key)) {
+                    return false;
+                }
+            }
+        }
+
+        return values.get("exchangeType") != null && values.get("totalAmount") != null &&
+                values.get("exchangeMoney") != null && values.get("type") != null && values.get("withholding") !=null;
     }
 
     @Override
-    public String toString() {
-        return "Razon Social" + provider + "\n" + "Num Fact" + number + "\n" + "Fecha" + date + "\n" + "Tipo" + type + "\n" + "Iva" + ivaTax + "\n" + "Total" + totalAmount + "\n"; 
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Ticket ticket = (Ticket) o;
+
+        return values.equals(ticket.values);
     }
+
+    @Override
+    public int hashCode() {
+        return values.hashCode();
+    }
+
 }

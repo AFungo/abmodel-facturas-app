@@ -155,7 +155,7 @@ public class ProviderDAO extends DAO {
     }
     
     private static Provider createProvider(ResultSet result) throws SQLException {
-        Map<String, String> values = new HashMap<>();
+        Map<String, Object> values = new HashMap<>();
         values.put("docNo", result.getString(1));
         values.put("name", result.getString(2));
         values.put("docType", result.getString(3));

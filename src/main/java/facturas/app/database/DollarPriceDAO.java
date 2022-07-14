@@ -1,6 +1,5 @@
 package facturas.app.database;
 
-import static facturas.app.database.DAO.executeQuery;
 import facturas.app.models.DollarPrice;
 import facturas.app.utils.FormatUtils;
 import facturas.app.utils.Pair;
@@ -105,8 +104,8 @@ public class DollarPriceDAO extends DAO {
     }
     
     private static DollarPrice getNearestDatePrice(DollarPrice priceBefore, DollarPrice priceAfter, Date currentDate) {
-        Date dateBefore = priceBefore.getDate();
-        Date dateAfter = priceAfter.getDate();
+        Date dateBefore = (Date) priceBefore.getValues().get("date");
+        Date dateAfter = (Date) priceAfter.getValues().get("date");
         //getting time of each date
         long currentTime = currentDate.getTime();
         long afterTime = dateAfter.getTime();
@@ -122,7 +121,7 @@ public class DollarPriceDAO extends DAO {
         List<DollarPrice> pricesList = new LinkedList<>();
         try {
             while(result.next()) {
-                Map<String, String> priceAttributes = new HashMap<>();
+                Map<String, Object> priceAttributes = new HashMap<>();
                 priceAttributes.put("date", result.getString(1));
                 priceAttributes.put("buy", result.getString(2));
                 priceAttributes.put("sell", result.getString(3));

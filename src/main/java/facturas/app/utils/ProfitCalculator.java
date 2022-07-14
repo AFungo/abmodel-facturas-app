@@ -65,7 +65,7 @@ public class ProfitCalculator {
         if (exchangeMoney == "USD") {   //we already have the price in dollars so we don't want to modify it
             exchangeType = 1.0f;    
         } else if (exchangeType == 1.0f) {  //money are pesos and we don't have the exchange type
-            sellPrice = inDollars(true, exchangeType, t.getDollarPrice());
+            sellPrice = inDollars(true, exchangeType, (DollarPrice) t.getValues().get("dollarPrice"));
         }
         //in case we are in pesos and we have the exchange type, we just divide by it
         Float totalAmount = ((Float) values.get("totalAmount") / exchangeType) / sellPrice; //Total / (exchange type or 1) / (dollar price of this day or 1)
@@ -85,7 +85,7 @@ public class ProfitCalculator {
         Float iva = (Float) dict.get("iva");
         Float profits = (Float) dict.get("profits");
         if (dollars) {
-            Float sellPrice = inDollars(dollars, 1.0f, r.getDollarPrice());//le pongo 1 en exchangetype pq no se carga en ret
+            Float sellPrice = inDollars(dollars, 1.0f, (DollarPrice) r.getValues().get("dollarPrice"));//le pongo 1 en exchangetype pq no se carga en ret
             if (iva != null)
                 iva /= sellPrice;
             if (profits != null)

@@ -47,7 +47,7 @@ public class FilterUtils {
      */
     public static SQLFilter createTicketFilter(Map<String, String> values) {
         SQLFilter filter = new SQLFilter();
-        Date date = FormatUtils.dateGen(values.get("date"));
+        Date date = Date.valueOf(values.get("date"));
         filter.add("date", "=", date, Date.class);
         String noTicket = values.get("number");
         filter.add("number", "=", noTicket, String.class);
@@ -70,8 +70,8 @@ public class FilterUtils {
         filter.add("number", "=", values.get("number"), String.class);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date formatedDate = FormatUtils.dateGen(sdf.format(date));
-        filter.add("date", "=", formatedDate, Date.class);
+        Date formattedDate = Date.valueOf(sdf.format(date));
+        filter.add("date", "=", formattedDate, Date.class);
         
         return filter;
     }

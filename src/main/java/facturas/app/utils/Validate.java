@@ -27,21 +27,25 @@ public class Validate {
      * @param sectorsComboBox combo box with the sector for the provider
      * @return if the inputs are invalid return a string with invalidations or returns a empty string 
      */
-    public static String providerInput(Map<String, String> values, JComboBox<String> sectorsComboBox) {
+    public static String providerInput(Map<String, Object> values, JComboBox<String> sectorsComboBox) {
         String message = "<html>", invalidations = "";
         List<String> sectors = getItemsFromComboBox(sectorsComboBox);
                 
-        if(values.get("name").isEmpty()){ invalidations += "<br/> Nombre no introducido";}
-        if(values.get("docNo").isEmpty()){
+        if (((String) values.get("name")).isEmpty()) {
+            invalidations += "<br/> Nombre no introducido";
+        }
+        if (((String) values.get("docNo")).isEmpty()) {
             invalidations += "<br/> Numero documento no introducido";
         } else if (!tryParse(values.get("docNo"), Integer.class, false)) { 
             invalidations += "<br/> Numero documento mal escrito";
         }
         
-        if(values.get("docType").isEmpty()){ invalidations += "<br/> Tipo de documento no introdcido";}
+        if (((String) values.get("docType")).isEmpty()) {
+            invalidations += "<br/> Tipo de documento no introdcido";
+        }
         
-        String providerSector = values.get("provSector"); //if not null or empty and doesn't exists
-        if (providerSector != null && (!providerSector.isEmpty()) && (!sectors.contains(providerSector))) {
+        Object providerSector = values.get("provSector"); //if not null or empty and doesn't exists
+        if (providerSector != null && (!((String) providerSector).isEmpty()) && (!sectors.contains(providerSector))) {
             invalidations += "<br/>El rubro del comprobante no existe";
         }
         
@@ -227,16 +231,16 @@ public class Validate {
     * @param notZero indicates that the value must not be zero, in such case false is returned
     * @return true if the value can be parsed and its not negative
     */
-    public static boolean tryParse(String value, Class expectedClass, boolean notZero) {
+    public static boolean tryParse(Object value, Class<?> expectedClass, boolean notZero) {
         try { 
             if (expectedClass == Float.class) {
-                Float i = Float.parseFloat(value);
+                float i = Float.parseFloat((String) value);
                 if (notZero) {
                     return i > 0;
                 }
                 return i >= 0;
             } else if (expectedClass == Integer.class){
-                BigInteger i = new BigInteger(value);
+                BigInteger i = new BigInteger((String) value);
                 if (notZero) {
                     return i.signum() > 0;
                 }

@@ -542,7 +542,7 @@ public class View extends JFrame {
             backupLock.lock();      //to ensure the load process has finished
         } catch (Exception e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e.getMessage(), e);
         } finally {
             backupLock.finalUnlock();
         }
@@ -552,7 +552,7 @@ public class View extends JFrame {
         providersView.updateSuggestions();
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
-            names.add(p.getValues().get("name"));
+            names.add((String) p.getValues().get("name"));
         }
         updateProviders(names);
         loadTicketsInTable();
@@ -786,7 +786,7 @@ public class View extends JFrame {
         withholdingLoaderView.updateProviders(names);
     }
     
-    public void showError(Throwable e, String message) {
+    public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
@@ -804,7 +804,7 @@ public class View extends JFrame {
                 }
                 model.addRow(FormatUtils.ticketToForm(t));
             } else {
-                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingsToForm(t);
+                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingToForm(t);
                 if (withholdings.getFst() != null) {
                     model.addRow(withholdings.getFst());
                 }

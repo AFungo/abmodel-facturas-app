@@ -10,10 +10,7 @@ import facturas.app.models.DollarPrice;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * class for manage the price of the dollar
@@ -103,7 +100,7 @@ public class PricesList {
             datePrices.put(ticketDate, price);  //set as price for ticketDate
         }
         
-        t.addDollarPrice(price);    //set price attribute on ticket
+        t.setValues(Collections.singletonMap("dollarPrice", price));    //set price attribute on ticket
         if (dayPriceMissing) {
             checkDaysDistance(daysLimit, ticketDate, price);
         }
@@ -113,9 +110,9 @@ public class PricesList {
      * check the days distance between missed dollars prices  
      */
     private void checkDaysDistance(int daysLimit, Date ticketDate, DollarPrice price) {
-        long limit = 86400000 * (daysLimit + 1);
+        long limit = 86400000L * (daysLimit + 1);
         long currentTime = ticketDate.getTime();
-        long nearestTime = price.getDate().getTime();
+        long nearestTime = ((Date) price.getValues().get("date")).getTime();
         long timeDiference = Math.abs(nearestTime - currentTime);
         if (timeDiference >= limit) {
             missingPrices.add(new Pair<Date,String> (ticketDate, Long.toString(timeDiference / 86400000)));

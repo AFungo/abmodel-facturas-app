@@ -5,15 +5,15 @@
  */
 package facturas.app.utils;
 
+import facturas.app.databaserefactor.ProviderDAO;
 import facturas.app.models.DollarPrice;
 import facturas.app.models.Provider;
+import facturas.app.models.Sector;
 import facturas.app.models.Ticket;
 import facturas.app.models.Withholding;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class used to transform objects into a string with certain format
@@ -31,7 +31,7 @@ public class FormatUtils {
         Map<String, Object> dict = t.getValues();
         String attributes = "", values = "";
         attributes += "id, exchangeType, exchangeMoney, issuedByMe, type, totalAmount";
-        values += dict.get("id") + ", " + dict.get("exchangeType") + ", '" + dict.get("exchangeMoney") 
+        values += ((Withholding)dict.get("withholding")).getValues().get("id") + ", " + dict.get("exchangeType") + ", '" + dict.get("exchangeMoney")
                 + "', " + dict.get("issuedByMe") + ", '" + dict.get("type") + "', " + dict.get("totalAmount");
 
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {"ivaTax", "netAmountWI", 
@@ -53,14 +53,14 @@ public class FormatUtils {
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
         if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
-            sector = provider.getValues().get("sector");
+            sector = (String) provider.getValues().get("sector");
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         String buyNSell = (boolean)dict.get("issuedByMe") ? "VENTA" : "COMPRA";
-        
-        Object[] values = {dict.get("id"), dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"), 
-            ((Provider)dict.get("provider")).getValues().get("docNo"), provider.getValues().get("name"), dict.get("exchangeType"), dict.get("netAmountWI"), 
-            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("ivaTax"), dict.get("totalAmount"), sector, 
+
+        Object[] values = {dict.get("id"), dict.get("date"), dict.get("type"), dict.get("number"), dict.get("numberTo"), dict.get("authCode"),
+            ((Provider)dict.get("provider")).getValues().get("docNo"), provider.getValues().get("name"), dict.get("exchangeType"), dict.get("netAmountWI"),
+            dict.get("netAmountWOI"), dict.get("amountImpEx"), dict.get("ivaTax"), dict.get("totalAmount"), sector,
             buyNSell, delivered ? "SI" : "NO"};
 
         return values;
@@ -73,20 +73,32 @@ public class FormatUtils {
      * @param issuedByMe boolean representing extra ticketData
      * @return a map from String to String of the ticket data
      */
-    public static Map<String, String> ticketCsvToDict(String strTicket, boolean issuedByMe) {
+    public static Map<String, Object> ticketCsvToDict(String strTicket, boolean issuedByMe) {
         strTicket = strTicket.substring(1, strTicket.length() - 2); //remove first and last " symbol
         String[] data = strTicket.split("\",\"");       //split by "," so we don't get in trouble with names containing ,
-        Map<String, String> dict = new HashMap<>();
-        
-        dict.put("date", data[0]);
+        Map<String, Object> dict = new HashMap<>();
+
+        /* TODO: from here, we must extract this as a new method that constructor the ticket using the "data" (String[])
+            in some util method that can access DAOs, because use a DAO in a format utils class does not seen good.
+         */
+        dict.put("date", Date.valueOf(FormatUtils.formatDate(data[0])));
         dict.put("type", data[1]);
         dict.put("number", data[2]+data[3]);
-        String numberToVar = data[4];
-        if (!numberToVar.isEmpty()) dict.put("numberTo", numberToVar);
+        if (!data[4].isEmpty()) dict.put("numberTo", data[4]);
         dict.put("authCode", data[5]);
-        dict.put("docType", data[6]);
-        dict.put("docNo", data[7]);
-        dict.put("name", data[8]);
+        /* Use this data for search or create a new provider */
+        ProviderDAO dao = ProviderDAO.getInstance();
+        String docNo = data[7];
+        Optional<Provider> provider = dao.getAll().stream().filter(p -> p.getValues().get("docNo").equals(docNo)).findFirst();
+        if (provider.isPresent()) {
+            dict.put("provider", provider.get());
+        } else {
+            dict.put("provider", new HashMap<String, Object>() {{
+                            put("docType", data[6]);
+                            put("docNo", docNo);
+                            put("name", data[8].replace("'", ""));
+                        }});
+        }
         dict.put("exchangeType", data[9]);
         dict.put("exchangeMoney", data[10]);
         String netAmountWIVar = data[11];
@@ -109,9 +121,9 @@ public class FormatUtils {
      * @param s String with CSV format containing ticket data
      * @return a map from String to String of the ticket data
      */
-    public static Map<String, String> ticketCsvBackupToDict(String s) {
+    public static Map<String, Object> ticketCsvBackupToDict(String s) {
         String[] data = s.split(";");
-        Map<String, String> dict = new HashMap<>();
+        Map<String, Object> dict = new HashMap<>();
         
         dict.put("date", data[0]);
         dict.put("number", data[1]);
@@ -165,7 +177,7 @@ public class FormatUtils {
         result = result.replace("null", "");
         return result;
     }
-   
+    
     /**
      * Transforms withholding data into a SQL format data
      * 
@@ -186,7 +198,15 @@ public class FormatUtils {
 
         return new Pair<>(attributes, values);
     }
+    public static Pair<String, String> sectorToSQL(Sector s){
+        Map<String, Object> dict = s.getValues();
 
+        String attributes = "", values = "";
+        attributes += "name";
+        values += "'" + dict.get("name") + "'";
+
+        return new Pair<>(attributes, values);
+    }
     /**
      * Transforms withholding data into a form format data
      * 
@@ -194,12 +214,12 @@ public class FormatUtils {
      * @return a Pair of Object arrays, were first is a row of iva withholding and second
      * is a row of profits withholding
      */
-    public static Pair<Object[],Object[]> retrieveInternalWithholdingsToForm(Withholding w) {
+    public static Pair<Object[],Object[]> retrieveInternalWithholdingToForm(Withholding w) {
         Map<String, Object> dict = w.getValues();
         Provider provider = (Provider)dict.get("provider");
         String sector = (String)dict.get("sector");
         if (sector == null) {   //in case ticket doesn't has a modified sector, we use provider sector
-            sector = provider.getValues().get("provSector");
+            sector = (String) provider.getValues().get("provSector");
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         
@@ -231,20 +251,20 @@ public class FormatUtils {
      * @param s String with CSV format containing withholding data
      * @return a map from String to String of the withholding data
      */
-    public static Map<String, String> withholdingCsvBackupToDict(String s) {
+    public static Map<String, Object> withholdingCsvBackupToDict(String s) {
         String[] data = s.split(";");
-        Map<String, String> dict = new HashMap<>();
+        Map<String, Object> dict = new HashMap<>();
         
-        dict.put("date", data[0]);
+        dict.put("date", Date.valueOf(formatDate(data[0])));
         dict.put("number", data[1]);
         dict.put("docNo", data[2]);
         String iva = data[3];
-        if (!iva.isEmpty()) dict.put("iva", iva);
+        if (!iva.isEmpty()) dict.put("iva", Float.parseFloat(iva));
         String profits = data[4];
-        if (!profits.isEmpty()) dict.put("profits", profits);
+        if (!profits.isEmpty()) dict.put("profits", Float.parseFloat(profits));
         String sector = data[5];
         if (!sector.isEmpty()) dict.put("sector", sector);
-        dict.put("delivered", data[6]);
+        dict.put("delivered", Boolean.valueOf(data[6]));
         
         return dict;
     }
@@ -337,9 +357,9 @@ public class FormatUtils {
      * to insert to those attributes
      */
     public static Pair<String, String> providerToSQL(Provider p) {
-        Map<String, String> dict = p.getValues();
+        Map<String, Object> dict = p.getValues();
         String attributes = "", values = "";
-        attributes += "docNo, name, documentType";
+        attributes += "docNo, name, docType";
         values += "'" + dict.get("docNo") + "', '" + dict.get("name") + "', '" + dict.get("docType") + "'";
         
         Pair<String, String> optionals = addOptionalAttributes(dict, new String[] {}, new String[] {"direction", "sector", "alias"});
@@ -356,7 +376,7 @@ public class FormatUtils {
      * @return an object array containing the attributes to show
      */
     public static Object[] providerToForm(Provider prov) {
-        Map<String, String> dict = prov.getValues();
+        Map<String, Object> dict = prov.getValues();
         Object[] values = new Object[6];
         values[0] = dict.get("docNo");
         values[1] = dict.get("name");
@@ -377,9 +397,9 @@ public class FormatUtils {
      * @param s String with CSV format containing provider data
      * @return a map from String to String of the provider data
      */
-    public static Map<String, String> providerCsvBackupToDict(String s) {
+    public static Map<String, Object> providerCsvBackupToDict(String s) {
         String[] data = s.split(";");
-        Map<String, String> dict = new HashMap<>();
+        Map<String, Object> dict = new HashMap<>();
         
         dict.put("docNo", data[0]);
         dict.put("name", data[1]);
@@ -401,7 +421,7 @@ public class FormatUtils {
      * @return a string in CSV format with the provider data
      */
     public static String providerToCsv(Provider p) {
-        Map<String, String> dict = p.getValues();
+        Map<String, Object> dict = p.getValues();
         String result = "";
         
         result += dict.get("docNo") + ";" + dict.get("name") + ";" + dict.get("direction") + ";" + dict.get("sector") + ";" 
@@ -496,30 +516,48 @@ public class FormatUtils {
      * @param dateStr string with format date
      * @return a Date based on {@code dateStr} data
      */
-    public static Date dateGen(String dateStr) {
+    public static String formatDate(String dateStr) {
         String[] fields = dateStr.split("/"); //d-m-y
         if (fields.length != 3) {
             dateStr = fields[0];
             fields = dateStr.split("-");
-            String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
-            return Date.valueOf(formatedDate);
+            return fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
         }
-        String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
-        return Date.valueOf(formatedDate);
+        return fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
     }
     
+    /** 
+     * Transforms a map into a string with a SQL form as follows:
+     * attr1 = value1, attr2 = value2 ...
+     * 
+     * @param params map from attribute names to values
+     * @return a string representing the map in a SQL form
+     */
+    public static String mapToSQLValues(Map<String, Object> params) {
+        List<String> values = new LinkedList<>();
+        for (String key : params.keySet()) {
+            if (params.get(key).getClass() == String.class || params.get(key).getClass() == Date.class) {
+                values.add(key + " = '" + params.get(key) + "'");
+            } else {
+                values.add(key + " = " + params.get(key));
+            }
+        }
+
+        return String.join(", ", values);
+    }
+
     /**
      * Transforms a map of string to object into a map of string to string
      * 
      * @param values the map to transform
      * @return a map of string to string
      */
-    public static Map<String, String> objectToStringMap(Map<String, Object> values){
-        Map<String, String> v = new HashMap();
+    public static Map<String, Object> objectToStringMap(Map<String, Object> values){
+        Map<String, Object> v = new HashMap();
         Provider provider = (Provider) values.get("provider");
         v.putAll(provider.getValues());
         v.put("id", values.get("id").toString());
-        v.put("date", values.get("date").toString());
+        v.put("date", formatDate(values.get("date").toString()));
         v.put("type", values.get("type").toString());
         if(values.get("iva")!=null) v.put("iva", values.get("iva").toString());
         if(values.get("profits")!=null) v.put("profits", values.get("profits").toString());

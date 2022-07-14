@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
@@ -57,7 +56,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {
-            names.add(p.getValues().get("name"));
+            names.add((String) p.getValues().get("name"));
         }
         return names;
     }
@@ -576,10 +575,10 @@ public class TicketLoaderView extends javax.swing.JFrame {
         
         //provider
         Provider provider = providersCheck.get(0);
-        values.put("docNo", provider.getValues().get("docNo"));
-        values.put("docType", provider.getValues().get("docType"));
-        values.put("name", provider.getValues().get("name"));
-        values.put("provSector", provider.getValues().get("provSector"));
+        values.put("docNo", (String) provider.getValues().get("docNo"));
+        values.put("docType", (String) provider.getValues().get("docType"));
+        values.put("name", (String) provider.getValues().get("name"));
+        values.put("provSector", (String) provider.getValues().get("provSector"));
         values.put("alias", (String) provider.getValues().get("alias"));
 
         values.put("date", sdf.format(dateDateChooser.getDate()));
@@ -593,11 +592,11 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
     private void getIva(Map<String, String> values) {
         Float iva = 0.0f;
-        if (!values.get("ivaTax").isEmpty()) 
+        if (!values.get("ivaTax").isEmpty())
             iva += Float.parseFloat(values.get("ivaTax"));
-        if (!values.get("ivaTax1").isEmpty()) 
+        if (!values.get("ivaTax1").isEmpty())
             iva += Float.parseFloat(values.get("ivaTax1"));
-        if (!values.get("ivaTax2").isEmpty()) 
+        if (!values.get("ivaTax2").isEmpty())
             iva += Float.parseFloat(values.get("ivaTax2"));
         
         values.put("ivaTax", iva.toString());
@@ -645,7 +644,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
                 docNoComboBox.removeAllItems();
                 docNoComboBox.setEnabled(true);
                 for (Provider p : providersList) {
-                    docNoComboBox.addItem(p.getValues().get("docNo"));
+                    docNoComboBox.addItem((String) p.getValues().get("docNo"));
                 }
                 docNoComboBox.setSelectedItem(null);
             }
