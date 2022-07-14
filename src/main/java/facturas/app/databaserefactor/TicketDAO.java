@@ -103,14 +103,14 @@ public class TicketDAO implements DAO<Ticket> {
         ResultSet result = DatabaseUtils.executeQuery(query);
         try {
             while(result.next()) {
-                String id = result.getString(1);
+                Integer id = Parser.parseInt(result.getString(1));
                 Optional<Withholding> withholding = WithholdingDAO.getInstance().getAll()
                         .stream().filter(p -> p.getValues().get("id").equals(id)).findFirst();
                 cache.add(new Ticket(new HashMap<String, Object>() {{
                     if (!withholding.isPresent()) {
                         throw new IllegalStateException("Cannot find withholding");
                     }
-                    put("withholding", withholding);
+                    put("withholding", withholding.get());
                     put("type", result.getString(2));
                     put("numberTo", Parser.parseInt(result.getString(3)));
                     put("authCode", result.getString(4));

@@ -75,7 +75,8 @@ public class TicketDAOTest {
 
     @Test
     void deleteTest() {
-        dao.save(t);
+        assertThat(dao.getAll()).doesNotContain(t);
+        assertThat(dao.save(t)).isTrue();
         assertThat(dao.getAll()).contains(t);
         assertThat(dao.delete(t)).isTrue();
         assertThat(dao.getAll()).doesNotContain(t);
