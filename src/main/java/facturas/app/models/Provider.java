@@ -1,6 +1,5 @@
 package facturas.app.models;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -48,6 +47,15 @@ public class Provider {
         return new HashMap<>(values);
     }
 
+    /**
+    * @return a Map with the identifiers of the class.
+    */
+    public Map<String, Object> getID(){
+        Map<String, Object> id = new HashMap<>();
+        id.put("docNo", values.get("docNo"));
+        return id;
+    }
+    
     private boolean repOk() {
         Set<String> requiredKeys = Stream.of
                 ("docNo", "name", "docType", "address", "provSector", "alias")

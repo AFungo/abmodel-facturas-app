@@ -1,6 +1,5 @@
 package facturas.app.models;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +36,15 @@ public class Sector {
 
     public Map<String, Object> getValues() {
         return new HashMap<>(values);
+    }
+
+    /**
+    * @return a Map with the identifiers of the class.
+    */
+    public Map<String, Object> getID() {
+        Map<String, Object> id = new HashMap<>();
+        id.put("name", values.get("name"));
+        return id;
     }
 
     private boolean repOk() {
