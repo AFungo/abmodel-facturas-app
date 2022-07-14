@@ -13,10 +13,33 @@ import java.util.stream.Stream;
 public class Ticket extends Withholding {
 
     private final Map<String, Object> values;
+    private HashMap<String, Class<?>> types;
 
     public Ticket(Map<String, Object> values) {
         this.values = new HashMap<>(values);
+        setTypes();
         assert repOk();
+    }
+
+    private void setTypes() {
+        types = new HashMap<String, Class<?>>() {{
+            put("withholding", Withholding.class);
+            put("type", String.class);
+            put("numberTo", Integer.class);
+            put("authCode", String.class);
+            put("exchangeType", Float.class);
+            put("exchangeMoney", String.class);
+            put("netAmountWI", Float.class);
+            put("netAmountWOI", Float.class);
+            put("amountImpEx", Float.class);
+            put("ivaTax", Float.class);
+            put("totalAmount", Float.class);
+            put("issuedByMe", Boolean.class);
+        }};
+    }
+
+    public Map<String, Class<?>> getTypes() {
+        return new HashMap<>(types);
     }
 
     public void setValues(Map<String, Object> values) {
@@ -45,6 +68,16 @@ public class Ticket extends Withholding {
         if (!requiredKeys().containsAll(values.keySet())) {
             return false;
         }
+
+        for (String key : values.keySet()) {
+            Object value = values.get(key);
+            if (value != null) {
+                if (value.getClass() != types.get(key)) {
+                    return false;
+                }
+            }
+        }
+
         return values.get("exchangeType") != null && values.get("totalAmount") != null &&
                 values.get("exchangeMoney") != null && values.get("type") != null && values.get("withholding") !=null;
     }

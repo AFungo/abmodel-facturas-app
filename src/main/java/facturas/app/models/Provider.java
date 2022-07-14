@@ -13,8 +13,8 @@ import java.util.stream.Stream;
  */
 public class Provider {
 
-    Map<String, Object> values;
-    Map<String, Class<?>> types;
+    private final Map<String, Object> values;
+    private Map<String, Class<?>> types;
 
     public Provider(Map<String, Object> values) {
         this.values = new HashMap<>(values);
@@ -55,6 +55,7 @@ public class Provider {
         if (!requiredKeys.containsAll(values.keySet())) {
             return false;
         }
+
         for (String key : values.keySet()) {
             Object value = values.get(key);
             if (value != null) {
@@ -63,6 +64,7 @@ public class Provider {
                 }
             }
         }
+
         return values.get("docNo") != null && values.get("name") != null && values.get("docType") != null;
     }
 

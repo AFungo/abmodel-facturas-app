@@ -116,16 +116,16 @@ public class DBManager {
             case "Ticket": query = "CREATE TABLE Ticket ("
                     + "id INTEGER,"
                     + "type VARCHAR(50) NOT NULL,"
-                    + "numberTo INTEGER," //
-                    + "authCode VARCHAR(30)," //
-                    + "exchangeType REAL NOT NULL," //
-                    + "exchangeMoney VARCHAR(5) NOT NULL," //
-                    + "netAmountWI REAL," //
-                    + "netAmountWOI REAL," //
+                    + "numberTo INTEGER,"
+                    + "authCode VARCHAR(30),"
+                    + "exchangeType REAL NOT NULL,"
+                    + "exchangeMoney VARCHAR(5) NOT NULL,"
+                    + "netAmountWI REAL,"
+                    + "netAmountWOI REAL,"
                     + "amountImpEx REAL,"
-                    + "ivaTax REAL," //
-                    + "totalAmount REAL NOT NULL," //
-                    + "issuedByMe BOOLEAN NOT NULL," //
+                    + "ivaTax REAL,"
+                    + "totalAmount REAL NOT NULL,"
+                    + "issuedByMe BOOLEAN NOT NULL,"
                     + "PRIMARY KEY (id),"
                     + "CONSTRAINT fk_id FOREIGN KEY (id) REFERENCES Withholding(id) ON DELETE CASCADE"
                     + ")";
