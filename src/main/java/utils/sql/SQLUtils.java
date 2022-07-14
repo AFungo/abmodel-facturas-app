@@ -1,59 +1,64 @@
 package utils.sql;
 
 import java.sql.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import models.Provider;
-import models.Sector;
-import models.Withholding;
+import models.*;
 import utils.Pair;
 
 public class SQLUtils {
-    
+
+    private static final Set<Class<?>> needDoubleQuotes = Stream.of(
+            Date.class, String.class
+    ).collect(Collectors.toSet());
+
+    private static final Set<Class<?>> modelsTypes = Stream.of(
+            Withholding.class, Ticket.class, Provider.class, Sector.class, DollarPrice.class
+    ).collect(Collectors.toSet());
+
     /**
-     * Transforms withholding data into a SQL format data
+     * Transforms a Model into a SQL format value.
      * 
-     * @param w withholding with data to transform
-     * @return a pair of strings containing the attributes to insert and the actual values
-     * to insert to those attributes
+     * @param model to be transformed
+     * @return a pair of strings containing the attributes and its values
      */
-        //Este deberia ser un metodo general, sirve para todos los datos
-     public static Pair<String, String> withholdingToSQL(Withholding w) {
-        Map<String, Object> dict = w.getValues();
+     public static Pair<String, String> modelToSQL(Model model) {
+        Map<String, Object> modelValues = model.getValues();
         List<String> attributes = new LinkedList<>(), values = new LinkedList<>();
 
-        //for each attribute can not be null we add at the string for sql query
-        for(String key : dict.keySet().stream().filter( k -> dict.get(k)!=null).collect(Collectors.toSet())) {   
-
-            //en estos iff si lo instancias a cualquiera de los modelos podrias usar el getid
-            if (dict.get(key).getClass() == Provider.class) {//iff is a provider object add the columns for the fk
-                Map<String, Object> provDict = ((Provider)dict.get(key)).getID();
-                for(String idKey : provDict.keySet()) {
+        for(String key : modelValues.keySet().stream().filter(k -> modelValues.get(k) != null).collect(Collectors.toSet())) {
+            if (modelsTypes.contains(modelValues.get(key).getClass())) {
+                Map<String, Object> subModelValues = ((Model)modelValues.get(key)).getID();
+                for(String idKey : subModelValues.keySet()) {
                     attributes.add(idKey);
-                    values.add(valueToSQL(provDict.get(idKey)));        
+                    values.add(valueToSQL(subModelValues.get(idKey)));
                 }
-            } else if(dict.get(key).getClass() == Sector.class){//iff is a sector object add the columns for the fk
-                Map<String, Object> secDict = ((Sector)dict.get(key)).getID();
-                for(String idKey : secDict.keySet()) {
-                    attributes.add(idKey);
-                    values.add(valueToSQL(secDict.get(idKey)));        
-                }
-            }else {
+            } else {
                 attributes.add(key);
-                values.add(valueToSQL((String)dict.get(key)));
+                values.add(valueToSQL(modelValues.get(key)));
             }
         }
-        return new Pair<>(String.join(", ", attributes), String.join(", ", values));//separete the attriutes and values with ,
+
+        return new Pair<>(
+                String.join(", ", attributes),
+                String.join(", ", values)
+        );
     }
 
-    /*
-     * this method check iff a value need '' for be inserted into the database
+    /**
+     * Given an object return its representation in SQL
+     * adding double quotes iff the class of the value
+     * is in the set of types that need double quotes.
+     *
+     * @param value to be converted to SQL format
+     * @return SQL formatted value
      */
     private static String valueToSQL(Object value) {
-        if(value == String.class || value == Date.class) return "'" + value + "'";
+        if (needDoubleQuotes.contains(value.getClass())) {
+            return "'" + value + "'";
+        }
         return (String)value;
     }
 
@@ -65,15 +70,9 @@ public class SQLUtils {
      * @return a string representing the map in a SQL form
      */
     public static String mapToSQLValues(Map<String, Object> params) {
-        List<String> values = new LinkedList<>();
-        for (String key : params.keySet()) {
-            if (params.get(key).getClass() == String.class || params.get(key).getClass() == Date.class) {
-                values.add(key + " = '" + params.get(key) + "'");
-            } else {
-                values.add(key + " = " + params.get(key));
-            }
-        }
-
+        List<String> values = params.keySet().stream()
+                .map(k -> k + " = " + valueToSQL(params.get(k)))
+                .collect(Collectors.toList());
         return String.join(", ", values);
     }
 
