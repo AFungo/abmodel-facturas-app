@@ -30,13 +30,13 @@ public class ModelBuilder {
         }};
         
         //for each string[] get the values create the models and put it in the values
-        for(int i = 0; i <= files.length; i++) {
-
+        for( int i = 0; i <= files.length; i++) {
+            final int index = i;
             //create a provider
             Map<String, Object> providerVal = new HashMap<String, Object>(){{
-                put("docType", files[i][6]);
-                put("docNo", files[i][7]);
-                put("name", files[i][8]);
+                put("docType", files[index][6]);
+                put("docNo", files[index][7]);
+                put("name", files[index][8]);
             }};
             Provider provider = new Provider(providerVal);
             //aca deberiamos chequear si el provider existe
@@ -44,8 +44,8 @@ public class ModelBuilder {
             
             //create withholding
             Map<String, Object> withholdingVal = new HashMap<String, Object>() {{
-                put("date", files[i][0]);
-                put("number", files[i][2]+files[i][3]);
+                put("date", files[index][0]);
+                put("number", files[index][2]+files[index][3]);
                 put("provider", provider);
             }};
             Withholding withholding = new Withholding(withholdingVal);
@@ -55,17 +55,17 @@ public class ModelBuilder {
             //create ticket
             Map<String, Object> ticket = new HashMap<String, Object>(){{
                 put("withholding", withholding);
-                put("type", files[i][1]);
-                put("numberTo", files[i][4]);
-                put("authCode", files[i][5]);
-                put("exchangeType", files[i][9]);
-                put("exchangeMoney", files[i][10]);
-                put("netAmountWI", files[i][11]);
-                put("netAmountWOI", files[i][12]);
-                put("amountImpEx", files[i][13]);
-                put("ivaTax", files[i][14]);
-                put("totalAmount", files[i][15]);
-                put("issuedByMe", );//fijarse q el nacho sabe como distinguis si es echo ppor mi o no, o que me lo mande desde el perfil
+                put("type", files[index][1]);
+                put("numberTo", files[index][4]);
+                put("authCode", files[index][5]);
+                put("exchangeType", files[index][9]);
+                put("exchangeMoney", files[index][10]);
+                put("netAmountWI", files[index][11]);
+                put("netAmountWOI", files[index][12]);
+                put("amountImpEx", files[index][13]);
+                put("ivaTax", files[index][14]);
+                put("totalAmount", files[index][15]);
+            //    put("issuedByMe", );//fijarse q el nacho sabe como distinguis si es echo ppor mi o no, o que me lo mande desde el perfil
     
             }};
             values.get("ticket").add(new Ticket(ticket));
