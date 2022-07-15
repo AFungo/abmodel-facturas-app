@@ -2,7 +2,6 @@ package builder;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import databaserefactor.ProviderDAO;
 import databaserefactor.TicketDAO;
