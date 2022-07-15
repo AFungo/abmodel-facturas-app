@@ -1,5 +1,6 @@
 package builder;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,12 +16,12 @@ public class ModelBuilder {
 
     /**
      * create a map of models from a file of tickets
-     * @param pathToFile location of the tickets csv
+     * @param file tickets csv file
      * @return map of models
      */
-    public static Map<String, List<Object>> buildFromFile(String pathToFile) {
+    public static Map<String, List<Object>> buildFromFile(File file) {
         
-        String[][] files = CSVUtils.readCSV(pathToFile);
+        String[][] files = CSVUtils.readCSV(file);
 
         //define the models to return
         Map<String, List<Object>> values = new HashMap<String, List<Object>>() {{//no me gusta el nombre pq no son values son models values estan adentro de los models
