@@ -1,11 +1,12 @@
 package builder;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import databaserefactor.ProviderDAO;
+import databaserefactor.TicketDAO;
+import databaserefactor.WithholdingDAO;
 import utils.csv.*;
 
 import models.Provider;
@@ -19,30 +20,16 @@ public class ModelBuilder {
      * @param file tickets csv file
      * @return map of models
      */
-    public static Map<String, List<Object>> buildFromFile(File file, String header) {
+    public static void buildFromFile(File file, String header) {
         
         String[][] files = CSVUtils.readCSV(file, header);
 
-        //define the models to return
-        Map<String, List<Object>> values = new HashMap<String, List<Object>>() {{//no me gusta el nombre pq no son values son models values estan adentro de los models
-                put("tickets", new LinkedList<>());
-                put("withholding", new LinkedList<>());
-                put("providers", new LinkedList<>());
-        }};
-        
         //for each string[] get the values create the models and put it in the values
         for( int i = 0; i <= files.length; i++) {
             final int index = i;
             //create a provider
-            Map<String, Object> providerVal = new HashMap<String, Object>(){{
-                put("docType", files[index][6]);
-                put("docNo", files[index][7]);
-                put("name", files[index][8]);
-            }};
-            Provider provider = new Provider(providerVal);
-            //aca deberiamos chequear si el provider existe
-            values.get("provider").add(provider);
-            
+            Provider provider = buildProvider(files[index][6], files[index][7], files[index][8]);
+
             //create withholding
             Map<String, Object> withholdingVal = new HashMap<String, Object>() {{
                 put("date", files[index][0]);
@@ -51,7 +38,7 @@ public class ModelBuilder {
             }};
             Withholding withholding = new Withholding(withholdingVal);
             //chequear q no este repetida
-            values.get("withholding").add(withholding);
+            WithholdingDAO.getInstance().save(withholding);
             
             //create ticket
             Map<String, Object> ticket = new HashMap<String, Object>(){{
@@ -69,12 +56,36 @@ public class ModelBuilder {
             //    put("issuedByMe", );//fijarse q el nacho sabe como distinguis si es echo ppor mi o no, o que me lo mande desde el perfil
     
             }};
-            values.get("ticket").add(new Ticket(ticket));
-
-
+            TicketDAO.getInstance().save(new Ticket(ticket));
         }
-        //deberiamos cargar todo a la db?
-        return values;
+    }
+
+    private static Provider buildProvider(String... data) {
+        String[] values = (String[]) Arrays.stream(data).toArray();
+
+        Map<String, Object> providerValues = new HashMap<String, Object>(){{
+            put("docType", values[0]);
+            put("docNo", values[1]);
+            put("name", values[2]);
+            if (values.length == 6) {
+                put("address", values[3]);
+                put("sector", values[4]);
+                put("alias", values[5]);
+            }
+        }};
+
+        Provider provider = new Provider(providerValues);
+        if (!ProviderDAO.getInstance().save(provider)) {
+            Optional<Provider> providerOptional = ProviderDAO.getInstance().getAll().stream()
+                    .filter(p -> p.getID().equals(provider.getID()))
+                    .findFirst();
+            if (providerOptional.isPresent()) {
+                return providerOptional.get();
+            } else {
+                throw new IllegalStateException("The provider could not be saved but could be obtained too");
+            }
+        }
+        return provider;
     }
 
 }
