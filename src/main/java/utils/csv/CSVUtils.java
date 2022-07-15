@@ -21,11 +21,14 @@ public class CSVUtils {
 
     /**
      * Reads a csv file and retrieves the info as a matrix
-     * The first line is a header with the types
+     * The first line is a header with the types and this
+     * must match the given header
      * @param f the file to read
+     * @param header is the string that must match the initial
+     *               line of the file
      * @return String[][] containing all the data
      */
-    public static String[][] readCSV(File f) {
+    public static String[][] readCSV(File f, String header) {
         if (f == null) {
             throw new IllegalArgumentException("File is null");
         }
@@ -34,7 +37,11 @@ public class CSVUtils {
         try {
             FileReader filereader = new FileReader(f);
             CSVReader csvReader = new CSVReader(filereader);
-            csvReader.readNext();   //skip the first line which is the header
+            String[] initialLine = csvReader.readNext();   //skip the first line which is the header
+            if (!initialLine.equals(header.split("\",\""))) {
+                throw new IllegalArgumentException("The given file is invalid for header: " + header);
+            }
+
             items = (String[][]) csvReader.readAll().toArray();
         } catch (IOException e) {
             e.printStackTrace();

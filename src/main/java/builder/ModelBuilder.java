@@ -19,9 +19,9 @@ public class ModelBuilder {
      * @param file tickets csv file
      * @return map of models
      */
-    public static Map<String, List<Object>> buildFromFile(File file) {
+    public static Map<String, List<Object>> buildFromFile(File file, String header) {
         
-        String[][] files = CSVUtils.readCSV(file);
+        String[][] files = CSVUtils.readCSV(file, header);
 
         //define the models to return
         Map<String, List<Object>> values = new HashMap<String, List<Object>>() {{//no me gusta el nombre pq no son values son models values estan adentro de los models
