@@ -29,7 +29,7 @@ public class Provider implements Model {
             put("docType", String.class);
             put("address", String.class);
             put("provSector", String.class);
-            put("alies", String.class);
+            put("alias", String.class);
         }};
     }
 
