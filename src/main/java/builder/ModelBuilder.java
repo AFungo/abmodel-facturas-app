@@ -6,9 +6,13 @@ import java.util.*;
 import databaserefactor.ProviderDAO;
 import databaserefactor.TicketDAO;
 import databaserefactor.WithholdingDAO;
+import utils.Parser;
 import utils.csv.*;
 
+import java.sql.Date;
+
 import models.Provider;
+import models.Sector;
 import models.Ticket;
 import models.Withholding;
 
@@ -22,48 +26,88 @@ public class ModelBuilder {
     public static void buildFromFile(File file, String header) {
         
         String[][] files = CSVUtils.readCSV(file, header);
-
+        Boolean issuedByMe = false;//falta cponfigurarlo correctamente
         //for each string[] get the values create the models and put it in the values
-        for( int i = 0; i <= files.length; i++) {
+        for( int i = 1; i <= files.length; i++) {
 
             Provider provider = buildProvider(files[i][7], files[i][8], files[i][9]);;
             
-            ProviderDAO providerDAO = ProviderDAO.getInstance();
-            
-            if(!providerDAO.save(provider)){
-                provider = providerDAO.getProvider(provider);
-            }
-            
-            //create withholding
-            Map<String, Object> withholdingVal = new HashMap<String, Object>() {{
-                put("date", files[index][0]);
-                put("number", files[index][2]+files[index][3]);
-                put("provider", provider);
-            }};
-            Withholding withholding = new Withholding(withholdingVal);
-            //chequear q no este repetida
-            WithholdingDAO.getInstance().save(withholding);
-            
-            //create ticket
-            Map<String, Object> ticket = new HashMap<String, Object>(){{
-                put("withholding", withholding);
-                put("type", files[index][1]);
-                put("numberTo", files[index][4]);
-                put("authCode", files[index][5]);
-                put("exchangeType", files[index][9]);
-                put("exchangeMoney", files[index][10]);
-                put("netAmountWI", files[index][11]);
-                put("netAmountWOI", files[index][12]);
-                put("amountImpEx", files[index][13]);
-                put("ivaTax", files[index][14]);
-                put("totalAmount", files[index][15]);
-            //    put("issuedByMe", );//fijarse q el nacho sabe como distinguis si es echo ppor mi o no, o que me lo mande desde el perfil
-    
-            }};
-            TicketDAO.getInstance().save(new Ticket(ticket));
+            Withholding withholding = buildWithholding(files[i][0], files[i][1], files[i][2] + files[i][3], provider);//files[i][2] + files[i][3] create the number of ticket/withholding
+            buildTicket(withholding, files[i][0], files[i][4], files[i][5], files[i][9], 
+                        files[i][10], files[i][11], files[i][12], files[i][13], 
+                        files[i][14], files[i][15], issuedByMe);    
         }
     }
+    
+    /*
+     * This method take a Object[] with params of the ticket, then build the ticket try to save it in the db and return it 
+     */
+    private static Ticket buildTicket(Object... data){
+        Withholding withholding = (Withholding)data[0];
 
+        Map<String, Object> ticketValues = new HashMap<String, Object>(){{
+            put("withholding", withholding);
+            put("type", (String) data[1]);
+            put("numberTo", (String) data[2]);
+            put("authCode", (String) data[3]);
+            put("exchangeType", Float.parseFloat((String) data[4]));
+            put("exchangeMoney", (String) data[5]);
+            put("netAmountWI", Float.parseFloat((String) data[6]));
+            put("netAmountWOI", Parser.parseFloat((String)data[7]));
+            put("amountImpEx", Parser.parseFloat((String)data[8]));
+            put("ivaTax", Parser.parseFloat((String)data[9]));
+            put("totalAmount", Float.parseFloat((String)data[10]));
+            put("issuedByMe", (Boolean) data[11]);
+        }};
+
+        Ticket ticket = new Ticket(ticketValues);
+        
+        if (!TicketDAO.getInstance().save(ticket)) {
+            Optional<Ticket> ticketOptional = TicketDAO.getInstance().getAll().stream()
+                    .filter(p -> p.getID().equals(ticket.getID()))
+                    .findFirst();
+            if (ticketOptional.isPresent()) {
+                return ticketOptional.get();
+            } else {
+                throw new IllegalStateException("The provider could not be saved but could be obtained too");
+            }
+        }
+        return ticket;
+    }
+
+    /*
+     * this method takes a Object[] with the data of a withholding, build, try to save it in the db and return it
+     */
+    private static Withholding buildWithholding(Object... data){
+        Sector sector = (Sector) ProviderDAO.getInstance().getAll().stream()
+                        .filter(p -> p.getID().equals(((Provider)data[2]).getID()))
+                        .findFirst().get().getValues().get("sector");
+        
+        Map<String, Object> withholdingValues = new HashMap<String, Object>(){{
+            put("date", Date.valueOf((String)data[0]));
+            put("number", (String) data[1]);
+            put("provider", data[2]);
+            put("sector", sector);
+        }};
+
+        Withholding withholding = new Withholding(withholdingValues);
+        
+        if (!WithholdingDAO.getInstance().save(withholding)) {
+            Optional<Withholding> withholdingOptional = WithholdingDAO.getInstance().getAll().stream()
+                    .filter(p -> p.getID().equals(withholding.getID()))
+                    .findFirst();
+            if (withholdingOptional.isPresent()) {
+                return withholdingOptional.get();
+            } else {
+                throw new IllegalStateException("The provider could not be saved but could be obtained too");
+            }
+        }
+        return withholding;
+    }
+
+    /*
+     * this method take a String[], build a provider with the data, try to save it in the db and return it;
+     */
     private static Provider buildProvider(String... data) {
         String[] values = (String[]) Arrays.stream(data).toArray();
 
