@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import databaserefactor.ProviderDAO;
 import utils.csv.*;
 
 import models.Provider;
@@ -18,7 +19,8 @@ public class ModelBuilder {
      * @param pathToFile location of the tickets csv
      * @return map of models
      */
-    public static Map<String, List<Object>> buildFromFile(String pathToFile) {
+    //ahora es un void
+    public static void buildFromFile(String pathToFile) {
         
         String[][] files = CSVUtils.readCSV(pathToFile);
 
@@ -31,16 +33,14 @@ public class ModelBuilder {
         
         //for each string[] get the values create the models and put it in the values
         for( int i = 0; i <= files.length; i++) {
-            final int index = i;
-            //create a provider
-            Map<String, Object> providerVal = new HashMap<String, Object>(){{
-                put("docType", files[index][6]);
-                put("docNo", files[index][7]);
-                put("name", files[index][8]);
-            }};
-            Provider provider = new Provider(providerVal);
-            //aca deberiamos chequear si el provider existe
-            values.get("provider").add(provider);
+
+            Provider provider = buildProvider(files[i][7], files[i][8], files[i][9]);;
+            
+            ProviderDAO providerDAO = ProviderDAO.getInstance();
+            
+            if(!providerDAO.save(provider)){
+                provider = providerDAO.getProvider(provider);
+            }
             
             //create withholding
             Map<String, Object> withholdingVal = new HashMap<String, Object>() {{
@@ -72,8 +72,18 @@ public class ModelBuilder {
 
 
         }
-        //deberiamos cargar todo a la db?
-        return values;
+    }
+
+    private static Provider buildProvider(Object... data ){
+        Map<String, Object> providerVal = new HashMap<String, Object>(){{
+            put("docType", data[6]);
+            put("docNo", data[7]);
+            put("name", data[8]);
+        }};
+        return new Provider(providerVal);
+    }
+    private static Withholding buildWithholding(Object... data){
+
     }
 
 }
