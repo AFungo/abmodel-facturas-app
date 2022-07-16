@@ -102,13 +102,15 @@ public class DBManager {
         String query = "";
         switch (tableName) {
             case "Provider": query = "CREATE TABLE Provider ("
-                    + "docNo VARCHAR(30) PRIMARY KEY,"
+                    + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
+                    + "docNo VARCHAR(30),"
                     + "name VARCHAR(100),"
                     + "docType VARCHAR(20),"
                     + "address VARCHAR(50),"
-                    + "sector VARCHAR(50),"
+                    + "sector INTEGER,"
                     + "alias VARCHAR(100),"
-                    + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
+                    + "CONSTRAINT uc_docNo UNIQUE (docNo)"
+                    + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(id)"
                     + "ON DELETE SET NULL"
                     + ")";
                 break;
@@ -132,14 +134,18 @@ public class DBManager {
                 break;
 
             case "DollarPrice": query = "CREATE TABLE DollarPrice ("
-                    + "date DATE PRIMARY KEY,"
+                    + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
+                    + "date DATE,"
                     + "buy REAL NOT NULL,"
-                    + "sell REAL NOT NULL"
+                    + "sell REAL NOT NULL,"
+                    + "CONSTRAINT uc_date UNIQUE (date)"
                     + ")";
                 break;
 
             case "Sector": query = "CREATE TABLE Sector ("
-                    + "name VARCHAR(50) PRIMARY KEY"
+                    + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
+                    + "name VARCHAR(50),"
+                    + "CONSTRAINT uc_name UNIQUE (name)"
                     + ")";
                 break;
 
@@ -147,15 +153,15 @@ public class DBManager {
                     + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
                     + "date DATE NOT NULL,"
                     + "number VARCHAR(30) NOT NULL,"
-                    + "provider VARCHAR(30) NOT NULL,"
+                    + "provider INTEGER NOT NULL,"
                     + "iva REAL,"
                     + "profits REAL,"
                     + "delivered BOOLEAN DEFAULT false,"
-                    + "sector VARCHAR(50),"
-                    + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(name)"
+                    + "sector INTEGER,"
+                    + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(id)"
                     + "ON DELETE SET NULL,"
-                    + "PRIMARY KEY (date, number, provider),"
-                    + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (provider) REFERENCES Provider(docNo)"
+                    + "CONSTRAINT fk_   ProviderWithholding FOREIGN KEY (provider) REFERENCES Provider(id),"
+                    + "CONSTRAINT uc_withholding UNIQUE (date, number, provider)"
                     + ")";
                 break;
 
