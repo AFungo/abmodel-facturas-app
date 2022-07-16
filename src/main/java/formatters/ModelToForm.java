@@ -6,6 +6,11 @@ import java.util.Map;
 
 public class ModelToForm {
 
+    /**
+     * Takes a ticket and returns its representation for a view
+     * @param ticket contains the data to be returned
+     * @return Object[] containing all the useful data of the ticket
+     */
     public static Object[] toForm(Ticket ticket) {
         Map<String, Object> dict = ticket.getValues();
         Withholding withholding = (Withholding)dict.get("withholding");
@@ -25,7 +30,15 @@ public class ModelToForm {
                 dict.get("exchangeType"), dict.get("netAmountWI"), dict.get("netAmountWOI"), dict.get("amountImpEx"),
                 dict.get("ivaTax"), dict.get("totalAmount"), sector, buyNSell, delivered ? "SI" : "NO"};
     }
-    
+
+    /**
+     * Takes a withholding and returns its representation for a view as
+     * a profit withholding, in case there is no profit value an empty
+     * array is returned
+     * @param withholding contains the data to be returned
+     * @return Object[] containing all the useful data of the withholding
+     * in case there is no profit value an empty array is returned
+     */
     public static Object[] profitWithholdingToForm(Withholding withholding) {
         Map<String, Object> dict = withholding.getValues();
         Object iva = dict.get("iva");
@@ -45,6 +58,14 @@ public class ModelToForm {
                 sector, null, delivered ? "SI" : "NO"};
     }
 
+    /**
+     * Takes a withholding and returns its representation for a view as
+     * an iva withholding, in case there is no iva value an empty
+     * array is returned
+     * @param withholding contains the data to be returned
+     * @return Object[] containing all the useful data of the withholding
+     * in case there is no iva value an empty array is returned
+     */
     public static Object[] IVAWithholdingToForm(Withholding withholding) {
         Map<String, Object> dict = withholding.getValues();
         Object profits = dict.get("profits");
@@ -64,6 +85,11 @@ public class ModelToForm {
                 profits, sector, null, delivered ? "SI" : "NO"};
     }
 
+    /**
+     * Takes a provider and returns its representation for a view
+     * @param provider contains the data to be returned
+     * @return Object[] containing all the useful data of the provider
+     */
     public static Object[] toForm(Provider provider) {
         Map<String, Object> dict = provider.getValues();
         return new Object[] {dict.get("docNo"), dict.get("name"), dict.get("docType"), dict.get("address"),
