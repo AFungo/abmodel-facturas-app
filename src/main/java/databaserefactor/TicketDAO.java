@@ -63,7 +63,7 @@ public class TicketDAO implements DAO<Ticket> {
     public boolean update(Ticket ticket, Map<String, Object> params) {
         prepareCache();
 
-        String query = "UPDATE Ticket SET " + SQLUtils.mapToSQLValues(params) + " WHERE id = "
+        String query = "UPDATE Ticket SET " + SQLUtils.mapToSQLValues(params) + " WHERE withholding = "
         + ((Withholding)ticket.getValues().get("withholding")).getValues().get("id");
         
         int affectedRows = DatabaseUtils.executeUpdate(query);
@@ -83,7 +83,7 @@ public class TicketDAO implements DAO<Ticket> {
     public boolean delete(Ticket ticket) {
         prepareCache();        
 
-        String query = "DELETE FROM Ticket WHERE id = " +
+        String query = "DELETE FROM Ticket WHERE withholding = " +
                 ((Withholding)ticket.getValues().get("withholding")).getValues().get("id");
         
         int affectedRows = DatabaseUtils.executeUpdate(query);

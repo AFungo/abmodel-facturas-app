@@ -45,7 +45,7 @@ public class Sector implements Model {
     }
 
     private boolean repOk() {
-        Set<String> requiredKeys = Stream.of("name").collect(Collectors.toSet());
+        Set<String> requiredKeys = Stream.of("id", "name").collect(Collectors.toSet());
         if (!requiredKeys.containsAll(values.keySet())) {
             return false;
         }

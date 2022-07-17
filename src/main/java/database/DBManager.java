@@ -109,14 +109,14 @@ public class DBManager {
                     + "address VARCHAR(50),"
                     + "sector INTEGER,"
                     + "alias VARCHAR(100),"
-                    + "CONSTRAINT uc_docNo UNIQUE (docNo)"
+                    + "CONSTRAINT uc_docNo UNIQUE (docNo),"
                     + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(id)"
                     + "ON DELETE SET NULL"
                     + ")";
                 break;
 
             case "Ticket": query = "CREATE TABLE Ticket ("
-                    + "id INTEGER,"
+                    + "withholding INTEGER,"
                     + "type VARCHAR(50) NOT NULL,"
                     + "numberTo INTEGER,"
                     + "authCode VARCHAR(30),"
@@ -128,8 +128,8 @@ public class DBManager {
                     + "ivaTax REAL,"
                     + "totalAmount REAL NOT NULL,"
                     + "issuedByMe BOOLEAN NOT NULL,"
-                    + "PRIMARY KEY (id),"
-                    + "CONSTRAINT fk_id FOREIGN KEY (id) REFERENCES Withholding(id) ON DELETE CASCADE"
+                    + "PRIMARY KEY (withholding),"
+                    + "CONSTRAINT fk_id FOREIGN KEY (withholding) REFERENCES Withholding(id) ON DELETE CASCADE"
                     + ")";
                 break;
 
@@ -160,7 +160,7 @@ public class DBManager {
                     + "sector INTEGER,"
                     + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(id)"
                     + "ON DELETE SET NULL,"
-                    + "CONSTRAINT fk_   ProviderWithholding FOREIGN KEY (provider) REFERENCES Provider(id),"
+                    + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (provider) REFERENCES Provider(id),"
                     + "CONSTRAINT uc_withholding UNIQUE (date, number, provider)"
                     + ")";
                 break;
