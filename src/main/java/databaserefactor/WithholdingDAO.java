@@ -103,12 +103,12 @@ public class WithholdingDAO implements DAO<Withholding> {
         ResultSet result = DatabaseUtils.executeQuery(query);
         try {
             while(result.next()) {
-                String docNo = result.getString(4);
+                String providerId = result.getString(4);
                 Optional<Provider> provider = ProviderDAO.getInstance().getAll()
-                        .stream().filter(p -> p.getValues().get("docNo").equals(docNo)).findFirst();
-                String sectorName = result.getString(8);
+                        .stream().filter(p -> p.getValues().get("id").equals(providerId)).findFirst();
+                String sectorId = result.getString(8);
                 Optional<Sector> sector = SectorDAO.getInstance().getAll()
-                        .stream().filter(s -> s.getValues().get("sector").equals(sectorName)).findFirst();
+                        .stream().filter(s -> s.getValues().get("id").equals(sectorId)).findFirst();
                 cache.add(new Withholding(new HashMap<String, Object>() {{
                     put("id", Integer.parseInt(result.getString(1)));
                     put("date", Date.valueOf(result.getString(2)));
@@ -120,7 +120,14 @@ public class WithholdingDAO implements DAO<Withholding> {
                     put("iva", Parser.parseFloat(result.getString(5)));
                     put("profits", Parser.parseFloat(result.getString(6)));
                     put("delivered", Parser.parseBool(result.getString(7)));
-                    sector.ifPresent(value -> put("sector", value));
+                    if (sector.isPresent()) {
+                        put("sector", sector.get());
+                    } else {    //if no sector, use provider's sector
+                        put("sector", SectorDAO.getInstance().getAll()
+                                .stream().filter(s -> s.getValues().get("sector")
+                                        .equals(provider.get().getValues().get("sector")))
+                                .findFirst());
+                    }
                 }}));
             }
         } catch (SQLException ex) {

@@ -7,11 +7,7 @@ import utils.sql.SQLUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -52,11 +48,12 @@ public class SectorDAO implements DAO<Sector>{
         String query = "INSERT INTO Sector (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
-        int affectedRows = DatabaseUtils.executeUpdate(query);
-        if (affectedRows == 0) {
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
             return false;
         }
 
+        sector.setValues(Collections.singletonMap("id", generatedId));
         cache.add(sector);
         //add item to cache if executeQuery was successful
 
@@ -106,11 +103,12 @@ public class SectorDAO implements DAO<Sector>{
         try {
             while(result.next()) {
                 cache.add(new Sector(new HashMap<String, Object>() {{
-                    put("name", result.getString(1));
+                    put("id", result.getString(1));
+                    put("name", result.getString(2));
                     }}));
             }
         } catch (SQLException ex) {
-            cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
+            cache.clear();//Iff fails in load an object cache are empty, all are load or nothing are load
             Handler.logUnexpectedError(ex);
         }
     }    

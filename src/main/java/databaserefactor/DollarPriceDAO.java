@@ -8,11 +8,7 @@ import utils.sql.SQLUtils;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  *this class implements DAO interface for DollarPrices model
@@ -54,11 +50,12 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
         String query = "INSERT INTO DollarPrice (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
 
-        int affectedRows = DatabaseUtils.executeUpdate(query);
-        if (affectedRows == 0) {
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
             return false;
         }
 
+        dollarPrice.setValues(Collections.singletonMap("id", generatedId));
         cache.add(dollarPrice);
         return true;
     }
@@ -105,9 +102,10 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
         try {
             while(result.next()) {
                 cache.add(new DollarPrice(new HashMap<String, Object>() {{
-                    put("date", Date.valueOf(result.getString(1)));
-                    put("buy", Float.parseFloat(result.getString(2)));
-                    put("sell", Float.parseFloat(result.getString(3)));
+                    put("id", Date.valueOf(result.getString(1)));
+                    put("date", Date.valueOf(result.getString(2)));
+                    put("buy", Float.parseFloat(result.getString(3)));
+                    put("sell", Float.parseFloat(result.getString(4)));
                 }}));
             }
         } catch (SQLException ex) {
