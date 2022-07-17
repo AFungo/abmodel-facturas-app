@@ -25,6 +25,7 @@ public class DollarPrice implements Model {
 
     private void setTypes() {
         types = new HashMap<String, Class<?>>() {{
+            put("id", Integer.class);
             put("date", Date.class);
             put("buy", Float.class);
             put("sell", Float.class);
@@ -48,7 +49,7 @@ public class DollarPrice implements Model {
 
     @Override
     public Map<String, Object> getID() {
-        return Collections.singletonMap("date", values.get("date"));
+        return Collections.singletonMap("id", values.get("id"));
     }
 
     private boolean repOk() {

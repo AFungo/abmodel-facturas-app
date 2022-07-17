@@ -24,6 +24,7 @@ public class Provider implements Model {
 
     private void setTypes() {
         types = new HashMap<String, Class<?>>() {{
+            put("id", Integer.class);
             put("docNo", String.class);
             put("name", String.class);
             put("docType", String.class);
@@ -49,12 +50,12 @@ public class Provider implements Model {
     }
 
     public Map<String, Object> getID() {
-        return Collections.singletonMap("docNo", values.get("docNo"));
+        return Collections.singletonMap("id", values.get("id"));
     }
     
     private boolean repOk() {
         Set<String> requiredKeys = Stream.of
-                ("docNo", "name", "docType", "address", "provSector", "alias")
+                ("id", "docNo", "name", "docType", "address", "provSector", "alias")
                 .collect(Collectors.toSet());
         if (!requiredKeys.containsAll(values.keySet())) {
             return false;
