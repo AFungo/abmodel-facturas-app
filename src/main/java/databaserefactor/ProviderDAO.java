@@ -7,10 +7,7 @@ import utils.sql.SQLUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -48,12 +45,13 @@ public class ProviderDAO implements DAO<Provider>{
         Pair<String, String> sqlValues = SQLUtils.modelToSQL(provider);
         String query = "INSERT INTO Provider (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-            
-        int affectedRows = DatabaseUtils.executeUpdate(query);
-        if (affectedRows == 0) {
+
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
             return false;
         }
-        
+
+        provider.setValues(Collections.singletonMap("id", generatedId));
         cache.add(provider);
         //add item to cache if executeQuery was successful
         return true;
@@ -102,12 +100,13 @@ public class ProviderDAO implements DAO<Provider>{
         try {
             while(result.next()) {
                 cache.add(new Provider(new HashMap<String, Object>() {{
-                    put("docNo", result.getString(1));
-                    put("name", result.getString(2));
-                    put("docType", result.getString(3));
-                    put("address", result.getString(4));
-                    put("provSector", result.getString(5));
-                    put("alias", result.getString(6));
+                    put("id", result.getString(1));
+                    put("docNo", result.getString(2));
+                    put("name", result.getString(3));
+                    put("docType", result.getString(4));
+                    put("address", result.getString(5));
+                    put("provSector", result.getString(6));
+                    put("alias", result.getString(7));
                 }}));
             }
         } catch (SQLException ex) {

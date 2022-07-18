@@ -25,6 +25,7 @@ public class DollarPrice implements Model {
 
     private void setTypes() {
         types = new HashMap<String, Class<?>>() {{
+            put("id", Integer.class);
             put("date", Date.class);
             put("buy", Float.class);
             put("sell", Float.class);
@@ -48,11 +49,11 @@ public class DollarPrice implements Model {
 
     @Override
     public Map<String, Object> getID() {
-        return Collections.singletonMap("date", values.get("date"));
+        return Collections.singletonMap("id", values.get("id"));
     }
 
     private boolean repOk() {
-        Set<String> requiredKeys = Stream.of("date", "buy", "sell").collect(Collectors.toSet());
+        Set<String> requiredKeys = Stream.of("id", "date", "buy", "sell").collect(Collectors.toSet());
         if (!requiredKeys.containsAll(values.keySet())) {
             return false;
         }
@@ -66,13 +67,7 @@ public class DollarPrice implements Model {
             }
         }
 
-        for (String key : requiredKeys) {
-            if (values.get(key) == null) {
-                return false;
-            }
-        }
-
-        return true;
+        return values.get("date") != null && values.get("buy") != null && values.get("sell") != null;
     }
 
     @Override

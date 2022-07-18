@@ -20,6 +20,7 @@ public class Sector implements Model {
 
     private void setTypes() {
         types = new HashMap<String, Class<?>>() {{
+            put("id", Integer.class);
             put("name", String.class);
         }};
     }
@@ -40,11 +41,11 @@ public class Sector implements Model {
     }
 
     public Map<String, Object> getID() {
-        return Collections.singletonMap("name", values.get("name"));
+        return Collections.singletonMap("id", values.get("id"));
     }
 
     private boolean repOk() {
-        Set<String> requiredKeys = Stream.of("name").collect(Collectors.toSet());
+        Set<String> requiredKeys = Stream.of("id", "name").collect(Collectors.toSet());
         if (!requiredKeys.containsAll(values.keySet())) {
             return false;
         }

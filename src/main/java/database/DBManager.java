@@ -102,19 +102,21 @@ public class DBManager {
         String query = "";
         switch (tableName) {
             case "Provider": query = "CREATE TABLE Provider ("
-                    + "docNo VARCHAR(30) PRIMARY KEY,"
+                    + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
+                    + "docNo VARCHAR(30),"
                     + "name VARCHAR(100),"
                     + "docType VARCHAR(20),"
                     + "address VARCHAR(50),"
-                    + "sector VARCHAR(50),"
+                    + "sector INTEGER,"
                     + "alias VARCHAR(100),"
-                    + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(name)"
+                    + "CONSTRAINT uc_docNo UNIQUE (docNo),"
+                    + "CONSTRAINT fk_Sector FOREIGN KEY (sector) REFERENCES Sector(id)"
                     + "ON DELETE SET NULL"
                     + ")";
                 break;
 
             case "Ticket": query = "CREATE TABLE Ticket ("
-                    + "id INTEGER,"
+                    + "withholding INTEGER,"
                     + "type VARCHAR(50) NOT NULL,"
                     + "numberTo INTEGER,"
                     + "authCode VARCHAR(30),"
@@ -126,20 +128,24 @@ public class DBManager {
                     + "ivaTax REAL,"
                     + "totalAmount REAL NOT NULL,"
                     + "issuedByMe BOOLEAN NOT NULL,"
-                    + "PRIMARY KEY (id),"
-                    + "CONSTRAINT fk_id FOREIGN KEY (id) REFERENCES Withholding(id) ON DELETE CASCADE"
+                    + "PRIMARY KEY (withholding),"
+                    + "CONSTRAINT fk_id FOREIGN KEY (withholding) REFERENCES Withholding(id) ON DELETE CASCADE"
                     + ")";
                 break;
 
             case "DollarPrice": query = "CREATE TABLE DollarPrice ("
-                    + "date DATE PRIMARY KEY,"
+                    + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
+                    + "date DATE,"
                     + "buy REAL NOT NULL,"
-                    + "sell REAL NOT NULL"
+                    + "sell REAL NOT NULL,"
+                    + "CONSTRAINT uc_date UNIQUE (date)"
                     + ")";
                 break;
 
             case "Sector": query = "CREATE TABLE Sector ("
-                    + "name VARCHAR(50) PRIMARY KEY"
+                    + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
+                    + "name VARCHAR(50),"
+                    + "CONSTRAINT uc_name UNIQUE (name)"
                     + ")";
                 break;
 
@@ -147,15 +153,15 @@ public class DBManager {
                     + "id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY UNIQUE,"
                     + "date DATE NOT NULL,"
                     + "number VARCHAR(30) NOT NULL,"
-                    + "provider VARCHAR(30) NOT NULL,"
+                    + "provider INTEGER NOT NULL,"
                     + "iva REAL,"
                     + "profits REAL,"
                     + "delivered BOOLEAN DEFAULT false,"
-                    + "sector VARCHAR(50),"
-                    + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(name)"
+                    + "sector INTEGER,"
+                    + "CONSTRAINT fk_SectorWithholding FOREIGN KEY (sector) REFERENCES Sector(id)"
                     + "ON DELETE SET NULL,"
-                    + "PRIMARY KEY (date, number, provider),"
-                    + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (provider) REFERENCES Provider(docNo)"
+                    + "CONSTRAINT fk_ProviderWithholding FOREIGN KEY (provider) REFERENCES Provider(id),"
+                    + "CONSTRAINT uc_withholding UNIQUE (date, number, provider)"
                     + ")";
                 break;
 
