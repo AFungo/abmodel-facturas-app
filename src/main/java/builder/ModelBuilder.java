@@ -18,29 +18,40 @@ import models.Withholding;
 
 public class ModelBuilder {
 
+    private final static String[] AFIPTransmitterHeader = {"Fecha","Tipo","Punto de Venta","Número Desde","Número Hasta","Cód. Autorización","Tipo Doc. Emisor","Nro. Doc. Emisor","Denominación Emisor","Tipo Cambio","Moneda","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"};
+    private final static String[] AFIPReceiverHeader = {"Fecha","Tipo","Punto de Venta","Número Desde","Número Hasta","Cód. Autorización","Tipo Doc. Receptor","Nro. Doc. Receptor","Denominación Receptor","Tipo Cambio","Moneda","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"};
+
     /**
-     * create a map of models from a file of tickets
-     * @param file tickets csv file
-     * @return map of models
+     * Crates the models from the info given from a file and saves them in database
+     * @param file tickets csv AFIP file
      */
-    public static void buildFromFile(File file, String header) {
-        
-        String[][] files = CSVUtils.readCSV(file, header);
-        Boolean issuedByMe = false;//falta cponfigurarlo correctamente
+    public static void buildFromAFIPFile(File file) {
+
+        Boolean issuedByMe = false;
+        String[][] files;
+        try {
+            files = CSVUtils.readCSV(file, AFIPTransmitterHeader);
+        } catch (IllegalArgumentException e) {  //in case the header didn't match, we assume the receiver
+            issuedByMe = true;                  //header will match
+            files = CSVUtils.readCSV(file, AFIPReceiverHeader);
+            //in case this file doesn't match either the exception will be raised further in the program
+        }
+
         //for each string[] get the values create the models and put it in the values
         for( int i = 1; i <= files.length; i++) {
-
             Provider provider = buildProvider(files[i][7], files[i][8], files[i][9]);;
             
-            Withholding withholding = buildWithholding(files[i][0], files[i][1], files[i][2] + files[i][3], provider);//files[i][2] + files[i][3] create the number of ticket/withholding
-            buildTicket(withholding, files[i][0], files[i][4], files[i][5], files[i][9], 
-                        files[i][10], files[i][11], files[i][12], files[i][13], 
-                        files[i][14], files[i][15], issuedByMe);    
+            Withholding withholding = buildWithholding(files[i][0], files[i][1], files[i][2] + files[i][3],
+                    provider);//files[i][2] + files[i][3] create the number of ticket/withholding
+
+            buildTicket(withholding, files[i][0], files[i][4], files[i][5], files[i][9], files[i][10], files[i][11],
+                    files[i][12], files[i][13], files[i][14], files[i][15], issuedByMe);
         }
     }
     
     /*
-     * This method take a Object[] with params of the ticket, then build the ticket try to save it in the db and return it 
+     * This method take a Object[] with params of the ticket, then build the ticket try to save it in the db
+     * and return it
      */
     private static Ticket buildTicket(Object... data){
         Withholding withholding = (Withholding)data[0];
@@ -69,7 +80,7 @@ public class ModelBuilder {
             if (ticketOptional.isPresent()) {
                 return ticketOptional.get();
             } else {
-                throw new IllegalStateException("The provider could not be saved but could be obtained too");
+                throw new IllegalStateException("The ticket could not be saved but also not obtained");
             }
         }
         return ticket;
@@ -99,7 +110,7 @@ public class ModelBuilder {
             if (withholdingOptional.isPresent()) {
                 return withholdingOptional.get();
             } else {
-                throw new IllegalStateException("The provider could not be saved but could be obtained too");
+                throw new IllegalStateException("The withholding could not be saved but also not obtained");
             }
         }
         return withholding;
@@ -130,7 +141,7 @@ public class ModelBuilder {
             if (providerOptional.isPresent()) {
                 return providerOptional.get();
             } else {
-                throw new IllegalStateException("The provider could not be saved but could be obtained too");
+                throw new IllegalStateException("The provider could not be saved but also not obtained");
             }
         }
         return provider;

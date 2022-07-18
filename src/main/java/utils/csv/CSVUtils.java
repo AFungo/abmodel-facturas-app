@@ -1,17 +1,10 @@
 package utils.csv;
 
 import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
-import models.Ticket;
-import utils.FormatUtils;
-import utils.Pair;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,7 +21,7 @@ public class CSVUtils {
      *               line of the file
      * @return String[][] containing all the data
      */
-    public static String[][] readCSV(File f, String header) {
+    public static String[][] readCSV(File f, String[] header) {
         if (f == null) {
             throw new IllegalArgumentException("File is null");
         }
@@ -38,11 +31,11 @@ public class CSVUtils {
             FileReader filereader = new FileReader(f);
             CSVReader csvReader = new CSVReader(filereader);
             String[] initialLine = csvReader.readNext();   //skip the first line which is the header
-            if (!initialLine.equals(header.split("\",\""))) {
-                throw new IllegalArgumentException("The given file is invalid for header: " + header);
+            if (!Arrays.equals(initialLine, header)) {
+                throw new IllegalArgumentException("The given file is invalid for header: " + Arrays.toString(header));
             }
 
-            items = (String[][]) csvReader.readAll().toArray();
+            items = csvReader.readAll().toArray(items);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,6 +65,11 @@ public class CSVUtils {
         }
     }
 
+    /*
+     * Takes a path and tries to create a file in that path
+     * in case the file can't be created an IllegalStateException is raised
+     * otherwise the new created file is returned
+     */
     private static File createCSV(String path) {
         File file = new File(path);
         try {
