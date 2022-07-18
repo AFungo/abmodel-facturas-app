@@ -53,11 +53,18 @@ public class Provider implements Model {
         return Collections.singletonMap("id", values.get("id"));
     }
     
+    /**
+     * 
+     * @return all attributes of provider model
+     */
+    public static Set<String> getAttributes(){
+        return Stream.of( "provSector", "id", "docNo", "name", "docType", "address", "alias")
+        .collect(Collectors.toSet());
+    }
+
     private boolean repOk() {
-        Set<String> requiredKeys = Stream.of
-                ("id", "docNo", "name", "docType", "address", "provSector", "alias")
-                .collect(Collectors.toSet());
-        if (!requiredKeys.containsAll(values.keySet())) {
+
+        if (!getAttributes().containsAll(values.keySet())) {
             return false;
         }
 
