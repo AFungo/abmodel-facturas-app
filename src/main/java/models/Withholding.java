@@ -61,13 +61,17 @@ public class Withholding implements Model {
         return Collections.singletonMap("id", values.get("id"));
     }
 
-    protected static Set<String> requiredKeys() {
-        return Stream.of("date", "number", "provider", "sector", "iva", "profits", "id", "delivered", "dollarPrice")
+    /**
+     * 
+     * @return all the attributes of the model
+     */
+    public static Set<String> getAttributes() {
+        return Stream.of("provider", "sector", "id", "date", "number", "iva", "profits", "delivered", "dollarPrice")
                 .collect(Collectors.toSet());
     }
 
     private boolean repOk() {
-        if (!requiredKeys().containsAll(values.keySet())) {
+        if (!getAttributes().containsAll(values.keySet())) {
             return false;
         }
 
