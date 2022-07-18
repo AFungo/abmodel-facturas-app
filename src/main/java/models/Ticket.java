@@ -64,14 +64,14 @@ public class Ticket extends Withholding implements Model{
         return (Boolean) values.get("issuedByMe") == isCredit;
     }
 
-    protected static Set<String> requiredKeys() {
-        return Stream.of("numberTo", "authCode", "exchangeType", "totalAmount", "exchangeMoney", "type", "netAmountWI",
-                        "netAmountWOI", "amountImpEx", "ivaTax", "issuedByMe", "withholding")
+    public static Set<String> getAttributes() {
+        return Stream.of("withholding", "numberTo", "authCode", "type", "exchangeType", "exchangeMoney", "netAmountWI",
+                        "netAmountWOI", "amountImpEx", "ivaTax", "totalAmount", "issuedByMe")
                 .collect(Collectors.toSet());
     }
 
     private boolean repOk() {
-        if (!requiredKeys().containsAll(values.keySet())) {
+        if (!getAttributes().containsAll(values.keySet())) {
             return false;
         }
 
