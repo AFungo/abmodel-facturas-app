@@ -1,72 +1,123 @@
 package database;
 
+import models.Sector;
+import models.set.ModelSet;
+import utils.Pair;
+import logger.Handler;
+import utils.sql.SQLUtils;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 /**
- * Data Access Object used for the Sector's table of the database
+ *
+ * this class implements DAO interface for Sectors table
  */
-public class SectorDAO extends DAO {
+public class SectorDAO implements DAO<Sector>{
     
-    /**
-     * Add a new sector to the database
-     *
-     * @param name name of the sector to be added
-     */
-    public static void add(String name) {
-        String query = "INSERT INTO Sector (name) "
-            + "VALUES ('"+ name + "')";
-        executeQuery(query, true, true);
-    }
-    
-    /**
-     * Given a name, checks if the executed query returns an empty set 
-     * or not
-     * 
-     * @param name name that will be used in the query
-     * @return true iff the result if not empty
-     */
-    public static boolean exist(String name) {
-        String query = "SELECT * FROM Sector WHERE name = '" + name + "'";
-        ResultSet result = executeQuery(query, false, true);
-        try {
-            return result.next();
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
+    private static SectorDAO instance;
+
+    private final ModelSet<Sector> cache;
+    private boolean cacheLoaded;
+
+    public static SectorDAO getInstance() {
+        if (instance == null) {
+            instance = new SectorDAO();
         }
+        return instance;
     }
-    
+
+    private SectorDAO() {
+        cache = new ModelSet<>();
+        cacheLoaded = false;
+    }
+
+    @Override
+    public Set<Sector> getAll() {
+        if (!cacheLoaded) {
+            loadCache();
+        }
+        return cache;
+    }
+
+    @Override
+    public boolean save(Sector sector) {
+        prepareCache();
+
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(sector);
+        String query = "INSERT INTO Sector (" + sqlValues.getFst() + ") "
+            + "VALUES (" + sqlValues.getSnd() + ")";
+
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
+            return false;
+        }
+
+        sector.setValues(Collections.singletonMap("id", generatedId));
+        cache.add(sector);
+        //add item to cache if executeQuery was successful
+
+        return true;
+    }
+
+    @Override
+    public boolean update(Sector sector, Map<String, Object> params) {
+        prepareCache();
+
+        String query = "UPDATE Sector SET " + SQLUtils.mapToSQLValues(params) + " WHERE name = "
+                + "'" + sector.getValues().get("name") + "'";
+
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+
+        //update cache if executeQuery was successful
+        cache.remove(sector);
+        sector.setValues(params);
+        cache.add(sector);
+        return true;
+
+    }
+
+    @Override
+    public boolean delete(Sector sector) {
+        prepareCache();
+        String query = "DELETE FROM Sector WHERE name = '" + sector.getValues().get("name") + "'";
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+        
+        cache.remove(sector);
+        return true;
+    }
+
     /**
-     * Sectors getter
-     *
-     * @return a list of all sectors
+     * This method must load the cache with the data from the database
      */
-    public static List<String> get() {
-        ResultSet result = executeQuery("SELECT * FROM Sector", false, true);
-        List<String> providers = new LinkedList<>();
+    private void loadCache() {
+        String query = "SELECT * FROM Sector";
+        ResultSet result = DatabaseUtils.executeQuery(query);
         try {
-            while (result.next()) {
-                providers.add(result.getString(1));
+            while(result.next()) {
+                cache.add(new Sector(new HashMap<String, Object>() {{
+                    put("id", result.getString(1));
+                    put("name", result.getString(2));
+                    }}));
             }
-            return providers;
         } catch (SQLException ex) {
-            Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new IllegalStateException(ex.toString());
+            cache.clear();//Iff fails in load an object cache are empty, all are load or nothing are load
+            Handler.logUnexpectedError(ex);
+        }
+    }    
+
+    private void prepareCache() {
+        if (!cacheLoaded) {
+            loadCache();
+            cacheLoaded = true;
         }
     }
-    
-    /**
-     * Given a name, search the sectors and delete them
-     * 
-     * @param name name used for the sectors search
-     */
-    public static void remove(String name) {
-        String query = "DELETE FROM Sector WHERE name = '" + name + "'";
-        executeQuery(query, true, false);
-    }
-    
 }

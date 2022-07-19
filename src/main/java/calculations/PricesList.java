@@ -1,20 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package utils;
+package calculations;
 
 import database.DollarPriceDAO;
 import models.DollarPrice;
 import models.Ticket;
 import models.Withholding;
+import utils.Pair;
+
 import java.sql.Date;
 import java.util.*;
 
 /**
  * class for manage the price of the dollar
- * 
+ *
  */
 public class PricesList {
     //values such iva, total amount, etc
@@ -23,34 +20,34 @@ public class PricesList {
     private Map<Date,DollarPrice> datePrices;
     //list of prices that exceed the days limit
     private List<Pair<Date,String>> missingPrices;
-    
+
     /**
      * constructor of the class
-     * @param inDollars 
+     * @param inDollars
      */
     public PricesList(boolean inDollars) {
         calculator = new ProfitCalculator ();
         datePrices = new HashMap<> ();
         missingPrices = new LinkedList();
-        if (DollarPriceDAO.isEmpty() && inDollars) {
+        if (DollarPriceDAO.getInstance().getAll().isEmpty() && inDollars) {
             throw new IllegalStateException("No dollar prices loaded");
         }
     }
-    
+
     /**
      * @return a map with the values
      */
     public Map<String,Float> getValues() {
         return calculator.getValues();
     }
-    
+
     /**
      * @return a list of pairs with the missing prices
      */
     public List<Pair<Date,String>> getMissingPrices() {
         return missingPrices;
     }
-    
+
     /**
      * load the ticket values in a ProfitCalculator with the amounts in dollars or  in pesos
      * @param t a ticket for load
@@ -69,7 +66,7 @@ public class PricesList {
             calculator.addTicketInDollars((Ticket)t);
         }
     }
-    
+
     /**
      * load the withholding values in a ProfitCalculator with the amounts in dollars or in pesos
      * @param w withholding who want to charge in profit calculator
@@ -82,30 +79,33 @@ public class PricesList {
         }
         calculator.addRetention(w, inDollars);
     }
-    
+
     /*
-    * set the dollar price in days who the price is missed
-    */
+     * set the dollar price in days who the price is missed
+     */
     private void setDollarPrice(Withholding t, int daysLimit) {
         Date ticketDate = (Date)t.getValues().get("date");
         DollarPrice price = datePrices.get(ticketDate);
         boolean dayPriceMissing = false;
-        
+
         if (price == null) {    //take price from database and load it in hashmap
-             price = DollarPriceDAO.get(ticketDate);
-             if (price == null) {
+            Optional<DollarPrice> priceOptional = DollarPriceDAO.getInstance()
+                    .getAll().stream().filter(d -> d.getValues().get("date").equals(ticketDate)).findFirst();
+            if (priceOptional.isPresent()) {
+                price = priceOptional.get();
+            } else {
                 price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
                 dayPriceMissing = true;
             }
             datePrices.put(ticketDate, price);  //set as price for ticketDate
         }
-        
+
         t.setValues(Collections.singletonMap("dollarPrice", price));    //set price attribute on ticket
         if (dayPriceMissing) {
             checkDaysDistance(daysLimit, ticketDate, price);
         }
     }
-    
+
     /**
      * check the days distance between missed dollars prices  
      */
@@ -118,5 +118,5 @@ public class PricesList {
             missingPrices.add(new Pair<Date,String> (ticketDate, Long.toString(timeDiference / 86400000)));
         }
     }
-    
+
 }

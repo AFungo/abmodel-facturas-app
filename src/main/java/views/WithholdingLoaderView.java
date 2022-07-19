@@ -6,13 +6,9 @@ package views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import controller.Controller;
-import database.ProviderDAO;
-import database.SQLFilter;
-import database.SectorDAO;
 import models.Provider;
 import models.Withholding;
 import utils.AutoSuggestor;
-import utils.FilterUtils;
 import utils.FormatUtils;
 import java.text.SimpleDateFormat;
 import java.util.*;

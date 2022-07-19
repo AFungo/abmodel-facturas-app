@@ -1,50 +1,51 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Abstract class that implements a unique method used in all
- * concrete DAO classes
+ * Interface of DAO pattern design
+ * 
  */
-public abstract class DAO {
+public interface DAO<T> {
 
     /**
-     * Execute the requested query
+     * This method return all the objects stored in the cache,
+     * if the cache is not loaded then it must be loaded first.
      *
-     * @param query the query to be executed
-     * @param update Boolean argument that check if the query is an update
-     * @param returnKeys Boolean argument that check if return keys will be used
-     * @return the requested values from the database
+     * @return a set of T from the cache
+    */
+    Set<T> getAll();
+
+    /**
+     * Given object, this is saved in the database, and if
+     * this could be saved then is added to the cache and
+     * return true, else return false.
+     *
+     * @param t to be saved
+     * @return true iff the object was saved
      */
-    protected static ResultSet executeQuery(String query, boolean update, boolean returnKeys) {
-        try {
-            Connection connection = DBManager.getConnection();
-            PreparedStatement stm;
-            if (returnKeys) {
-                stm = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            } else {
-                stm = connection.prepareStatement(query);
-            }
+    boolean save(T t);
 
-            if (update) {
-                stm.executeUpdate();
-                return stm.getGeneratedKeys();
-            } else {
-                ResultSet result = stm.executeQuery();
-                return result;
-            }
-        } catch (SQLException e) {
-            if (e.getSQLState().equals("23505")) {
-                throw new IllegalStateException("query: " + query + "\n" + "<23505> duplicate item: " + e.toString());
+    /**
+     * Given a object and a set of values, this is updated
+     * in the database, and if this could be updated, then is
+     * updated in the cache and return true, else return false
+     *
+     * @param t to be updated
+     * @param params column names with the new values to update
+     * @return true iff the object was updated
+     */
+    boolean update(T t, Map<String, Object> params);
 
-            } else {
-                throw new IllegalStateException("query: " + query + "\n" + e.toString());
-            }
-        }
-    }
+    /**
+     * Given a object, this is deleted from the database,
+     * and if this could be deleted, then is deleted in
+     * the cache too and return true, else return false
+     *
+     * @param t to be deleted
+     * @return true iff the object was deleted
+     */
+    boolean delete(T t);
 
 }

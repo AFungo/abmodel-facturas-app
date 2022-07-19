@@ -1,143 +1,125 @@
 package database;
 
 import models.DollarPrice;
-import utils.FormatUtils;
+import models.set.ModelSet;
 import utils.Pair;
+import logger.Handler;
+import utils.sql.SQLUtils;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 /**
- * Data Access Object used for the DollarPrice's table of the database
+ *this class implements DAO interface for DollarPrices model
+ * 
+ * 
  */
-public class DollarPriceDAO extends DAO {
+public class DollarPriceDAO implements DAO<DollarPrice>{
     
-    /**
-     * Add a new dollar price to the database
-     * 
-     * @param price dollar price to be added
-     */
-    public static void add(DollarPrice price) {
-        Pair<String, String> sqlValues = FormatUtils.dollarPriceToSQL(price);
+    private static DollarPriceDAO instance;
+
+    private final ModelSet<DollarPrice> cache;
+    private boolean cacheLoaded;
+
+    public static DollarPriceDAO getInstance() {
+        if (instance == null) {
+            instance = new DollarPriceDAO();
+        }
+        return instance;
+    }
+
+    private DollarPriceDAO() {
+        cache = new ModelSet<>();
+        cacheLoaded = false;
+    }
+
+    @Override
+    public Set<DollarPrice> getAll() {
+        if (!cacheLoaded) {
+            loadCache();
+        }
+        return cache;
+    }
+
+    @Override
+    public boolean save(DollarPrice dollarPrice) {
+        prepareCache();
+
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(dollarPrice);
         String query = "INSERT INTO DollarPrice (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-        executeQuery(query, true, true);
+
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
+            return false;
+        }
+
+        dollarPrice.setValues(Collections.singletonMap("id", generatedId));
+        cache.add(dollarPrice);
+        return true;
     }
+
+    @Override
+    public boolean update(DollarPrice dollarPrice, Map<String, Object> params) {
+        prepareCache();
         
+        String query = "UPDATE DollarPrice SET " + SQLUtils.mapToSQLValues(params) + " WHERE date = "
+        + "'" + dollarPrice.getValues().get("date") + "'";
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+
+        cache.remove(dollarPrice);
+        dollarPrice.setValues(params);
+        cache.add(dollarPrice);
+        return true;
+    }
+
+    @Override
+    public boolean delete(DollarPrice dollarPrice) {
+        prepareCache();
+
+        String query = "DELETE FROM DollarPrice WHERE date = '" + dollarPrice.getValues().get("date") + "'";
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+        
+        cache.remove(dollarPrice);
+        return true;    
+    }
+
     /**
-     * Dollar prices getter
-     * 
-     * @return a list with all dollar prices
+     * This method must load the cache with the data from the database
      */
-    public static List<DollarPrice> get() {
+    private void loadCache() {
         String query = "SELECT * FROM DollarPrice";
-        ResultSet result = executeQuery(query, false, true);
-        List<DollarPrice> price = buildDollarPrices(result);
-        return price;
-    }
-    
-    /**
-     * Dollar prices getter using the date as filter
-     *
-     * @param date date used as filter
-     * @return a dollar price of a specific date
-     */
-    public static DollarPrice get(Date date) {
-        String query = "SELECT * FROM DollarPrice WHERE date = '" + date.toString() + "'";
-        ResultSet result = executeQuery(query, false, true);
-        DollarPrice price = buildDollarPrice(result);
-        return price;
-    }
-    
-    /**
-     * Check if the database has prices stored
-     * 
-     * @return true iff the database has no prices stored 
-     */
-    public static boolean isEmpty() {
-        String query = "SELECT COUNT(date) FROM DollarPrice";
-        ResultSet result = executeQuery(query, false, true);
-        boolean noPrices = true;
-        try {
-            result.next();
-            int amount = result.getInt(1);
-            if (amount != 0) {
-                noPrices = false;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DollarPriceDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return noPrices;
-    }
-    
-    /**
-    * Gets the price of the closest date to the given date
-    * 
-     * @param date date used in the search
-     * @return the price of the closest date to the given date
-    */
-    public static DollarPrice getAproximatePrice(Date date) {
-        String query = "SELECT * FROM DollarPrice WHERE date = (SELECT MAX(date) FROM DollarPrice WHERE "
-                + "date < '" + date.toString() + "')";
-        ResultSet before = executeQuery(query, false, true);
-        
-        query = "SELECT * FROM DollarPrice WHERE date > '" + date.toString() + "' FETCH FIRST 1 ROWS ONLY";
-        ResultSet after = executeQuery(query, false, true);
-        
-        DollarPrice priceBefore = buildDollarPrice(before);
-        DollarPrice priceAfter = buildDollarPrice(after);
-        
-        //we assume that the user will load more than 1 sigle price, so this will always find another date
-        if (priceBefore == null)
-            return priceAfter;
-        else if (priceAfter == null)
-            return priceBefore;
-        else {
-            return getNearestDatePrice(priceBefore, priceAfter, date);
-        }
-    }
-    
-    private static DollarPrice getNearestDatePrice(DollarPrice priceBefore, DollarPrice priceAfter, Date currentDate) {
-        Date dateBefore = (Date) priceBefore.getValues().get("date");
-        Date dateAfter = (Date) priceAfter.getValues().get("date");
-        //getting time of each date
-        long currentTime = currentDate.getTime();
-        long afterTime = dateAfter.getTime();
-        long beforeTime = dateBefore.getTime();
-        //getting difference between both dates
-        long afterAbs = Math.abs(afterTime - currentTime);
-        long beforeAbs = Math.abs(currentTime - beforeTime);
-        //return the DollarPrice of the nearest date
-        return afterAbs <= beforeAbs ? priceAfter : priceBefore;
-    }
-    
-    private static List<DollarPrice> buildDollarPrices(ResultSet result) {
-        List<DollarPrice> pricesList = new LinkedList<>();
+        ResultSet result = DatabaseUtils.executeQuery(query);
         try {
             while(result.next()) {
-                Map<String, Object> priceAttributes = new HashMap<>();
-                priceAttributes.put("date", result.getString(1));
-                priceAttributes.put("buy", result.getString(2));
-                priceAttributes.put("sell", result.getString(3));
-                pricesList.add(new DollarPrice(priceAttributes));
+                cache.add(new DollarPrice(new HashMap<String, Object>() {{
+                    put("id", Date.valueOf(result.getString(1)));
+                    put("date", Date.valueOf(result.getString(2)));
+                    put("buy", Float.parseFloat(result.getString(3)));
+                    put("sell", Float.parseFloat(result.getString(4)));
+                }}));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(DollarPriceDAO.class.getName()).log(Level.SEVERE, null, ex);
+            cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
+            Handler.logUnexpectedError(ex);
         }
-        return pricesList;
-    }
+}    
     
-    private static DollarPrice buildDollarPrice(ResultSet result) {
-        List<DollarPrice> pricesList = buildDollarPrices(result);
-        if (pricesList.isEmpty()) {
-            return null;
+    private void prepareCache() {
+        if (!cacheLoaded) {
+            loadCache();
+            cacheLoaded = true;
         }
-        return pricesList.get(0);
     }
+
 }

@@ -1,8 +1,8 @@
 package dao;
 
 import database.DBManager;
-import databaserefactor.DAO;
-import databaserefactor.SectorDAO;
+import database.DAO;
+import database.SectorDAO;
 import models.Sector;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Isolated;

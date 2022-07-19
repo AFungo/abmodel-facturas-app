@@ -5,7 +5,7 @@
  */
 package utils;
 
-import databaserefactor.ProviderDAO;
+import database.ProviderDAO;
 import models.DollarPrice;
 import models.Provider;
 import models.Sector;
@@ -323,9 +323,9 @@ public class FormatUtils {
      * @param s String with CSV format containing dollar price data
      * @return a map from String to String of the dollar price data
      */
-    public static Map<String, String> dollarPriceCsvBackupToDict(String s) {
+    public static Map<String, Object> dollarPriceCsvBackupToDict(String s) {
         String[] data = s.split(";");
-        Map<String, String> dict = new HashMap<>();
+        Map<String, Object> dict = new HashMap<>();
         
         dict.put("date", data[0]);
         dict.put("buy", data[1]);

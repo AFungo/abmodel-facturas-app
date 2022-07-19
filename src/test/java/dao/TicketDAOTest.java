@@ -1,10 +1,10 @@
 package dao;
 
 import database.DBManager;
-import databaserefactor.DAO;
-import databaserefactor.ProviderDAO;
-import databaserefactor.TicketDAO;
-import databaserefactor.WithholdingDAO;
+import database.DAO;
+import database.ProviderDAO;
+import database.TicketDAO;
+import database.WithholdingDAO;
 import models.Provider;
 import models.Ticket;
 import models.Withholding;

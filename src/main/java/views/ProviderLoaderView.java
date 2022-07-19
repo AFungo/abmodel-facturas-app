@@ -6,7 +6,6 @@
 package views;
 
 import controller.Controller;
-import database.SectorDAO;
 import models.Provider;
 import utils.AutoSuggestor;
 import utils.FixedData;

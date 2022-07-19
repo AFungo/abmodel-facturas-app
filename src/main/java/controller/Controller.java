@@ -1,23 +1,16 @@
 package controller;
 
-import concurrency.Lock;
-import database.DBManager;
-import database.DollarPriceDAO;
-import database.ProviderDAO;
-import database.SQLFilter;
-import database.SectorDAO;
-import database.TicketDAO;
-import database.WithholdingDAO;
-import models.DollarPrice;
-import models.Provider;
-import models.Ticket;
-import models.Withholding;
-import utils.FilterUtils;
+import builder.ModelBuilder;
+import database.*;
+import models.*;
+import org.apache.commons.collections.map.SingletonMap;
 import utils.FixedData;
 import utils.FormatUtils;
 import utils.Pair;
-import utils.PricesList;
+import calculations.PricesList;
 import utils.Validate;
+import utils.csv.CSVUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,66 +40,38 @@ public class Controller {
         return daysLimit;
     }
     
-    //the lock comes already locked
-    public void loadTickets(File f, Lock backupLock) {
-        try {
-            Pair<List<String>,Boolean> csvContent = readCsv(f, "ticket");
-            List<String> stringTickets = csvContent.getFst();
-            boolean issuedByMe = csvContent.getSnd();
+    public void loadTicketsFromAFIPFile(File f) {
+        List<String[]> data;
 
-            List<Ticket> tickets = new LinkedList<>();
-            for (String strTicket : stringTickets) {
-                tickets.add(new Ticket(FormatUtils.ticketCsvToDict(strTicket, issuedByMe)));
-            }
-            backupLock.unlock();
-            backupLock.lock();
-            tickets.forEach((ticket) -> {
-                try {
-                    createTicketOnDB(ticket);
-                } catch (IllegalStateException ex) {//if the exception is not for repeated item throw it
-                    if (!ex.getMessage().contains("<23505> duplicate item")) {
-                        throw ex;
-                    }
-                }
-            });
-        } catch (Exception ex) {
-            backupLock.fail(ex);
-        } finally {
-            backupLock.finalUnlock();
+        boolean issuedByMe = true;
+        data = CSVUtils.readCSV(f, ModelBuilder.AFIPReceiverHeader);
+        if (data == null) {
+            issuedByMe = false;
+            data = CSVUtils.readCSV(f, ModelBuilder.AFIPTransmitterHeader);
+        }
+
+        if (data != null) {
+            // TODO: backup
+            ModelBuilder.buildFromAFIPData(data, issuedByMe);
         }
     }
-    
-    public void loadTicket(Map<String, String> values) {
-        createTicketOnDB(new Ticket(convertMap(values)));
+
+    public void loadTicket(Object[] values) {
+        ModelBuilder.buildTicket(values);
     }
-    
-    public void loadWithholding(Map<String, String> values) {
-        WithholdingDAO.add(new Withholding(convertMap(values)));
+
+    public void loadWithholding(Object[] values) {
+        ModelBuilder.buildWithholding(values);
     }
-    
+
     public void loadDollarPrices(File f) {
-        List<String> stringPrices = readCsv(f, "price").getFst();
-
-        List<DollarPrice> prices = new LinkedList<>();
-        for (String priceStr : stringPrices) {
-            prices.add(new DollarPrice(convertMap(FormatUtils.dollarPriceCsvToDict(priceStr))));
-        }
-            
-        for (DollarPrice p : prices) {
-            try {
-                    DollarPriceDAO.add(p);
-                } catch (IllegalStateException ex) {//if the exception is not for repeated item throw it
-                    System.out.println("se repitio un item");
-                    if (!ex.getMessage().contains("<23505> duplicate item")) {
-                        throw ex;
-                    }
-                }
-        }
+        List<String[]> data = CSVUtils.readCSV(f, ModelBuilder.DollarPriceHeader);
+        Objects.requireNonNull(data, "null dollar price");
+        ModelBuilder.buildDollarPricesFromData(data);
     }
     
     public String validateProviderParam(Map<String, Object> values, JComboBox<String> sectorsComboBox){
-        String message = Validate.providerInput(values, sectorsComboBox);
-        return message;
+        return Validate.providerInput(values, sectorsComboBox);
     }
     
     //ticket is a boolean representing if the validation is for ticket or withholding
@@ -140,25 +105,50 @@ public class Controller {
         }
         return pricesList;
     }
-    
-    public void createTicket(String ticketData) {
-        boolean issuedByMe = true;  //for now this will be fixed to true
-        Ticket ticket = new Ticket(FormatUtils.ticketCsvToDict(ticketData, issuedByMe));
-        createTicketOnDB(ticket);
+
+    /**
+     *
+     * @param filters
+     * @return
+     */
+    public List<Ticket> getTickets(Filter... filters) {
+        throw new UnsupportedOperationException("TODO");
     }
 
-    public List<Ticket> getTickets(SQLFilter filters) {
-        if (filters.isEmpty()) return TicketDAO.get();
-        else return TicketDAO.get(filters);            
+    /**
+     *
+     * @param filters
+     * @return
+     */
+    public List<Withholding> getWithholdings(Filter... filters) {
+        throw new UnsupportedOperationException("TODO");
     }
 
-    public List<Withholding> getWithholdings(SQLFilter selectedFilters) {
-        if(selectedFilters.isEmpty()) return WithholdingDAO.get();
-        else return WithholdingDAO.get(selectedFilters);
+    /**
+     *
+     * @param filters
+     * @return
+     */
+    public List<Provider> getProviders(Filter... filters) {
+        throw new UnsupportedOperationException("TODO");
     }
-   
-    public List<Provider> getProviders() {
-        return ProviderDAO.get();
+
+    /**
+     *
+     * @param filters
+     * @return
+     */
+    public List<Sector> getSector(Filter... filters) {
+        throw new UnsupportedOperationException("Implement if needed");
+    }
+
+    /**
+     *
+     * @param filters
+     * @return
+     */
+    public List<DollarPrice> getDollarPrice(Filter... filters) {
+        throw new UnsupportedOperationException("Implement if needed");
     }
 
     public void changeTicketAttribute(SQLFilter filter, String attribute, String value, boolean quotes){
@@ -222,13 +212,7 @@ public class Controller {
         table.setCellSelectionEnabled(true);
         return table;
     }
-    
-    private void createTicketOnDB(Ticket ticket) {
-        String id = WithholdingDAO.add(ticket);
-        ticket.setValues(Collections.singletonMap("id", id));
-        TicketDAO.add(ticket);
-    }
-    
+
     public boolean updateProviderDoc(String newDoc, String oldDoc) {
         //looking if new doc is not used already
         SQLFilter filter = new SQLFilter();
@@ -344,19 +328,19 @@ public class Controller {
             throw new IllegalArgumentException("Folder " + folder.getPath() + " is not a valid backup folder");
         }
         //load dollar prices
-        loadBackupData(folder,"prices.csv", "price", e -> DollarPriceDAO.add(e), 
-                s -> new DollarPrice(convertMap(FormatUtils.dollarPriceCsvBackupToDict(s))));  //function removes the ; at the end of the sector name
+        loadBackupData(folder,"prices.csv", "price", e -> DollarPriceDAO.getInstance().save(e),
+                s -> new DollarPrice(FormatUtils.dollarPriceCsvBackupToDict(s)));  //function removes the ; at the end of the sector name
         //load sectors
-        loadBackupData(folder,"sectors.csv", "sectorBackup", e -> SectorDAO.add(e), 
-                s -> s.split(";")[0]);  //function removes the ; at the end of the sector name
+        loadBackupData(folder,"sectors.csv", "sectorBackup", e -> SectorDAO.getInstance().save(e),
+                s -> new Sector(Collections.singletonMap("name", "AMONGAS")));  //function removes the ; at the end of the sector name
         //load providers
-        loadBackupData(folder,"providers.csv", "providerBackup", e -> ProviderDAO.add(e), 
+        loadBackupData(folder,"providers.csv", "providerBackup", e -> ProviderDAO.getInstance().save(e),
                 s -> new Provider(FormatUtils.providerCsvBackupToDict(s)));
         //load tickets
-        loadBackupData(folder,"tickets.csv", "ticketBackup", e -> createTicketOnDB(e), 
+        loadBackupData(folder,"tickets.csv", "ticketBackup", e -> TicketDAO.getInstance().save(e),
                 s -> new Ticket(FormatUtils.ticketCsvBackupToDict(s)));
         //load withholdings
-        loadBackupData(folder,"withholdings.csv", "withholdingBackup", e -> WithholdingDAO.add(e), 
+        loadBackupData(folder,"withholdings.csv", "withholdingBackup", e -> WithholdingDAO.getInstance().save(e),
                 s -> new Withholding(FormatUtils.withholdingCsvBackupToDict(s)));
     }
     
@@ -394,7 +378,7 @@ public class Controller {
         try {
             file.createNewFile();
         } catch (IOException ex) {
-            throw new IllegalStateException("failed to create file at : " + file.getAbsolutePath() + "\n" + ex.toString());
+            throw new IllegalStateException("failed to create file at : " + file.getAbsolutePath() + "\n" + ex);
         }
         return file;
     }
@@ -403,7 +387,7 @@ public class Controller {
             String itemName) {
         Writer writer;
         try {
-            writer = new OutputStreamWriter(new FileOutputStream(fileToWrite), Charset.forName("UTF-8"));
+            writer = new OutputStreamWriter(new FileOutputStream(fileToWrite), StandardCharsets.UTF_8);
             writer.write(format);    //first line gives format to be identified at loading
             for (E s : items) {
                 writer.append("\n" + formater.apply(s));
@@ -414,39 +398,6 @@ public class Controller {
         } catch (IOException ex) {
             throw new IllegalStateException("failed to write on file: " + fileToWrite.getAbsolutePath() + "\n" + ex.toString());
         }
-    }
-    
-    private Pair<List<String>,Boolean> readCsv(File f, String type) {
-        if (f == null) {
-            throw new IllegalArgumentException("File is null");
-        }
-            
-        List<String> stringItems = new LinkedList<>();
-        try {
-            stringItems = Files.readAllLines(f.toPath(), StandardCharsets.UTF_8);
-        } catch (IOException ex) {
-            throw new IllegalStateException(ex.toString());
-        }
-        
-        String initialLine = stringItems.remove(0); //Remove the first row of the file for checking
-        if (!FormatUtils.validFormat(initialLine, type)) {
-            throw new IllegalArgumentException("File does not have a valid format to be loaded\nFile: " + f.getPath());
-        }
-        
-        Boolean issuedByMe = initialLine.contains("Receptor");
-        return new Pair<>(stringItems, issuedByMe);
-    }
-
-    /*
-    TODO: this method must be removed, its purpose is connect
-     the new refactored code with the non-refactored views
-    */
-    private Map<String, Object> convertMap(Map<String, String> values) {
-        Map<String, Object> convertedValues = new HashMap<>();
-        for (String key : values.keySet()) {
-            convertedValues.put(key, values.get(key));
-        }
-        return convertedValues;
     }
 
 }

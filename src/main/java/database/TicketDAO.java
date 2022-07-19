@@ -1,147 +1,140 @@
 package database;
 
-import controller.Controller;
 import models.Ticket;
-import models.Provider;
+import models.Withholding;
+import models.set.ModelSet;
 import utils.Pair;
-import utils.FormatUtils;
+import utils.Parser;
+import logger.Handler;
+import utils.sql.SQLUtils;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 /**
- * Data Access Object used for the Ticket's table of the database
+ * this class implements DAO interface for Tiket model
+ * 
  */
-public class TicketDAO extends DAO {
+public class TicketDAO implements DAO<Ticket> {
 
-    /**
-     * Add a new ticket to the database
-     *
-     * @param ticket ticket to be added
-     */
-    public static void add(Ticket ticket) {
-        Pair<String, String> sqlValues = FormatUtils.ticketToSQL(ticket);
-        Provider provider = (Provider) ticket.getValues().get("provider");
+    private static TicketDAO instance;
 
-        SQLFilter filter = new SQLFilter();
-        filter.add("docNo", "=", provider.getValues().get("docNo"), String.class);
-        if (!ProviderDAO.exist(filter)) {
-            ProviderDAO.add(provider);
+    private final ModelSet<Ticket> cache;
+    private boolean cacheLoaded;
+
+    public static TicketDAO getInstance() {
+        if (instance == null) {
+            instance = new TicketDAO();
         }
+        return instance;
+    }
+
+    private TicketDAO() {
+        cache = new ModelSet<>();
+        cacheLoaded = false;
+    }
+
+    @Override
+    public Set<Ticket> getAll() {
+        if (!cacheLoaded) {
+            loadCache();
+        }
+        return cache;
+    }
+
+    @Override
+    public boolean save(Ticket ticket) {
+        prepareCache();        
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(ticket);
         String query = "INSERT INTO Ticket (" + sqlValues.getFst() + ") "
-                + "VALUES (" + sqlValues.getSnd() + ")";
-        executeQuery(query, true, true);
-    }
+            + "VALUES (" + sqlValues.getSnd() + ")";
 
-    /**
-     * Tickets getter
-     *
-     * @return a list of all tickets
-     */
-    public static List<Ticket> get() {
-        String query = "SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id";
-        ResultSet result = executeQuery(query, false, true);
-        List<Ticket> ticketsList = getTicketsList(result);
-        return ticketsList;
-    }
-
-    /**
-     * Tickets getter using a filter
-     *
-     * @param filter filter used in the query
-     * @return a list of all tickets obtained using the filter
-     */
-    public static List<Ticket> get(SQLFilter filter) {
-        if (filter == null) {
-            throw new IllegalArgumentException("The parameter filters can not be null");
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
+            return false;
         }
 
-        String query = "SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id " + filter.get();
-        ResultSet result = executeQuery(query, false, true);
-        List<Ticket> ticketsList = getTicketsList(result);
-        return ticketsList;
+        cache.add(ticket);
+        return true;
     }
 
-    /**
-     * Given a filter to search tickets and an attribute, updates the
-     * attribute of selected tickets with the given value
-     *
-     * @param filter filter used for search tickets
-     * @param attribute attribute of the tickets that will be updated
-     * @param value value used for the update
-     * @param quotes true iff the values require quotes
-     */
-    public static void update(SQLFilter filter, String attribute, String value, boolean quotes) {
-        if (quotes) {
-            value = "'" + value + "'";
+
+    @Override
+    public boolean update(Ticket ticket, Map<String, Object> params) {
+        prepareCache();
+
+        String query = "UPDATE Ticket SET " + SQLUtils.mapToSQLValues(params) + " WHERE withholding = "
+        + ((Withholding)ticket.getValues().get("withholding")).getValues().get("id");
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+
+        if (affectedRows == 0) {
+            return false;
         }
-        String query = "UPDATE Ticket SET " + attribute + " = " + value + filter.get();
-        executeQuery(query, true, false);
+
+        //update cache if executeQuery was successful
+        cache.remove(ticket);
+        ticket.setValues(params);
+        cache.add(ticket);
+        return true;
+     }
+
+    @Override
+    public boolean delete(Ticket ticket) {
+        prepareCache();        
+
+        String query = "DELETE FROM Ticket WHERE withholding = " +
+                ((Withholding)ticket.getValues().get("withholding")).getValues().get("id");
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+
+        cache.remove(ticket);
+        return true;
     }
 
     /**
-     * Given a filter, search the tickets and delete them
-     * 
-     * @param filter filter used for the tickets search
+     * This method must load the cache with the data from the database
      */
-    public static void remove(SQLFilter filter) {
-        String query = "DELETE FROM Ticket " + filter.get();
-        executeQuery(query, true, true);
-    }
-
-    private static List<Ticket> getTicketsList(ResultSet result) {
-        List<Ticket> ticketsList = new LinkedList<>();
+    private void loadCache() {
+        String query = "SELECT * FROM Ticket";
+        ResultSet result = DatabaseUtils.executeQuery(query);
         try {
-            while (result.next()) {
-                Map<String, Object> ticketAttributes = new HashMap<>();
-                ticketAttributes.put("id", result.getString(1));
-                ticketAttributes.put("date", result.getString(2));
-                ticketAttributes.put("number", result.getString(3));
-                //provider
-                Map<String, Object> prov = ProviderDAO.get(result.getString(4)).getValues();
-                ticketAttributes.put("docType", prov.get("docType"));
-                ticketAttributes.put("docNo", prov.get("docNo"));
-                ticketAttributes.put("name", prov.get("name"));
-                ticketAttributes.put("direction", prov.get("direction"));
-                ticketAttributes.put("provSector", prov.get("sector"));
-                ticketAttributes.put("alias", prov.get("alias"));
-
-                ticketAttributes.put("iva", result.getString(5));
-                ticketAttributes.put("profits", result.getString(6));
-                ticketAttributes.put("delivered", result.getString(7));
-                ticketAttributes.put("sector", result.getString(8));
-                //9 is ticket id
-                ticketAttributes.put("type", result.getString(10));
-                if (result.getString(11) != null) {
-                    ticketAttributes.put("numberTo", result.getString(10));
-                }
-                ticketAttributes.put("authCode", result.getString(12));
-                ticketAttributes.put("exchangeType", result.getString(13));
-                ticketAttributes.put("exchangeMoney", result.getString(14));
-                if (result.getString(15) != null) {
-                    ticketAttributes.put("netAmountWI", result.getString(15));
-                }
-                if (result.getString(16) != null) {
-                    ticketAttributes.put("netAmountWOI", result.getString(16));
-                }
-                if (result.getString(17) != null) {
-                    ticketAttributes.put("amountImpEx", result.getString(17));
-                }
-                if (result.getString(18) != null) {
-                    ticketAttributes.put("ivaTax", result.getString(18));
-                }
-                ticketAttributes.put("totalAmount", result.getString(19));
-                ticketAttributes.put("issuedByMe", result.getString(20));
-                ticketsList.add(new Ticket(ticketAttributes));
+            while(result.next()) {
+                Integer id = Parser.parseInt(result.getString(1));
+                Optional<Withholding> withholding = WithholdingDAO.getInstance().getAll()
+                        .stream().filter(p -> p.getValues().get("id").equals(id)).findFirst();
+                cache.add(new Ticket(new HashMap<String, Object>() {{
+                    if (!withholding.isPresent()) {
+                        throw new IllegalStateException("Cannot find withholding");
+                    }
+                    put("withholding", withholding.get());
+                    put("type", result.getString(2));
+                    put("numberTo", Parser.parseInt(result.getString(3)));
+                    put("authCode", result.getString(4));
+                    put("exchangeType", Float.parseFloat(result.getString(5)));
+                    put("exchangeMoney", result.getString(6));
+                    put("netAmountWI", Parser.parseFloat(result.getString(7)));
+                    put("netAmountWOI", Parser.parseFloat(result.getString(8)));
+                    put("amountImpEx", Parser.parseFloat(result.getString(9)));
+                    put("ivaTax", Parser.parseFloat(result.getString(10)));
+                    put("totalAmount", Float.parseFloat(result.getString(11)));
+                    put("issuedByMe", Boolean.valueOf(result.getString(12)));            
+                }}));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            cache.clear();//Iff fails in load an object cache are emmpty, all are load or nthing are load
+            Handler.logUnexpectedError(ex);
         }
-        return ticketsList;
+
+    }
+    private void prepareCache() {
+        if (!cacheLoaded) {
+            loadCache();
+            cacheLoaded = true;
+        }
     }
 }

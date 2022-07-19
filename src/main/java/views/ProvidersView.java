@@ -6,9 +6,6 @@
 package views;
 
 import controller.Controller;
-import database.ProviderDAO;
-import database.SQLFilter;
-import database.SectorDAO;
 import models.Provider;
 import utils.AutoSuggestor;
 import utils.ConfigManager;

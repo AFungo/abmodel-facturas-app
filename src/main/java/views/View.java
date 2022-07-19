@@ -8,17 +8,14 @@ package views;
 import concurrency.Lock;
 import controller.Controller;
 import models.Withholding;
-import database.SQLFilter;
-import database.SectorDAO;
 import models.Provider;
 import models.Ticket;
 import utils.ConfigManager;
-import utils.FilterUtils;
 import utils.FixedData;
 import utils.FormatUtils;
 import utils.Pair;
 import utils.PdfCreator;
-import utils.PricesList;
+import calculations.PricesList;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -530,7 +527,7 @@ public class View extends JFrame {
             new Thread(new Runnable() { //new thread to run the file load
                 @Override
                 public void run() {
-                        controller.loadTickets(chooser.getSelectedFile(), backupLock);
+                        controller.loadTicketsFromAFIPFile(chooser.getSelectedFile(), backupLock);
                 }
             }).start();
             

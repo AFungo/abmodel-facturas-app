@@ -4,10 +4,6 @@
  */
 package views;
 
-import database.ProviderDAO;
-import database.SQLFilter;
-import database.SectorDAO;
-import database.WithholdingDAO;
 import utils.AutoSuggestor;
 import java.util.List;
 import java.util.Objects;
