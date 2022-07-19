@@ -41,21 +41,21 @@ public class TicketSetTest {
 
     @Test
     void testFilterByEqualsTo() {
-        TicketSet tickets = new TicketSet();
+        ModelSet<Ticket> tickets = new ModelSet<>();
         tickets.add(ticket);
-        TicketSet ticketsB = tickets.filterByEqualsTo("type", "6 - Factura B");
-        TicketSet ticketsC = tickets.filterByEqualsTo("type", "7 - Factura C");
+        ModelSet<Ticket> ticketsB = tickets.filterByEqualsTo("type", "6 - Factura B");
+        ModelSet<Ticket> ticketsC = tickets.filterByEqualsTo("type", "7 - Factura C");
         assertThat(ticketsB).contains(ticket);
         assertThat(ticketsC).doesNotContain(ticket);
     }
 
     @Test
     void testFilterByGreaterThan() {
-        TicketSet tickets = new TicketSet();
+        ModelSet<Ticket> tickets = new ModelSet<>();
         tickets.add(ticket);
-        TicketSet ticketsLess = tickets.filterByGreaterOrEqualsThan("exchangeType", 1.0f);
-        TicketSet ticketsEquals = tickets.filterByGreaterOrEqualsThan("exchangeType", 1.5f);
-        TicketSet ticketsGreater = tickets.filterByGreaterOrEqualsThan("exchangeType", 2.0f);
+        ModelSet<Ticket> ticketsLess = tickets.filterByGreaterOrEqualsThan("exchangeType", 1.0f);
+        ModelSet<Ticket> ticketsEquals = tickets.filterByGreaterOrEqualsThan("exchangeType", 1.5f);
+        ModelSet<Ticket> ticketsGreater = tickets.filterByGreaterOrEqualsThan("exchangeType", 2.0f);
         assertThat(ticketsLess).contains(ticket);
         assertThat(ticketsEquals).contains(ticket);
         assertThat(ticketsGreater).doesNotContain(ticket);
@@ -63,11 +63,11 @@ public class TicketSetTest {
 
     @Test
     void testFilterByLessThan() {
-        TicketSet tickets = new TicketSet();
+        ModelSet<Ticket> tickets = new ModelSet<>();
         tickets.add(ticket);
-        TicketSet ticketsLess = tickets.filterByLessOrEqualsThan("totalAmount", 899.0f);
-        TicketSet ticketsEquals = tickets.filterByLessOrEqualsThan("totalAmount", 1000f);
-        TicketSet ticketsGreater = tickets.filterByLessOrEqualsThan("totalAmount", 1000.1f);
+        ModelSet<Ticket> ticketsLess = tickets.filterByLessOrEqualsThan("totalAmount", 899.0f);
+        ModelSet<Ticket> ticketsEquals = tickets.filterByLessOrEqualsThan("totalAmount", 1000f);
+        ModelSet<Ticket> ticketsGreater = tickets.filterByLessOrEqualsThan("totalAmount", 1000.1f);
         assertThat(ticketsLess).doesNotContain(ticket);
         assertThat(ticketsEquals).contains(ticket);
         assertThat(ticketsGreater).contains(ticket);
