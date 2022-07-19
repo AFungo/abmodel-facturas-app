@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -65,9 +66,9 @@ public class Withholding implements Model {
      * 
      * @return all the attributes of the model
      */
-    public static Set<String> getAttributes() {
+    public static List<String> getAttributes() {
         return Stream.of("provider", "sector", "id", "date", "number", "iva", "profits", "delivered", "dollarPrice")
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     private boolean repOk() {

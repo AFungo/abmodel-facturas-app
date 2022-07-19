@@ -2,6 +2,7 @@ package models;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -57,9 +58,9 @@ public class Provider implements Model {
      * 
      * @return all attributes of provider model
      */
-    public static Set<String> getAttributes(){
+    public static List<String> getAttributes(){
         return Stream.of( "provSector", "id", "docNo", "name", "docType", "address", "alias")
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
     }
 
     private boolean repOk() {
