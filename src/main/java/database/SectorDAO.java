@@ -34,7 +34,7 @@ public class SectorDAO implements DAO<Sector>{
     }
 
     @Override
-    public Set<Sector> getAll() {
+    public ModelSet<Sector> getAll() {
         if (!cacheLoaded) {
             loadCache();
         }

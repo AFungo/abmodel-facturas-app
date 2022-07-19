@@ -36,7 +36,7 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
     }
 
     @Override
-    public Set<DollarPrice> getAll() {
+    public ModelSet<DollarPrice> getAll() {
         if (!cacheLoaded) {
             loadCache();
         }

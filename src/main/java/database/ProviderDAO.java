@@ -35,7 +35,7 @@ public class ProviderDAO implements DAO<Provider>{
     }
 
     @Override
-    public Set<Provider> getAll() {
+    public ModelSet<Provider> getAll() {
         prepareCache();
         return cache;
     }

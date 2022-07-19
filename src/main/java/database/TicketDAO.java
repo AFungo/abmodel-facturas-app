@@ -1,5 +1,6 @@
 package database;
 
+import models.Model;
 import models.Ticket;
 import models.Withholding;
 import models.set.ModelSet;
@@ -36,7 +37,7 @@ public class TicketDAO implements DAO<Ticket> {
     }
 
     @Override
-    public Set<Ticket> getAll() {
+    public ModelSet<Ticket> getAll() {
         if (!cacheLoaded) {
             loadCache();
         }

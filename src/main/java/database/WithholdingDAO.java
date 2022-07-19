@@ -39,7 +39,7 @@ public class WithholdingDAO implements DAO<Withholding> {
     }
 
     @Override
-    public Set<Withholding> getAll() {
+    public ModelSet<Withholding> getAll() {
         prepareCache();
         return cache;
     }
