@@ -63,11 +63,9 @@ public class Provider implements Model {
     }
 
     private boolean repOk() {
-
         if (!getAttributes().containsAll(values.keySet())) {
             return false;
         }
-
         for (String key : values.keySet()) {
             Object value = values.get(key);
             if (value != null) {
@@ -85,9 +83,9 @@ public class Provider implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Provider provider = (Provider) o;
+        Provider other = (Provider) o;
 
-        return values.equals(provider.values);
+        return values.get("docNo").equals(other.values.get("docNo"));
     }
 
     @Override

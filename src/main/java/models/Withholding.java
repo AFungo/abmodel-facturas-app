@@ -92,9 +92,11 @@ public class Withholding implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Withholding withholding = (Withholding) o;
+        Withholding other = (Withholding) o;
 
-        return values.equals(withholding.values);
+        return values.get("date").equals(other.values.get("date"))
+                && values.get("number").equals(other.values.get("number"))
+                && values.get("provider").equals(other.values.get("provider"));
     }
 
     @Override

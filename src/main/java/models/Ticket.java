@@ -93,9 +93,9 @@ public class Ticket extends Withholding implements Model{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Ticket ticket = (Ticket) o;
+        Ticket other = (Ticket) o;
 
-        return values.equals(ticket.values);
+        return values.get("withholding").equals(other.values.get("withholding"));
     }
 
     @Override

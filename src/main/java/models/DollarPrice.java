@@ -75,9 +75,9 @@ public class DollarPrice implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DollarPrice dollarPrice = (DollarPrice) o;
+        DollarPrice other = (DollarPrice) o;
 
-        return values.equals(dollarPrice.values);
+        return values.get("date").equals(other.values.get("date"));
     }
 
     @Override
