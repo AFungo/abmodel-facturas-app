@@ -1,7 +1,7 @@
 package formatters;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import models.*;
 
@@ -18,7 +18,7 @@ public class ModelToCSV {
     public static String[] toCSV(Ticket ticket) {
         
         Map<String, Object> values = ticket.getValues();
-        Set<String> attributes = Ticket.getAttributes();
+        List<String> attributes = Ticket.getAttributes();
 
         String[] csvLine = new String[attributes.size()];
 
@@ -40,7 +40,7 @@ public class ModelToCSV {
      */
     public static String[] toCSV(Withholding withholding) {
         Map<String, Object> values = withholding.getValues();
-        Set<String> attributes = Withholding.getAttributes();
+        List<String> attributes = Withholding.getAttributes();
 
         String[] csvLine = new String[attributes.size()];
 
@@ -68,7 +68,7 @@ public class ModelToCSV {
      */
     public static String[] toCSV(Provider provider) {
         Map<String, Object> values = provider.getValues();
-        Set<String> attributes = Provider.getAttributes();
+        List<String> attributes = Provider.getAttributes();
 
         String[] csvLine = new String[attributes.size()];
 
