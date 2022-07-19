@@ -12,7 +12,7 @@ public class ModelSet<T extends Model> extends HashSet<T> {
         super();
     }
 
-    private ModelSet(Collection<T> c) {
+    public ModelSet(Collection<T> c) {
         super(c);
     }
 

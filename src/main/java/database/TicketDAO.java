@@ -38,10 +38,8 @@ public class TicketDAO implements DAO<Ticket> {
 
     @Override
     public ModelSet<Ticket> getAll() {
-        if (!cacheLoaded) {
-            loadCache();
-        }
-        return cache;
+        prepareCache();
+        return new ModelSet<>(cache);
     }
 
     @Override
