@@ -53,6 +53,9 @@ public class DatabaseUtils {
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {  //duplicate item
                 Handler.showErrorMessage("El item que se intento cargar ya estaba cargado");
+            } else if (e.getSQLState().equals("42Z23") && e.getMessage()
+                    .contains("Attempt to modify an identity column 'ID'.")) {
+                //do nothing, just return false
             } else {                                //unknown error
                 Handler.logUnexpectedError(e, "query: " + query + "\n" + e.toString());
             }
