@@ -101,7 +101,11 @@ public class Withholding implements Model {
 
     @Override
     public int hashCode() {
-        return values.hashCode();
+        int result = 31;
+        result += 17 * values.get("date").hashCode();
+        result += 17 * values.get("number").hashCode();
+        result += 17 * values.get("provider").hashCode();
+        return result;
     }
 
 }

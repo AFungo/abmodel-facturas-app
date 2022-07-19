@@ -100,7 +100,7 @@ public class Ticket extends Withholding implements Model{
 
     @Override
     public int hashCode() {
-        return values.hashCode();
+        return 31 + 17 * values.get("withholding").hashCode();
     }
 
 }

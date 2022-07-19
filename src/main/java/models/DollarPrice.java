@@ -82,7 +82,7 @@ public class DollarPrice implements Model {
 
     @Override
     public int hashCode() {
-        return values.hashCode();
+        return 31 + 17 * values.get("date").hashCode();
     }
 
 }

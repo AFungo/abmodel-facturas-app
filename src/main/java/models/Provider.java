@@ -90,7 +90,7 @@ public class Provider implements Model {
 
     @Override
     public int hashCode() {
-        return values.hashCode();
+        return 31 + 17 * values.get("docNo").hashCode();
     }
 
 }
