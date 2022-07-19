@@ -2,8 +2,9 @@ package controller;
 
 import builder.ModelBuilder;
 import database.*;
-import filters.Filter;
+import filters.*;
 import models.*;
+import models.set.ModelSet;
 import utils.FixedData;
 import utils.FormatUtils;
 import utils.Pair;
@@ -22,9 +23,6 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 
 /**
  *
@@ -110,7 +108,21 @@ public class Controller {
      * @return
      */
     public List<Ticket> getTickets(Filter... filters) {
-        throw new UnsupportedOperationException("TODO");
+        ModelSet<Ticket> tickets = TicketDAO.getInstance().getAll();
+        for (Filter filter : filters) {
+            switch (filter.getComparison()) {
+                case EQUALS:
+                    tickets = tickets.filterByEqualsTo(filter.getAttribute(), filter.getValue());
+                    break;
+                case GREATER_EQUALS:
+                    tickets = tickets.filterByGreaterOrEqualsThan(filter.getAttribute(), filter.getValue());
+                    break;
+                case LESS_EQUALS:
+                    tickets = tickets.filterByLessOrEqualsThan(filter.getAttribute(), filter.getValue());
+                    break;
+            }
+        }
+        return new ArrayList<>(tickets);
     }
 
     /**
