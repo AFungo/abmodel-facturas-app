@@ -1,6 +1,7 @@
 package databaserefactor;
 
 import models.DollarPrice;
+import models.set.ModelSet;
 import utils.Pair;
 import logger.Handler;
 import utils.sql.SQLUtils;
@@ -19,7 +20,7 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
     
     private static DollarPriceDAO instance;
 
-    private final Set<DollarPrice> cache;
+    private final ModelSet<DollarPrice> cache;
     private boolean cacheLoaded;
 
     public static DollarPriceDAO getInstance() {
@@ -30,7 +31,7 @@ public class DollarPriceDAO implements DAO<DollarPrice>{
     }
 
     private DollarPriceDAO() {
-        cache = new HashSet<>();
+        cache = new ModelSet<>();
         cacheLoaded = false;
     }
 

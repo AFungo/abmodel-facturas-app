@@ -3,6 +3,7 @@ package databaserefactor;
 import models.Provider;
 import models.Sector;
 import models.Withholding;
+import models.set.ModelSet;
 import utils.Pair;
 import utils.Parser;
 import logger.Handler;
@@ -22,7 +23,7 @@ public class WithholdingDAO implements DAO<Withholding> {
 
     private static WithholdingDAO instance;
 
-    private final Set<Withholding> cache;
+    private final ModelSet<Withholding> cache;
     private boolean cacheLoaded;
 
     public static WithholdingDAO getInstance() {
@@ -33,7 +34,7 @@ public class WithholdingDAO implements DAO<Withholding> {
     }
 
     private WithholdingDAO() {
-        cache = new HashSet<>();
+        cache = new ModelSet<>();
         cacheLoaded = false;
     }
 

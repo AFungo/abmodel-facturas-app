@@ -2,6 +2,7 @@ package databaserefactor;
 
 import models.Ticket;
 import models.Withholding;
+import models.set.ModelSet;
 import utils.Pair;
 import utils.Parser;
 import logger.Handler;
@@ -19,7 +20,7 @@ public class TicketDAO implements DAO<Ticket> {
 
     private static TicketDAO instance;
 
-    private final Set<Ticket> cache;
+    private final ModelSet<Ticket> cache;
     private boolean cacheLoaded;
 
     public static TicketDAO getInstance() {
@@ -30,7 +31,7 @@ public class TicketDAO implements DAO<Ticket> {
     }
 
     private TicketDAO() {
-        cache = new HashSet<>();
+        cache = new ModelSet<>();
         cacheLoaded = false;
     }
 

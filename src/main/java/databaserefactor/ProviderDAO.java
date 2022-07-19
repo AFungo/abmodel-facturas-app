@@ -1,6 +1,7 @@
 package databaserefactor;
 
 import models.Provider;
+import models.set.ModelSet;
 import utils.Pair;
 import logger.Handler;
 import utils.sql.SQLUtils;
@@ -18,7 +19,7 @@ public class ProviderDAO implements DAO<Provider>{
     
     private static ProviderDAO instance;
 
-    private final Set<Provider> cache;
+    private final ModelSet<Provider> cache;
     private boolean cacheLoaded;
 
     public static ProviderDAO getInstance() {
@@ -29,7 +30,7 @@ public class ProviderDAO implements DAO<Provider>{
     }
 
     private ProviderDAO() {
-        cache = new HashSet<>();
+        cache = new ModelSet<>();
         cacheLoaded = false;
     }
 

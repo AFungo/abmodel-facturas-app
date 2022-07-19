@@ -1,6 +1,7 @@
 package databaserefactor;
 
 import models.Sector;
+import models.set.ModelSet;
 import utils.Pair;
 import logger.Handler;
 import utils.sql.SQLUtils;
@@ -17,7 +18,7 @@ public class SectorDAO implements DAO<Sector>{
     
     private static SectorDAO instance;
 
-    private final Set<Sector> cache;
+    private final ModelSet<Sector> cache;
     private boolean cacheLoaded;
 
     public static SectorDAO getInstance() {
@@ -28,7 +29,7 @@ public class SectorDAO implements DAO<Sector>{
     }
 
     private SectorDAO() {
-        cache = new HashSet<>();
+        cache = new ModelSet<>();
         cacheLoaded = false;
     }
 
