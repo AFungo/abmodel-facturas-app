@@ -1,0 +1,6 @@
+"Fecha","Tipo","Punto de Venta","Número Desde","Número Hasta","Cód. Autorización","Tipo Doc. Receptor","Nro. Doc. Receptor","Denominación Receptor","Tipo Cambio","Moneda","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"
+"17/05/2022","1 - Factura A","2","95","","72209966188423","CUIT","30715576380","MAS SOLUCIONES S.R.L.","1","$","349193.38","0","0","73330.61","422523.99"
+"21/03/2022","3 - Nota de Crédito A","3","2592","","72126469170721","CUIT","30710404026","CASTAÑA BLAS S.A.","1","$","469.24","0","0","98.54","567.78"
+"17/03/2022","1 - Factura A","3","1797","","72112221725971","CUIT","27260853592","O'NEIL","1","$","12000","8147","0","2520","24467"
+"23/04/2022","1 - Factura A","65","60203","","72129689391512","CUIT","30526712729","LDC ARGENTINA S.A.","1","$","51949.04","0","0","10909.3","62858.34"
+"11/03/2022","1 - Factura A","38","2505","","72103754302029","CUIT","30669095143","MAIPU RIO S. R. L.","1","$","486.49","0","0","102.16","594"
