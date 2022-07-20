@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -103,44 +104,42 @@ public class Controller {
     }
 
     /**
+     * This method returns the tickets, if the filters are empty then
+     * returns all the tickets otherwise returns the tickets post-apply
+     * the filters.
      *
-     * @param filters
-     * @return
+     * @param filters to be applied
+     * @return a list of all tickets after apply them the filters
      */
     public List<Ticket> getTickets(Filter... filters) {
         ModelSet<Ticket> tickets = TicketDAO.getInstance().getAll();
-        for (Filter filter : filters) {
-            switch (filter.getComparison()) {
-                case EQUALS:
-                    tickets = tickets.filterByEqualsTo(filter.getAttribute(), filter.getValue());
-                    break;
-                case GREATER_EQUALS:
-                    tickets = tickets.filterByGreaterOrEqualsThan(filter.getAttribute(), filter.getValue());
-                    break;
-                case LESS_EQUALS:
-                    tickets = tickets.filterByLessOrEqualsThan(filter.getAttribute(), filter.getValue());
-                    break;
-            }
-        }
-        return new ArrayList<>(tickets);
+        return new ArrayList<>(Filter.applyFilters(tickets, filters));
     }
 
     /**
+     * This method returns the withholdings, if the filters are empty then
+     * returns all the withholdings otherwise returns the tickets post-apply
+     * the filters.
      *
-     * @param filters
-     * @return
+     * @param filters to be applied
+     * @return a list of all withholdings after apply them the filters
      */
     public List<Withholding> getWithholdings(Filter... filters) {
-        throw new UnsupportedOperationException("TODO");
+        ModelSet<Withholding> withholdings = WithholdingDAO.getInstance().getAll();
+        return new ArrayList<>(Filter.applyFilters(withholdings, filters));
     }
 
     /**
+     * This method returns the providers, if the filters are empty then
+     * returns all the providers otherwise returns the tickets post-apply
+     * the filters.
      *
-     * @param filters
-     * @return
+     * @param filters to be applied
+     * @return a list of all providers after apply them the filters
      */
     public List<Provider> getProviders(Filter... filters) {
-        throw new UnsupportedOperationException("TODO");
+        ModelSet<Provider> providers = ProviderDAO.getInstance().getAll();
+        return new ArrayList<>(Filter.applyFilters(providers, filters));
     }
 
     /**
