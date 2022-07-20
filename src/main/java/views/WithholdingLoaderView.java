@@ -10,6 +10,8 @@ import models.Provider;
 import models.Withholding;
 import utils.AutoSuggestor;
 import utils.FormatUtils;
+import views.utils.ViewUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.swing.DefaultComboBoxModel;
@@ -431,7 +433,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_addProviderActionPerformed
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[]{numberTextField, ivaTextField, profitsTextField};
-        controller.cleanTextField(forClean);
+        ViewUtils.cleanTextField(forClean);
     }
     public void updateProviders(List<String> names) {
         providersAutoSuggestor.setSuggestions(names);

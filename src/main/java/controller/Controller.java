@@ -287,10 +287,6 @@ public class Controller {
         return table;
     }
     
-    public void cleanTextField(JTextField[] textField){
-            for(JTextField t : textField) t.setText("");
-    }
-    
     public void addProvider(Map<String, Object> values){
         Provider provider = new Provider(values);
         ProviderDAO.add(provider);

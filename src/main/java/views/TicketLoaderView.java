@@ -10,6 +10,8 @@ import models.Provider;
 import models.Ticket;
 import utils.AutoSuggestor;
 import utils.FixedData;
+import views.utils.ViewUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -616,7 +618,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
             amountImpExTextField, ivaTaxTextField,ivaTax1TextField, ivaTax2TextField, totalAmountTextField, 
             profitsTextField, ivaTextField};
         
-        controller.cleanTextField(forClean);
+        ViewUtils.cleanTextField(forClean);
     }
     
     private void exchangeMoneyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exchangeMoneyComboBoxActionPerformed

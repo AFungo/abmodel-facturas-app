@@ -9,6 +9,7 @@ import controller.Controller;
 import models.Provider;
 import utils.AutoSuggestor;
 import utils.FixedData;
+import views.utils.ViewUtils;
 
 import java.util.*;
 import javax.swing.ImageIcon;
@@ -205,7 +206,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
     
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[] {providerAddressTextField, providerAliasTextField, providerDocTextField, providerNameTextField};        
-        controller.cleanTextField(forClean);
+        ViewUtils.cleanTextField(forClean);
     }
     
     private View mainView;
