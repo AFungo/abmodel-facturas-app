@@ -5,6 +5,7 @@ import java.util.*;
 
 import databaserefactor.DollarPriceDAO;
 import databaserefactor.ProviderDAO;
+import databaserefactor.SectorDAO;
 import databaserefactor.TicketDAO;
 import databaserefactor.WithholdingDAO;
 import utils.Parser;
@@ -184,6 +185,34 @@ public class ModelBuilder {
             }
         }
         return dollarPrice;
+    }
+
+    /**
+     * this method take a String[], build a sector with the data, try to save it in the db and return it;
+     * @param data the data of sector to be saved
+     * @return sector
+     */
+    public static Sector buildSector(Object... data){
+        List<String> attributes = Sector.getAttributes();
+        Map<String,Object> values = new HashMap<String,Object>();
+        int i = 0;
+        for(String attribute : attributes){
+            values.put(attribute, data[i]);
+            i++;
+        }
+        Sector sector = new Sector(values);
+
+        if (!SectorDAO.getInstance().save(sector)) {
+            Optional<Sector> sectorOptional = SectorDAO.getInstance().getAll().stream()
+                    .filter(p -> p.getID().equals(sector.getID()))
+                    .findFirst();
+            if (sectorOptional.isPresent()) {
+                return sectorOptional.get();
+            } else {
+                throw new IllegalStateException("The sector could not be saved but also not obtained");
+            }
+        }
+        return sector;
     }
 
 }
