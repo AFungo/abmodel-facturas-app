@@ -280,13 +280,19 @@ public class Controller {
 
     public void addProvider(Map<String, Object> values){
         Provider provider = new Provider(values);
-        ProviderDAO.add(provider);
+        ProviderDAO.getInstance().save(provider);
     }
     
     public boolean providerHasTickets(String docNo) {
-        SQLFilter filter = new SQLFilter();
-        filter.add("providerDoc", "=", docNo, String.class);
-        return WithholdingDAO.exist(filter);
+        Optional<Provider> optionalProvider = ProviderDAO.getInstance().getAll().stream()
+                .filter(p -> p.getID().get("docNo").equals(docNo)).findFirst();
+        if (optionalProvider.isPresent()) {
+            Provider provider = optionalProvider.get();
+            return WithholdingDAO.getInstance().getAll().stream()
+                    .anyMatch(w -> w.getValues().get("provider").equals(provider));
+        } else {
+            throw new IllegalArgumentException("The given docNo has no provider associated");
+        }
     }
     
     public void createBackup(File folder, String filename) {
