@@ -2,8 +2,8 @@ package models;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -57,17 +57,15 @@ public class Provider implements Model {
      * 
      * @return all attributes of provider model
      */
-    public static Set<String> getAttributes(){
+    public static List<String> getAttributes(){
         return Stream.of( "provSector", "id", "docNo", "name", "docType", "address", "alias")
-        .collect(Collectors.toSet());
+        .collect(Collectors.toList());
     }
 
     private boolean repOk() {
-
         if (!getAttributes().containsAll(values.keySet())) {
             return false;
         }
-
         for (String key : values.keySet()) {
             Object value = values.get(key);
             if (value != null) {
@@ -85,14 +83,14 @@ public class Provider implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Provider provider = (Provider) o;
+        Provider other = (Provider) o;
 
-        return values.equals(provider.values);
+        return values.get("docNo").equals(other.values.get("docNo"));
     }
 
     @Override
     public int hashCode() {
-        return values.hashCode();
+        return 31 + 17 * values.get("docNo").hashCode();
     }
 
 }

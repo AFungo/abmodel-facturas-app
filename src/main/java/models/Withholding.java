@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,9 +65,9 @@ public class Withholding implements Model {
      * 
      * @return all the attributes of the model
      */
-    public static Set<String> getAttributes() {
+    public static List<String> getAttributes() {
         return Stream.of("provider", "sector", "id", "date", "number", "iva", "profits", "delivered", "dollarPrice")
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     private boolean repOk() {
@@ -92,14 +92,20 @@ public class Withholding implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Withholding withholding = (Withholding) o;
+        Withholding other = (Withholding) o;
 
-        return values.equals(withholding.values);
+        return values.get("date").equals(other.values.get("date"))
+                && values.get("number").equals(other.values.get("number"))
+                && values.get("provider").equals(other.values.get("provider"));
     }
 
     @Override
     public int hashCode() {
-        return values.hashCode();
+        int result = 31;
+        result += 17 * values.get("date").hashCode();
+        result += 17 * values.get("number").hashCode();
+        result += 17 * values.get("provider").hashCode();
+        return result;
     }
 
 }

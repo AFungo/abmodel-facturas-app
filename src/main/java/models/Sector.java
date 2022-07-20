@@ -67,14 +67,14 @@ public class Sector implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Sector sector = (Sector) o;
+        Sector other = (Sector) o;
 
-        return values.equals(sector.values);
+        return values.get("name").equals(other.values.get("name"));
     }
 
     @Override
     public int hashCode() {
-        return values.hashCode();
+        return 31 + 17 * values.get("name").hashCode();
     }
 
 }

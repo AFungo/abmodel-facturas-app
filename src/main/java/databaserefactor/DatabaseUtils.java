@@ -18,12 +18,11 @@ public class DatabaseUtils {
             Connection connection = DBManager.getConnection();
             PreparedStatement stm;
             stm = connection.prepareStatement(query);
-            ResultSet result = stm.executeQuery();
 
-            return result;
+            return stm.executeQuery();
 
         } catch (SQLException e) {
-            Handler.logUnexpectedError(e, "query: " + query + "\n" + e.toString());
+            Handler.logUnexpectedError(e, "query: " + query + "\n" + e);
             return null;
         }
     }
@@ -46,18 +45,17 @@ public class DatabaseUtils {
             }
             ResultSet generatedKeys = stm.getGeneratedKeys();
             generatedKeys.next();
-            int id = generatedKeys.getInt(1);
-            
-            return id;
+
+            return generatedKeys.getInt(1);
         
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {  //duplicate item
                 Handler.showErrorMessage("El item que se intento cargar ya estaba cargado");
-            } else if (e.getSQLState().equals("42Z23") && e.getMessage()
-                    .contains("Attempt to modify an identity column 'ID'.")) {
-                //do nothing, just return false
+            } else if (!(e.getSQLState().equals("42Z23") && e.getMessage()
+                    .contains("Attempt to modify an identity column 'ID'."))) {
+                return 0;
             } else {                                //unknown error
-                Handler.logUnexpectedError(e, "query: " + query + "\n" + e.toString());
+                Handler.logUnexpectedError(e, "query: " + query + "\n" + e);
             }
             return 0;
         }
@@ -74,16 +72,15 @@ public class DatabaseUtils {
             Connection connection = DBManager.getConnection();
             PreparedStatement stm;
             stm = connection.prepareStatement(query);
-            int affectedRows = stm.executeUpdate();
-        
-            return affectedRows;
+
+            return stm.executeUpdate();
         
         } catch (SQLException e) {
             if (e.getSQLState().equals("23505")) {  //duplicate item
                 Handler.showErrorMessage("El item que se intento cargar ya estaba cargado");
             } else {                                //unknown error
-                Handler.logUnexpectedError(e, "query: " + query + "\n" + e.toString());
-                System.out.println("Error: " + e.toString());
+                Handler.logUnexpectedError(e, "query: " + query + "\n" + e);
+                System.out.println("Error: " + e);
             }
             return 0;
         }
