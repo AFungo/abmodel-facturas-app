@@ -99,6 +99,13 @@ public class ModelBuilder {
             put("number", (String) data[1]);
             put("provider", data[2]);
             put("sector", sector);
+            if(data.length >= 7){
+                put("iva", data[3]);
+                put("profits", data[4]);
+                put("delivered", data[5]);
+                if(data[6] != null) put("sector", data[6]);
+                if(data.length == 8) put("id", data[7]);
+            }
         }};
 
         Withholding withholding = new Withholding(withholdingValues);
