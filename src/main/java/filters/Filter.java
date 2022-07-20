@@ -1,5 +1,8 @@
 package filters;
 
+import models.Model;
+import models.set.ModelSet;
+
 import java.util.Objects;
 
 public class Filter {
@@ -27,6 +30,24 @@ public class Filter {
 
     public Comparison getComparison() {
         return comparison;
+    }
+
+    public static <T extends Model> ModelSet<T> applyFilters(ModelSet<T> items, Filter... filters) {
+        ModelSet<T> filteredItems = new ModelSet<>(items);
+        for (Filter filter : filters) {
+            switch (filter.getComparison()) {
+                case EQUALS:
+                    filteredItems = filteredItems.filterByEqualsTo(filter.getAttribute(), filter.getValue());
+                    break;
+                case GREATER_EQUALS:
+                    filteredItems = filteredItems.filterByGreaterOrEqualsThan(filter.getAttribute(), filter.getValue());
+                    break;
+                case LESS_EQUALS:
+                    filteredItems = filteredItems.filterByLessOrEqualsThan(filter.getAttribute(), filter.getValue());
+                    break;
+            }
+        }
+        return filteredItems;
     }
 
 }
