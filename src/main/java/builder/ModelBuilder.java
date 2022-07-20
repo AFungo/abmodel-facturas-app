@@ -3,6 +3,7 @@ package builder;
 import java.io.File;
 import java.util.*;
 
+import databaserefactor.DollarPriceDAO;
 import databaserefactor.ProviderDAO;
 import databaserefactor.TicketDAO;
 import databaserefactor.WithholdingDAO;
@@ -11,6 +12,7 @@ import utils.csv.*;
 
 import java.sql.Date;
 
+import models.DollarPrice;
 import models.Provider;
 import models.Sector;
 import models.Ticket;
@@ -91,20 +93,22 @@ public class ModelBuilder {
      */
     private static Withholding buildWithholding(Object... data){
         Sector sector = (Sector) ProviderDAO.getInstance().getAll().stream()
-                        .filter(p -> p.getID().equals(((Provider)data[2]).getID()))
+                        .filter(p -> p.getID().equals(((Provider)data[0]).getID()))
                         .findFirst().get().getValues().get("sector");
         
         Map<String, Object> withholdingValues = new HashMap<String, Object>(){{
-            put("date", Date.valueOf((String)data[0]));
-            put("number", (String) data[1]);
-            put("provider", data[2]);
+            put("provider", data[0]);
+            put("date", Date.valueOf((String)data[1]));
+            put("number", (String) data[2]);
+
             put("sector", sector);
-            if(data.length >= 7){
+            if(data.length >= 8){
                 put("iva", data[3]);
                 put("profits", data[4]);
                 put("delivered", data[5]);
-                if(data[6] != null) put("sector", data[6]);
-                if(data.length == 8) put("id", data[7]);
+                put("delivered", data[6]);
+                if(data[6] != null) put("sector", data[7]);
+                if(data.length == 9) put("id", data[8]);
             }
         }};
 
@@ -152,6 +156,34 @@ public class ModelBuilder {
             }
         }
         return provider;
+    }
+
+    /**
+     * this method take a String[], build a dollarPrice with the data, try to save it in the db and return it;
+     * @param data the data of dollar price to be saved
+     * @return dollar price
+     */
+    public static DollarPrice buildDollarPrice(Object... data){
+        List<String> attributes = DollarPrice.getAttributes();
+        Map<String,Object> values = new HashMap<String,Object>();
+        int i = 0;
+        for(String attribute : attributes){
+            values.put(attribute, data[i]);
+            i++;
+        }
+        DollarPrice dollarPrice = new DollarPrice(values);
+
+        if (!DollarPriceDAO.getInstance().save(dollarPrice)) {
+            Optional<DollarPrice> dollarPriceOptional = DollarPriceDAO.getInstance().getAll().stream()
+                    .filter(p -> p.getID().equals(dollarPrice.getID()))
+                    .findFirst();
+            if (dollarPriceOptional.isPresent()) {
+                return dollarPriceOptional.get();
+            } else {
+                throw new IllegalStateException("The dollarPrice could not be saved but also not obtained");
+            }
+        }
+        return dollarPrice;
     }
 
 }
