@@ -6,6 +6,7 @@ package views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import controller.Controller;
+import filters.Filter;
 import models.Provider;
 import models.Ticket;
 import utils.AutoSuggestor;
@@ -608,8 +609,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
         showLastTotalTextField.setText(values.get("totalAmount"));
         showLastDateTextField1.setText(values.get("date"));
         
-        SQLFilter filter = FilterUtils.createTicketFilter(values);
-        Ticket ticket = (Ticket)controller.getTickets(filter).get(0);
+        Filter filter = FilterUtils.createTicketFilter(values);
+        Ticket ticket = controller.getTickets(filter).get(0);
         showLastIDTextField1.setText(String.valueOf(ticket.getValues().get("id")));
     }
     

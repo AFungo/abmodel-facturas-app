@@ -419,7 +419,7 @@ public class ProvidersView extends JFrame {
     private void updateAttribute(String attribute, String value, int column) {
         SQLFilter filter = new SQLFilter();
         filter.add("docNo", "=", selectedDoc, String.class);
-        controller.changeProviderAttribute(filter, attribute, value);    //update db
+        controller.updateProvider(filter, attribute, value);    //update db
         int row = providersTable.getSelectedRow();
         providersTable.setValueAt(value, row, column);  //update view
     }

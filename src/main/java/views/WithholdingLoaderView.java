@@ -6,6 +6,7 @@ package views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import controller.Controller;
+import filters.Filter;
 import models.Provider;
 import models.Withholding;
 import utils.AutoSuggestor;
@@ -449,8 +450,8 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         showLastIvaTextField.setText(values.get("iva"));
         showLastProfitsTextField.setText(values.get("profits"));
         
-        SQLFilter filter = FilterUtils.createTicketFilter(values);
-        Withholding withholding = (Withholding)controller.getWithholdings(filter).get(0);
+        Filter filter = FilterUtils.createTicketFilter(values);
+        Withholding withholding = controller.getWithholdings(filter).get(0);
         showLastIDTextField.setText(String.valueOf(withholding.getValues().get("id")));
     }
     

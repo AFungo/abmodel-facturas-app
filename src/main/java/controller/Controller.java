@@ -67,7 +67,7 @@ public class Controller {
         ModelBuilder.buildDollarPricesFromData(data);
     }
     
-    public String validateProviderParam(Map<String, Object> values, JComboBox<String> sectorsComboBox){
+    public String validateProviderParam(Map<String, Object> values, JComboBox<String> sectorsComboBox) {
         return Validate.providerInput(values, sectorsComboBox);
     }
     
@@ -160,7 +160,7 @@ public class Controller {
         throw new UnsupportedOperationException("Implement if needed");
     }
 
-    public void changeTicketAttribute(SQLFilter filter, String attribute, String value, boolean quotes){
+    public void changeTicketAttribute(SQLFilter filter, String attribute, String value, boolean quotes) {
         //getting id of withholding
         SQLFilter withholdingFilter = FilterUtils.separateWithholdingFilter(filter);
         List<Withholding> withholdings = WithholdingDAO.get(withholdingFilter);
@@ -169,22 +169,52 @@ public class Controller {
         TicketDAO.update(filter, attribute, value, quotes);
     }
     
-    public void changeWithholdingAttribute(SQLFilter filter, String attribute, String value, boolean quotes){
-        WithholdingDAO.update(filter, attribute, value, quotes);
-    }
-    
-    public void deleteWithholdingAttribute(SQLFilter filter, String attribute){
-        WithholdingDAO.setNull(filter, attribute);
+    public void updateWithholding(Filter filter, String attribute, Object value) {
+        ModelSet<Withholding> withholdings = Filter.applyFilters(WithholdingDAO.getInstance().getAll(), filter);
+        for (Withholding w : withholdings) {
+            WithholdingDAO.getInstance().update(w, Collections.singletonMap(attribute, value));
+        }
     }
 
-    public void deleteProviderAttribute(SQLFilter filter, String attribute){
-        ProviderDAO.setNull(filter, attribute);
+    // TODO: this method and the previous one can be the save, indeed we can generefy it taking a Map instead of
+    //  one attribute and one value.
+    public void deleteWithholdingAttribute(Filter filter, String attribute) {
+        ModelSet<Withholding> withholdings = Filter.applyFilters(WithholdingDAO.getInstance().getAll(), filter);
+        for (Withholding w : withholdings) {
+            WithholdingDAO.getInstance().update(w, Collections.singletonMap(attribute, null));
+        }
     }
-    
-    public void removeItem(SQLFilter filter, boolean isTicket) {
-            WithholdingDAO.remove(filter);
+
+    public void addProvider(Map<String, Object> values) {
+        Provider provider = new Provider(values);
+        ProviderDAO.getInstance().save(provider);
     }
-    public Ticket makeNegative(Ticket t){
+
+    public void updateProvider(Filter filter, String attribute, String value) {
+        ModelSet<Provider> providers = Filter.applyFilters(ProviderDAO.getInstance().getAll(), filter);
+        for (Provider p : providers) {
+            ProviderDAO.getInstance().update(p, Collections.singletonMap(attribute, value));
+        }
+    }
+
+    public void deleteProviderAttribute(Filter filter, String attribute) {
+        ModelSet<Provider> providers = Filter.applyFilters(ProviderDAO.getInstance().getAll(), filter);
+        for (Provider p : providers) {
+            ProviderDAO.getInstance().update(p, Collections.singletonMap(attribute, null));
+        }
+    }
+
+    // TODO: for some reason the genius that implement this remove withholdings, why this method is not called remove
+    //  withholding?, and the boolean isTicket was never used, then was removed.
+    public void removeItem(Filter filter) {
+        ModelSet<Withholding> withholdings = Filter.applyFilters(WithholdingDAO.getInstance().getAll(), filter);
+        List<Boolean> results = withholdings.stream().map(w -> WithholdingDAO.getInstance().delete(w)).collect(Collectors.toList());
+        if (results.stream().anyMatch(r -> r.equals(false))) {
+            throw new IllegalArgumentException("Some items dont exists or can not be removed");
+        }
+    }
+
+    public Ticket makeNegative(Ticket t) {
         Map<String, Object> values = FormatUtils.objectToStringMap(t.getValues());
         values.put("totalAmount", "-" + values.get("totalAmount"));
         if (values.get("netAmountWI") != null) values.put("netAmountWI","-" + values.get("netAmountWI"));
@@ -194,19 +224,11 @@ public class Controller {
         return new Ticket(values);
     }
     
-    public void resetDB(){
+    public void resetDB() {
             DBManager.deleteDB();
             DBManager.initializeDB();
     }
 
-    public List<Provider> getProviders(SQLFilter filters){
-        return ProviderDAO.get(filters);
-    }
-
-    public void changeProviderAttribute(SQLFilter filters, String attribute, String value) {
-        ProviderDAO.update(filters, attribute, value);
-    }
-    
     public JTable createMissingPricesTable(List<Pair<Date,String>> data) {
         int length = data.size(), i = 0;
         Object[][] rows = new Object[length][2];
@@ -272,17 +294,11 @@ public class Controller {
             if (maxVal !=  null) {
                 if (maxVal < val) {
                     deleteAttr.accept(w);
-                    return;
                 }
             }
         }
     }
 
-    public void addProvider(Map<String, Object> values){
-        Provider provider = new Provider(values);
-        ProviderDAO.getInstance().save(provider);
-    }
-    
     public boolean providerHasTickets(String docNo) {
         Optional<Provider> optionalProvider = ProviderDAO.getInstance().getAll().stream()
                 .filter(p -> p.getID().get("docNo").equals(docNo)).findFirst();

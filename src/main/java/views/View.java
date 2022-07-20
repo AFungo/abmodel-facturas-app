@@ -612,7 +612,7 @@ public class View extends JFrame {
             SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             
             String sector = (String)sectorComboBox.getSelectedItem();
-            controller.changeWithholdingAttribute(filter, "sector", sector, true);
+            controller.updateWithholding(filter, "sector", sector, true);
         
             ticketsTable.setValueAt(sector, row, 14);   //column 14 is for sector
         }
@@ -627,7 +627,7 @@ public class View extends JFrame {
         SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
         
         String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
-            controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true", true);
+            controller.updateWithholding(filter, "delivered", deliveredValue == "NO" ? "false" : "true", true);
         
         ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
@@ -787,9 +787,8 @@ public class View extends JFrame {
     }
     
     private void loadTicketsInTable() {
-        SQLFilter filter = new SQLFilter();
-        List<Withholding> tickets = controller.getWithholdings(filter);
-        tickets.addAll(controller.getTickets(filter));
+        List<Withholding> tickets = controller.getWithholdings();
+        tickets.addAll(controller.getTickets());
 
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
