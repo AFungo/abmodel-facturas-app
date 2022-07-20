@@ -2,6 +2,7 @@ package utils.csv;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import logger.Handler;
 
 import java.io.*;
 import java.util.Arrays;
@@ -32,12 +33,12 @@ public class CSVUtils {
             CSVReader csvReader = new CSVReader(filereader);
             String[] initialLine = csvReader.readNext();   //skip the first line which is the header
             if (!Arrays.equals(initialLine, header)) {
-                throw new IllegalArgumentException("The given file is invalid for header: " + Arrays.toString(header));
+                throw new IllegalArgumentException("The given file is invalid for header: \n" + Arrays.toString(header));
             }
 
             items = csvReader.readAll().toArray(items);
         } catch (IOException e) {
-            e.printStackTrace();
+            Handler.logUnexpectedError(e, "An error occurred while reading the file at " + f.getAbsolutePath());
         }
 
         return items;
