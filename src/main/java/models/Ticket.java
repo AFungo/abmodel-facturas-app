@@ -2,8 +2,8 @@ package models;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -64,10 +64,10 @@ public class Ticket extends Withholding implements Model{
         return (Boolean) values.get("issuedByMe") == isCredit;
     }
 
-    public static Set<String> getAttributes() {
+    public static List<String> getAttributes() {
         return Stream.of("withholding", "numberTo", "authCode", "type", "exchangeType", "exchangeMoney", "netAmountWI",
                         "netAmountWOI", "amountImpEx", "ivaTax", "totalAmount", "issuedByMe")
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     private boolean repOk() {
