@@ -8,6 +8,7 @@ import utils.Pair;
 
 import java.sql.Date;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * class for manage the price of the dollar
@@ -94,7 +95,7 @@ public class PricesList {
             if (priceOptional.isPresent()) {
                 price = priceOptional.get();
             } else {
-                price = DollarPriceDAO.getAproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
+                price = getApproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
                 dayPriceMissing = true;
             }
             datePrices.put(ticketDate, price);  //set as price for ticketDate
@@ -104,6 +105,39 @@ public class PricesList {
         if (dayPriceMissing) {
             checkDaysDistance(daysLimit, ticketDate, price);
         }
+    }
+
+    private DollarPrice getApproximatePrice(Date ticketDate) {
+        List<DollarPrice> higherPrice = DollarPriceDAO.getInstance().getAll().stream()
+                .filter(d -> ((Date)d.getValues().get("date")).compareTo(ticketDate) > 0).collect(Collectors.toList());
+        List<DollarPrice> lowerPrice = DollarPriceDAO.getInstance().getAll().stream()
+                .filter(d -> ((Date)d.getValues().get("date")).compareTo(ticketDate) < 0).collect(Collectors.toList());
+        Optional<DollarPrice> minHigherPrice = higherPrice.stream().min(Comparator.comparing(d -> (Date)d.getValues().get("date")));
+        Optional<DollarPrice> maxLowerPrice = lowerPrice.stream().max(Comparator.comparing(d -> (Date)d.getValues().get("date")));
+
+        if (minHigherPrice.isPresent() && maxLowerPrice.isPresent()) {
+            return getNearestDatePrice(minHigherPrice.get(), maxLowerPrice.get(), ticketDate);
+        } else if (!minHigherPrice.isPresent() && maxLowerPrice.isPresent()) {
+            return maxLowerPrice.get();
+        } else if (minHigherPrice.isPresent()) {
+            return minHigherPrice.get();
+        } else {
+            throw new IllegalStateException("No price loaded");
+        }
+    }
+
+    private static DollarPrice getNearestDatePrice(DollarPrice priceBefore, DollarPrice priceAfter, Date currentDate) {
+        Date dateBefore = (Date)priceBefore.getValues().get("date");
+        Date dateAfter = (Date)priceAfter.getValues().get("date");
+        //getting time of each date
+        long currentTime = currentDate.getTime();
+        long afterTime = dateAfter.getTime();
+        long beforeTime = dateBefore.getTime();
+        //getting difference between both dates
+        long afterAbs = Math.abs(afterTime - currentTime);
+        long beforeAbs = Math.abs(currentTime - beforeTime);
+        //return the DollarPrice of the nearest date
+        return afterAbs <= beforeAbs ? priceAfter : priceBefore;
     }
 
     /**
