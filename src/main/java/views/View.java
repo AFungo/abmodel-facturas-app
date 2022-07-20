@@ -36,6 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import org.apache.commons.io.FilenameUtils;
+import views.utils.ViewUtils;
 
 /**
  *
@@ -665,17 +666,15 @@ public class View extends JFrame {
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private JTable createToDeleteTable(int rowIndex) {
-            Object[] rowToDelete = new Object[6];
-            int i = 0;
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 0);    //id
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 1);    //date
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 2);    //type
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 3);    //noTicket
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 7);    //provider name
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 13);  //total import
-            
-            JTable toDelete = controller.createTableToDelete(rowToDelete);
-            return toDelete;
+        Object[] rowToDelete = new Object[6];
+        rowToDelete[0] = ticketsTable.getValueAt(rowIndex, 0);    //id
+        rowToDelete[1] = ticketsTable.getValueAt(rowIndex, 1);    //date
+        rowToDelete[2] = ticketsTable.getValueAt(rowIndex, 2);    //type
+        rowToDelete[3] = ticketsTable.getValueAt(rowIndex, 3);    //noTicket
+        rowToDelete[4] = ticketsTable.getValueAt(rowIndex, 7);    //provider name
+        rowToDelete[5] = ticketsTable.getValueAt(rowIndex, 13);  //total import
+
+        return ViewUtils.createTableToDelete(rowToDelete);
     }
     
     private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed

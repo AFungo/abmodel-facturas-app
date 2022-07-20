@@ -277,16 +277,7 @@ public class Controller {
             }
         }
     }
-    
-    public JTable createTableToDelete(Object[] rowToDelete) {
-        Object[][] rows = {rowToDelete};
-        Object[] cols = {"id", "Fecha", "Tipo", "Nro factura", "Denominación Emisor", "Imp. Total"};
-        JTable table = new JTable(rows, cols);
-        table.setDefaultEditor(Object.class, null);
-        table.setCellSelectionEnabled(true);
-        return table;
-    }
-    
+
     public void addProvider(Map<String, Object> values){
         Provider provider = new Provider(values);
         ProviderDAO.add(provider);

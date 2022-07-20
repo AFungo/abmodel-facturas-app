@@ -8,4 +8,13 @@ public class ViewUtils {
         for(JTextField t : textField) t.setText("");
     }
 
+    public static JTable createTableToDelete(Object[] rowToDelete) {
+        Object[][] rows = {rowToDelete};
+        Object[] cols = {"id", "Fecha", "Tipo", "Nro factura", "Denominación Emisor", "Imp. Total"};
+        JTable table = new JTable(rows, cols);
+        table.setDefaultEditor(Object.class, null);
+        table.setCellSelectionEnabled(true);
+        return table;
+    }
+
 }
