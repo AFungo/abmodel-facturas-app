@@ -6,12 +6,12 @@ task run(type: JavaExec) {
     group = "Execution"
     description = "Run the main class with JavaExecTask"
     classpath = sourceSets.main.runtimeClasspath
-    main('facturas.app.FacturasApp')
+    main('FacturasApp')
 }
 
 jar {
     manifest {
-        attributes "Main-Class": "facturas.app.FacturasApp"
+        attributes "Main-Class": "FacturasApp"
     }
 
     from {
@@ -32,6 +32,7 @@ dependencies {
     implementation('com.toedter:jcalendar:1.4')
     implementation('com.itextpdf:itextpdf:5.5.13.3')
     implementation('org.apache.derby:derby:10.14.1.0')
+    implementation('com.opencsv:opencsv:4.1')
 }
 
 test {
