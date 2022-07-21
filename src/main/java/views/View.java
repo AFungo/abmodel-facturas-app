@@ -5,8 +5,10 @@
  */
 package views;
 
+import backup.BackUpBuilder;
 import concurrency.Lock;
 import controller.Controller;
+import filters.Filter;
 import models.Withholding;
 import models.Provider;
 import models.Ticket;
@@ -463,8 +465,8 @@ public class View extends JFrame {
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
         try {
-            SQLFilter ticketFilter = filtersView.getFilters();
-            SQLFilter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
+            Filter ticketFilter = filtersView.getFilters();
+            Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
             pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -535,7 +537,7 @@ public class View extends JFrame {
             backupLock.lock(); //once data is checked to be valid, backup is made
             File folder = new File("./");   //folder at local 
             String filename = FixedData.getBackupFolderName("backup-carga-tickets");
-            controller.createBackup(folder, filename);
+            BackUpBuilder.createBackup(folder, filename);
             backupLock.unlock();    //backup done, now load csv data
             backupLock.lock();      //to ensure the load process has finished
         } catch (Exception e) {
@@ -609,10 +611,10 @@ public class View extends JFrame {
         int selection = JOptionPane.showConfirmDialog(this, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
-            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+            Filter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             
             String sector = (String)sectorComboBox.getSelectedItem();
-            controller.updateWithholding(filter, "sector", sector, true);
+            controller.updateWithholdings(filter, "sector", sector);
         
             ticketsTable.setValueAt(sector, row, 14);   //column 14 is for sector
         }
@@ -624,10 +626,10 @@ public class View extends JFrame {
 
     private void deliveredMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveredMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
-        SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+        Filter filter = FilterUtils.createTicketFilter(row, ticketsTable);
         
         String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
-            controller.updateWithholding(filter, "delivered", deliveredValue == "NO" ? "false" : "true", true);
+            controller.updateWithholdings(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
         
         ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
@@ -652,13 +654,14 @@ public class View extends JFrame {
         JTable toDelete = createToDeleteTable(row);
         int selection = JOptionPane.showConfirmDialog(this, new JScrollPane(toDelete), "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
-            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+            Filter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             String type = (String)ticketsTable.getValueAt(row, 2);
-           
+
+            // for some reason here we differentiate the withholding by if contains 'Retencion'
             if (type.contains("Retencion"))
-                controller.removeItem(filter, false);
+                controller.deleteWithholdings(filter);
             else
-                controller.removeItem(filter, true);
+                controller.deleteWithholdings(filter);
             
             row = ticketsTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
             ((DefaultTableModel)ticketsTable.getModel()).removeRow(row); //remove row from view
@@ -685,7 +688,7 @@ public class View extends JFrame {
         int selection = JOptionPane.showConfirmDialog(this, "se le removera el rubro al ticket", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
-            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+            Filter filter = FilterUtils.createTicketFilter(row, ticketsTable);
             
             controller.deleteWithholdingAttribute(filter, "sector");
             ticketsTable.setValueAt(null, row, 14);   //column 14 is for sector
@@ -711,7 +714,7 @@ public class View extends JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            controller.createBackup(file, null);    //null filename will create default backup filename
+            BackUpBuilder.createBackup(file, null);    //null filename will create default backup filename
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_createBackupActionPerformed
@@ -728,7 +731,7 @@ public class View extends JFrame {
 
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             try {
-                controller.loadBackup(file);
+                BackUpBuilder.loadBackup(file);
             } catch (Exception e) {
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 throw e;
@@ -761,8 +764,8 @@ public class View extends JFrame {
 
     private void updateAttribute(String attribute, String value, int column) {
         int row = ticketsTable.getSelectedRow();
-        SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
-        controller.changeTicketAttribute(filter, attribute, value, false);    //update db
+        Filter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+        controller.updateTickets(filter, attribute, value);    //update db
         ticketsTable.setValueAt(Float.parseFloat(value), row, column);  //update view
     }
     
@@ -795,7 +798,7 @@ public class View extends JFrame {
         for (Withholding t : tickets) {
             if(t instanceof Ticket){
                 if(!((Ticket)t).isIncome()){
-                    t = controller.makeNegative((Ticket) t);
+                    t = ViewUtils.makeNegative((Ticket) t);
                 }
                 model.addRow(FormatUtils.ticketToForm(t));
             } else {

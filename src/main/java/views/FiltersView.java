@@ -7,6 +7,7 @@ package views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import controller.Controller;
+import filters.Filter;
 import models.Provider;
 import models.Ticket;
 import models.Withholding;
@@ -15,6 +16,8 @@ import utils.FixedData;
 import utils.FormatUtils;
 import utils.Pair;
 import utils.Validate;
+import views.utils.ViewUtils;
+
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
@@ -337,9 +340,9 @@ public class FiltersView extends javax.swing.JFrame {
     private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
         currentFilters = readFilters();
         
-        SQLFilter ticketFilter = currentFilters.clone();
-        SQLFilter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
-        SQLFilter ivaAndProfitsFilter = FilterUtils.removeIvaAndProfits(withholdingFilter);
+        Filter ticketFilter = currentFilters.clone();
+        Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
+        Filter ivaAndProfitsFilter = FilterUtils.removeIvaAndProfits(withholdingFilter);
         
         List<Withholding> tickets = controller.getWithholdings(withholdingFilter);
         tickets.addAll(controller.getTickets(ticketFilter));
@@ -351,7 +354,7 @@ public class FiltersView extends javax.swing.JFrame {
         for (Withholding t : tickets) {
             if(t instanceof Ticket && (ticketRadioButton.isSelected() || bothRadioButton2.isSelected())){
                 if(!((Ticket)t).isIncome()){
-                    t = controller.makeNegative((Ticket) t);
+                    t = ViewUtils.makeNegative((Ticket) t);
                 }
                 model.addRow(FormatUtils.ticketToForm(t));
             }

@@ -1,10 +1,15 @@
 package views.utils;
 
+import models.Provider;
+import models.Ticket;
+import utils.FormatUtils;
 import utils.Pair;
+import utils.Validate;
 
 import javax.swing.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public class ViewUtils {
 
@@ -34,6 +39,36 @@ public class ViewUtils {
         table.setDefaultEditor(Object.class, null);
         table.setCellSelectionEnabled(true);
         return table;
+    }
+
+    public static String validateProviderParam(Map<String, Object> values, JComboBox<String> sectorsComboBox) {
+        return Validate.providerInput(values, sectorsComboBox);
+    }
+
+    public static Ticket makeNegative(Ticket t) {
+        Map<String, Object> values = FormatUtils.objectToStringMap(t.getValues());
+        values.put("totalAmount", "-" + values.get("totalAmount"));
+        if (values.get("netAmountWI") != null) values.put("netAmountWI","-" + values.get("netAmountWI"));
+        if (values.get("netAmountWOI") != null) values.put("netAmountWOI","-" + values.get("netAmountWOI"));
+        if (values.get("amountImpEx") != null) values.put("amountImpEx","-" + values.get("amountImpEx"));
+        if (values.get("ivaTax") != null) values.put("ivaTax", "-" + values.get("ivaTax"));
+        return new Ticket(values);
+    }
+
+    //ticket is a boolean representing if the validation is for ticket or withholding
+    public static String validateParam(java.util.Date date, Map<String, String> values, boolean ticket,
+                                JComboBox<String> sectorsComboBox, List<Provider> selectedProvider) {
+
+        String message = Validate.withholdingInput(date, sectorsComboBox, values, selectedProvider, ticket);
+        if (ticket) {
+            message += Validate.ticketInput(date, values);
+        }
+
+        if (!message.isEmpty()) {
+            return "<html>" + message + "</html>";
+        }
+
+        return null;
     }
 
 }

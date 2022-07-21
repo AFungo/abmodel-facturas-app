@@ -188,7 +188,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
         values.put("alias", providerAliasTextField.getText());      //may be null
         values.put("docType", providerDocTypeComboBox.getSelectedItem().toString());
 
-        String errorMessage = controller.validateProviderParam(values, sectorsComboBox);
+        String errorMessage = ViewUtils.validateProviderParam(values, sectorsComboBox);
         if (errorMessage != null) {
             JOptionPane.showMessageDialog(null, errorMessage, 
                     "Los siguientes datos son invalidos", JOptionPane.ERROR_MESSAGE);

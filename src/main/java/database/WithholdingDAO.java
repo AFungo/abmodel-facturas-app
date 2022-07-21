@@ -7,7 +7,7 @@ import models.set.ModelSet;
 import utils.Pair;
 import utils.Parser;
 import logger.Handler;
-import utils.sql.SQLUtils;
+import database.sql.SQLUtils;
 
 import java.sql.Date;
 

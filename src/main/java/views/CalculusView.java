@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import controller.Controller;
+import filters.Filter;
 import utils.Pair;
 import calculations.PricesList;
 import views.utils.ViewUtils;
@@ -358,8 +359,8 @@ public class CalculusView extends javax.swing.JFrame {
         boolean dollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
-        SQLFilter ticketFilter = filtersView.getFilters();
-        SQLFilter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
+        Filter ticketFilter = filtersView.getFilters();
+        Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
         try {
             pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {

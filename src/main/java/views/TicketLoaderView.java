@@ -564,7 +564,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         
         List<Provider> providersCheck = ProviderDAO.get(filter);
 
-        String errorMessage = controller.validateParam(dateDateChooser.getDate(), values, true, 
+        String errorMessage = ViewUtils.validateParam(dateDateChooser.getDate(), values, true,
                 sectorsComboBox, providersCheck);
         if (errorMessage != null) {
             JOptionPane.showMessageDialog(this, errorMessage, "Los siguientes datos son invalidos", 

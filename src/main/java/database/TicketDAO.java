@@ -1,13 +1,12 @@
 package database;
 
-import models.Model;
 import models.Ticket;
 import models.Withholding;
 import models.set.ModelSet;
 import utils.Pair;
 import utils.Parser;
 import logger.Handler;
-import utils.sql.SQLUtils;
+import database.sql.SQLUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

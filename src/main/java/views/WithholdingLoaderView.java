@@ -391,7 +391,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         }
         List<Provider> providerCheck = ProviderDAO.get(filter);
         
-        String errorMessage = controller.validateParam(dateChooser.getDate(), values, false, 
+        String errorMessage = ViewUtils.validateParam(dateChooser.getDate(), values, false,
                 sectorsComboBox, providerCheck);
         if (errorMessage != null) {
             JOptionPane.showMessageDialog(this, errorMessage, "Los siguientes datos son invalidos", 
