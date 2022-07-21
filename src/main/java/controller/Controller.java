@@ -5,6 +5,7 @@ import database.*;
 import filters.*;
 import models.*;
 import models.set.ModelSet;
+import org.apache.commons.collections.map.SingletonMap;
 import utils.FixedData;
 import utils.FormatUtils;
 import utils.Pair;
@@ -229,42 +230,12 @@ public class Controller {
             DBManager.initializeDB();
     }
 
-    public JTable createMissingPricesTable(List<Pair<Date,String>> data) {
-        int length = data.size(), i = 0;
-        Object[][] rows = new Object[length][2];
-        for (Pair<Date,String> p : data) {
-            rows[i][0] = p.getFst();
-            rows[i][1] = p.getSnd();
-            i++;
-        }
-        Object[] cols = {"Fecha","Dias hasta el precio mas cercano"};
-        JTable table = new JTable(rows, cols);
-        table.setDefaultEditor(Object.class, null);
-        table.setCellSelectionEnabled(true);
-        return table;
-    }
-
     public boolean updateProviderDoc(String newDoc, String oldDoc) {
-        //looking if new doc is not used already
-        SQLFilter filter = new SQLFilter();
-        filter.add("docNo", "=", newDoc, String.class);
-        if (ProviderDAO.exist(filter)) {
-            return false;
-        }
-        //creation of new provider
-        filter.removeCondition("docNo");
-        filter.add("docNo", "=", oldDoc, String.class);
-        Provider prov = ProviderDAO.get(filter).get(0);
-        prov.setValues(Collections.singletonMap("docNo", newDoc));
-        ProviderDAO.add(prov);
-        //moving tickets from old doc to new doc
-        SQLFilter withholdingFilter = new SQLFilter();
-        withholdingFilter.add("providerDoc", "=", oldDoc, String.class);
-        WithholdingDAO.update(withholdingFilter, "providerDoc", newDoc, true);
-        //deleting old provider
-        ProviderDAO.delete(filter);
-        
-        return true;
+        Optional<Provider> optionalProvider = ProviderDAO.getInstance().getAll().stream()
+                .filter(p -> p.getValues().get("docNo").equals(oldDoc)).findFirst();
+        return optionalProvider.filter(provider -> ProviderDAO.getInstance()
+                .update(provider, Collections.singletonMap("docNo", newDoc)))
+                .isPresent();
     }
     
     public void filterWithholding(SQLFilter filter, List<Withholding> tickets) {

@@ -476,7 +476,7 @@ public class View extends JFrame {
         Map<String,Float> values = pricesList.getValues();
         List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
-            JTable pricesTable = controller.createMissingPricesTable(missingPrices);
+            JTable pricesTable = ViewUtils.createMissingPricesTable(missingPrices);
             int daysLimit = controller.getDaysLimit();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, new JScrollPane(pricesTable), 

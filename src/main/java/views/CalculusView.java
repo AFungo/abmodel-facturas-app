@@ -11,6 +11,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import controller.Controller;
 import utils.Pair;
 import calculations.PricesList;
+import views.utils.ViewUtils;
+
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -369,7 +371,7 @@ public class CalculusView extends javax.swing.JFrame {
         Map<String,Float> values = pricesList.getValues();
         List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
-            JTable pricesTable = controller.createMissingPricesTable(missingPrices);
+            JTable pricesTable = ViewUtils.createMissingPricesTable(missingPrices);
             int daysLimit = controller.getDaysLimit();
             optionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
