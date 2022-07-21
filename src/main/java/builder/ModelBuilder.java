@@ -1,13 +1,10 @@
 package builder;
 
-import java.util.*;
-
-import database.ProviderDAO;
-import database.TicketDAO;
-import database.WithholdingDAO;
-import models.*;
 import utils.Parser;
+import database.*;
+import models.*;
 
+import java.util.*;
 import java.sql.Date;
 
 public class ModelBuilder {
@@ -77,14 +74,23 @@ public class ModelBuilder {
      */
     public static Withholding buildWithholding(Object... data){
         Sector sector = (Sector) ProviderDAO.getInstance().getAll().stream()
-                        .filter(p -> p.getID().equals(((Provider)data[2]).getID()))
+                        .filter(p -> p.getID().equals(((Provider)data[0]).getID()))
                         .findFirst().get().getValues().get("sector");
         
         Map<String, Object> withholdingValues = new HashMap<String, Object>(){{
-            put("date", Date.valueOf((String)data[0]));
-            put("number", data[1]);
-            put("provider", data[2]);
+            put("provider", data[0]);
+            put("date", Date.valueOf((String)data[1]));
+            put("number", (String) data[2]);
+
             put("sector", sector);
+            if(data.length >= 8){
+                put("iva", data[3]);
+                put("profits", data[4]);
+                put("delivered", data[5]);
+                put("delivered", data[6]);
+                if(data[6] != null) put("sector", data[7]);
+                if(data.length == 9) put("id", data[8]);
+            }
         }};
 
         Withholding withholding = new Withholding(withholdingValues);
@@ -132,11 +138,63 @@ public class ModelBuilder {
     }
 
     public static void buildDollarPricesFromData(List<String[]> data) {
-        throw new UnsupportedOperationException("TODO");
+        throw new UnsupportedOperationException("TODO: Implements me funguitow");
     }
 
-    public static DollarPrice buildDollarPrice(Object... data) {
-        throw new UnsupportedOperationException("TODO");
+    /**
+     * this method take a String[], build a dollarPrice with the data, try to save it in the db and return it;
+     * @param data the data of dollar price to be saved
+     * @return dollar price
+     */
+    public static DollarPrice buildDollarPrice(Object... data){
+        List<String> attributes = DollarPrice.getAttributes();
+        Map<String,Object> values = new HashMap<>();
+        int i = 0;
+        for(String attribute : attributes){
+            values.put(attribute, data[i]);
+            i++;
+        }
+        DollarPrice dollarPrice = new DollarPrice(values);
+
+        if (!DollarPriceDAO.getInstance().save(dollarPrice)) {
+            Optional<DollarPrice> dollarPriceOptional = DollarPriceDAO.getInstance().getAll().stream()
+                    .filter(p -> p.getID().equals(dollarPrice.getID()))
+                    .findFirst();
+            if (dollarPriceOptional.isPresent()) {
+                return dollarPriceOptional.get();
+            } else {
+                throw new IllegalStateException("The dollarPrice could not be saved but also not obtained");
+            }
+        }
+        return dollarPrice;
+    }
+
+    /**
+     * this method take a String[], build a sector with the data, try to save it in the db and return it;
+     * @param data the data of sector to be saved
+     * @return sector
+     */
+    public static Sector buildSector(Object... data){
+        List<String> attributes = Sector.getAttributes();
+        Map<String,Object> values = new HashMap<>();
+        int i = 0;
+        for(String attribute : attributes){
+            values.put(attribute, data[i]);
+            i++;
+        }
+        Sector sector = new Sector(values);
+
+        if (!SectorDAO.getInstance().save(sector)) {
+            Optional<Sector> sectorOptional = SectorDAO.getInstance().getAll().stream()
+                    .filter(p -> p.getID().equals(sector.getID()))
+                    .findFirst();
+            if (sectorOptional.isPresent()) {
+                return sectorOptional.get();
+            } else {
+                throw new IllegalStateException("The sector could not be saved but also not obtained");
+            }
+        }
+        return sector;
     }
 
 }

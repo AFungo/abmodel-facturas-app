@@ -66,7 +66,7 @@ public class Withholding implements Model {
      * @return all the attributes of the model
      */
     public static List<String> getAttributes() {
-        return Stream.of("provider", "sector", "id", "date", "number", "iva", "profits", "delivered", "dollarPrice")
+        return Stream.of("provider", "date", "number", "iva", "profits", "delivered", "dollarPrice", "sector", "id")
                 .collect(Collectors.toList());
     }
 

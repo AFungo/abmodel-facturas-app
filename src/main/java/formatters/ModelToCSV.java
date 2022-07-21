@@ -85,4 +85,39 @@ public class ModelToCSV {
         return csvLine;
     }
 
+     /**
+     * given a DollarPrice return a CSV line representation of the dollar price
+     * @param dollarPrice the dollar price be transformed
+     * @return a CSV line representation of the DollarPrice
+     */
+    public static String[] toCSV(DollarPrice dollarPrice) {
+        Map<String, Object> values = dollarPrice.getValues();
+        List<String> attributes = DollarPrice.getAttributes();
+
+        String[] csvLine = new String[attributes.size()];
+        int i = 0;
+        for (String att : attributes) {
+            csvLine[i] = values.get(att).toString(); 
+            i++;     
+        }
+        return csvLine;
+    }
+
+     /**
+     * given a Sector return a CSV line representation of the sector
+     * @param sector the sector be transformed
+     * @return a CSV line representation of the sector
+     */
+    public static String[] toCSV(Sector sector) {
+        Map<String, Object> values = sector.getValues();
+        List<String> attributes = Sector.getAttributes();
+
+        String[] csvLine = new String[attributes.size()];
+        int i = 0;
+        for (String att : attributes) {
+            csvLine[i] = values.get(att).toString(); 
+            i++;     
+        }
+        return csvLine;
+    }
 }

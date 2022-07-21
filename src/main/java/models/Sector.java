@@ -2,6 +2,7 @@ package models;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -44,8 +45,15 @@ public class Sector implements Model {
         return Collections.singletonMap("id", values.get("id"));
     }
 
+    /**
+     * 
+     * @return all the attributes of the model
+     */
+    public static List<String> getAttributes() {
+        return Stream.of("id", "name").collect(Collectors.toList()); 
+    }
     private boolean repOk() {
-        Set<String> requiredKeys = Stream.of("id", "name").collect(Collectors.toSet());
+        List<String> requiredKeys = getAttributes();
         if (!requiredKeys.containsAll(values.keySet())) {
             return false;
         }
