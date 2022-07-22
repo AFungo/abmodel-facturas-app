@@ -137,8 +137,14 @@ public class ModelBuilder {
         return provider;
     }
 
+    /**
+     * for each line of list of string create a new dollar price.
+     * @param data List of strings with values to create a new dollar price
+     */
     public static void buildDollarPricesFromData(List<String[]> data) {
-        throw new UnsupportedOperationException("TODO: Implements me funguitow");
+        for(String[] value : data) {
+            buildDollarPrice(Parser.parseInt(value[0]), Date.valueOf(value[1]), Float.parseFloat(value[2]), Float.parseFloat(value[3]));
+        }
     }
 
     /**
