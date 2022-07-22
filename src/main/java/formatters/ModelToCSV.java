@@ -71,16 +71,13 @@ public class ModelToCSV {
         List<String> attributes = Provider.getAttributes();
 
         String[] csvLine = new String[attributes.size()];
-
-        Sector sector = (Sector)values.get("provSector");
-
-        csvLine[0] = sector.getID().get("id").toString();//add sector to csvLine
-        attributes.remove("provSector");// remove sector from attributes
-
-        int i = 1;
+ 
+        int i = 0;
         for (String att : attributes) {
-            csvLine[i] = values.get(att).toString(); 
-            i++;     
+            if(att.equals("provSector")) csvLine[i] = ((Sector)values.get("provSector"))
+                                                                    .getID().get("id").toString();
+            csvLine[i] = values.get(att).toString();
+            i++;
         }
         return csvLine;
     }

@@ -58,7 +58,7 @@ public class Provider implements Model {
      * @return all attributes of provider model
      */
     public static List<String> getAttributes(){
-        return Stream.of( "provSector", "id", "docNo", "name", "docType", "address", "alias")
+        return Stream.of( "docType", "docNo",  "name", "provSector", "id",  "address", "alias")
         .collect(Collectors.toList());
     }
 
