@@ -176,6 +176,16 @@ public class ModelBuilder {
     }
 
     /**
+     * for each line of list of string create a new Sector.
+     * @param data List of strings with values to create a new Sector
+     */
+    public static void buildSectorFromData(List<String[]> data) {
+        for(String[] value : data) {
+            buildSector(Parser.parseInt(value[0]), value[1]);
+        }
+    }
+
+    /**
      * this method take a String[], build a sector with the data, try to save it in the db and return it;
      * @param data the data of sector to be saved
      * @return sector
