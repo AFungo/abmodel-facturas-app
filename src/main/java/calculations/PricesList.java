@@ -27,9 +27,9 @@ public class PricesList {
      * @param inDollars
      */
     public PricesList(boolean inDollars) {
-        calculator = new ProfitCalculator ();
-        datePrices = new HashMap<> ();
-        missingPrices = new LinkedList();
+        calculator = new ProfitCalculator();
+        datePrices = new HashMap<>();
+        missingPrices = new LinkedList<>();
         if (DollarPriceDAO.getInstance().getAll().isEmpty() && inDollars) {
             throw new IllegalStateException("No dollar prices loaded");
         }

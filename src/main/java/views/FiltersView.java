@@ -347,7 +347,7 @@ public class FiltersView extends javax.swing.JFrame {
         List<Withholding> tickets = controller.getWithholdings(withholdingFilter);
         tickets.addAll(controller.getTickets(ticketFilter));
         
-        controller.filterWithholding(ivaAndProfitsFilter, tickets);
+        controller.getWithholdings(ivaAndProfitsFilter, tickets);
         
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
