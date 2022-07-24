@@ -195,7 +195,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
             return ;
         }
         
-        controller.addProvider(values);
+        controller.loadProvider(values);
         mainView.updateProviders(getProvidersName());
         cleanTextField();
     }//GEN-LAST:event_addProviderActionPerformed

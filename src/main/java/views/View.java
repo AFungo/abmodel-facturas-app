@@ -6,6 +6,7 @@
 package views;
 
 import backup.BackUpBuilder;
+import calculations.ProfitCalculator;
 import concurrency.Lock;
 import controller.Controller;
 import filters.Filter;
@@ -467,7 +468,7 @@ public class View extends JFrame {
         try {
             Filter ticketFilter = filtersView.getFilters();
             Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
-            pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
+            pricesList = ProfitCalculator.getSummary(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
@@ -479,7 +480,7 @@ public class View extends JFrame {
         List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = ViewUtils.createMissingPricesTable(missingPrices);
-            int daysLimit = controller.getDaysLimit();
+            int daysLimit = ProfitCalculator.getDaysLimit();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
@@ -536,8 +537,8 @@ public class View extends JFrame {
             
             backupLock.lock(); //once data is checked to be valid, backup is made
             File folder = new File("./");   //folder at local 
-            String filename = FixedData.getBackupFolderName("backup-carga-tickets");
-            BackUpBuilder.createBackup(folder, filename);
+            String filename = FixedData.getBackupFolderName("carga-tickets");
+            BackUpBuilder.saveBackup(folder, filename);
             backupLock.unlock();    //backup done, now load csv data
             backupLock.lock();      //to ensure the load process has finished
         } catch (Exception e) {
@@ -571,7 +572,7 @@ public class View extends JFrame {
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
 
-        controller.loadDollarPrices(chooser.getSelectedFile());
+        controller.loadDollarPricesFromFile(chooser.getSelectedFile());
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
@@ -714,7 +715,7 @@ public class View extends JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            BackUpBuilder.createBackup(file, null);    //null filename will create default backup filename
+            BackUpBuilder.saveBackup(file, null);    //null filename will create default backup filename
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_createBackupActionPerformed

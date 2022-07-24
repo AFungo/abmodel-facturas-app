@@ -8,6 +8,8 @@ package views;
 import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import calculations.ProfitCalculator;
 import controller.Controller;
 import filters.Filter;
 import utils.Pair;
@@ -352,7 +354,7 @@ public class CalculusView extends javax.swing.JFrame {
         FileNameExtensionFilter fileTypes = new FileNameExtensionFilter("CSV Files", "csv");
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
-        controller.loadDollarPrices(chooser.getSelectedFile());
+        controller.loadDollarPricesFromFile(chooser.getSelectedFile());
     }//GEN-LAST:event_loadDollarPricesButtonActionPerformed
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
@@ -362,7 +364,7 @@ public class CalculusView extends javax.swing.JFrame {
         Filter ticketFilter = filtersView.getFilters();
         Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
         try {
-            pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
+            pricesList = ProfitCalculator.getSummary(ticketFilter, withholdingFilter, dollar);
         } catch (IllegalStateException e) {
             optionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
                 "Error", optionPane.ERROR_MESSAGE);
@@ -373,7 +375,7 @@ public class CalculusView extends javax.swing.JFrame {
         List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = ViewUtils.createMissingPricesTable(missingPrices);
-            int daysLimit = controller.getDaysLimit();
+            int daysLimit = ProfitCalculator.getDaysLimit();
             optionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
                 " dias para redondear el dolar", optionPane.WARNING_MESSAGE);

@@ -38,7 +38,7 @@ public class CSVUtils {
 
             items = csvReader.readAll();
         } catch (IOException e) {
-            Handler.logUnexpectedError(e, "An error occurred while reading the file at " + f.getAbsolutePath());
+            Handler.logUnexpectedError(e, "An error occurred while reading the file at " + file.getAbsolutePath());
         }
 
         return items;
@@ -62,7 +62,7 @@ public class CSVUtils {
             writer.writeNext(header);      //first is validation line
             writer.writeAll(data);
         } catch (IOException e) {
-            e.printStackTrace();
+            Handler.logUnexpectedError(e, "Failed while writing in " + file.getAbsolutePath());
         }
     }
 

@@ -5,13 +5,10 @@ import database.*;
 import filters.*;
 import models.*;
 import models.set.ModelSet;
-import utils.Pair;
-import calculations.PricesList;
 import utils.csv.CSVUtils;
 
 import java.io.File;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -19,13 +16,12 @@ import java.util.stream.Collectors;
  * @author nacho
  */
 public class Controller {
-    
-    private final int daysLimit = 4;
-    
-    public int getDaysLimit() {
-        return daysLimit;
+
+    public void resetDB() {
+        DBManager.deleteDB();
+        DBManager.initializeDB();
     }
-    
+
     public void loadTicketsFromAFIPFile(File f) {
         List<String[]> data;
 
@@ -42,6 +38,12 @@ public class Controller {
         }
     }
 
+    public void loadDollarPricesFromFile(File f) {
+        List<String[]> data = CSVUtils.readCSV(f, ModelBuilder.DollarPriceHeader);
+        Objects.requireNonNull(data, "null dollar price");
+        ModelBuilder.buildDollarPricesFromData(data);
+    }
+
     public void loadTicket(Object[] values) {
         ModelBuilder.buildTicket(values);
     }
@@ -50,26 +52,8 @@ public class Controller {
         ModelBuilder.buildWithholding(values);
     }
 
-    public void loadDollarPrices(File f) {
-        List<String[]> data = CSVUtils.readCSV(f, ModelBuilder.DollarPriceHeader);
-        Objects.requireNonNull(data, "null dollar price");
-        ModelBuilder.buildDollarPricesFromData(data);
-    }
-
-    public PricesList getProfit(Filter ticketsFilters, Filter withholdingsFilters, boolean inDollars) {
-        List<Ticket> tickets = getTickets(ticketsFilters);
-        List<Withholding> withholdings = getWithholdings(withholdingsFilters);
-        //load tickets
-        PricesList pricesList = new PricesList(inDollars);
-        
-        for(Ticket t : tickets) {
-            pricesList.loadTicketValues(t, daysLimit, inDollars);
-        }
-        //load withholdings
-        for (Withholding w : withholdings) {
-            pricesList.loadPriceInWithholding(w, daysLimit, inDollars);
-        }
-        return pricesList;
+    public void loadProvider(Object[] values) {
+        ModelBuilder.buildProvider(values);
     }
 
     /**
@@ -152,11 +136,6 @@ public class Controller {
         }
     }
 
-    public void addProvider(Map<String, Object> values) {
-        Provider provider = new Provider(values);
-        ProviderDAO.getInstance().save(provider);
-    }
-
     public void updateProvider(Filter filter, String attribute, String value) {
         ModelSet<Provider> providers = Filter.applyFilters(ProviderDAO.getInstance().getAll(), filter);
         for (Provider p : providers) {
@@ -189,45 +168,6 @@ public class Controller {
         List<Boolean> results = withholdings.stream().map(w -> WithholdingDAO.getInstance().delete(w)).collect(Collectors.toList());
         if (results.stream().anyMatch(r -> !r)) {
             throw new IllegalArgumentException("Some items dont exists or can not be removed");
-        }
-    }
-
-    public void resetDB() {
-        DBManager.deleteDB();
-        DBManager.initializeDB();
-    }
-
-    public void filterWithholding(Filter filter, List<Withholding> tickets) {
-        /* TODO: think what we going to do with the double withholdings
-        Pair<Float,Float> ivaBounds = FilterUtils.getFilterValues(filter, "iva");
-        Pair<Float,Float> profitsBounds = FilterUtils.getFilterValues(filter, "profits");
-        
-        for (Withholding t : tickets) {
-            filterWithholdingValue(t, "iva", ivaBounds.getFst(), ivaBounds.getSnd(),
-                    w -> w.setValues(Collections.singletonMap("iva", null)));
-            filterWithholdingValue(t, "profits", profitsBounds.getFst(), profitsBounds.getSnd(),
-                    w -> w.setValues(Collections.singletonMap("profits", null)));
-        }
-         */
-    }
-    
-    private void filterWithholdingValue(Withholding w, String attr, Float minVal, Float maxVal, 
-            Consumer<Withholding> deleteAttr) {
-        Map<String,Object> values = w.getValues();
-        
-        if (values.get(attr) != null) {
-            Float val = (Float) values.get(attr);
-            if (minVal != null) {
-                if (val < minVal) {
-                    deleteAttr.accept(w);
-                    return;
-                }
-            }
-            if (maxVal !=  null) {
-                if (maxVal < val) {
-                    deleteAttr.accept(w);
-                }
-            }
         }
     }
 

@@ -5,11 +5,14 @@
  */
 package calculations;
 
+import database.TicketDAO;
+import database.WithholdingDAO;
+import filters.Filter;
 import models.DollarPrice;
 import models.Ticket;
 import models.Withholding;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  *It does all the calculations that it shows in the view.
@@ -21,7 +24,9 @@ public class ProfitCalculator {
     private Transaction sales;
     private Float withholdingIva;
     private Float withholdingProfits;
-   
+
+    private static final int daysLimit = 4;
+
         /**
      * Constructor
      */
@@ -31,7 +36,28 @@ public class ProfitCalculator {
         withholdingIva = 0.0f;
         withholdingProfits = 0.0f;
     }
-    
+
+    public static PricesList getSummary(Filter ticketsFilters, Filter withholdingsFilters, boolean inDollars) {
+        List<Ticket> tickets = new ArrayList<>(Filter.applyFilters(TicketDAO.getInstance().getAll(), ticketsFilters));
+        List<Withholding> withholdings = new ArrayList<>(Filter.applyFilters(WithholdingDAO.getInstance().getAll(), withholdingsFilters));
+        //load tickets
+        PricesList pricesList = new PricesList(inDollars);
+
+        for(Ticket t : tickets) {
+            pricesList.loadTicketValues(t, daysLimit, inDollars);
+        }
+        //load withholdings
+        for (Withholding w : withholdings) {
+            pricesList.loadPriceInWithholding(w, daysLimit, inDollars);
+        }
+        return pricesList;
+    }
+
+
+    public static int getDaysLimit() {
+        return daysLimit;
+    }
+
     /**
      * Add new ticket to transactions
      * @param t Ticket to be added
