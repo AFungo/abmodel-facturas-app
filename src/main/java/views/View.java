@@ -536,8 +536,8 @@ public class View extends JFrame {
             
             backupLock.lock(); //once data is checked to be valid, backup is made
             File folder = new File("./");   //folder at local 
-            String filename = FixedData.getBackupFolderName("backup-carga-tickets");
-            BackUpBuilder.createBackup(folder, filename);
+            String filename = FixedData.getBackupFolderName("carga-tickets");
+            BackUpBuilder.saveBackup(folder, filename);
             backupLock.unlock();    //backup done, now load csv data
             backupLock.lock();      //to ensure the load process has finished
         } catch (Exception e) {
@@ -714,7 +714,7 @@ public class View extends JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            BackUpBuilder.createBackup(file, null);    //null filename will create default backup filename
+            BackUpBuilder.saveBackup(file, null);    //null filename will create default backup filename
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_createBackupActionPerformed
