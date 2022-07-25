@@ -24,10 +24,9 @@ public class ModelBuilder {
         for (String[] row : data) {
             Provider provider = buildProvider(row[7], row[8], row[9]);;
             
-            Withholding withholding = buildWithholding(row[0], row[1], row[2] + row[3],
-                    provider);//files[i][2] + files[i][3] create the number of ticket/withholding
+            Withholding withholding = buildWithholding(provider, row[0], row[2] + row[3]);//files[i][2] + files[i][3] create the number of ticket/withholding
 
-            buildTicket(withholding, row[0], row[4], row[5], row[9], row[10], row[11],
+            buildTicket(withholding, row[1], row[4], row[5], row[9], row[10], row[11],
                     row[12], row[13], row[14], row[15], issuedByMe);
         }
     }
@@ -37,21 +36,14 @@ public class ModelBuilder {
      * and return it
      */
     public static Ticket buildTicket(Object... data){
-        Withholding withholding = (Withholding)data[0];
 
+        List<String> attributes = Ticket.getAttributes();        
+        
         Map<String, Object> ticketValues = new HashMap<String, Object>(){{
-            put("withholding", withholding);
-            put("type", data[1]);
-            put("numberTo", data[2]);
-            put("authCode", data[3]);
-            put("exchangeType", Float.parseFloat((String) data[4]));
-            put("exchangeMoney", data[5]);
-            put("netAmountWI", Float.parseFloat((String) data[6]));
-            put("netAmountWOI", Parser.parseFloat((String)data[7]));
-            put("amountImpEx", Parser.parseFloat((String)data[8]));
-            put("ivaTax", Parser.parseFloat((String)data[9]));
-            put("totalAmount", Float.parseFloat((String)data[10]));
-            put("issuedByMe", data[11]);
+            int i = 0;
+            for(Object d : data) {
+                put(attributes.get(i++), d);
+            }
         }};
 
         Ticket ticket = new Ticket(ticketValues);
@@ -73,25 +65,20 @@ public class ModelBuilder {
      * this method takes a Object[] with the data of a withholding, build, try to save it in the db and return it
      */
     public static Withholding buildWithholding(Object... data){
-        Sector sector = (Sector) ProviderDAO.getInstance().getAll().stream()
-                        .filter(p -> p.getID().equals(((Provider)data[0]).getID()))
-                        .findFirst().get().getValues().get("sector");
         
+        List<String> attributes = Withholding.getAttributes();
         Map<String, Object> withholdingValues = new HashMap<String, Object>(){{
-            put("provider", data[0]);
-            put("date", Date.valueOf((String)data[1]));
-            put("number", (String) data[2]);
-
-            put("sector", sector);
-            if(data.length >= 8){
-                put("iva", data[3]);
-                put("profits", data[4]);
-                put("delivered", data[5]);
-                put("delivered", data[6]);
-                if(data[6] != null) put("sector", data[7]);
-                if(data.length == 9) put("id", data[8]);
+            int i = 0;
+            for(Object d : data) {
+                put(attributes.get(i++), d);
             }
         }};
+        if(!withholdingValues.containsKey("sector")){
+            Sector sector = (Sector) ProviderDAO.getInstance().getAll().stream()
+                            .filter(p -> p.getID().equals(((Provider)data[0]).getID()))
+                            .findFirst().get().getValues().get("sector");
+            withholdingValues.put("sector", sector);
+        }
 
         Withholding withholding = new Withholding(withholdingValues);
         
@@ -112,14 +99,12 @@ public class ModelBuilder {
      * this method take a String[], build a provider with the data, try to save it in the db and return it;
      */
     public static Provider buildProvider(Object... data) {
+        List<String> attributes = Withholding.getAttributes();
+
         Map<String, Object> providerValues = new HashMap<String, Object>(){{
-            put("docType", data[0]);
-            put("docNo", data[1]);
-            put("name", data[2]);
-            if (data.length == 6) {
-                put("address", data[3]);
-                put("sector", data[4]);
-                put("alias", data[5]);
+            int i = 0;
+            for(Object d : data) {
+                put(attributes.get(i++), d);
             }
         }};
 
@@ -154,12 +139,14 @@ public class ModelBuilder {
      */
     public static DollarPrice buildDollarPrice(Object... data){
         List<String> attributes = DollarPrice.getAttributes();
-        Map<String,Object> values = new HashMap<>();
-        int i = 0;
-        for(String attribute : attributes){
-            values.put(attribute, data[i]);
-            i++;
-        }
+        Map<String,Object> values = new HashMap<String, Object>(){{
+            int i = 0;
+            for(String attribute : attributes){
+                put(attribute, data[i]);
+                i++;
+            }
+    
+        }};
         DollarPrice dollarPrice = new DollarPrice(values);
 
         if (!DollarPriceDAO.getInstance().save(dollarPrice)) {
@@ -192,12 +179,13 @@ public class ModelBuilder {
      */
     public static Sector buildSector(Object... data){
         List<String> attributes = Sector.getAttributes();
-        Map<String,Object> values = new HashMap<>();
-        int i = 0;
-        for(String attribute : attributes){
-            values.put(attribute, data[i]);
-            i++;
-        }
+        Map<String,Object> values = new HashMap<String,Object>(){{
+            int i = 0;
+            for(String attribute : attributes){
+                put(attribute, data[i]);
+                i++;
+            }    
+        }};
         Sector sector = new Sector(values);
 
         if (!SectorDAO.getInstance().save(sector)) {
