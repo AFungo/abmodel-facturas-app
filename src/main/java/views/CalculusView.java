@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import calculations.ProfitCalculator;
+import calculations.DollarPriceManager;
 import controller.Controller;
 import filters.Filter;
 import utils.Pair;
@@ -358,13 +358,15 @@ public class CalculusView extends javax.swing.JFrame {
     }//GEN-LAST:event_loadDollarPricesButtonActionPerformed
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        boolean dollar = showInDollarsCheckBox.isSelected();
+        boolean inDollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
         Filter ticketFilter = filtersView.getFilters();
         Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
         try {
-            pricesList = ProfitCalculator.getSummary(ticketFilter, withholdingFilter, dollar);
+            pricesList = new PricesList(inDollar);
+            pricesList.calculateSummary(controller.getTickets(ticketFilter),
+                    controller.getWithholdings(withholdingFilter));
         } catch (IllegalStateException e) {
             optionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
                 "Error", optionPane.ERROR_MESSAGE);
@@ -375,13 +377,13 @@ public class CalculusView extends javax.swing.JFrame {
         List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = ViewUtils.createMissingPricesTable(missingPrices);
-            int daysLimit = ProfitCalculator.getDaysLimit();
+            int daysLimit = DollarPriceManager.getDaysRoundLimit();
             optionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
                 " dias para redondear el dolar", optionPane.WARNING_MESSAGE);
         }
         
-        String money = dollar ? " USD" : " ARS";
+        String money = inDollar ? " USD" : " ARS";
         
         //iva
         issuedIvaTextField.setText(numberFormat.format(values.get("issuedIva")) + money);

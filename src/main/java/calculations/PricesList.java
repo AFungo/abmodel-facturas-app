@@ -8,7 +8,6 @@ import utils.Pair;
 
 import java.sql.Date;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * class for manage the price of the dollar
@@ -17,10 +16,9 @@ import java.util.stream.Collectors;
 public class PricesList {
     //values such iva, total amount, etc
     private ProfitCalculator calculator;
-    //prices of the already checked days to reduce database calls
-    private Map<Date,DollarPrice> datePrices;
     //list of prices that exceed the days limit
-    private List<Pair<Date,String>> missingPrices;
+    private Set<Pair<Date,String>> missingPrices;
+    private boolean inDollars;
 
     /**
      * constructor of the class
@@ -28,10 +26,29 @@ public class PricesList {
      */
     public PricesList(boolean inDollars) {
         calculator = new ProfitCalculator();
-        datePrices = new HashMap<>();
-        missingPrices = new LinkedList<>();
+        missingPrices = new HashSet<>();
+        this.inDollars = inDollars;
         if (DollarPriceDAO.getInstance().getAll().isEmpty() && inDollars) {
             throw new IllegalStateException("No dollar prices loaded");
+        }
+    }
+
+    public void calculateSummary(List<Ticket> tickets, List<Withholding> withholdings) {
+        //load tickets
+        for(Ticket t : tickets) {
+            if (inDollars) {
+                loadTicketValuesInDollars(t);
+            } else {
+                loadTicketValuesInPesos(t);
+            }
+        }
+        //load withholdings
+        for (Withholding w : withholdings) {
+            if (inDollars) {
+                loadWithholdingValuesInDollars(w);
+            } else {
+                loadWithholdingValuesInPesos(w);
+            }
         }
     }
 
@@ -46,111 +63,54 @@ public class PricesList {
      * @return a list of pairs with the missing prices
      */
     public List<Pair<Date,String>> getMissingPrices() {
-        return missingPrices;
+        return new LinkedList<Pair<Date, String>>(missingPrices);
     }
 
     /**
      * load the ticket values in a ProfitCalculator with the amounts in dollars or  in pesos
      * @param t a ticket for load
-     * @param daysLimit maximum days betwen missing dollars prices
-     * @param inDollars if we want the amounts in dollars or not
      */
-    public void loadTicketValues(Ticket t, int daysLimit, boolean inDollars) {
-        if (!inDollars) {
-            calculator.addTicket((Ticket)t);
-        } else {
-            Float exchangeType = (Float)t.getValues().get("exchangeType");
-            if (exchangeType == 1.0f) { //exchange type is in pesos
-                setDollarPrice(t, daysLimit);
-            }
-
-            calculator.addTicketInDollars((Ticket)t);
+    public void loadTicketValuesInDollars(Ticket t) {
+        Float exchangeType = (Float)t.getValues().get("exchangeType");
+        DollarPrice dollarPrice = DollarPriceManager.getDollarPrice(t);
+        int daysOfDifference = DollarPriceManager.getDaysDifference((Date) t.getValues().get("date"), dollarPrice);
+        //if exchange type is pesos and days of difference is greater than the limit
+        if (exchangeType == 1.0f && daysOfDifference > DollarPriceManager.getDaysRoundLimit()) {
+            addMissingPrice((Date)t.getValues().get("date"), daysOfDifference);
         }
+        calculator.addTicketInDollars(t, dollarPrice);
+    }
+
+    /**
+     * load the ticket values in a ProfitCalculator with the amounts in dollars or  in pesos
+     * @param t a ticket for load
+     */
+    public void loadTicketValuesInPesos(Ticket t) {
+        calculator.addTicketInPesos(t);
     }
 
     /**
      * load the withholding values in a ProfitCalculator with the amounts in dollars or in pesos
      * @param w withholding who want to charge in profit calculator
-     * @param daysLimit maximum days between missing dollar prices
-     * @param inDollars if we want the amount in dollars or not
      */
-    public void loadPriceInWithholding(Withholding w, int daysLimit, boolean inDollars) {
-        if (inDollars) {
-            setDollarPrice(w, daysLimit);
+    public void loadWithholdingValuesInDollars(Withholding w) {
+        Float exchangeType = (Float)w.getValues().get("exchangeType");
+        DollarPrice dollarPrice = DollarPriceManager.getDollarPrice(w);
+        int daysOfDifference = DollarPriceManager.getDaysDifference((Date) w.getValues().get("date"), dollarPrice);
+        //if exchange type is pesos and days of difference is greater than the limit
+        if (exchangeType == 1.0f && daysOfDifference > DollarPriceManager.getDaysRoundLimit()) {
+            addMissingPrice((Date)w.getValues().get("date"), daysOfDifference);
         }
-        calculator.addRetention(w, inDollars);
+
+        calculator.addWithholdingInDollars(w, dollarPrice);
     }
 
-    /*
-     * set the dollar price in days who the price is missed
-     */
-    private void setDollarPrice(Withholding t, int daysLimit) {
-        Date ticketDate = (Date)t.getValues().get("date");
-        DollarPrice price = datePrices.get(ticketDate);
-        boolean dayPriceMissing = false;
-
-        if (price == null) {    //take price from database and load it in hashmap
-            Optional<DollarPrice> priceOptional = DollarPriceDAO.getInstance()
-                    .getAll().stream().filter(d -> d.getValues().get("date").equals(ticketDate)).findFirst();
-            if (priceOptional.isPresent()) {
-                price = priceOptional.get();
-            } else {
-                price = getApproximatePrice(ticketDate);  //gets the price for the nearest date to ticketDate
-                dayPriceMissing = true;
-            }
-            datePrices.put(ticketDate, price);  //set as price for ticketDate
-        }
-
-        t.setValues(Collections.singletonMap("dollarPrice", price));    //set price attribute on ticket
-        if (dayPriceMissing) {
-            checkDaysDistance(daysLimit, ticketDate, price);
-        }
+    public void loadWithholdingValuesInPesos(Withholding w) {
+        calculator.addWithholdingInPesos(w);
     }
 
-    private DollarPrice getApproximatePrice(Date ticketDate) {
-        List<DollarPrice> higherPrice = DollarPriceDAO.getInstance().getAll().stream()
-                .filter(d -> ((Date)d.getValues().get("date")).compareTo(ticketDate) > 0).collect(Collectors.toList());
-        List<DollarPrice> lowerPrice = DollarPriceDAO.getInstance().getAll().stream()
-                .filter(d -> ((Date)d.getValues().get("date")).compareTo(ticketDate) < 0).collect(Collectors.toList());
-        Optional<DollarPrice> minHigherPrice = higherPrice.stream().min(Comparator.comparing(d -> (Date)d.getValues().get("date")));
-        Optional<DollarPrice> maxLowerPrice = lowerPrice.stream().max(Comparator.comparing(d -> (Date)d.getValues().get("date")));
-
-        if (minHigherPrice.isPresent() && maxLowerPrice.isPresent()) {
-            return getNearestDatePrice(minHigherPrice.get(), maxLowerPrice.get(), ticketDate);
-        } else if (!minHigherPrice.isPresent() && maxLowerPrice.isPresent()) {
-            return maxLowerPrice.get();
-        } else if (minHigherPrice.isPresent()) {
-            return minHigherPrice.get();
-        } else {
-            throw new IllegalStateException("No price loaded");
-        }
-    }
-
-    private static DollarPrice getNearestDatePrice(DollarPrice priceBefore, DollarPrice priceAfter, Date currentDate) {
-        Date dateBefore = (Date)priceBefore.getValues().get("date");
-        Date dateAfter = (Date)priceAfter.getValues().get("date");
-        //getting time of each date
-        long currentTime = currentDate.getTime();
-        long afterTime = dateAfter.getTime();
-        long beforeTime = dateBefore.getTime();
-        //getting difference between both dates
-        long afterAbs = Math.abs(afterTime - currentTime);
-        long beforeAbs = Math.abs(currentTime - beforeTime);
-        //return the DollarPrice of the nearest date
-        return afterAbs <= beforeAbs ? priceAfter : priceBefore;
-    }
-
-    /**
-     * check the days distance between missed dollars prices  
-     */
-    private void checkDaysDistance(int daysLimit, Date ticketDate, DollarPrice price) {
-        long limit = 86400000L * (daysLimit + 1);
-        long currentTime = ticketDate.getTime();
-        long nearestTime = ((Date) price.getValues().get("date")).getTime();
-        long timeDiference = Math.abs(nearestTime - currentTime);
-        if (timeDiference >= limit) {
-            missingPrices.add(new Pair<Date,String> (ticketDate, Long.toString(timeDiference / 86400000)));
-        }
+    private void addMissingPrice(Date date, int daysDifference) {
+        missingPrices.add(new Pair<Date,String>(date, Integer.toString(daysDifference)));
     }
 
 }

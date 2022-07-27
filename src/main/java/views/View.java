@@ -6,7 +6,7 @@
 package views;
 
 import backup.BackUpBuilder;
-import calculations.ProfitCalculator;
+import calculations.DollarPriceManager;
 import concurrency.Lock;
 import controller.Controller;
 import filters.Filter;
@@ -465,10 +465,12 @@ public class View extends JFrame {
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
+        Filter ticketFilter = filtersView.getFilters();
+        Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
         try {
-            Filter ticketFilter = filtersView.getFilters();
-            Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
-            pricesList = ProfitCalculator.getSummary(ticketFilter, withholdingFilter, dollar);
+            pricesList = new PricesList(dollar);
+            pricesList.calculateSummary(controller.getTickets(ticketFilter),
+                    controller.getWithholdings(withholdingFilter));
         } catch (IllegalStateException e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
@@ -480,7 +482,7 @@ public class View extends JFrame {
         List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = ViewUtils.createMissingPricesTable(missingPrices);
-            int daysLimit = ProfitCalculator.getDaysLimit();
+            int daysLimit = DollarPriceManager.getDaysRoundLimit();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +

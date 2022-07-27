@@ -42,7 +42,7 @@ public class BackUpBuilder {
         } else {    //else add backup to the name
             filename = "backup-" + filename;
         }
-        //create backup folderr
+        //create backup folder
         File backupFolder = new File(folder, filename);
         if (!backupFolder.mkdir()) {
             throw new IllegalStateException("The backup could not be created in path " + backupFolder.getAbsolutePath());
