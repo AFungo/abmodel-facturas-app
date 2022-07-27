@@ -118,7 +118,7 @@ public class ProfitCalculator {
      * @return return Map<> who have all the data 
      */
     public Map<String, Float> getValues(){
-        Map<String, Float> values = new HashMap();
+        Map<String, Float> values = new HashMap<String,Float>();
         //totals
         values.put("profitWOTax", this.getProfitWOTax());
         values.put("profitWTax", this.getProfitWTax());
