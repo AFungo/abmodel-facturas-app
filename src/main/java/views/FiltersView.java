@@ -7,7 +7,10 @@ package views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import controller.Controller;
+import database.ProviderDAO;
+import database.SectorDAO;
 import filters.Filter;
+import formatters.ModelToForm;
 import models.Provider;
 import models.Ticket;
 import models.Withholding;
@@ -20,8 +23,11 @@ import views.utils.ViewUtils;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -41,24 +47,25 @@ public class FiltersView extends javax.swing.JFrame {
         this.controller = controller;
         this.ticketsTable = ticketsTable;
         initComponents();
-        providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
+        providersAutoSuggestor = new AutoSuggestor(providersComboBox,
+                ProviderDAO.getInstance().getAll().stream()
+                        .map(p -> (String)p.getValues().get("name")).collect(Collectors.toList()));
         providersAutoSuggestor.autoSuggest();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, SectorDAO.get());
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox,
+                SectorDAO.getInstance().getAll().stream()
+                        .map(s -> (String)s.getValues().get("name")).collect(Collectors.toList()));
         sectorsAutoSuggestor.autoSuggest();
-        currentFilters = new SQLFilter();
+        currentFilters = new LinkedList<>();
     }
     
     public void updateSuggestions() {
-        providersAutoSuggestor.setSuggestions(getProvidersName());
-        sectorsAutoSuggestor.setSuggestions(SectorDAO.get());
-    }
-    
-    private List<String> getProvidersName() {
-        List<String> names = new LinkedList<>();
-        for (Provider p : controller.getProviders()) {
-            names.add((String) p.getValues().get("name"));
-        }
-        return names;
+        providersAutoSuggestor.setSuggestions(
+                ProviderDAO.getInstance().getAll().stream()
+                        .map(p -> (String)p.getValues().get("name")).collect(Collectors.toList()));
+        sectorsAutoSuggestor.setSuggestions(
+                SectorDAO.getInstance().getAll().stream()
+                        .map(s -> (String)s.getValues().get("name"))
+                        .collect(Collectors.toList()));
     }
 
     /**
@@ -136,7 +143,7 @@ public class FiltersView extends javax.swing.JFrame {
         appyFilters.setText("Aplicar filtros");
         appyFilters.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                appyFiltersActionPerformed(evt);
+                applyFiltersActionPerformed(evt);
             }
         });
 
@@ -337,35 +344,25 @@ public class FiltersView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void appyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
+    private void applyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
         currentFilters = readFilters();
-        
-        Filter ticketFilter = currentFilters.clone();
-        Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
-        Filter ivaAndProfitsFilter = FilterUtils.removeIvaAndProfits(withholdingFilter);
-        
-        List<Withholding> tickets = controller.getWithholdings(withholdingFilter);
-        tickets.addAll(controller.getTickets(ticketFilter));
-        
-        controller.getWithholdings(ivaAndProfitsFilter, tickets);
-        
+
+        List<Ticket> tickets = controller.getTickets((Filter) currentFilters);
+        List<Withholding> withholdings = controller.getWithholdings((Filter) currentFilters);
+
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
-        for (Withholding t : tickets) {
-            if(t instanceof Ticket && (ticketRadioButton.isSelected() || bothRadioButton2.isSelected())){
-                if(!((Ticket)t).isIncome()){
-                    t = ViewUtils.makeNegative((Ticket) t);
-                }
-                model.addRow(FormatUtils.ticketToForm(t));
+
+        if (ticketRadioButton.isSelected() || bothRadioButton2.isSelected()) {
+            for (Ticket t : tickets) {
+                model.addRow(ModelToForm.toForm(t));
             }
-            if (!(t instanceof Ticket) && (withholdingRadioButton.isSelected() || bothRadioButton2.isSelected())) {
-                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingToForm(t);
-                if (withholdings.getFst() != null) {
-                    model.addRow(withholdings.getFst());
-                }
-                if (withholdings.getSnd() != null) {
-                    model.addRow(withholdings.getSnd());
-                }
+        }
+
+        if (withholdingRadioButton.isSelected() || bothRadioButton2.isSelected()) {
+            for (Withholding w : withholdings) {
+                model.addRow(ModelToForm.IVAWithholdingToForm(w));
+                model.addRow(ModelToForm.profitWithholdingToForm(w));
             }
         }
     }//GEN-LAST:event_appyFiltersActionPerformed
@@ -392,11 +389,11 @@ public class FiltersView extends javax.swing.JFrame {
         ticketTypesList.clearSelection();
     }//GEN-LAST:event_cleanFiltersActionPerformed
 
-    public SQLFilter getFilters() {
-        return currentFilters.clone();
+    public List<Filter> getFilters() {
+        return currentFilters;
     }
-    
-    public SQLFilter readFilters() {
+
+    public List<Filter> readFilters() {
         SQLFilter selectedFilters = new SQLFilter();
         
         if (Validate.tryParse(idTextField.getText(), Integer.class, false)) {
@@ -485,7 +482,7 @@ public class FiltersView extends javax.swing.JFrame {
             model.removeRow(i);
     }
     
-    private SQLFilter currentFilters;
+    private List<Filter> currentFilters;
     private Controller controller;
     private JTable ticketsTable;
     private AutoSuggestor providersAutoSuggestor;
