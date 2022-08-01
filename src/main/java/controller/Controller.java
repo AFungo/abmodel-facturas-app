@@ -101,7 +101,8 @@ public class Controller {
      * @return
      */
     public List<Sector> getSector(Filter... filters) {
-        throw new UnsupportedOperationException("Implement if needed");
+       ModelSet<Sector> sectors = SectorDAO.getInstance().getAll();
+       return new ArrayList<>(Filter.applyFilters(sectors, filters));
     }
 
     /**
@@ -182,5 +183,4 @@ public class Controller {
             throw new IllegalArgumentException("The given docNo has no provider associated");
         }
     }
-    
 }
