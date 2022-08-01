@@ -6,18 +6,20 @@ package views;
 
 import com.toedter.calendar.JTextFieldDateEditor;
 import controller.Controller;
+import database.ProviderDAO;
+import filters.Comparison;
 import filters.Filter;
 import models.Provider;
-import models.Withholding;
 import utils.AutoSuggestor;
 import utils.FormatUtils;
 import views.utils.ViewUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -26,6 +28,7 @@ import javax.swing.JTextField;
  */
 public class WithholdingLoaderView extends javax.swing.JFrame {
 
+    private View mainView;
     /**
      * Creates new form WithholdingLoaderView
      */
@@ -34,15 +37,15 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         initComponents();
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectors());
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
         sectorsAutoSuggestor.autoSuggest();
-        this.mainView = mainView;
+        this.mainView= mainView;
         providerLoader = new ProviderLoaderView(controller, mainView);
     }
     
     public void updateSuggestions() {
         providersAutoSuggestor.setSuggestions(getProvidersName());
-        sectorsAutoSuggestor.setSuggestions(getSectors());
+        sectorsAutoSuggestor.setSuggestions(getSectorsName());
     }
     
     private List<String> getProvidersName() {
@@ -52,10 +55,12 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         }
         return names;
     }
-    
-    // FIXME: Maybe we should use the controller here
-    private List<String> getSectors() {
-        return SectorDAO.get();
+
+    /*
+     * return the name of all sectors
+     */
+    private List<String> getSectorsName() {
+        return controller.getSector().stream().map(s -> (String)s.getValues().get("name")).collect(Collectors.toList());
     }
 
     /**
@@ -375,49 +380,52 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loadWithholdingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingActionPerformed
-        Map<String, String> values = new HashMap<>();
+        List<Object> values = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        
-        values.put("number", numberTextField.getText());
-        values.put("profits", profitsTextField.getText());
-        values.put("iva", ivaTextField.getText());
-        values.put("sector", (String) sectorsComboBox.getSelectedItem());
-        values.put("delivered", String.valueOf(deliveredCheckBox.isSelected()));
-        
-        SQLFilter filter = new SQLFilter();
-        filter.add("name", "=", providersComboBox.getSelectedItem(), String.class);
+
+        List<Filter> filters = new ArrayList<Filter>();
+
+        filters.add(new Filter("name", providersComboBox.getSelectedItem(), Comparison.EQUALS));
+
         if (docNoComboBox.isEnabled() && docNoComboBox.getSelectedItem() != null) {
-            filter.add("docNo", "=", docNoComboBox.getSelectedItem(), String.class);
+            filters.add(new Filter("docNo", docNoComboBox.getSelectedItem(), Comparison.EQUALS));
         }
-        List<Provider> providerCheck = ProviderDAO.get(filter);
-        
-        String errorMessage = ViewUtils.validateParam(dateChooser.getDate(), values, false,
-                sectorsComboBox, providerCheck);
-        if (errorMessage != null) {
-            JOptionPane.showMessageDialog(this, errorMessage, "Los siguientes datos son invalidos", 
-                    JOptionPane.ERROR_MESSAGE);
-            return ;
-        }
-        
+
+        Provider provider = Filter.applyFilters(ProviderDAO.getInstance().getAll(), filters.toArray(new Filter[0])).stream().findFirst().get();
+
         //add providers things
-        Provider provider = providerCheck.get(0);
-        values.put("docNo", (String) provider.getValues().get("docNo"));
-        values.put("docType", (String) provider.getValues().get("docType"));
-        values.put("name", (String) provider.getValues().get("name"));
-        values.put("provSector", (String) provider.getValues().get("sector"));
+        values.add(provider);
+        values.add(sdf.format(dateChooser.getDate()));        
+        values.add(numberTextField.getText());
+        values.add(ivaTextField.getText());
+        values.add(profitsTextField.getText());
+        values.add(String.valueOf(deliveredCheckBox.isSelected()));
+        values.add((String) sectorsComboBox.getSelectedItem());
         
-        values.put("date", sdf.format(dateChooser.getDate()));
+    
+        if (ViewUtils.validateParamWithholding(values)) {
+            throw new UnsupportedOperationException("TODO: Implement ERROR_MESSAGE");
+            //JOptionPane.showMessageDialog(this,, "Los siguientes datos son invalidos", 
+            //        JOptionPane.ERROR_MESSAGE);
+            //return ;
+        }
         
-        controller.loadWithholding(values);
+
+        
+        controller.loadWithholding(values.toArray());
         cleanTextField();
         updateLastWithholdingLoaded(values);
     }//GEN-LAST:event_loadWithholdingActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
         if (providersComboBox.getSelectedItem() != null) {
-            SQLFilter filters = new SQLFilter();
-            filters.add("name", "=", providersComboBox.getSelectedItem(), String.class);
-            List<Provider> providersList = ProviderDAO.get(filters);
+            List<Filter> filters = new ArrayList<>();
+
+            filters.add(new Filter("name", providersComboBox.getSelectedItem(), Comparison.EQUALS));
+
+            List<Provider> providersList = Filter.applyFilters
+                                                (ProviderDAO.getInstance().getAll(), filters.toArray(new Filter[0]))
+                                                .stream().toList();
             if (providersList.size() > 1) {
                 docNoComboBox.removeAllItems();
                 docNoComboBox.setEnabled(true);
@@ -436,15 +444,21 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         JTextField[] forClean = new JTextField[]{numberTextField, ivaTextField, profitsTextField};
         ViewUtils.cleanTextField(forClean);
     }
+    
     public void updateProviders(List<String> names) {
         providersAutoSuggestor.setSuggestions(names);
     }
     
+    /**
+     * @param sectors
+     */
     public void updateSectors(List<String> sectors) {
         sectorsComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
     }
-    private void updateLastWithholdingLoaded(Map<String, String> values){
-        showLastDateTextField.setText(values.get("date"));
+
+    private void updateLastWithholdingLoaded(List<Object> values){
+        throw new UnsupportedOperationException("TODO: Implemtar");
+/*        showLastDateTextField.setText(values.get("date"));
         showLastProviderTextField.setText(values.get("name"));
         showLastTicketNumberTextField.setText(values.get("number"));
         showLastIvaTextField.setText(values.get("iva"));
@@ -453,12 +467,11 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         Filter filter = FilterUtils.createTicketFilter(values);
         Withholding withholding = controller.getWithholdings(filter).get(0);
         showLastIDTextField.setText(String.valueOf(withholding.getValues().get("id")));
-    }
+    */    }
     
     private Controller controller;
     private AutoSuggestor providersAutoSuggestor;
     private AutoSuggestor sectorsAutoSuggestor;
-    private View mainView;
     private ProviderLoaderView providerLoader;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addProvider;
