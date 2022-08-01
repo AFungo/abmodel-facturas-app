@@ -527,29 +527,9 @@ public class View extends JFrame {
         chooser.showOpenDialog(this);
         
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        Lock backupLock = new Lock();
-        try {
-            backupLock.lock();
-            new Thread(new Runnable() { //new thread to run the file load
-                @Override
-                public void run() {
-                        controller.loadTicketsFromAFIPFile(chooser.getSelectedFile(), backupLock);
-                }
-            }).start();
-            
-            backupLock.lock(); //once data is checked to be valid, backup is made
-            File folder = new File("./");   //folder at local 
-            String filename = FixedData.getBackupFolderName("carga-tickets");
-            BackUpBuilder.saveBackup(folder, filename);
-            backupLock.unlock();    //backup done, now load csv data
-            backupLock.lock();      //to ensure the load process has finished
-        } catch (Exception e) {
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            throw new IllegalStateException(e.getMessage(), e);
-        } finally {
-            backupLock.finalUnlock();
-        }
-        
+        controller.loadTicketsFromAFIPFile(chooser.getSelectedFile());
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
         // FIXME: Maybe we can update the suggestions only 
         // when we know that a providers was added
         providersView.updateSuggestions();

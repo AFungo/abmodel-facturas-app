@@ -1,13 +1,17 @@
 package controller;
 
+import backup.BackUpBuilder;
 import builder.ModelBuilder;
 import database.*;
 import filters.*;
 import models.*;
 import models.set.ModelSet;
+import utils.FixedData;
 import utils.csv.CSVUtils;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +37,11 @@ public class Controller {
         }
 
         if (data != null) {
-            // TODO: backup
+            File folder = new File("./");   //folder at local
+            LocalTime currentTime = LocalTime.now();
+            String filename = FixedData.getBackupFolderName("carga-tickets--" + currentTime + "--"
+                    + currentTime.getHour() + "-" + currentTime.getMinute() + "\\");
+            BackUpBuilder.saveBackup(folder, filename);
             ModelBuilder.buildFromAFIPData(data, issuedByMe);
         }
     }
