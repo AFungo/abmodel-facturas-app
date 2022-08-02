@@ -8,7 +8,6 @@ import utils.Validate;
 
 import javax.swing.*;
 
-import java.io.UncheckedIOException;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +42,9 @@ public class ViewUtils {
         return table;
     }
 
-    public static String validateProviderParam(Map<String, Object> values, JComboBox<String> sectorsComboBox) {
-        return Validate.providerInput(values, sectorsComboBox);
+    public static boolean validateProviderParam(List<Object> values) {
+        throw new UnsupportedOperationException("TODO: Implement");
+//        return Validate.providerInput(values, sectorsComboBox);
     }
 
     public static Ticket makeNegative(Ticket t) {
