@@ -72,6 +72,17 @@ public class ViewUtils {
 
         return null;
     }
+        /**
+     * take the list of values to create a ticket, 
+     * check if are in the correct order (like getAttributes return in ticket)
+     * and check if all the obhject are in correct format
+     * @param values
+     * @return if are cerrect
+     */
+    public static boolean validateParamTicket(List<Object> values){
+        throw new UnsupportedOperationException("TODO: Implement");
+    }
+
     /**
      * take the list of values to create a withholding, 
      * check if are in the correct order (like getAttributes return in withholding)
