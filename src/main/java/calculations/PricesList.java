@@ -72,7 +72,7 @@ public class PricesList {
      */
     public void loadTicketValuesInDollars(Ticket t) {
         Float exchangeType = (Float)t.getValues().get("exchangeType");
-        DollarPrice dollarPrice = DollarPriceManager.getDollarPrice(t);
+        DollarPrice dollarPrice = DollarPriceManager.getDollarPrice((Withholding)t.getValues().get("withholding"));
         int daysOfDifference = DollarPriceManager.getDaysDifference((Date) t.getValues().get("date"), dollarPrice);
         //if exchange type is pesos and days of difference is greater than the limit
         if (exchangeType == 1.0f && daysOfDifference > DollarPriceManager.getDaysRoundLimit()) {
