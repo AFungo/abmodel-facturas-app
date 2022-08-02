@@ -12,6 +12,7 @@ import controller.Controller;
 import database.SectorDAO;
 import filters.Comparison;
 import filters.Filter;
+import formatters.ModelToForm;
 import models.Withholding;
 import models.Provider;
 import models.Ticket;
@@ -738,25 +739,28 @@ public class View extends JFrame {
     }
     
     private void loadTicketsInTable() {
-        List<Withholding> tickets = controller.getWithholdings();
-        tickets.addAll(controller.getTickets());
+        List<Withholding> withholdings = controller.getWithholdings();
+        List<Ticket> tickets = controller.getTickets();
 
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
-        for (Withholding t : tickets) {
-            if(t instanceof Ticket){
-                if(!((Ticket)t).isIncome()){
-                    t = ViewUtils.makeNegative((Ticket) t);
-                }
-                model.addRow(FormatUtils.ticketToForm(t));
-            } else {
-                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingToForm(t);
-                if (withholdings.getFst() != null) {
-                    model.addRow(withholdings.getFst());
-                }
-                if (withholdings.getSnd() != null) {
-                    model.addRow(withholdings.getSnd());
-                }
+
+        for (Ticket t : tickets) {
+            if(!t.isIncome()){
+                t = ViewUtils.makeNegative(t);
+            }
+            model.addRow(ModelToForm.toForm(t));
+        }
+
+        for (Withholding w : withholdings) {
+            Object[] profitWithholding = ModelToForm.profitWithholdingToForm(w);
+            Object[] ivaWithholding = ModelToForm.IVAWithholdingToForm(w);
+
+            if (profitWithholding.length != 0) {
+                model.addRow(profitWithholding);
+            }
+            if (ivaWithholding.length != 0) {
+                model.addRow(ivaWithholding);
             }
         }
     }
