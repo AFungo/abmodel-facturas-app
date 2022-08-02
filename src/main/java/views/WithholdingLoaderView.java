@@ -419,9 +419,8 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
             filters.add(new Filter("name", providersComboBox.getSelectedItem(), Comparison.EQUALS));
 
-            List<Provider> providersList = Filter.applyFilters
-                                                (ProviderDAO.getInstance().getAll(), filters.toArray(new Filter[0]))
-                                                .stream().toList();
+            List<Provider> providersList = new LinkedList<>(Filter.applyFilters
+                                                (ProviderDAO.getInstance().getAll(), filters.toArray(new Filter[0])));
             if (providersList.size() > 1) {
                 docNoComboBox.removeAllItems();
                 docNoComboBox.setEnabled(true);
