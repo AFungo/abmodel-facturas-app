@@ -7,6 +7,7 @@ package views;
 
 import java.text.DecimalFormat;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import calculations.DollarPriceManager;
@@ -47,7 +48,7 @@ public class CalculusView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        optionPane = new javax.swing.JOptionPane();
+        new javax.swing.JOptionPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -369,8 +370,8 @@ public class CalculusView extends javax.swing.JFrame {
             pricesList.calculateSummary(controller.getTickets(ticketFilters),
                     controller.getWithholdings(ticketFilters));
         } catch (IllegalStateException e) {
-            optionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
-                "Error", optionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
+                "Error", JOptionPane.ERROR_MESSAGE);
             return ;
         }
     
@@ -379,9 +380,9 @@ public class CalculusView extends javax.swing.JFrame {
         if (!missingPrices.isEmpty()) {
             JTable pricesTable = ViewUtils.createMissingPricesTable(missingPrices);
             int daysLimit = DollarPriceManager.getDaysRoundLimit();
-            optionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
+            JOptionPane.showMessageDialog(null, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
-                " dias para redondear el dolar", optionPane.WARNING_MESSAGE);
+                " dias para redondear el dolar", JOptionPane.WARNING_MESSAGE);
         }
         
         String money = inDollar ? " USD" : " ARS";
@@ -434,7 +435,6 @@ public class CalculusView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JButton loadDollarPricesButton;
-    private javax.swing.JOptionPane optionPane;
     private javax.swing.JTextField receivedIvaTextField;
     private javax.swing.JTextField receivedNetAmountTextField;
     private javax.swing.JCheckBox showInDollarsCheckBox;
