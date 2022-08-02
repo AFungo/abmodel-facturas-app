@@ -11,7 +11,7 @@ import java.util.stream.Stream;
  *
  * @author Agustin Nolasco
  */
-public class Ticket extends Withholding implements Model{
+public class Ticket implements Model {
 
     private final Map<String, Object> values;
     private HashMap<String, Class<?>> types;
