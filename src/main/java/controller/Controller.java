@@ -56,8 +56,8 @@ public class Controller {
         ModelBuilder.buildTicket(values);
     }
 
-    public void loadWithholding(Object[] values) {
-        ModelBuilder.buildWithholding(values);
+    public Withholding loadWithholding(Object[] values) {
+        return ModelBuilder.buildWithholding(values);
     }
 
     public void loadProvider(Object[] values) {
