@@ -7,14 +7,16 @@ package views;
 import com.toedter.calendar.JTextFieldDateEditor;
 import controller.Controller;
 import database.ProviderDAO;
+import database.SectorDAO;
 import filters.Comparison;
 import filters.Filter;
 import models.Provider;
+import models.Sector;
 import utils.AutoSuggestor;
 import utils.FormatUtils;
+import utils.Parser;
 import views.utils.ViewUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -378,7 +380,6 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
 
     private void loadWithholdingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingActionPerformed
         List<Object> values = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         List<Filter> filters = new ArrayList<Filter>();
 
@@ -389,14 +390,15 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         }
 
         Provider provider = Filter.applyFilters(ProviderDAO.getInstance().getAll(), filters.toArray(new Filter[0])).stream().findFirst().get();
-
+        Sector sector = SectorDAO.getInstance().getAll().stream()
+                        .filter(s -> s.getValues().get("name").equals(sectorsComboBox.getSelectedItem())).findFirst().get();
         values.add(provider);
-        values.add(sdf.format(dateChooser.getDate()));        
+        values.add(dateChooser.getDate());
         values.add(numberTextField.getText());
-        values.add(ivaTextField.getText());
-        values.add(profitsTextField.getText());
-        values.add(String.valueOf(deliveredCheckBox.isSelected()));
-        values.add((String) sectorsComboBox.getSelectedItem());
+        values.add(Parser.parseFloat(ivaTextField.getText()));
+        values.add(Parser.parseFloat(profitsTextField.getText()));
+        values.add(deliveredCheckBox.isSelected());
+        values.add(sector);
         
     
         if (ViewUtils.validateParamWithholding(values)) {
