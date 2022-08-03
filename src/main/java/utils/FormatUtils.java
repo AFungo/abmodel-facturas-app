@@ -496,20 +496,6 @@ public class FormatUtils {
     }
 
     /**
-     * Transforms a list into a vector
-     * 
-     * @param list list of generic type
-     * @return a vector of generic type containig all the elements of {@code list}
-     */
-    public static <E> Vector<E> listToVector(List<E> list) {
-        Vector<E> vector = new Vector<>();
-        for (E e : list) {
-            vector.addElement(e);
-        }
-        return vector;
-    }
-    
-    /**
      * Transfroms a string with date format into a Date
      * 
      * @param dateStr string with format date

@@ -28,14 +28,14 @@ public class ReadAFIPFileTest {
 
     @Test
     void readAFIPTransmitterFileTest() {
-        assertThatNoException().isThrownBy(() -> result = CSVUtils.readCSV(transmitterFile, transmitterHeader));
+        assertThatNoException().isThrownBy(() -> result = CSVUtils.readCSV(transmitterFile, transmitterHeader).toArray(result));
         assertThat(result.length).isNotZero();
         assertThat(result[0]).isNotEqualTo(transmitterHeader);
     }
 
     @Test
     void readAFIPReceiverFileTest() {
-        assertThatNoException().isThrownBy(() -> result = CSVUtils.readCSV(receiverFile, receiverHeader));
+        assertThatNoException().isThrownBy(() -> result = CSVUtils.readCSV(receiverFile, receiverHeader).toArray(result));
         assertThat(result.length).isNotZero();
         assertThat(result[0]).isNotEqualTo(receiverHeader);
     }

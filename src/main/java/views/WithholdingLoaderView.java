@@ -450,7 +450,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
      * @param sectors
      */
     public void updateSectors(List<String> sectors) {
-        sectorsComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
+        sectorsComboBox.setModel(new DefaultComboBoxModel(new Vector<>(sectors)));
     }
 
     private void updateLastWithholdingLoaded(List<Object> values){

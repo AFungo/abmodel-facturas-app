@@ -11,6 +11,7 @@ import database.SectorDAO;
 import filters.Comparison;
 import filters.Filter;
 import models.Provider;
+import models.Sector;
 import utils.AutoSuggestor;
 import utils.ConfigManager;
 import utils.FixedData;
@@ -19,10 +20,7 @@ import utils.PdfCreator;
 import utils.Validate;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -154,7 +152,7 @@ public class ProvidersView extends JFrame {
         });
         popupMenu.add(deleteProvider);
 
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getInstance().getAll().stream().toList())));
+        sectorComboBox.setModel(new DefaultComboBoxModel(new Vector<>(SectorDAO.getInstance().getAll())));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
@@ -427,7 +425,7 @@ public class ProvidersView extends JFrame {
     }
     
     public void updateSectors(List<String> sectors) {
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
+        sectorComboBox.setModel(new DefaultComboBoxModel(new Vector<>(sectors)));
     }
     
     public void updateProviders(List<String> names) {

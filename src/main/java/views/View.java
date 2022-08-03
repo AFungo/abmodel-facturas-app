@@ -12,6 +12,7 @@ import database.SectorDAO;
 import filters.Comparison;
 import filters.Filter;
 import formatters.ModelToForm;
+import models.Sector;
 import models.Withholding;
 import models.Provider;
 import models.Ticket;
@@ -414,9 +415,7 @@ public class View extends JFrame {
         }
 
         //---- sectorComboBox ----
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(
-                new ArrayList<>(SectorDAO.getInstance().getAll()))
-        ));
+        sectorComboBox.setModel(new DefaultComboBoxModel(new Vector<>(SectorDAO.getInstance().getAll())));
     }// </editor-fold>//GEN-END:initComponents
     
     //calculates profit of tickets
@@ -717,7 +716,7 @@ public class View extends JFrame {
     }
     
     public void updateSectors(List<String> sectors) {
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
+        sectorComboBox.setModel(new DefaultComboBoxModel(new Vector<>(sectors)));
         providersView.updateSectors(sectors);
         providerLoader.updateSectors(sectors);
         filtersView.updateSectors(sectors);
