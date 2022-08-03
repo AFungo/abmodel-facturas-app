@@ -34,7 +34,6 @@ public class AutoSuggestor {
      * @param comboBox combo box who need a auto suggestor
      * @param suggestions the list of options for suggest to the user
      */        
-    @SuppressWarnings("unchecked")
     public AutoSuggestor(JComboBox comboBox, List<String> suggestions) {
         this.comboBox = comboBox;
         this.textField = (JTextField)comboBox.getEditor().getEditorComponent();

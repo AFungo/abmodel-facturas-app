@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JComboBox;
 
+import database.ProviderDAO;
+
 /**
  * this class provides a methods for check if the values are correct 
  * 
@@ -47,9 +49,7 @@ public class Validate {
         }
         
         if (invalidations.isEmpty()) {
-            SQLFilter filter = new SQLFilter();
-            filter.add("docNo", "=", values.get("docNo"), String.class);
-            if (ProviderDAO.exist(filter)) {
+            if (ProviderDAO.getInstance().getAll().stream().anyMatch(p -> p.getValues().get("docNo").equals(values.get("docNo")))) {
                 invalidations += "<br/>El proveedor " + values.get("name") + " con nro documento " + values.get("docNo") + " ya esta cargado";
             }
         }
@@ -119,12 +119,13 @@ public class Validate {
         invalidations += addInvalidWithholdingMessages(numerics);
         
         if (invalidations.isEmpty()) {
-            Provider prov = selectedProvider.get(0);
-            SQLFilter filter = FilterUtils.createTicketFilter(values, prov, date);
+            /*Provider prov = selectedProvider.get(0);
+            Filter filter = FilterUtils.createTicketFilter(values, prov, date);
             if (WithholdingDAO.exist(filter)) { 
                 invalidations += "<br/>El comprobante de proveedor " + prov.getValues().get("name") + ", numero " + 
                         values.get("number") + " y fecha " + date + " ya esta cargado";
-            }
+            }*/
+            throw new UnsupportedOperationException("TODO: Not implemented");
         }
         
         return invalidations;

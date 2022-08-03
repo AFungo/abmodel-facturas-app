@@ -222,7 +222,7 @@ public class FormatUtils {
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         
-        Pair<Object[],Object[]> values = new Pair();
+        Pair<Object[],Object[]> values = new Pair<>();
         Object iva = dict.get("iva");
         if (iva != null && (Float) iva != 0.0f) {
             Object[] ivaWithholding = {dict.get("id"), dict.get("date"), "Retencion Iva", dict.get("number"), null, null, 
@@ -552,7 +552,7 @@ public class FormatUtils {
      * @return a map of string to string
      */
     public static Map<String, Object> objectToStringMap(Map<String, Object> values){
-        Map<String, Object> v = new HashMap();
+        Map<String, Object> v = new HashMap<>();
         Provider provider = (Provider) values.get("provider");
         v.putAll(provider.getValues());
         v.put("id", values.get("id").toString());
