@@ -6,6 +6,10 @@
 package views;
 
 import controller.Controller;
+import database.ProviderDAO;
+import database.SectorDAO;
+import filters.Comparison;
+import filters.Filter;
 import models.Provider;
 import utils.AutoSuggestor;
 import utils.ConfigManager;
@@ -15,6 +19,7 @@ import utils.PdfCreator;
 import utils.Validate;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -149,7 +154,7 @@ public class ProvidersView extends JFrame {
         });
         popupMenu.add(deleteProvider);
 
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
+        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.getInstance().getAll().stream().toList())));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
@@ -268,9 +273,9 @@ public class ProvidersView extends JFrame {
         DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
         cleanTable(model);
         
-        SQLFilter filter = new SQLFilter();
-        filter.add("name", "=", providersAutoSuggestor.getText(), String.class);
-        List<Provider> providers = controller.getProviders(filter);
+        List<Filter> filter = new ArrayList<>();
+        filter.add(new Filter("name", providersAutoSuggestor.getText(), Comparison.EQUALS));
+        List<Provider> providers = controller.getProviders(filter.toArray(new Filter[0]));
         for (Provider p : providers) {
             model.addRow(FormatUtils.providerToForm(p));
         }
@@ -354,8 +359,7 @@ public class ProvidersView extends JFrame {
         int selection = JOptionPane.showConfirmDialog(this, "Se le removera el rubro al proveedor", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = providersTable.getSelectedRow();
-            SQLFilter filter = new SQLFilter();
-            filter.add("docNo", "=", selectedDoc, String.class);
+            Filter filter = new Filter("docNo", selectedDoc, Comparison.EQUALS);
             controller.deleteProviderAttribute(filter, "sector");
             providersTable.setValueAt(null, row, 5);   //column 5 is for sector
         }
@@ -402,9 +406,8 @@ public class ProvidersView extends JFrame {
         int selection = JOptionPane.showConfirmDialog(this, "El proveedor " + name + " sera eliminado", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = providersTable.getSelectedRow();
-            SQLFilter filter = new SQLFilter();
-            filter.add("docNo", "=", selectedDoc, String.class);
-            ProviderDAO.delete(filter);
+            ProviderDAO.getInstance().delete(ProviderDAO.getInstance().getAll().stream()
+            .filter(p -> p.getValues().get("docNo").equals(selectedDoc)).findFirst().get());//i think this line is a method in the controller
             row = providersTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
             ((DefaultTableModel)providersTable.getModel()).removeRow(row); //remove row from view
         }
@@ -417,8 +420,7 @@ public class ProvidersView extends JFrame {
     }
     
     private void updateAttribute(String attribute, String value, int column) {
-        SQLFilter filter = new SQLFilter();
-        filter.add("docNo", "=", selectedDoc, String.class);
+        Filter filter = new Filter("docNo", selectedDoc, Comparison.EQUALS);
         controller.updateProvider(filter, attribute, value);    //update db
         int row = providersTable.getSelectedRow();
         providersTable.setValueAt(value, row, column);  //update view
