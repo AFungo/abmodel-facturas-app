@@ -5,9 +5,7 @@
 package views;
 
 import utils.AutoSuggestor;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -26,23 +24,12 @@ public class SectorsView extends javax.swing.JFrame {
      * Creates new form SectorsView
      * @param mainView
      */
-    public SectorsView(View mainView) {
+    public SectorsView() {
         initComponents();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
+        sectorsAutoSuggestor = viewMediator.getSectorAutosuggestor();
         sectorsAutoSuggestor.autoSuggest();
-        this.mainView = mainView;
     }
-     
-    public void updateSuggestions() {
-        List<String> sectors = getSectorsName();
-        sectorsAutoSuggestor.setSuggestions(sectors);
-        mainView.updateSectors(sectors);
-    }
-    
-    private List<String> getSectorsName() {
-        return controller.getSector().stream().map(s -> (String)s.getValues().get("name")).collect(Collectors.toList());
-    }
-
+         
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -120,7 +107,7 @@ public class SectorsView extends javax.swing.JFrame {
         String newSector = sectorsAutoSuggestor.getText();
         if (!newSector.trim().isEmpty() && !SectorDAO.getInstance().getAll().stream().anyMatch(s -> s.getValues().get("name").equals(newSector))) {
             ModelBuilder.buildSector(newSector);
-            updateSuggestions();
+            viewMediator.updateSuggestions();
             sectorsAutoSuggestor.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "El rubro ingresado es vacio o ya existe",
@@ -137,7 +124,7 @@ public class SectorsView extends javax.swing.JFrame {
             );
             if (userInput == 0) {
                 SectorDAO.getInstance().delete(SectorDAO.getInstance().getAll().stream().filter(s -> s.getValues().get("name").equals(sector)).findFirst().get());
-                updateSuggestions();
+                viewMediator.updateSuggestions();
                 sectorsAutoSuggestor.setText("");
             }
         }
@@ -160,8 +147,8 @@ public class SectorsView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_updateSectorActionPerformed
 
+    private ViewMediator viewMediator = new ViewMediator();
     private AutoSuggestor sectorsAutoSuggestor;
-    private View mainView;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addSector;
     private javax.swing.JButton deleteSector;

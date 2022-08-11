@@ -12,56 +12,29 @@ import filters.Comparison;
 import filters.Filter;
 import models.Provider;
 import models.Sector;
-import utils.AutoSuggestor;
-import utils.FormatUtils;
 import utils.Parser;
 import views.utils.ViewUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 
 /**
- *
- * @author agustinnolasco
+ * view for load new withholdings
+ * 
  */
 public class WithholdingLoaderView extends javax.swing.JFrame {
 
     /**
      * Creates new form WithholdingLoaderView
      */
-    public WithholdingLoaderView(Controller controller, View mainView) {
+    public WithholdingLoaderView(Controller controller) {
         this.controller = controller;
         initComponents();
-        providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
-        providersAutoSuggestor.autoSuggest();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
-        sectorsAutoSuggestor.autoSuggest();
-        providerLoader = new ProviderLoaderView(controller, mainView);
+        viewMediator = new ViewMediator();
     }
     
-    public void updateSuggestions() {
-        providersAutoSuggestor.setSuggestions(getProvidersName());
-        sectorsAutoSuggestor.setSuggestions(getSectorsName());
-    }
-    
-    private List<String> getProvidersName() {
-        List<String> names = new LinkedList<>();
-        for (Provider p : controller.getProviders()) {
-            names.add((String) p.getValues().get("name"));
-        }
-        return names;
-    }
-
-    /*
-     * return the name of all sectors
-     */
-    private List<String> getSectorsName() {
-        return controller.getSector().stream().map(s -> (String)s.getValues().get("name")).collect(Collectors.toList());
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -435,23 +408,13 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_providersComboBoxItemStateChanged
 
     private void addProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderActionPerformed
-        providerLoader.setVisible(true);
+        viewMediator.setProviderLoaderVisible();
     }//GEN-LAST:event_addProviderActionPerformed
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[]{numberTextField, ivaTextField, profitsTextField};
         ViewUtils.cleanTextField(forClean);
     }
     
-    public void updateProviders(List<String> names) {
-        providersAutoSuggestor.setSuggestions(names);
-    }
-    
-    /**
-     * @param sectors
-     */
-    public void updateSectors(List<String> sectors) {
-        sectorsComboBox.setModel(new DefaultComboBoxModel(new Vector<>(sectors)));
-    }
 
     private void updateLastWithholdingLoaded(List<Object> values){
         throw new UnsupportedOperationException("TODO: Implemtar");
@@ -467,9 +430,8 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     */    }
     
     private Controller controller;
-    private AutoSuggestor providersAutoSuggestor;
-    private AutoSuggestor sectorsAutoSuggestor;
-    private ProviderLoaderView providerLoader;
+    private ViewMediator viewMediator;
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addProvider;
     private com.toedter.calendar.JDateChooser dateChooser;

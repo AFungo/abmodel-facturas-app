@@ -12,12 +12,10 @@ import database.SectorDAO;
 import filters.Comparison;
 import filters.Filter;
 import formatters.ModelToForm;
-import models.Sector;
 import models.Withholding;
 import models.Provider;
 import models.Ticket;
 import utils.ConfigManager;
-import utils.FormatUtils;
 import utils.Pair;
 import utils.PdfCreator;
 import calculations.PricesList;
@@ -60,7 +58,7 @@ public class View extends JFrame {
         filtersView = new FiltersView(controller, ticketsTable);
         columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
         ticketLoaderView = new TicketLoaderView(controller, this);
-        withholdingLoaderView = new WithholdingLoaderView(controller, this);
+        withholdingLoaderView = new WithholdingLoaderView(controller);
         sectorsView = new SectorsView(this);
         providerLoader = new ProviderLoaderView(controller, this);
     }
@@ -529,7 +527,7 @@ public class View extends JFrame {
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
         sectorsView.setVisible(true);
-        sectorsView.updateSuggestions();
+        viewMediator.updateSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
 
     private void ticketsTableMouseReleased(MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
@@ -579,7 +577,7 @@ public class View extends JFrame {
 
     private void loadWithholdingManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingManuallyActionPerformed
         withholdingLoaderView.setVisible(true);
-        withholdingLoaderView.updateSuggestions();
+        viewMediator.updateSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
 
     private void viewMoreCalculusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMoreCalculusButtonActionPerformed
@@ -790,6 +788,7 @@ public class View extends JFrame {
         return selectedColumns;
     }
     
+    private ViewMediator viewMediator = new ViewMediator();
     private Controller controller;
     private ProvidersView providersView;
     private FiltersView filtersView;

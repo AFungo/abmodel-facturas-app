@@ -11,7 +11,6 @@ import database.SectorDAO;
 import filters.Comparison;
 import filters.Filter;
 import models.Provider;
-import models.Sector;
 import utils.AutoSuggestor;
 import utils.ConfigManager;
 import utils.FixedData;
