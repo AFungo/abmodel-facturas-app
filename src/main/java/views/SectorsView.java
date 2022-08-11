@@ -40,7 +40,7 @@ public class SectorsView extends javax.swing.JFrame {
 
         addSector = new javax.swing.JButton();
         deleteSector = new javax.swing.JButton();
-        sectorsComboBox = new javax.swing.JComboBox<>();
+        sectorsComboBox = autosuggestor.getComboBox();
         updateSector = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);

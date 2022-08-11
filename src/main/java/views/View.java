@@ -56,7 +56,7 @@ public class View extends JFrame {
         initComponents();
         providersView = new ProvidersView(controller, this);
         filtersView = new FiltersView(controller, ticketsTable);
-        columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
+        columnSelectorView = new ColumnSelectorView(ticketsTable, providersView.getTable());
         ticketLoaderView = new TicketLoaderView(controller, this);
         withholdingLoaderView = new WithholdingLoaderView(controller);
         sectorsView = new SectorsView(this);
@@ -792,7 +792,7 @@ public class View extends JFrame {
     private Controller controller;
     private ProvidersView providersView;
     private FiltersView filtersView;
-    private ColumnSelector columnSelectorView;
+    private ColumnSelectorView columnSelectorView;
     private TicketLoaderView ticketLoaderView;
     private WithholdingLoaderView withholdingLoaderView;
     private SectorsView sectorsView;

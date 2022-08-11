@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.swing.JComboBox;
 
 import controller.Controller;
+import filters.Filter;
 import models.Provider;
 import utils.AutoSuggestor;
 
@@ -24,8 +25,18 @@ public class ViewMediator {
     private JComboBox sectorsComboBox;
 
     //views
-    private ProviderLoaderView providerLoader;
 
+    private CalculusView calculuesView;
+    private ColumnSelectorView columnSelectorView;
+    private FiltersView filtersView;
+    private ProviderLoaderView providerLoader;
+    private ProvidersView providersView;
+    private SectorsView sectorsView;
+    private TicketLoaderView ticketLoaderView;
+    private View mainView;
+    private WithholdingLoaderView withholdingLoaderView;
+
+    
     public ViewMediator(){
         
         providersComboBox = new JComboBox();
@@ -43,18 +54,26 @@ public class ViewMediator {
         return sectorsAutoSuggestor;
     }
 
-    public void setProviderLoaderVisible(){
-        providerLoader.setVisible(true);
+    public void setProviderLoaderVisible(boolean visible){
+        providerLoader.setVisible(visible);
     }
 
     public void updateSuggestions() {
         providersAutoSuggestor.setSuggestions(getProvidersName());
         sectorsAutoSuggestor.setSuggestions(getSectorsName());
     }
+
+    /**
+     * This method get all filters from filtersView and return it
+     * @return array of filter from filtersView
+     */
+    public Filter[] getFilters(){
+        return filtersView.getFilters().toArray(new Filter[0]);
+    }
+
     /*
      * return the name of all providers
      */
-
     private List<String> getProvidersName() {
         return controller.getProviders().stream().map(s -> (String) s.getValues().get("name")).collect(Collectors.toList());
     }

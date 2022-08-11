@@ -6,7 +6,6 @@
 package views;
 
 import controller.Controller;
-import models.Provider;
 import utils.AutoSuggestor;
 import utils.FixedData;
 import views.utils.ViewUtils;
@@ -19,17 +18,17 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Lenovo
+ * 
  */
 public class ProviderLoaderView extends javax.swing.JFrame {
 
     /**
      * Creates new form providerLoader
      */
-    public ProviderLoaderView(Controller controller, View mainView) {
+    public ProviderLoaderView(Controller controller, ViewMediator viewMediator) {
         initComponents();
         this.controller = controller;
-        this.mainView = mainView;
+        this.viewMediator = viewMediator; 
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
         sectorsAutoSuggestor.autoSuggest();
     }
@@ -40,14 +39,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
     public void updateSuggestions() {
         sectorsAutoSuggestor.setSuggestions(getSectorsName());
     }
-    private List<String> getProvidersName() {
-        List<String> names = new LinkedList<>();
-        for(Provider p : controller.getProviders()) {
-            names.add((String) p.getValues().get("name"));
-        }
-        return names;
-    }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -200,7 +192,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
         }
         
         controller.loadProvider(values.toArray());
-        mainView.updateProviders(getProvidersName());
+        viewMediator.updateSuggestions();
         cleanTextField();
     }//GEN-LAST:event_addProviderActionPerformed
     
@@ -213,9 +205,10 @@ public class ProviderLoaderView extends javax.swing.JFrame {
         ViewUtils.cleanTextField(forClean);
     }
     
-    private View mainView;
     private Controller controller;
-    private AutoSuggestor sectorsAutoSuggestor;  
+    private AutoSuggestor sectorsAutoSuggestor;
+    private ViewMediator viewMediator;
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addProvider;
     private javax.swing.JLabel jLabel1;

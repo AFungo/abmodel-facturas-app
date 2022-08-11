@@ -13,14 +13,14 @@ import javax.swing.JTable;
  *
  * @author nacho
  */
-public class ColumnSelector extends javax.swing.JFrame {
+public class ColumnSelectorView extends javax.swing.JFrame {
 
     /**
      * Creates new form ColumnSelector
      * @param ticketsTable
      * @param providersTable
      */
-    public ColumnSelector(JTable ticketsTable, JTable providersTable) {
+    public ColumnSelectorView(JTable ticketsTable, JTable providersTable) {
          
         this.ticketsTable = ticketsTable;
         this.providersTable = providersTable;

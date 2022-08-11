@@ -33,9 +33,11 @@ public class TicketLoaderView extends javax.swing.JFrame {
      * Creates new form TicketLoaderView
      * @param controller
      */
-    public TicketLoaderView(Controller controller, View mainView) {
+    public TicketLoaderView(Controller controller, ViewMediator viewMediator) {
         this.controller = controller;
+        this.viewMediator = viewMediator;
         initComponents();
+
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
@@ -44,7 +46,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
         ticketTypesAutoSuggestor.autoSuggest();
         providersAutoSuggestor.autoSuggest();
         exchangeTypeTextField.setEditable(false);
-        providerLoader = new ProviderLoaderView(controller, mainView);
+
     }
     
     public void updateSuggestions() {
@@ -641,7 +643,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_exchangeMoneyComboBoxActionPerformed
 
     private void addProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderButtonActionPerformed
-        providerLoader.setVisible(true);
+        viewMediator.setProviderLoaderVisible(true);
     }//GEN-LAST:event_addProviderButtonActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
@@ -675,7 +677,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
     private AutoSuggestor providersAutoSuggestor;
     private AutoSuggestor sectorsAutoSuggestor;
     private AutoSuggestor ticketTypesAutoSuggestor;
-    private ProviderLoaderView providerLoader;
+
+    private ViewMediator viewMediator;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel addNewProvider;
     private javax.swing.JLabel addNewProvider1;

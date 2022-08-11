@@ -33,9 +33,9 @@ public class CalculusView extends javax.swing.JFrame {
     /**
      * Creates new form CalculusView
      */
-    public CalculusView(FiltersView filtersView) {
+    public CalculusView(ViewMediator viewMediator) {
         controller = new Controller();
-        this.filtersView = filtersView;
+        this.viewMediator = viewMediator;
         initComponents();
     }
 
@@ -361,7 +361,7 @@ public class CalculusView extends javax.swing.JFrame {
         boolean inDollar = showInDollarsCheckBox.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
-        Filter[] ticketFilters = filtersView.getFilters().toArray(new Filter[0]);
+        Filter[] ticketFilters = viewMediator.getFilters();
         //this must be remade
         //Filter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
         try {
@@ -403,7 +403,6 @@ public class CalculusView extends javax.swing.JFrame {
         totalProfitWOTaxTextField.setText(numberFormat.format(values.get("profitWOTax")) + money);
         totalProfitWTaxTextField.setText(numberFormat.format(values.get("profitWTax")) + money);        
         grossMarginTextField.setText(numberFormat.format(values.get("grossMargin")) + money);
-        // TODO add your handling code here:
     }//GEN-LAST:event_calculateButtonActionPerformed
     /*
      * This method show all the calculus and data who bring profit calculator
@@ -411,7 +410,7 @@ public class CalculusView extends javax.swing.JFrame {
   
     
     private Controller controller;
-    private FiltersView filtersView;
+    private ViewMediator viewMediator;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculateButton;
     private javax.swing.JTextField grossMarginTextField;
