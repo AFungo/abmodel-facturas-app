@@ -2,7 +2,6 @@ package utils.csv;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.csv.CSVUtils;
 
 import java.io.File;
 import java.util.Arrays;
