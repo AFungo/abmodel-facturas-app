@@ -13,6 +13,7 @@ import filters.Filter;
 import models.Provider;
 import models.Sector;
 import utils.Parser;
+import views.utils.ViewMediator;
 import views.utils.ViewUtils;
 
 import java.util.*;
@@ -29,10 +30,10 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     /**
      * Creates new form WithholdingLoaderView
      */
-    public WithholdingLoaderView(Controller controller) {
+    public WithholdingLoaderView(Controller controller, ViewMediator viewMediator) {
         this.controller = controller;
         initComponents();
-        viewMediator = new ViewMediator();
+        this.viewMediator = viewMediator;
     }
     
 

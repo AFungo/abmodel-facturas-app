@@ -15,6 +15,7 @@ import controller.Controller;
 import filters.Filter;
 import utils.Pair;
 import calculations.PricesList;
+import views.utils.ViewMediator;
 import views.utils.ViewUtils;
 
 import java.sql.Date;

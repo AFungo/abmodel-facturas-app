@@ -18,6 +18,7 @@ import utils.AutoSuggestor;
 import utils.FixedData;
 import utils.FormatUtils;
 import utils.Validate;
+import views.utils.ViewMediator;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,17 +40,14 @@ public class FiltersView extends javax.swing.JFrame {
      * @param controller
      * @param ticketsTable
      */
-    public FiltersView(Controller controller, JTable ticketsTable) {
+    public FiltersView(Controller controller, JTable ticketsTable, ViewMediator viewMediator) {
         this.controller = controller;
         this.ticketsTable = ticketsTable;
+        this.viewMediator = viewMediator;
         initComponents();
-        providersAutoSuggestor = new AutoSuggestor(providersComboBox,
-                ProviderDAO.getInstance().getAll().stream()
-                        .map(p -> (String)p.getValues().get("name")).collect(Collectors.toList()));
+        providersAutoSuggestor = viewMediator.getProviderAutosuggestor();
         providersAutoSuggestor.autoSuggest();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox,
-                SectorDAO.getInstance().getAll().stream()
-                        .map(s -> (String)s.getValues().get("name")).collect(Collectors.toList()));
+        sectorsAutoSuggestor = viewMediator.getSectorAutosuggestor();
         sectorsAutoSuggestor.autoSuggest();
         currentFilters = new LinkedList<>();
     }
@@ -474,7 +472,8 @@ public class FiltersView extends javax.swing.JFrame {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
     }
-    
+
+    private ViewMediator viewMediator;
     private List<Filter> currentFilters;
     private Controller controller;
     private JTable ticketsTable;

@@ -12,6 +12,7 @@ import filters.Filter;
 import models.Provider;
 import utils.AutoSuggestor;
 import utils.FixedData;
+import views.utils.ViewMediator;
 import views.utils.ViewUtils;
 
 import java.text.SimpleDateFormat;

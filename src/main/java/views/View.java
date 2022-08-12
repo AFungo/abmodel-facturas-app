@@ -13,7 +13,6 @@ import filters.Comparison;
 import filters.Filter;
 import formatters.ModelToForm;
 import models.Withholding;
-import models.Provider;
 import models.Ticket;
 import utils.ConfigManager;
 import utils.Pair;
@@ -37,6 +36,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import org.apache.commons.io.FilenameUtils;
+import views.utils.ViewMediator;
 import views.utils.ViewUtils;
 
 /**
@@ -51,16 +51,10 @@ public class View extends JFrame {
      * @param controller
      */
     public View(Controller controller) {
+        viewMediator = new ViewMediator(controller, this);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.controller = controller;
         initComponents();
-        providersView = new ProvidersView(controller, this);
-        filtersView = new FiltersView(controller, ticketsTable);
-        columnSelectorView = new ColumnSelectorView(ticketsTable, providersView.getTable());
-        ticketLoaderView = new TicketLoaderView(controller, this);
-        withholdingLoaderView = new WithholdingLoaderView(controller);
-        sectorsView = new SectorsView(this);
-        providerLoader = new ProviderLoaderView(controller, this);
     }
 
     /**
@@ -488,12 +482,7 @@ public class View extends JFrame {
 
         // FIXME: Maybe we can update the suggestions only
         // when we know that a providers was added
-        providersView.updateSuggestions();
-        List<String> names = new LinkedList<>();
-        for (Provider p : controller.getProviders()) {
-            names.add((String) p.getValues().get("name"));
-        }
-        updateProviders(names);
+        viewMediator.updateProviderSuggestions();
         loadTicketsInTable();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadTicketsActionPerformed
@@ -527,7 +516,7 @@ public class View extends JFrame {
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
         sectorsView.setVisible(true);
-        viewMediator.updateSuggestions();
+        viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
 
     private void ticketsTableMouseReleased(MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
@@ -577,11 +566,12 @@ public class View extends JFrame {
 
     private void loadWithholdingManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingManuallyActionPerformed
         withholdingLoaderView.setVisible(true);
-        viewMediator.updateSuggestions();
+        viewMediator.updateProviderSuggestions();
+        viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
 
     private void viewMoreCalculusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMoreCalculusButtonActionPerformed
-        CalculusView calculusView = new CalculusView(filtersView);
+        CalculusView calculusView = new CalculusView(viewMediator);
         calculusView.setVisible(true);
     }//GEN-LAST:event_viewMoreCalculusButtonActionPerformed
 
@@ -713,22 +703,6 @@ public class View extends JFrame {
         ticketsTable.setValueAt(Float.parseFloat(value), row, column);  //update view
     }
     
-    public void updateSectors(List<String> sectors) {
-        sectorComboBox.setModel(new DefaultComboBoxModel(new Vector<>(sectors)));
-        providersView.updateSectors(sectors);
-        providerLoader.updateSectors(sectors);
-        filtersView.updateSectors(sectors);
-        ticketLoaderView.updateSectors(sectors);
-        withholdingLoaderView.updateSectors(sectors);
-    }
-    
-    public void updateProviders(List<String> names) {
-        providersView.updateProviders(names);
-        filtersView.updateProviders(names);
-        ticketLoaderView.updateProviders(names);
-        withholdingLoaderView.updateProviders(names);
-    }
-    
     public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -787,8 +761,12 @@ public class View extends JFrame {
         selectedColumns[16] = config.get("delivered");
         return selectedColumns;
     }
+
+    public JTable getTicketsTable() {
+        return ticketsTable;
+    }
     
-    private ViewMediator viewMediator = new ViewMediator();
+    private ViewMediator viewMediator;
     private Controller controller;
     private ProvidersView providersView;
     private FiltersView filtersView;

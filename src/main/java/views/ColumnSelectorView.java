@@ -6,6 +6,8 @@
 package views;
 
 import utils.ConfigManager;
+import views.utils.ViewMediator;
+
 import java.util.Map;
 import javax.swing.JTable;
 
@@ -20,8 +22,9 @@ public class ColumnSelectorView extends javax.swing.JFrame {
      * @param ticketsTable
      * @param providersTable
      */
-    public ColumnSelectorView(JTable ticketsTable, JTable providersTable) {
-         
+    public ColumnSelectorView(JTable ticketsTable, JTable providersTable, ViewMediator viewMediator) {
+
+        this.viewMediator = viewMediator;
         this.ticketsTable = ticketsTable;
         this.providersTable = providersTable;
         this.config = ConfigManager.readConfig();
@@ -371,7 +374,8 @@ public class ColumnSelectorView extends javax.swing.JFrame {
         
         return columns;
     }
-    
+
+    private ViewMediator viewMediator;
     private JTable providersTable;
     private JTable ticketsTable;
     private Map<String, Boolean> config;

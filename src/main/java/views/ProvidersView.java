@@ -26,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.io.FilenameUtils;
+import views.utils.ViewMediator;
 
 /**
  *
@@ -409,7 +410,7 @@ public class ProvidersView extends JFrame {
             row = providersTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
             ((DefaultTableModel)providersTable.getModel()).removeRow(row); //remove row from view
         }
-        viewMediator.updateSuggestions();
+        viewMediator.updateProviderSuggestions();
     }//GEN-LAST:event_deleteProviderActionPerformed
 
     private String getAttribute(int column) {

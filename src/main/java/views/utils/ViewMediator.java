@@ -1,4 +1,4 @@
-package views;
+package views.utils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,12 +10,10 @@ import controller.Controller;
 import filters.Filter;
 import models.Provider;
 import utils.AutoSuggestor;
+import views.*;
 
 public class ViewMediator {
 
-    
-    
-    
     private Controller controller;
     
     //Autosugestors
@@ -25,8 +23,7 @@ public class ViewMediator {
     private JComboBox sectorsComboBox;
 
     //views
-
-    private CalculusView calculuesView;
+    private CalculusView calculusView;
     private ColumnSelectorView columnSelectorView;
     private FiltersView filtersView;
     private ProviderLoaderView providerLoader;
@@ -37,8 +34,7 @@ public class ViewMediator {
     private WithholdingLoaderView withholdingLoaderView;
 
     
-    public ViewMediator(){
-        
+    public ViewMediator(Controller controller, View mainView){
         providersComboBox = new JComboBox();
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
@@ -46,8 +42,20 @@ public class ViewMediator {
         sectorsAutoSuggestor.autoSuggest();
 
 
-        providerLoader = new ProviderLoaderView(controller);
+        this.controller = controller;
+        this.mainView = mainView;
 
+        providerLoader = new ProviderLoaderView(this.controller, this);
+        filtersView = new FiltersView(this.controller, this.mainView.getTicketsTable(), this);
+        columnSelectorView = new ColumnSelectorView(this.mainView.getTicketsTable(), providersView.getTable(), this);
+        ticketLoaderView = new TicketLoaderView(this.controller, this);
+        withholdingLoaderView = new WithholdingLoaderView(this.controller, this);
+        sectorsView = new SectorsView(this);
+        providerLoader = new ProviderLoaderView(this.controller, this);
+    }
+
+    public AutoSuggestor getProviderAutosuggestor(){
+        return providersAutoSuggestor;
     }
 
     public AutoSuggestor getSectorAutosuggestor(){
@@ -58,8 +66,11 @@ public class ViewMediator {
         providerLoader.setVisible(visible);
     }
 
-    public void updateSuggestions() {
+    public void updateProviderSuggestions() {
         providersAutoSuggestor.setSuggestions(getProvidersName());
+    }
+
+    public void updateSectorSuggestions() {
         sectorsAutoSuggestor.setSuggestions(getSectorsName());
     }
 

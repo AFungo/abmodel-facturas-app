@@ -8,6 +8,7 @@ package views;
 import controller.Controller;
 import utils.AutoSuggestor;
 import utils.FixedData;
+import views.utils.ViewMediator;
 import views.utils.ViewUtils;
 
 import java.util.*;
@@ -192,7 +193,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
         }
         
         controller.loadProvider(values.toArray());
-        viewMediator.updateSuggestions();
+        viewMediator.updateProviderSuggestions();
         cleanTextField();
     }//GEN-LAST:event_addProviderActionPerformed
     

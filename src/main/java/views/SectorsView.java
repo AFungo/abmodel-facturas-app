@@ -5,27 +5,25 @@
 package views;
 
 import utils.AutoSuggestor;
-import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import builder.ModelBuilder;
-import controller.Controller;
 import database.SectorDAO;
+import views.utils.ViewMediator;
 
 /**
  *
  * @author agustinnolasco
  */
 public class SectorsView extends javax.swing.JFrame {
-    Controller controller = new Controller();
     /**
      * Creates new form SectorsView
-     * @param mainView
      */
-    public SectorsView() {
+    public SectorsView(ViewMediator viewMediator) {
         initComponents();
+        this.viewMediator = viewMediator;
         sectorsAutoSuggestor = viewMediator.getSectorAutosuggestor();
         sectorsAutoSuggestor.autoSuggest();
     }
@@ -40,12 +38,13 @@ public class SectorsView extends javax.swing.JFrame {
 
         addSector = new javax.swing.JButton();
         deleteSector = new javax.swing.JButton();
-        sectorsComboBox = autosuggestor.getComboBox();
+        sectorsComboBox = new javax.swing.JComboBox<>();
         updateSector = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("RUBROS");
-        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("images/icono-facturas-app-opcion-dos.png"))).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage()
+        );
 
         addSector.setText("Agregar");
         addSector.addActionListener(new java.awt.event.ActionListener() {
@@ -107,7 +106,7 @@ public class SectorsView extends javax.swing.JFrame {
         String newSector = sectorsAutoSuggestor.getText();
         if (!newSector.trim().isEmpty() && !SectorDAO.getInstance().getAll().stream().anyMatch(s -> s.getValues().get("name").equals(newSector))) {
             ModelBuilder.buildSector(newSector);
-            viewMediator.updateSuggestions();
+            viewMediator.updateSectorSuggestions();
             sectorsAutoSuggestor.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "El rubro ingresado es vacio o ya existe",
@@ -124,7 +123,7 @@ public class SectorsView extends javax.swing.JFrame {
             );
             if (userInput == 0) {
                 SectorDAO.getInstance().delete(SectorDAO.getInstance().getAll().stream().filter(s -> s.getValues().get("name").equals(sector)).findFirst().get());
-                viewMediator.updateSuggestions();
+                viewMediator.updateSectorSuggestions();
                 sectorsAutoSuggestor.setText("");
             }
         }
@@ -147,7 +146,7 @@ public class SectorsView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_updateSectorActionPerformed
 
-    private ViewMediator viewMediator = new ViewMediator();
+    private ViewMediator viewMediator;
     private AutoSuggestor sectorsAutoSuggestor;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addSector;
