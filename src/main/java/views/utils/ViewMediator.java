@@ -46,7 +46,9 @@ public class ViewMediator {
         this.mainView = mainView;
 
         providerLoader = new ProviderLoaderView(this.controller, this);
-        filtersView = new FiltersView(this.controller, this.mainView.getTicketsTable(), this);
+        filtersView = new FiltersView(this.controller, this.mainView.getTicketsTable(), this);//TODO: the same i put in the columSelectorView.
+                                                                                                         // We can hhave a method for get ticker,
+                                                                                                        // providers... table and no pass it like a parameter
         columnSelectorView = new ColumnSelectorView(this.mainView.getTicketsTable(), providersView.getTable(), this);
         ticketLoaderView = new TicketLoaderView(this.controller, this);
         withholdingLoaderView = new WithholdingLoaderView(this.controller, this);

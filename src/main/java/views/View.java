@@ -416,7 +416,7 @@ public class View extends JFrame {
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
-        Filter[] filters = filtersView.getFilters().toArray(new Filter[0]);
+        Filter[] filters = filtersView.getFilters().toArray(new Filter[0]);//TODO: use viewMediator here
         try {
             pricesList = new PricesList(dollar);
             pricesList.calculateSummary(controller.getTickets(filters),
@@ -449,7 +449,7 @@ public class View extends JFrame {
 
     //show providers if any
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
-        providersView.updateProviders(evt);
+        providersView.updateProviders(evt);//TODO:deberiamos llamar al mediator y que lo invoque?
         providersView.updateSuggestions();
         providersView.setVisible(true);
         
@@ -466,7 +466,7 @@ public class View extends JFrame {
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
-        filtersView.updateSuggestions();
+        filtersView.updateSuggestions();//TODO: USE MEDIATOR!!!!!
         filtersView.setVisible(true);
     }//GEN-LAST:event_filtersActionPerformed
 
@@ -488,7 +488,7 @@ public class View extends JFrame {
     }//GEN-LAST:event_loadTicketsActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
-        ticketLoaderView.setVisible(true);
+        ticketLoaderView.setVisible(true);//TODO: views mediator maybe set visible all the views.
         ticketLoaderView.updateSuggestions();
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
@@ -504,7 +504,7 @@ public class View extends JFrame {
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
     private void columnSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectorActionPerformed
-        columnSelectorView.setVisible(true);
+        columnSelectorView.setVisible(true);//TODO: use mediator!!
     }//GEN-LAST:event_columnSelectorActionPerformed
 
     private void resetDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDBButtonActionPerformed
@@ -515,7 +515,7 @@ public class View extends JFrame {
     }//GEN-LAST:event_resetDBButtonActionPerformed
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
-        sectorsView.setVisible(true);
+        sectorsView.setVisible(true);//TODO: use mediator
         viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
 
@@ -565,13 +565,13 @@ public class View extends JFrame {
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
     private void loadWithholdingManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingManuallyActionPerformed
-        withholdingLoaderView.setVisible(true);
+        withholdingLoaderView.setVisible(true);//TODO: VIew MEdiator
         viewMediator.updateProviderSuggestions();
         viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
 
     private void viewMoreCalculusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMoreCalculusButtonActionPerformed
-        CalculusView calculusView = new CalculusView(viewMediator);
+        CalculusView calculusView = new CalculusView(viewMediator);//TODO: VIew mediator
         calculusView.setVisible(true);
     }//GEN-LAST:event_viewMoreCalculusButtonActionPerformed
 
@@ -585,6 +585,7 @@ public class View extends JFrame {
         JTable toDelete = createToDeleteTable(row);
         int selection = JOptionPane.showConfirmDialog(this, new JScrollPane(toDelete), "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
+            //TODO: Maybe we can do it in the controller. is a lot of logic for a view
             String id = (String) ticketsTable.getValueAt(row, 0);
             Filter filter = new Filter("id", id, Comparison.EQUALS);
             String type = (String)ticketsTable.getValueAt(row, 2);
@@ -613,7 +614,7 @@ public class View extends JFrame {
     }
     
     private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed
-        providerLoader.setVisible(true);
+        providerLoader.setVisible(true);//TODO: mediator
     }//GEN-LAST:event_addProviderMenuItemActionPerformed
 
     private void deleteSectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorMenuItemActionPerformed

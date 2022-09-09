@@ -22,11 +22,13 @@ public class ColumnSelectorView extends javax.swing.JFrame {
      * @param ticketsTable
      * @param providersTable
      */
+
+    //TODO:I don't like we use a lot of parameters in the constructor of the view. We can do it better
     public ColumnSelectorView(JTable ticketsTable, JTable providersTable, ViewMediator viewMediator) {
 
         this.viewMediator = viewMediator;
-        this.ticketsTable = ticketsTable;
-        this.providersTable = providersTable;
+        this.ticketsTable = ticketsTable;//TODO: is better use viewMediator.getTicketsTable() ? return JTable. In view mediator only search for JTable in main view
+        this.providersTable = providersTable;//TODO: The same of the previus variable
         this.config = ConfigManager.readConfig();
         initComponents();
         applyButtonActionPerformed(null);

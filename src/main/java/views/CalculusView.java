@@ -368,7 +368,7 @@ public class CalculusView extends javax.swing.JFrame {
         try {
             pricesList = new PricesList(inDollar);
             pricesList.calculateSummary(controller.getTickets(ticketFilters),
-                    controller.getWithholdings(ticketFilters));
+                                    controller.getWithholdings(ticketFilters));
         } catch (IllegalStateException e) {
             JOptionPane.showMessageDialog(null, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
                 "Error", JOptionPane.ERROR_MESSAGE);

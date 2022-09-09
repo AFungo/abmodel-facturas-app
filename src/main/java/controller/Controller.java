@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  */
 public class Controller {
 
+    //TODO: Maybe we can do it controller test for some methods
     public void resetDB() {
         DBManager.deleteDB();
         DBManager.initializeDB();
