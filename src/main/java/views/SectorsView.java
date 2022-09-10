@@ -43,8 +43,8 @@ public class SectorsView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("RUBROS");
-        setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage()
-        );
+//        setIconImage(new ImageIcon(getClass().getResource("/resources/images/icono-facturas-app-opcion-dos.png")).getImage()
+//        );
 
         addSector.setText("Agregar");
         addSector.addActionListener(new java.awt.event.ActionListener() {

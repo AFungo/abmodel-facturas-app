@@ -5,19 +5,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle;
-import backup.BackUpBuilder;
-import calculations.DollarPriceManager;
-import controller.Controller;
-import database.SectorDAO;
-import filters.Comparison;
-import filters.Filter;
-import formatters.ModelToForm;
-import models.Withholding;
-import models.Ticket;
-import utils.ConfigManager;
-import utils.Pair;
-import utils.PdfCreator;
-import calculations.PricesList;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -31,11 +18,23 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import org.apache.commons.io.FilenameUtils;
+import backup.BackUpBuilder;
+import calculations.DollarPriceManager;
+import controller.Controller;
+import database.SectorDAO;
+import filters.Comparison;
+import filters.Filter;
+import formatters.ModelToForm;
+import models.Withholding;
+import models.Ticket;
+import utils.ConfigManager;
+import utils.Pair;
+import utils.PdfCreator;
+import calculations.PricesList;
 import views.utils.ViewMediator;
 import views.utils.ViewUtils;
 
@@ -51,10 +50,10 @@ public class View extends JFrame {
      * @param controller
      */
     public View(Controller controller) {
-        viewMediator = new ViewMediator(controller, this);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.controller = controller;
         initComponents();
+        viewMediator = new ViewMediator(controller, getTicketsTable());
     }
 
     /**
@@ -104,17 +103,11 @@ public class View extends JFrame {
         sectorComboBox = new JComboBox<>();
 
         //======== this ========
-        this.setIconImage(new ImageIcon(getClass().getResource("/IMG/icono-facturas-app-opcion-dos.png")).getImage()
-        );
+//        this.setIconImage(new ImageIcon(getClass().getResource("/resources/images/icono-facturas-app-opcion-dos.png")).getImage()
+//    );
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("ADMINISTRADOR CONTABLE ABMODEL");
         setSize(new Dimension(0, 0));
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                formWindowClosing(e);
-            }
-        });
         Container contentPane = getContentPane();
 
         //======== menuBar ========
@@ -416,7 +409,7 @@ public class View extends JFrame {
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
-        Filter[] filters = filtersView.getFilters().toArray(new Filter[0]);//TODO: use viewMediator here
+        Filter[] filters = viewMediator.getFilters();
         try {
             pricesList = new PricesList(dollar);
             pricesList.calculateSummary(controller.getTickets(filters),
@@ -449,9 +442,8 @@ public class View extends JFrame {
 
     //show providers if any
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
-        providersView.updateProviders(evt);//TODO:deberiamos llamar al mediator y que lo invoque?
-        providersView.updateSuggestions();
-        providersView.setVisible(true);
+        viewMediator.setProviderLoaderVisible(true);
+        viewMediator.updateProviderSuggestions();
         
     }//GEN-LAST:event_showProvidersActionPerformed
 
@@ -466,8 +458,8 @@ public class View extends JFrame {
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
-        filtersView.updateSuggestions();//TODO: USE MEDIATOR!!!!!
-        filtersView.setVisible(true);
+        viewMediator.setFiltersViewVisible(true);
+        viewMediator.updateFiltersSuggestions();
     }//GEN-LAST:event_filtersActionPerformed
 
     private void loadTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsActionPerformed
@@ -481,15 +473,15 @@ public class View extends JFrame {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         // FIXME: Maybe we can update the suggestions only
-        // when we know that a providers was added
+        //  when we know that a providers was added
         viewMediator.updateProviderSuggestions();
         loadTicketsInTable();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadTicketsActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
-        ticketLoaderView.setVisible(true);//TODO: views mediator maybe set visible all the views.
-        ticketLoaderView.updateSuggestions();
+        viewMediator.setTicketLoaderVisible(true);
+        viewMediator.updateTicketLoaderSuggestions();
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
     private void loadDollarValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarValueActionPerformed
@@ -504,7 +496,7 @@ public class View extends JFrame {
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
     private void columnSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectorActionPerformed
-        columnSelectorView.setVisible(true);//TODO: use mediator!!
+        viewMediator.setColumnSelectorVisible(true);
     }//GEN-LAST:event_columnSelectorActionPerformed
 
     private void resetDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDBButtonActionPerformed
@@ -515,7 +507,7 @@ public class View extends JFrame {
     }//GEN-LAST:event_resetDBButtonActionPerformed
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
-        sectorsView.setVisible(true);//TODO: use mediator
+        viewMediator.setSectorsViewVisible(true);
         viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
 
@@ -549,10 +541,6 @@ public class View extends JFrame {
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
-    private void formWindowClosing(WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        columnSelectorView.dispatchEvent(new WindowEvent(columnSelectorView, WindowEvent.WINDOW_CLOSING));
-    }//GEN-LAST:event_formWindowClosing
-
     private void deliveredMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveredMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
         String id = (String) ticketsTable.getValueAt(row, 0);
@@ -565,14 +553,13 @@ public class View extends JFrame {
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
     private void loadWithholdingManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingManuallyActionPerformed
-        withholdingLoaderView.setVisible(true);//TODO: VIew MEdiator
+        viewMediator.setWithholdingLoaderVisible(true);
         viewMediator.updateProviderSuggestions();
         viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
 
     private void viewMoreCalculusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMoreCalculusButtonActionPerformed
-        CalculusView calculusView = new CalculusView(viewMediator);//TODO: VIew mediator
-        calculusView.setVisible(true);
+        viewMediator.setCalculusViewVisible(true);
     }//GEN-LAST:event_viewMoreCalculusButtonActionPerformed
 
     private void ticketsTableMousePressed(MouseEvent evt) {//GEN-FIRST:event_ticketsTableMousePressed
@@ -614,7 +601,7 @@ public class View extends JFrame {
     }
     
     private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed
-        providerLoader.setVisible(true);//TODO: mediator
+        viewMediator.setProviderLoaderVisible(true);
     }//GEN-LAST:event_addProviderMenuItemActionPerformed
 
     private void deleteSectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorMenuItemActionPerformed
@@ -769,13 +756,6 @@ public class View extends JFrame {
     
     private ViewMediator viewMediator;
     private Controller controller;
-    private ProvidersView providersView;
-    private FiltersView filtersView;
-    private ColumnSelectorView columnSelectorView;
-    private TicketLoaderView ticketLoaderView;
-    private WithholdingLoaderView withholdingLoaderView;
-    private SectorsView sectorsView;
-    private ProviderLoaderView providerLoader;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private JMenuBar menuBar;
     private JMenu files;

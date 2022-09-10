@@ -291,14 +291,14 @@ public class ColumnSelectorView extends javax.swing.JFrame {
     private void applyChanges(JTable model, boolean[] columns) {
         for (int i = columns.length - 1; 0 <= i; i--) {
             if (columns[i]) {
-                unhideColumn(i, model);
+                showColumn(i, model);
             } else {
                 hideColumn(i, model);
             }
         }
     }
     
-    private void unhideColumn(int i, JTable model) {
+    private void showColumn(int i, JTable model) {
         model.getColumnModel().getColumn(i).setMinWidth(0);
         model.getColumnModel().getColumn(i).setMaxWidth(500);
         model.getColumnModel().getColumn(i).setWidth(300);

@@ -3,8 +3,9 @@ package views.utils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import javax.swing.JComboBox;
+import javax.swing.*;
 
 import controller.Controller;
 import filters.Filter;
@@ -30,26 +31,26 @@ public class ViewMediator {
     private ProvidersView providersView;
     private SectorsView sectorsView;
     private TicketLoaderView ticketLoaderView;
-    private View mainView;
     private WithholdingLoaderView withholdingLoaderView;
 
     
-    public ViewMediator(Controller controller, View mainView){
+    public ViewMediator(Controller controller, JTable ticketsTable){
+        this.controller = controller;
+
         providersComboBox = new JComboBox();
         providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
         providersAutoSuggestor.autoSuggest();
+        sectorsComboBox = new JComboBox();
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
         sectorsAutoSuggestor.autoSuggest();
 
-
-        this.controller = controller;
-        this.mainView = mainView;
-
         providerLoader = new ProviderLoaderView(this.controller, this);
-        filtersView = new FiltersView(this.controller, this.mainView.getTicketsTable(), this);//TODO: the same i put in the columSelectorView.
-                                                                                                         // We can hhave a method for get ticker,
-                                                                                                        // providers... table and no pass it like a parameter
-        columnSelectorView = new ColumnSelectorView(this.mainView.getTicketsTable(), providersView.getTable(), this);
+        filtersView = new FiltersView(this.controller, ticketsTable, this);/* TODO: the same i put in the columSelectorView
+                                                                                        we can have a method for get ticker,
+                                                                                        providers... table and no pass it like a parameter
+                                                                                      */
+        providersView = new ProvidersView(controller, this);
+        columnSelectorView = new ColumnSelectorView(ticketsTable, providersView.getTable(), this);
         ticketLoaderView = new TicketLoaderView(this.controller, this);
         withholdingLoaderView = new WithholdingLoaderView(this.controller, this);
         sectorsView = new SectorsView(this);
@@ -64,13 +65,28 @@ public class ViewMediator {
         return sectorsAutoSuggestor;
     }
 
-    public void setProviderLoaderVisible(boolean visible){
-        providerLoader.setVisible(visible);
-    }
+    //TODO: maybe we can do a single method with a switch for setting visible each view
+    public void setProviderLoaderVisible(boolean visible){ providerLoader.setVisible(visible); }
+
+    public void setFiltersViewVisible(boolean visible){ filtersView.setVisible(visible); }
+
+    public void setTicketLoaderVisible(boolean visible){ ticketLoaderView.setVisible(visible); }
+
+    public void setColumnSelectorVisible(boolean visible){ columnSelectorView.setVisible(visible); }
+
+    public void setSectorsViewVisible(boolean visible){ sectorsView.setVisible(visible); }
+
+    public void setWithholdingLoaderVisible(boolean visible){ withholdingLoaderView.setVisible(visible); }
+
+    public void setCalculusViewVisible(boolean visible){ calculusView.setVisible(visible); }
 
     public void updateProviderSuggestions() {
         providersAutoSuggestor.setSuggestions(getProvidersName());
     }
+
+    public void updateFiltersSuggestions() { filtersView.updateSuggestions(); }
+
+    public void updateTicketLoaderSuggestions() { ticketLoaderView.updateSuggestions(); }
 
     public void updateSectorSuggestions() {
         sectorsAutoSuggestor.setSuggestions(getSectorsName());

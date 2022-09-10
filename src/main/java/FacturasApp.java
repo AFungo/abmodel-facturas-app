@@ -23,6 +23,10 @@ public class FacturasApp {
     public static void main(String[] args) {
         DBManager.createConnection(TypeDB.PRODUCTION);
         DBManager.initializeDB();
+        // TODO: Controller could be created inside View, since is not used here
+        //  i think the best is to create the controller and inside of it create the view,
+        //  so we can use controller methods here in main
+
         View view = new View(new Controller());
         Handler globalExceptionHandler = new Handler(view);
         Thread.setDefaultUncaughtExceptionHandler(globalExceptionHandler);
