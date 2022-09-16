@@ -1,5 +1,7 @@
 package views.utils;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,7 +10,9 @@ import java.util.stream.Stream;
 import javax.swing.*;
 
 import controller.Controller;
+import database.DBManager;
 import filters.Filter;
+import logger.Handler;
 import models.Provider;
 import utils.AutoSuggestor;
 import views.*;
@@ -33,8 +37,9 @@ public class ViewMediator {
     private TicketLoaderView ticketLoaderView;
     private WithholdingLoaderView withholdingLoaderView;
 
+    private View mainView;
     
-    public ViewMediator(Controller controller, JTable ticketsTable){
+    public ViewMediator(Controller controller){
         this.controller = controller;
 
         providersComboBox = new JComboBox();
@@ -45,16 +50,28 @@ public class ViewMediator {
         sectorsAutoSuggestor.autoSuggest();
 
         providerLoader = new ProviderLoaderView(this.controller, this);
-        filtersView = new FiltersView(this.controller, ticketsTable, this);/* TODO: the same i put in the columSelectorView
-                                                                                        we can have a method for get ticker,
-                                                                                        providers... table and no pass it like a parameter
-                                                                                      */
+        filtersView = new FiltersView(this.controller, this);
         providersView = new ProvidersView(controller, this);
-        columnSelectorView = new ColumnSelectorView(ticketsTable, providersView.getTable(), this);
+        columnSelectorView = new ColumnSelectorView(this);
         ticketLoaderView = new TicketLoaderView(this.controller, this);
         withholdingLoaderView = new WithholdingLoaderView(this.controller, this);
         sectorsView = new SectorsView(this);
         providerLoader = new ProviderLoaderView(this.controller, this);
+        mainView = new View(this.controller, this);
+    }
+
+    public void setMainViewVisible(boolean visible){
+        Handler globalExceptionHandler = new Handler(mainView);
+        Thread.setDefaultUncaughtExceptionHandler(globalExceptionHandler);
+
+        mainView.setVisible(true);
+
+        mainView.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                DBManager.closeConnection();
+            }
+        });
     }
 
     public AutoSuggestor getProviderAutosuggestor(){
@@ -100,6 +117,10 @@ public class ViewMediator {
         return filtersView.getFilters().toArray(new Filter[0]);
     }
 
+    public JTable getTicketTable(){return mainView.getTicketsTable();}
+
+    public JTable getProviderTable(){return providersView.getTable();}
+
     /*
      * return the name of all providers
      */
@@ -112,5 +133,7 @@ public class ViewMediator {
     private List<String> getSectorsName() {
         return controller.getSector().stream().map(s -> (String)s.getValues().get("name")).collect(Collectors.toList());
     }
+
+
     
 }
