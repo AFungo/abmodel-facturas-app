@@ -43,25 +43,15 @@ public class ProvidersView extends JFrame {
         this.viewMediator = viewMediator;
         this.controller = controller;
         initComponents();
-        providersAutoSuggestor = new AutoSuggestor(comboBox, getProvidersName());
+        providersAutoSuggestor = viewMediator.getProviderAutosuggestor();
         providersAutoSuggestor.autoSuggest();
     }
     
-    public void updateSuggestions() {
-        providersAutoSuggestor.setSuggestions(getProvidersName());
-    }
-    
+
     public javax.swing.JTable getTable() {
         return providersTable;
     }
-    
-    private List<String> getProvidersName() {
-        List<String> names = new LinkedList<>();
-        for (Provider p : controller.getProviders()) {
-            names.add((String) p.getValues().get("name"));
-        }
-        return names;
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
