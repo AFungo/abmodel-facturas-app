@@ -12,6 +12,7 @@ import filters.Comparison;
 import filters.Filter;
 import models.Provider;
 import models.Sector;
+import models.Withholding;
 import utils.Parser;
 import views.utils.ViewMediator;
 import views.utils.ViewUtils;
@@ -384,9 +385,9 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
         
 
         
-        controller.loadWithholding(values.toArray());
+        Withholding withholding = controller.loadWithholding(values.toArray());
         cleanTextField();
-        updateLastWithholdingLoaded(values);
+        updateLastWithholdingLoaded(withholding);
     }//GEN-LAST:event_loadWithholdingActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged
@@ -417,18 +418,17 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     }
     
 
-    private void updateLastWithholdingLoaded(List<Object> values){
-        throw new UnsupportedOperationException("TODO: Implemtar");
-/*        showLastDateTextField.setText(values.get("date"));
-        showLastProviderTextField.setText(values.get("name"));
-        showLastTicketNumberTextField.setText(values.get("number"));
-        showLastIvaTextField.setText(values.get("iva"));
-        showLastProfitsTextField.setText(values.get("profits"));
-        
-        Filter filter = FilterUtils.createTicketFilter(values);
-        Withholding withholding = controller.getWithholdings(filter).get(0);
-        showLastIDTextField.setText(String.valueOf(withholding.getValues().get("id")));
-    */    }
+    private void updateLastWithholdingLoaded(Withholding withholding){
+        Map<String, Object> values = withholding.getValues();
+
+        showLastIDTextField.setText((String) values.get("id"));
+        showLastDateTextField.setText((String)values.get("date"));
+        showLastProviderTextField.setText((String)values.get("name"));
+        showLastTicketNumberTextField.setText((String)values.get("number"));
+        showLastIvaTextField.setText((String)values.get("iva"));
+        showLastProfitsTextField.setText((String)values.get("profits"));
+
+    }
     
     private Controller controller;
     private ViewMediator viewMediator;
