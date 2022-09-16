@@ -414,20 +414,7 @@ public class ProvidersView extends JFrame {
         int row = providersTable.getSelectedRow();
         providersTable.setValueAt(value, row, column);  //update view
     }
-    
-    public void updateSectors(List<String> sectors) {
-        sectorComboBox.setModel(new DefaultComboBoxModel(new Vector<>(sectors)));
-    }
-    
-    public void updateProviders(List<String> names) {
-        providersAutoSuggestor.setSuggestions(names);
-    }
-    
-    
-    public void updateProviders(java.awt.event.ActionEvent evt) {
-        showAllProvidersActionPerformed(evt);
-    }
-    
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);

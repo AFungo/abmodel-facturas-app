@@ -196,11 +196,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
         viewMediator.updateProviderSuggestions();
         cleanTextField();
     }//GEN-LAST:event_addProviderActionPerformed
-    
-    public void updateSectors(List<String> sectors) {
-        sectorsAutoSuggestor.setSuggestions(sectors);
-    }
-    
+
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[] {providerAddressTextField, providerAliasTextField, providerDocTextField, providerNameTextField};        
         ViewUtils.cleanTextField(forClean);

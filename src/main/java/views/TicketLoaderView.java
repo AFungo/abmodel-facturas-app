@@ -660,17 +660,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
-    
 
-//TODO: delete this?
-    public void updateProviders(List<String> names) {
-        providersAutoSuggestor.setSuggestions(names);
-    }
-    
-    public void updateSectors(List<String> sectors) {
-        sectorsAutoSuggestor.setSuggestions(sectors);
-    }
-    
     private Controller controller;
     private AutoSuggestor providersAutoSuggestor;
     private AutoSuggestor sectorsAutoSuggestor;

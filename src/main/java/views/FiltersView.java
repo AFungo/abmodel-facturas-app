@@ -458,15 +458,7 @@ public class FiltersView extends javax.swing.JFrame {
         
         return selectedFilters;
     }
-        
-    public void updateSectors(List<String> sectors) {
-        sectorsAutoSuggestor.setSuggestions(sectors);
-    }//TODO: @nacho para q estan estos metodos?
-    
-    public void updateProviders(List<String> names) {
-        providersAutoSuggestor.setSuggestions(names);
-    }
-    
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
