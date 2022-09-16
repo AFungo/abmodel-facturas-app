@@ -10,16 +10,14 @@ import database.ProviderDAO;
 import filters.Comparison;
 import filters.Filter;
 import models.Provider;
+import models.Ticket;
 import utils.AutoSuggestor;
 import utils.FixedData;
 import views.utils.ViewMediator;
 import views.utils.ViewUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.swing.JTextField;
@@ -594,11 +592,11 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
 
         ticketValues.add(controller.loadWithholding(withholdingValues.toArray()));
-        controller.loadTicket(ticketValues.toArray());
+        Ticket ticket = controller.loadTicket(ticketValues.toArray());
         
         cleanTextFields();
         docNoComboBox.setSelectedIndex(-1);//clean provider doc no
-        updateLastTicketLoaded(ticketValues);
+        updateLastTicketLoaded(ticket);
     }//GEN-LAST:event_loadTicketActionPerformed
 
     private Float getIva(String... values) {
@@ -611,20 +609,17 @@ public class TicketLoaderView extends javax.swing.JFrame {
         return iva;
     }
 
-    private void updateLastTicketLoaded(List<Object> values){
-        throw new UnsupportedOperationException("TODO: Implemtar");
-        /*
-            showLastIvaTextField.setText(values.get("ivaTax"));
-            showLastProviderTextField.setText(values.get("name"));
-            showLastTicketNumberTextField.setText(values.get("number"));
-            showLastTypeTextField.setText(values.get("type"));
-            showLastTotalTextField.setText(values.get("totalAmount"));
-            showLastDateTextField1.setText(values.get("date"));
-            
-            Filter filter = FilterUtils.createTicketFilter(values);
-            Ticket ticket = controller.getTickets(filter).get(0);
-            showLastIDTextField1.setText(String.valueOf(ticket.getValues().get("id")));
-        */
+    private void updateLastTicketLoaded(Ticket ticket){
+            Map<String,Object> values = ticket.getValues();
+
+            showLastIDTextField1.setText((String)values.get("id"));
+            showLastIvaTextField.setText((String)values.get("ivaTax"));
+            showLastProviderTextField.setText((String)values.get("name"));
+            showLastTicketNumberTextField.setText((String)values.get("number"));
+            showLastTypeTextField.setText((String)values.get("type"));
+            showLastTotalTextField.setText((String)values.get("totalAmount"));
+            showLastDateTextField1.setText((String)values.get("date"));
+
     }
     
     private void cleanTextFields() {
@@ -666,6 +661,8 @@ public class TicketLoaderView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_providersComboBoxItemStateChanged
     
+
+//TODO: delete this?
     public void updateProviders(List<String> names) {
         providersAutoSuggestor.setSuggestions(names);
     }
