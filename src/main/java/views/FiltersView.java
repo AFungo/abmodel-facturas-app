@@ -38,11 +38,9 @@ public class FiltersView extends javax.swing.JFrame {
     /**
      * Creates new form FiltersView
      * @param controller
-     * @param ticketsTable
      */
-    public FiltersView(Controller controller, JTable ticketsTable, ViewMediator viewMediator) {
+    public FiltersView(Controller controller, ViewMediator viewMediator) {
         this.controller = controller;
-        this.ticketsTable = ticketsTable;
         this.viewMediator = viewMediator;
         initComponents();
         providersAutoSuggestor = viewMediator.getProviderAutosuggestor();
@@ -339,6 +337,7 @@ public class FiltersView extends javax.swing.JFrame {
 
     private void applyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
         currentFilters = readFilters();
+        JTable ticketsTable = viewMediator.getTicketTable();
 
         List<Ticket> tickets = controller.getTickets((Filter) currentFilters);
         List<Withholding> withholdings = controller.getWithholdings((Filter) currentFilters);
@@ -462,7 +461,7 @@ public class FiltersView extends javax.swing.JFrame {
         
     public void updateSectors(List<String> sectors) {
         sectorsAutoSuggestor.setSuggestions(sectors);
-    }
+    }//TODO: @nacho para q estan estos metodos?
     
     public void updateProviders(List<String> names) {
         providersAutoSuggestor.setSuggestions(names);
@@ -476,7 +475,6 @@ public class FiltersView extends javax.swing.JFrame {
     private ViewMediator viewMediator;
     private List<Filter> currentFilters;
     private Controller controller;
-    private JTable ticketsTable;
     private AutoSuggestor providersAutoSuggestor;
     private AutoSuggestor sectorsAutoSuggestor;
     // Variables declaration - do not modify//GEN-BEGIN:variables
