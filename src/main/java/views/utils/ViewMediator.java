@@ -49,6 +49,7 @@ public class ViewMediator {
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
         sectorsAutoSuggestor.autoSuggest();
 
+        mainView = new View(this.controller, this);
         providerLoader = new ProviderLoaderView(this.controller, this);
         filtersView = new FiltersView(this.controller, this);
         providersView = new ProvidersView(controller, this);
@@ -57,7 +58,6 @@ public class ViewMediator {
         withholdingLoaderView = new WithholdingLoaderView(this.controller, this);
         sectorsView = new SectorsView(this);
         providerLoader = new ProviderLoaderView(this.controller, this);
-        mainView = new View(this.controller, this);
     }
 
     public void setMainViewVisible(boolean visible){
