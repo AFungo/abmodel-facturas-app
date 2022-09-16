@@ -49,13 +49,12 @@ public class View extends JFrame {
      *
      * @param controller
      */
-    public View(Controller controller) {
+    public View(Controller controller, ViewMediator viewMediator) {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.controller = controller;
         initComponents();
-        viewMediator = new ViewMediator(controller, getTicketsTable());
+        this.viewMediator = viewMediator;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -473,7 +472,8 @@ public class View extends JFrame {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         // FIXME: Maybe we can update the suggestions only
-        //  when we know that a providers was added
+        //  when we know that a providers was added.
+        //TODO: I think the same, if we add a provider update suggestions and never be outdated
         viewMediator.updateProviderSuggestions();
         loadTicketsInTable();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -572,7 +572,6 @@ public class View extends JFrame {
         JTable toDelete = createToDeleteTable(row);
         int selection = JOptionPane.showConfirmDialog(this, new JScrollPane(toDelete), "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
-            //TODO: Maybe we can do it in the controller. is a lot of logic for a view
             String id = (String) ticketsTable.getValueAt(row, 0);
             Filter filter = new Filter("id", id, Comparison.EQUALS);
             String type = (String)ticketsTable.getValueAt(row, 2);
@@ -750,9 +749,7 @@ public class View extends JFrame {
         return selectedColumns;
     }
 
-    public JTable getTicketsTable() {
-        return ticketsTable;
-    }
+    public JTable getTicketsTable() { return ticketsTable; }
     
     private ViewMediator viewMediator;
     private Controller controller;
