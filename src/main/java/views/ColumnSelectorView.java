@@ -19,16 +19,12 @@ public class ColumnSelectorView extends javax.swing.JFrame {
 
     /**
      * Creates new form ColumnSelector
-     * @param ticketsTable
-     * @param providersTable
+     * @param viewMediator
      */
 
-    //TODO:I don't like we use a lot of parameters in the constructor of the view. We can do it better
-    public ColumnSelectorView(JTable ticketsTable, JTable providersTable, ViewMediator viewMediator) {
+    public ColumnSelectorView(ViewMediator viewMediator) {
 
         this.viewMediator = viewMediator;
-        this.ticketsTable = ticketsTable;//TODO: is better use viewMediator.getTicketsTable() ? return JTable. In view mediator only search for JTable in main view
-        this.providersTable = providersTable;//TODO: The same of the previus variable
         this.config = ConfigManager.readConfig();
         initComponents();
         applyButtonActionPerformed(null);
@@ -278,6 +274,9 @@ public class ColumnSelectorView extends javax.swing.JFrame {
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
         boolean[] ticketColumns = getTicketSelectedColumns();
         boolean[] providerColumns = getProviderSelectedColumns();
+        JTable ticketsTable = viewMediator.getTicketTable();
+        JTable providersTable = viewMediator.getProviderTable();
+
         applyChanges(ticketsTable, ticketColumns);
         updateTicketConfig();
         applyChanges(providersTable, providerColumns);
@@ -378,8 +377,6 @@ public class ColumnSelectorView extends javax.swing.JFrame {
     }
 
     private ViewMediator viewMediator;
-    private JTable providersTable;
-    private JTable ticketsTable;
     private Map<String, Boolean> config;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox aliasCheckBox;
