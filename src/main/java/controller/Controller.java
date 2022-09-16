@@ -52,8 +52,8 @@ public class Controller {
         ModelBuilder.buildDollarPricesFromData(data);
     }
 
-    public void loadTicket(Object[] values) {
-        ModelBuilder.buildTicket(values);
+    public Ticket loadTicket(Object[] values) {
+        return ModelBuilder.buildTicket(values);
     }
 
     public Withholding loadWithholding(Object[] values) {
