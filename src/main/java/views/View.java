@@ -49,9 +49,10 @@ public class View extends JFrame {
      *
      * @param controller
      */
-    public View(Controller controller, ViewMediator viewMediator) {
+    public View(Controller controller, ViewMediator viewMediator, JTable ticketsTable) {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.controller = controller;
+        this.ticketsTable = ticketsTable;
         initComponents();
         this.viewMediator = viewMediator;
     }
@@ -80,7 +81,6 @@ public class View extends JFrame {
         loadBackup = new JMenuItem();
         createPDFMenuItem = new JMenuItem();
         ticketsTableScroll = new JScrollPane();
-        ticketsTable = new javax.swing.JTable();
         total = new javax.swing.JTextField();
         ivaTaxTextField = new JTextField();
         calculateButton = new JButton();
@@ -441,7 +441,7 @@ public class View extends JFrame {
 
     //show providers if any
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
-        viewMediator.setProviderLoaderVisible(true);
+        viewMediator.setViewVisible(true, "providerLoader");
         viewMediator.updateProviderSuggestions();
         
     }//GEN-LAST:event_showProvidersActionPerformed
@@ -457,7 +457,7 @@ public class View extends JFrame {
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
-        viewMediator.setFiltersViewVisible(true);
+        viewMediator.setViewVisible(true, "filtersView");
         viewMediator.updateFiltersSuggestions();
     }//GEN-LAST:event_filtersActionPerformed
 
@@ -480,7 +480,7 @@ public class View extends JFrame {
     }//GEN-LAST:event_loadTicketsActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
-        viewMediator.setTicketLoaderVisible(true);
+        viewMediator.setViewVisible(true, "ticketLoader");
         viewMediator.updateTicketLoaderSuggestions();
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
@@ -496,7 +496,7 @@ public class View extends JFrame {
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
     private void columnSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectorActionPerformed
-        viewMediator.setColumnSelectorVisible(true);
+        viewMediator.setViewVisible(true, "columnSelector");
     }//GEN-LAST:event_columnSelectorActionPerformed
 
     private void resetDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDBButtonActionPerformed
@@ -507,7 +507,7 @@ public class View extends JFrame {
     }//GEN-LAST:event_resetDBButtonActionPerformed
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
-        viewMediator.setSectorsViewVisible(true);
+        viewMediator.setViewVisible(true, "sectorsView");
         viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
 
@@ -553,13 +553,13 @@ public class View extends JFrame {
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
     private void loadWithholdingManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingManuallyActionPerformed
-        viewMediator.setWithholdingLoaderVisible(true);
+        viewMediator.setViewVisible(true, "withholdingLoader");
         viewMediator.updateProviderSuggestions();
         viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
 
     private void viewMoreCalculusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMoreCalculusButtonActionPerformed
-        viewMediator.setCalculusViewVisible(true);
+        viewMediator.setViewVisible(true, "calculusView");
     }//GEN-LAST:event_viewMoreCalculusButtonActionPerformed
 
     private void ticketsTableMousePressed(MouseEvent evt) {//GEN-FIRST:event_ticketsTableMousePressed
@@ -600,7 +600,7 @@ public class View extends JFrame {
     }
     
     private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed
-        viewMediator.setProviderLoaderVisible(true);
+        viewMediator.setViewVisible(true, "providerLoader");
     }//GEN-LAST:event_addProviderMenuItemActionPerformed
 
     private void deleteSectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorMenuItemActionPerformed
@@ -610,7 +610,7 @@ public class View extends JFrame {
             String id = (String) ticketsTable.getValueAt(row, 0);
             Filter filter = new Filter("id", id, Comparison.EQUALS);
 
-            controller.deleteWithholdingAttribute(filter, "sector");
+            controller.updateWithholdings(filter, "sector", null);
             ticketsTable.setValueAt(null, row, 14);   //column 14 is for sector
         }
     }//GEN-LAST:event_deleteSectorMenuItemActionPerformed

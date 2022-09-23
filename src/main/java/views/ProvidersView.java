@@ -20,10 +20,7 @@ import utils.Validate;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.io.FilenameUtils;
 import views.utils.ViewMediator;
@@ -38,10 +35,10 @@ public class ProvidersView extends JFrame {
      * Creates new form ProvidersView
      * @param controller
      */
-    public ProvidersView(Controller controller, ViewMediator viewMediator) {
-
+    public ProvidersView(Controller controller, ViewMediator viewMediator, JTable providersTable) {
         this.viewMediator = viewMediator;
         this.controller = controller;
+        this.providersTable = providersTable;
         initComponents();
         providersAutoSuggestor = viewMediator.getProviderAutosuggestor();
         providersAutoSuggestor.autoSuggest();
@@ -73,7 +70,6 @@ public class ProvidersView extends JFrame {
         deleteProvider = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        providersTable = new javax.swing.JTable();
         searchProvider = new javax.swing.JButton();
         comboBox = new javax.swing.JComboBox<>();
         showAllProviders = new javax.swing.JButton();
@@ -349,7 +345,7 @@ public class ProvidersView extends JFrame {
         if (selection == JOptionPane.OK_OPTION) {
             int row = providersTable.getSelectedRow();
             Filter filter = new Filter("docNo", selectedDoc, Comparison.EQUALS);
-            controller.deleteProviderAttribute(filter, "sector");
+            controller.updateProvider(filter, "sector", null);
             providersTable.setValueAt(null, row, 5);   //column 5 is for sector
         }
     }//GEN-LAST:event_deleteSectorActionPerformed

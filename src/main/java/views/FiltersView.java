@@ -337,7 +337,7 @@ public class FiltersView extends javax.swing.JFrame {
 
     private void applyFiltersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appyFiltersActionPerformed
         currentFilters = readFilters();
-        JTable ticketsTable = viewMediator.getTicketTable();
+        JTable ticketsTable = viewMediator.getTable("ticketsTable");
 
         List<Ticket> tickets = controller.getTickets((Filter) currentFilters);
         List<Withholding> withholdings = controller.getWithholdings((Filter) currentFilters);

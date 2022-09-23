@@ -274,8 +274,8 @@ public class ColumnSelectorView extends javax.swing.JFrame {
     private void applyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyButtonActionPerformed
         boolean[] ticketColumns = getTicketSelectedColumns();
         boolean[] providerColumns = getProviderSelectedColumns();
-        JTable ticketsTable = viewMediator.getTicketTable();
-        JTable providersTable = viewMediator.getProviderTable();
+        JTable ticketsTable = viewMediator.getTable("ticketsTable");
+        JTable providersTable = viewMediator.getTable("providersTable");
 
         applyChanges(ticketsTable, ticketColumns);
         updateTicketConfig();

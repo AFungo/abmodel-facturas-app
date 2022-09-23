@@ -410,7 +410,7 @@ public class WithholdingLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_providersComboBoxItemStateChanged
 
     private void addProviderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderActionPerformed
-        viewMediator.setProviderLoaderVisible(true);
+        viewMediator.setViewVisible(true, "providerLoader");
     }//GEN-LAST:event_addProviderActionPerformed
     private void cleanTextField(){
         JTextField[] forClean = new JTextField[]{numberTextField, ivaTextField, profitsTextField};

@@ -639,7 +639,7 @@ public class TicketLoaderView extends javax.swing.JFrame {
     }//GEN-LAST:event_exchangeMoneyComboBoxActionPerformed
 
     private void addProviderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderButtonActionPerformed
-        viewMediator.setProviderLoaderVisible(true);
+        viewMediator.setViewVisible(true, "providerLoader");
     }//GEN-LAST:event_addProviderButtonActionPerformed
 
     private void providersComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_providersComboBoxItemStateChanged

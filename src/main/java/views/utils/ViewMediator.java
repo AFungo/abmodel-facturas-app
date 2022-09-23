@@ -2,8 +2,10 @@ package views.utils;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,6 +30,8 @@ public class ViewMediator {
     private JComboBox sectorsComboBox;
 
     //views
+    Map<String,JFrame> views;
+    Map<String,JTable> tables;
     private CalculusView calculusView;
     private ColumnSelectorView columnSelectorView;
     private FiltersView filtersView;
@@ -49,15 +53,29 @@ public class ViewMediator {
         sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
         sectorsAutoSuggestor.autoSuggest();
 
-        mainView = new View(this.controller, this);
+        views = new HashMap<>();
+        tables = new HashMap<>();
+
+        tables.put("ticketsTable", new javax.swing.JTable());
+        mainView = new View(this.controller, this, tables.get("ticketsTable"));
+        views.put("mainView", mainView);
         providerLoader = new ProviderLoaderView(this.controller, this);
+        views.put("providerLoader", providerLoader);
         filtersView = new FiltersView(this.controller, this);
-        providersView = new ProvidersView(controller, this);
+        views.put("filtersView", filtersView);
+        tables.put("providersTable", new javax.swing.JTable());
+        providersView = new ProvidersView(controller, this, tables.get("providersTable"));
+        views.put("providersView", providersView);
         columnSelectorView = new ColumnSelectorView(this);
+        views.put("columnSelectorView", columnSelectorView);
         ticketLoaderView = new TicketLoaderView(this.controller, this);
+        views.put("ticketLoaderView", ticketLoaderView);
         withholdingLoaderView = new WithholdingLoaderView(this.controller, this);
+        views.put("withholdingLoaderView", withholdingLoaderView);
         sectorsView = new SectorsView(this);
+        views.put("sectorsView", sectorsView);
         providerLoader = new ProviderLoaderView(this.controller, this);
+        views.put("providerLoader", providerLoader);
     }
 
     public void setMainViewVisible(boolean visible){
@@ -82,20 +100,18 @@ public class ViewMediator {
         return sectorsAutoSuggestor;
     }
 
-    //TODO: maybe we can do a single method with a switch for setting visible each view
-    public void setProviderLoaderVisible(boolean visible){ providerLoader.setVisible(visible); }
-
-    public void setFiltersViewVisible(boolean visible){ filtersView.setVisible(visible); }
-
-    public void setTicketLoaderVisible(boolean visible){ ticketLoaderView.setVisible(visible); }
-
-    public void setColumnSelectorVisible(boolean visible){ columnSelectorView.setVisible(visible); }
-
-    public void setSectorsViewVisible(boolean visible){ sectorsView.setVisible(visible); }
-
-    public void setWithholdingLoaderVisible(boolean visible){ withholdingLoaderView.setVisible(visible); }
-
-    public void setCalculusViewVisible(boolean visible){ calculusView.setVisible(visible); }
+    /**
+     * sets visible or not the view with the given view name, in case there is no such view an exception is thrown
+     * @param visible indicates to hide or show the view
+     * @param viewName is the name identifier to search the view
+     */
+    public void setViewVisible(boolean visible, String viewName) {
+        JFrame view = views.get(viewName);
+        if (view == null) {
+            throw new IllegalArgumentException("there is no view registered as " + viewName);
+        }
+        view.setVisible(visible);
+    }
 
     public void updateProviderSuggestions() {
         providersAutoSuggestor.setSuggestions(getProvidersName());
@@ -117,9 +133,18 @@ public class ViewMediator {
         return filtersView.getFilters().toArray(new Filter[0]);
     }
 
-    public JTable getTicketTable(){return mainView.getTicketsTable();}
-
-    public JTable getProviderTable(){return providersView.getTable();}
+    /**
+     * gets the table with the given table name, in case there is no such table an exception is thrown
+     * @param tableName is the name identifier to search the table
+     * @return the table with that table name
+     */
+    public JTable getTable(String tableName) {
+        JTable table = tables.get(tableName);
+        if (table == null) {
+            throw new IllegalArgumentException("there is no table registered as " + tableName);
+        }
+        return table;
+    }
 
     /*
      * return the name of all providers
