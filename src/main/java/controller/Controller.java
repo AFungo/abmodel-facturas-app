@@ -136,15 +136,6 @@ public class Controller {
         }
     }
 
-    // TODO: this method and the previous one can be the save, indeed we can generefy it taking a Map instead of
-    //  one attribute and one value.
-    public void deleteWithholdingAttribute(Filter filter, String attribute) {
-        ModelSet<Withholding> withholdings = Filter.applyFilters(WithholdingDAO.getInstance().getAll(), filter);
-        for (Withholding w : withholdings) {
-            WithholdingDAO.getInstance().update(w, Collections.singletonMap(attribute, null));
-        }
-    }
-
     public void updateProvider(Filter filter, String attribute, String value) {
         ModelSet<Provider> providers = Filter.applyFilters(ProviderDAO.getInstance().getAll(), filter);
         for (Provider p : providers) {
@@ -158,13 +149,6 @@ public class Controller {
         return optionalProvider.filter(provider -> ProviderDAO.getInstance()
                         .update(provider, Collections.singletonMap("docNo", newDoc)))
                 .isPresent();
-    }
-
-    public void deleteProviderAttribute(Filter filter, String attribute) {
-        ModelSet<Provider> providers = Filter.applyFilters(ProviderDAO.getInstance().getAll(), filter);
-        for (Provider p : providers) {
-            ProviderDAO.getInstance().update(p, Collections.singletonMap(attribute, null));
-        }
     }
 
     /**

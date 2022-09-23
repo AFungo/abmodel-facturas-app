@@ -116,7 +116,7 @@ public class ModelBuilder {
             if (providerOptional.isPresent()) {
                 return providerOptional.get();
             } else {
-                throw new IllegalStateException("The provider could not be saved but also not obtained");
+                throw new IllegalStateException("The provider could not be saved nor obtained");
             }
         }
         return provider;
