@@ -24,8 +24,9 @@ public class SectorsView extends javax.swing.JFrame {
     public SectorsView(ViewMediator viewMediator) {
         initComponents();
         this.viewMediator = viewMediator;
-        sectorsAutoSuggestor = viewMediator.getSectorAutosuggestor();
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, viewMediator.getSectorsName());
         sectorsAutoSuggestor.autoSuggest();
+        viewMediator.getAutoSuggestorManager().registerSectorAutoSuggestor(sectorsAutoSuggestor);
     }
          
     /**

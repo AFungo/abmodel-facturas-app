@@ -24,7 +24,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -43,23 +42,15 @@ public class FiltersView extends javax.swing.JFrame {
         this.controller = controller;
         this.viewMediator = viewMediator;
         initComponents();
-        providersAutoSuggestor = viewMediator.getProviderAutosuggestor();
+        providersAutoSuggestor = new AutoSuggestor(providersComboBox, viewMediator.getProvidersName());
         providersAutoSuggestor.autoSuggest();
-        sectorsAutoSuggestor = viewMediator.getSectorAutosuggestor();
+        viewMediator.getAutoSuggestorManager().registerProviderAutoSuggestor(providersAutoSuggestor);
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, viewMediator.getSectorsName());
         sectorsAutoSuggestor.autoSuggest();
+        viewMediator.getAutoSuggestorManager().registerSectorAutoSuggestor(sectorsAutoSuggestor);
         currentFilters = new LinkedList<>();
     }
     
-    public void updateSuggestions() {
-        providersAutoSuggestor.setSuggestions(
-                ProviderDAO.getInstance().getAll().stream()
-                        .map(p -> (String)p.getValues().get("name")).collect(Collectors.toList()));
-        sectorsAutoSuggestor.setSuggestions(
-                SectorDAO.getInstance().getAll().stream()
-                        .map(s -> (String)s.getValues().get("name"))
-                        .collect(Collectors.toList()));
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

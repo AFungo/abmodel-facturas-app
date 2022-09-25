@@ -42,7 +42,7 @@ public class AutoSuggestor {
 
     /**
      * Add a new list of suggestion to the autoAuggestor
-     * @param suggestion list of the new suggestions
+     * @param suggestions list of the new suggestions
      */ 
     public void setSuggestions(List<String> suggestions) {
         SortedSet<String> sortedSuggestions = new TreeSet<>(suggestions);

@@ -48,11 +48,6 @@ public class TicketLoaderView extends javax.swing.JFrame {
 
     }
     
-    public void updateSuggestions() {
-        providersAutoSuggestor.setSuggestions(getProvidersName());
-        sectorsAutoSuggestor.setSuggestions(getSectorsName());
-    }
-    
     private List<String> getProvidersName() {
         List<String> names = new LinkedList<>();
         for (Provider p : controller.getProviders()) {

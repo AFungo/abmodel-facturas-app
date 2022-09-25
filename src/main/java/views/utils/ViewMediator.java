@@ -17,6 +17,7 @@ import filters.Filter;
 import logger.Handler;
 import models.Provider;
 import utils.AutoSuggestor;
+import utils.AutoSuggestorManager;
 import views.*;
 
 public class ViewMediator {
@@ -24,10 +25,7 @@ public class ViewMediator {
     private Controller controller;
     
     //Autosugestors
-    private AutoSuggestor providersAutoSuggestor;
-    private AutoSuggestor sectorsAutoSuggestor;
-    private JComboBox providersComboBox;
-    private JComboBox sectorsComboBox;
+    private AutoSuggestorManager autoSuggestorManager;
 
     //views
     Map<String,JFrame> views;
@@ -46,12 +44,7 @@ public class ViewMediator {
     public ViewMediator(Controller controller){
         this.controller = controller;
 
-        providersComboBox = new JComboBox();
-        providersAutoSuggestor = new AutoSuggestor(providersComboBox, getProvidersName());
-        providersAutoSuggestor.autoSuggest();
-        sectorsComboBox = new JComboBox();
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
-        sectorsAutoSuggestor.autoSuggest();
+        autoSuggestorManager = new AutoSuggestorManager();
 
         views = new HashMap<>();
         tables = new HashMap<>();
@@ -92,14 +85,6 @@ public class ViewMediator {
         });
     }
 
-    public AutoSuggestor getProviderAutosuggestor(){
-        return providersAutoSuggestor;
-    }
-
-    public AutoSuggestor getSectorAutosuggestor(){
-        return sectorsAutoSuggestor;
-    }
-
     /**
      * sets visible or not the view with the given view name, in case there is no such view an exception is thrown
      * @param visible indicates to hide or show the view
@@ -114,15 +99,11 @@ public class ViewMediator {
     }
 
     public void updateProviderSuggestions() {
-        providersAutoSuggestor.setSuggestions(getProvidersName());
+        autoSuggestorManager.updateProviderSuggestions(getProvidersName());
     }
 
-    public void updateFiltersSuggestions() { filtersView.updateSuggestions(); }
-
-    public void updateTicketLoaderSuggestions() { ticketLoaderView.updateSuggestions(); }
-
     public void updateSectorSuggestions() {
-        sectorsAutoSuggestor.setSuggestions(getSectorsName());
+        autoSuggestorManager.updateSectorSuggestions(getSectorsName());
     }
 
     /**
@@ -146,16 +127,18 @@ public class ViewMediator {
         return table;
     }
 
+    public AutoSuggestorManager getAutoSuggestorManager() { return autoSuggestorManager; }
+
     /*
      * return the name of all providers
      */
-    private List<String> getProvidersName() {
+    public List<String> getProvidersName() {
         return controller.getProviders().stream().map(s -> (String) s.getValues().get("name")).collect(Collectors.toList());
     }
     /*
      * return the name of all sectors
      */
-    private List<String> getSectorsName() {
+    public List<String> getSectorsName() {
         return controller.getSector().stream().map(s -> (String)s.getValues().get("name")).collect(Collectors.toList());
     }
 

@@ -7,7 +7,6 @@ import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.sql.Date;
 import java.text.DecimalFormat;
@@ -458,7 +457,6 @@ public class View extends JFrame {
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
         viewMediator.setViewVisible(true, "filtersView");
-        viewMediator.updateFiltersSuggestions();
     }//GEN-LAST:event_filtersActionPerformed
 
     private void loadTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsActionPerformed
@@ -481,7 +479,6 @@ public class View extends JFrame {
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
         viewMediator.setViewVisible(true, "ticketLoader");
-        viewMediator.updateTicketLoaderSuggestions();
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
     private void loadDollarValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarValueActionPerformed
@@ -749,8 +746,6 @@ public class View extends JFrame {
         return selectedColumns;
     }
 
-    public JTable getTicketsTable() { return ticketsTable; }
-    
     private ViewMediator viewMediator;
     private Controller controller;
     // Variables declaration - do not modify//GEN-BEGIN:variables

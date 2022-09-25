@@ -12,7 +12,6 @@ import views.utils.ViewMediator;
 import views.utils.ViewUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -29,16 +28,10 @@ public class ProviderLoaderView extends javax.swing.JFrame {
     public ProviderLoaderView(Controller controller, ViewMediator viewMediator) {
         initComponents();
         this.controller = controller;
-        this.viewMediator = viewMediator; 
-        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, getSectorsName());
+        this.viewMediator = viewMediator;
+        sectorsAutoSuggestor = new AutoSuggestor(sectorsComboBox, viewMediator.getSectorsName());
         sectorsAutoSuggestor.autoSuggest();
-    }
-    
-     private List<String> getSectorsName() {
-        return controller.getSector().stream().map(s -> (String)s.getValues().get("name")).collect(Collectors.toList());
-    }
-    public void updateSuggestions() {
-        sectorsAutoSuggestor.setSuggestions(getSectorsName());
+        viewMediator.getAutoSuggestorManager().registerSectorAutoSuggestor(sectorsAutoSuggestor);
     }
     
     /**
@@ -177,7 +170,7 @@ public class ProviderLoaderView extends javax.swing.JFrame {
         values.add(providerDocTypeComboBox.getSelectedItem().toString());
         values.add(providerDocTextField.getText());
         values.add(providerNameTextField.getText());
-        values.add((String) sectorsComboBox.getSelectedItem());//may be null
+        values.add(sectorsComboBox.getSelectedItem());//may be null
         values.add(null);
         values.add(providerAddressTextField.getText()); // may be null
         values.add(providerAliasTextField.getText());      //may be null

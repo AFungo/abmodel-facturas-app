@@ -40,15 +40,11 @@ public class ProvidersView extends JFrame {
         this.controller = controller;
         this.providersTable = providersTable;
         initComponents();
-        providersAutoSuggestor = viewMediator.getProviderAutosuggestor();
+        providersAutoSuggestor = new AutoSuggestor(providersComboBox, viewMediator.getProvidersName());
         providersAutoSuggestor.autoSuggest();
+        viewMediator.getAutoSuggestorManager().registerProviderAutoSuggestor(providersAutoSuggestor);
     }
     
-
-    public javax.swing.JTable getTable() {
-        return providersTable;
-    }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,7 +67,7 @@ public class ProvidersView extends JFrame {
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         searchProvider = new javax.swing.JButton();
-        comboBox = new javax.swing.JComboBox<>();
+        providersComboBox = new javax.swing.JComboBox<>();
         showAllProviders = new javax.swing.JButton();
         createPdf = new javax.swing.JButton();
 
@@ -224,7 +220,7 @@ public class ProvidersView extends JFrame {
                 .addContainerGap(85, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(63, 63, 63))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(createPdf)
@@ -242,7 +238,7 @@ public class ProvidersView extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchProvider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(showAllProviders)
@@ -433,7 +429,7 @@ public class ProvidersView extends JFrame {
     private String selectedDoc;
     private ViewMediator viewMediator;
     
-    private javax.swing.JComboBox<String> comboBox;
+    private javax.swing.JComboBox<String> providersComboBox;
     private javax.swing.JButton createPdf;
     private javax.swing.JMenuItem deleteProvider;
     private javax.swing.JMenuItem deleteSector;
