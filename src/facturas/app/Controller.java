@@ -34,6 +34,7 @@ import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.Consumer;
@@ -66,15 +67,27 @@ public class Controller {
             }
             backupLock.unlock();
             backupLock.lock();
-            tickets.forEach((ticket) -> {
+            for(Ticket ticket : tickets) {
                 try {
                     createTicketOnDB(ticket);
                 } catch (IllegalStateException ex) {//if the exception is not for repeated item throw it
-                    if (!ex.getMessage().contains("<23505> duplicate item")) {
+                    if (ex.getMessage().contains("<23505> duplicate item")) {
+                        SQLFilter filter = new SQLFilter();
+                        filter.add("date", "=", ticket.getValues().get("date"), Date.class);
+                        filter.add("number", "=", ticket.getValues().get("number"), String.class);
+                        filter.add("providerDoc", "=", ((Provider)ticket.getValues().get("provider")).getValues().get("docNo"), String.class);
+                        List<Ticket> ticketList = getTickets(filter);
+                        Ticket savedTicket = ticketList.get(0);
+                        if (!((Float)savedTicket.getValues().get("totalAmount")).equals((Float)ticket.getValues().get("totalAmount"))) {
+                            SQLFilter ticketFilter = new SQLFilter();
+                            ticketFilter.add("id", "=", savedTicket.getValues().get("id"), Integer.class);
+                            TicketDAO.update(ticketFilter, "totalAmount", ((Float)ticket.getValues().get("totalAmount")).toString(), false);
+                        }
+                    } else {
                         throw ex;
                     }
                 }
-            });
+            }
         } catch (Exception ex) {
             backupLock.fail(ex);
         } finally {
@@ -155,7 +168,10 @@ public class Controller {
 
     public List<Ticket> getTickets(SQLFilter filters) {
         if (filters.isEmpty()) return TicketDAO.get();
-        else return TicketDAO.get(filters);            
+        else {
+            List<Ticket> tickets = TicketDAO.get(filters);
+            return tickets;
+        }
     }
 
     public List<Withholding> getWithholdings(SQLFilter selectedFilters) {
