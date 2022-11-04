@@ -8,10 +8,8 @@ import databaserefactor.ProviderDAO;
 import databaserefactor.SectorDAO;
 import databaserefactor.TicketDAO;
 import databaserefactor.WithholdingDAO;
-import utils.Parser;
 import utils.csv.*;
 
-import java.sql.Date;
 
 import models.DollarPrice;
 import models.Provider;
@@ -19,13 +17,13 @@ import models.Sector;
 import models.Ticket;
 import models.Withholding;
 
-public class ModelBuilder {
+public class AFIPLoader {
 
     private final static String[] AFIPTransmitterHeader = {"Fecha","Tipo","Punto de Venta","Número Desde","Número Hasta","Cód. Autorización","Tipo Doc. Emisor","Nro. Doc. Emisor","Denominación Emisor","Tipo Cambio","Moneda","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"};
     private final static String[] AFIPReceiverHeader = {"Fecha","Tipo","Punto de Venta","Número Desde","Número Hasta","Cód. Autorización","Tipo Doc. Receptor","Nro. Doc. Receptor","Denominación Receptor","Tipo Cambio","Moneda","Imp. Neto Gravado","Imp. Neto No Gravado","Imp. Op. Exentas","IVA","Imp. Total"};
 
     /**
-     * Crates the models from the info given from a file and saves them in database
+     * Crates the models from the info given from a AFIP file and saves them in database
      * @param file tickets csv AFIP file
      */
     public static void buildFromAFIPFile(File file) {
@@ -42,40 +40,37 @@ public class ModelBuilder {
 
         //for each string[] get the values create the models and put it in the values
         for( int i = 1; i <= files.length; i++) {
-            Provider provider = buildProvider(files[i][7], files[i][8], files[i][9]);;
-            
-            Withholding withholding = buildWithholding(files[i][0], files[i][1], files[i][2] + files[i][3],
-                    provider);//files[i][2] + files[i][3] create the number of ticket/withholding
-
-            buildTicket(withholding, files[i][0], files[i][4], files[i][5], files[i][9], files[i][10], files[i][11],
-                    files[i][12], files[i][13], files[i][14], files[i][15], issuedByMe);
+            String[] f = files[i];
+            build(f, issuedByMe);
         }
     }
-    
+
     /*
-     * This method take a Object[] with params of the ticket, then build the ticket try to save it in the db
+    * this method take a String[] of values and create a new ticket
+     */
+    private static void build(String[] line, boolean issuedByMe){
+        ProviderBuilder providerBuilder = new ProviderBuilder();
+        Provider provider = (Provider)providerBuilder.build(line[7], line[8], line[9]);
+        provider = saveProvider(provider);
+
+        WithholdingBuilder withholdingBuilder = new WithholdingBuilder();
+        Withholding withholding = (Withholding) withholdingBuilder.build(line[0], line[1], line[2] + line[3],
+                provider);//files[i][2] + files[i][3] create the number of ticket/withholding
+        withholding = saveWithholding(withholding);
+
+        TicketBuilder ticketBuilder = new TicketBuilder();
+        Ticket ticket = (Ticket) ticketBuilder.build(withholding, line[0], line[4], line[5], line[9], line[10], line[11],
+                line[12], line[13], line[14], line[15], issuedByMe);
+        saveTicket(ticket);
+    }
+
+
+
+    /*
+     * this method take a ticket, and try to save it, if its already exist return db value;
      * and return it
      */
-    private static Ticket buildTicket(Object... data){
-        Withholding withholding = (Withholding)data[0];
-
-        Map<String, Object> ticketValues = new HashMap<String, Object>(){{
-            put("withholding", withholding);
-            put("type", (String) data[1]);
-            put("numberTo", (String) data[2]);
-            put("authCode", (String) data[3]);
-            put("exchangeType", Float.parseFloat((String) data[4]));
-            put("exchangeMoney", (String) data[5]);
-            put("netAmountWI", Float.parseFloat((String) data[6]));
-            put("netAmountWOI", Parser.parseFloat((String)data[7]));
-            put("amountImpEx", Parser.parseFloat((String)data[8]));
-            put("ivaTax", Parser.parseFloat((String)data[9]));
-            put("totalAmount", Float.parseFloat((String)data[10]));
-            put("issuedByMe", (Boolean) data[11]);
-        }};
-
-        Ticket ticket = new Ticket(ticketValues);
-        
+    private static Ticket saveTicket(Ticket ticket){
         if (!TicketDAO.getInstance().save(ticket)) {
             Optional<Ticket> ticketOptional = TicketDAO.getInstance().getAll().stream()
                     .filter(p -> p.getID().equals(ticket.getID()))
@@ -90,31 +85,9 @@ public class ModelBuilder {
     }
 
     /*
-     * this method takes a Object[] with the data of a withholding, build, try to save it in the db and return it
+     * this method take a withholding, and try to save it, if its already exist return db value;
      */
-    private static Withholding buildWithholding(Object... data){
-        Sector sector = (Sector) ProviderDAO.getInstance().getAll().stream()
-                        .filter(p -> p.getID().equals(((Provider)data[0]).getID()))
-                        .findFirst().get().getValues().get("sector");
-        
-        Map<String, Object> withholdingValues = new HashMap<String, Object>(){{
-            put("provider", data[0]);
-            put("date", Date.valueOf((String)data[1]));
-            put("number", (String) data[2]);
-
-            put("sector", sector);
-            if(data.length >= 8){
-                put("iva", data[3]);
-                put("profits", data[4]);
-                put("delivered", data[5]);
-                put("delivered", data[6]);
-                if(data[6] != null) put("sector", data[7]);
-                if(data.length == 9) put("id", data[8]);
-            }
-        }};
-
-        Withholding withholding = new Withholding(withholdingValues);
-        
+    private static Withholding saveWithholding(Withholding withholding){
         if (!WithholdingDAO.getInstance().save(withholding)) {
             Optional<Withholding> withholdingOptional = WithholdingDAO.getInstance().getAll().stream()
                     .filter(p -> p.getID().equals(withholding.getID()))
@@ -129,23 +102,9 @@ public class ModelBuilder {
     }
 
     /*
-     * this method take a String[], build a provider with the data, try to save it in the db and return it;
+     * this method take a provider, and try to save it, if its already exist return db value;
      */
-    private static Provider buildProvider(String... data) {
-        String[] values = (String[]) Arrays.stream(data).toArray();
-
-        Map<String, Object> providerValues = new HashMap<String, Object>(){{
-            put("docType", values[0]);
-            put("docNo", values[1]);
-            put("name", values[2]);
-            if (values.length == 6) {
-                put("address", values[3]);
-                put("sector", values[4]);
-                put("alias", values[5]);
-            }
-        }};
-
-        Provider provider = new Provider(providerValues);
+    private static Provider saveProvider(Provider provider) {
         if (!ProviderDAO.getInstance().save(provider)) {
             Optional<Provider> providerOptional = ProviderDAO.getInstance().getAll().stream()
                     .filter(p -> p.getID().equals(provider.getID()))
@@ -159,21 +118,12 @@ public class ModelBuilder {
         return provider;
     }
 
-    /**
-     * this method take a String[], build a dollarPrice with the data, try to save it in the db and return it;
-     * @param data the data of dollar price to be saved
+    /*
+     * this method take a dollar price, and try to save it, if its already exist return db value;
+     * @param dollar price to be saved
      * @return dollar price
      */
-    public static DollarPrice buildDollarPrice(Object... data){
-        List<String> attributes = DollarPrice.getAttributes();
-        Map<String,Object> values = new HashMap<String,Object>();
-        int i = 0;
-        for(String attribute : attributes){
-            values.put(attribute, data[i]);
-            i++;
-        }
-        DollarPrice dollarPrice = new DollarPrice(values);
-
+    private static DollarPrice saveDollarPrice(DollarPrice dollarPrice){
         if (!DollarPriceDAO.getInstance().save(dollarPrice)) {
             Optional<DollarPrice> dollarPriceOptional = DollarPriceDAO.getInstance().getAll().stream()
                     .filter(p -> p.getID().equals(dollarPrice.getID()))
@@ -187,21 +137,12 @@ public class ModelBuilder {
         return dollarPrice;
     }
 
-    /**
-     * this method take a String[], build a sector with the data, try to save it in the db and return it;
-     * @param data the data of sector to be saved
+    /*
+     * this method take a sector, and try to save it, if its already exist return db value;
+     * @param sector we want save in db
      * @return sector
      */
-    public static Sector buildSector(Object... data){
-        List<String> attributes = Sector.getAttributes();
-        Map<String,Object> values = new HashMap<String,Object>();
-        int i = 0;
-        for(String attribute : attributes){
-            values.put(attribute, data[i]);
-            i++;
-        }
-        Sector sector = new Sector(values);
-
+    private static Sector saveSector(Sector sector){
         if (!SectorDAO.getInstance().save(sector)) {
             Optional<Sector> sectorOptional = SectorDAO.getInstance().getAll().stream()
                     .filter(p -> p.getID().equals(sector.getID()))
