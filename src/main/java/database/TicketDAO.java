@@ -44,7 +44,7 @@ public class TicketDAO extends DAO {
      * @return a list of all tickets
      */
     public static List<Ticket> get() {
-        String query = "SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.id = Withholding.id";
+        String query = "SELECT * FROM Withholding INNER JOIN Ticket ON Ticket.withholding = Withholding.id";
         ResultSet result = executeQuery(query, false, true);
         List<Ticket> ticketsList = getTicketsList(result);
         return ticketsList;
