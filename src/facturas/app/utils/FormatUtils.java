@@ -74,7 +74,7 @@ public class FormatUtils {
      * @return a map from String to String of the ticket data
      */
     public static Map<String, String> ticketCsvToDict(String strTicket, boolean issuedByMe) {
-        strTicket = strTicket.substring(1, strTicket.length() - 2); //remove first and last " symbol
+        strTicket = strTicket.substring(1, strTicket.length() - 1); //remove first and last " symbol
         String[] data = strTicket.split("\",\"");       //split by "," so we don't get in trouble with names containing ,
         Map<String, String> dict = new HashMap<>();
         
