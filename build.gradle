@@ -9,22 +9,25 @@ task run(type: JavaExec) {
     main('FacturasApp')
 }
 
-jar {
-    manifest {
-        attributes "Main-Class": "FacturasApp"
-    }
-
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-}
+//jar {
+//    manifest {
+//        attributes "Main-Class": "FacturasApp"
+//    }
+//
+//    from {
+//        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
+//}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.8.2')
+    testImplementation(platform('org.junit:junit-bom:5.8.2'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+    testImplementation group: 'org.easymock', name: 'easymock', version: '3.1'
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.6.1'
     testImplementation('org.assertj:assertj-core:3.23.1')
     testImplementation('org.assertj:assertj-swing:3.17.1')
     testImplementation('org.junit.jupiter:junit-jupiter-engine:5.8.2')
