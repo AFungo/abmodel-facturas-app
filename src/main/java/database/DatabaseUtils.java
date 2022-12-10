@@ -1,6 +1,5 @@
-package databaserefactor;
+package database;
 
-import database.DBManager;
 import logger.Handler;
 
 import java.sql.*;

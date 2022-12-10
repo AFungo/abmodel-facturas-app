@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utils;
+package calculations;
 
 import models.DollarPrice;
 import models.Ticket;
 import models.Withholding;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  *It does all the calculations that it shows in the view.
@@ -21,8 +21,8 @@ public class ProfitCalculator {
     private Transaction sales;
     private Float withholdingIva;
     private Float withholdingProfits;
-   
-        /**
+
+    /**
      * Constructor
      */
     public ProfitCalculator() {
@@ -31,81 +31,94 @@ public class ProfitCalculator {
         withholdingIva = 0.0f;
         withholdingProfits = 0.0f;
     }
-    
+
+    /**
+    *Add new ticket to transaction but the values are in dollars
+    * @param t ticket to be added
+    */
+    public void addTicketInDollars(Ticket t, DollarPrice dollarPrice) {
+        //get the values
+        Float totalAmount = (Float) t.getValues().get("totalAmount");
+        Float ivaTax = (t.getValues().get("ivaTax") != null ? (Float) t.getValues().get("ivaTax") : 0.0f);
+        Float netAmountWI = (t.getValues().get("netAmountWI") != null ? (Float) t.getValues().get("netAmountWI") : totalAmount);
+        //get the exchange value
+        Float sellPrice = 1.0f;
+        String exchangeMoney = (String)t.getValues().get("exchangeMoney");
+        if (exchangeMoney.equals("$")) {   //ticket price in ARS
+            sellPrice = getDollarPrice(t, dollarPrice);
+        }
+        //transform prices to dollar exchange type
+        totalAmount = totalAmount / sellPrice; //Total / (exchange type or 1) / (dollar price of this day or 1)
+        ivaTax = ivaTax / sellPrice;
+        netAmountWI = netAmountWI / sellPrice;
+
+        addTransaction(t.isIncome(), (boolean)t.getValues().get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
+    }
+
     /**
      * Add new ticket to transactions
      * @param t Ticket to be added
      */
-    public void addTicket(Ticket t) {
-        Map<String, Object> values = t.getValues();
-        
+    public void addTicketInPesos(Ticket t) {
+        //get the values
+        Float totalAmount = (Float) t.getValues().get("totalAmount");
+        Float ivaTax = (t.getValues().get("ivaTax") != null ? (Float) t.getValues().get("ivaTax") : 0.0f);
+        Float netAmountWI = (t.getValues().get("netAmountWI") != null ? (Float) t.getValues().get("netAmountWI") : totalAmount);
+        //get the exchange value
         Float exchangeType = 1.0f;
         String exchangeMoney = (String)t.getValues().get("exchangeMoney");
-       if (exchangeMoney == "USD") {
+        if (exchangeMoney.equals("USD")) {  //ticket price in USD
             exchangeType = (Float) t.getValues().get("exchangeType");
         }
-       
-        Float totalAmount = (Float) values.get("totalAmount") * exchangeType;   //Total * exchange type
-        Float ivaTax = (values.get("ivaTax") != null ? (Float) values.get("ivaTax") : 0.0f) * exchangeType;
-        Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType;
+        //transform prices to pesos exchange type
+        totalAmount *= exchangeType;
+        ivaTax *= exchangeType;
+        netAmountWI *= exchangeType;
 
-        addTransaction(t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
+        addTransaction(t.isIncome(), (boolean)t.getValues().get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
     }
-  
-    /**
-    *Add new ticket to transaction but the values are in dollars 
-    * @param t ticket to be added
-    */
-    public void addTicketInDollars(Ticket t) {
-        Map<String, Object> values = t.getValues();
-        Float sellPrice = 1.0f;
-        
-        Float exchangeType = (Float) t.getValues().get("exchangeType");
-        String exchangeMoney = (String)t.getValues().get("exchangeMoney");
-        if (exchangeMoney == "USD") {   //we already have the price in dollars so we don't want to modify it
-            exchangeType = 1.0f;    
-        } else if (exchangeType == 1.0f) {  //money are pesos and we don't have the exchange type
-            sellPrice = inDollars(true, exchangeType, (DollarPrice) t.getValues().get("dollarPrice"));
-        }
-        //in case we are in pesos and we have the exchange type, we just divide by it
-        Float totalAmount = ((Float) values.get("totalAmount") / exchangeType) / sellPrice; //Total / (exchange type or 1) / (dollar price of this day or 1)
-        Float ivaTax = ((values.get("ivaTax") != null ? (Float) values.get("ivaTax") : 0.0f) / exchangeType)/sellPrice;
-        Float netAmountWI = ((values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) / exchangeType)/sellPrice;        
 
-        addTransaction((boolean)t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
+    /**
+     * Add new withholding to transactions
+     * @param r whithholding to be added 
+     */
+    public void addWithholdingInDollars(Withholding r, DollarPrice dollarPrice){
+        Float iva = (Float) r.getValues().get("iva");
+        Float profits = (Float) r.getValues().get("profits");
+
+        Float sellPrice = (Float) dollarPrice.getValues().get("sell");
+        if (iva != null) {
+            iva /= sellPrice;
+            withholdingIva += iva;
+        }
+        if (profits != null) {
+            profits /= sellPrice;
+            withholdingProfits += profits;
+        }
     }
     
     /**
      * Add new withholding to transactions
-     * @param r whithholding to be added 
-     * @param dollars boolean if the values is need to be in dollars or not
+     * @param r whithholding to be added
      */
-    public void addRetention(Withholding r, boolean dollars){
-        Map<String, Object> dict = r.getValues();
-        Float iva = (Float) dict.get("iva");
-        Float profits = (Float) dict.get("profits");
-        if (dollars) {
-            Float sellPrice = inDollars(dollars, 1.0f, (DollarPrice) r.getValues().get("dollarPrice"));//le pongo 1 en exchangetype pq no se carga en ret
-            if (iva != null)
-                iva /= sellPrice;
-            if (profits != null)
-                profits /= sellPrice;
+    public void addWithholdingInPesos(Withholding r){
+        Float iva = (Float) r.getValues().get("iva");
+        Float profits = (Float) r.getValues().get("profits");
+
+        if (iva != null) {
+            withholdingIva += iva;
         }
-        
-        if (iva != null && (Float) iva != 0.0f) {
-            withholdingIva += (Float) iva;
-        }
-        if (profits != null && (Float) profits != 0.0f) {
-            withholdingProfits += (Float) profits;
+        if (profits != null) {
+            withholdingProfits += profits;
         }
     }
-    
+
     /**
      * retun the values of all data and calculus 
      * @return return Map<> who have all the data 
      */
     public Map<String, Float> getValues(){
-        Map<String, Float> values = new HashMap();
+        Map<String, Float> values = new HashMap<String,Float>();
         //totals
         values.put("profitWOTax", this.getProfitWOTax());
         values.put("profitWTax", this.getProfitWTax());
@@ -123,7 +136,7 @@ public class ProfitCalculator {
         values.put("issuedNetAmount",(Float)sales.getTransactions().get("netAmountWI"));
         values.put("receivedNetAmount",(Float)purchases.getTransactions().get("netAmountWI"));
         values.put("withheldProfit", withholdingProfits);
-        values.put("totalProfitTax", this.getGanancia());
+        values.put("totalProfitTax", this.getProfit());
         
         return values;
     }
@@ -132,7 +145,7 @@ public class ProfitCalculator {
      * calculate the profit with out taxes
      * @return a float of the profit with out tax
      */
-    public Float getProfitWOTax(){//calculate the profit with out taxes
+    private Float getProfitWOTax(){//calculate the profit with out taxes
         return ((Float)sales.getTransactions().get("totalAmount") - (Float)purchases.getTransactions().get("totalAmount"));    
     }
 
@@ -140,7 +153,7 @@ public class ProfitCalculator {
      * calculate the profit with taxes
      * @return return the profit with taxes
      */
-    public Float getProfitWTax(){//calculate the profit with taxes
+    private Float getProfitWTax(){//calculate the profit with taxes
         return ((Float)sales.getTransactions().get("totalAmount") - (Float)purchases.getTransactions().get("totalAmount") - withholdingIva - withholdingProfits);
     }
     
@@ -148,7 +161,7 @@ public class ProfitCalculator {
      * Calculate the difference of iva between sales, purchases and withholding
      * @return float with iva tax 
      */
-    public Float getIva(){
+    private Float getIva(){
         return (-(Float)sales.getTransactions().get("iva") + (Float)purchases.getTransactions().get("iva") + withholdingIva);
     }
     
@@ -156,7 +169,7 @@ public class ProfitCalculator {
      * Calculate the difference of net total amounts between sales, purchases and withholding
      * @return float whit the profit tax
      */
-    public Float getGanancia(){//falta restarle las retenciones para que te quede el numero.
+    private Float getProfit(){
         return (-(Float)sales.getTransactions().get("netAmountWI") + (Float)purchases.getTransactions().get("netAmountWI") + withholdingProfits);
     }
     
@@ -181,16 +194,16 @@ public class ProfitCalculator {
     }
     
    /*
-    *return the the dollar proce who need the ticket
+    * Given a ticket and a dollar price, returns the sell price for it
+    * if the ticket has a sell price returns it, otherwise returns the one of dollar price
     */
-    private Float inDollars(boolean dollars, Float exchangeType, DollarPrice price){
-        if (dollars && exchangeType == 1.0f) {  //if dollars are required and exchange type is pesos          
-            if (price != null) {    //if price was loaded (it may not be in db)
-                return (Float)price.getValues().get("sell");               
-            }
+    private Float getDollarPrice(Ticket ticket, DollarPrice price){
+        Float sellPrice = (Float) ticket.getValues().get("exchangeType");
+        if (sellPrice == 1.0f) {
+            sellPrice = (Float) price.getValues().get("sell");
         }
-        return 1.0f;
-    }            
+        return sellPrice;
+    }
 
     /*
     *Caculates the gross margin

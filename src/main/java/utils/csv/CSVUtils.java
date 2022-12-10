@@ -6,7 +6,9 @@ import logger.Handler;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class provides facilities to use CSV.
@@ -17,28 +19,26 @@ public class CSVUtils {
      * Reads a csv file and retrieves the info as a matrix
      * The first line is a header with the types and this
      * must match the given header
-     * @param f the file to read
+     * @param file the file to read
      * @param header is the string that must match the initial
      *               line of the file
      * @return String[][] containing all the data
      */
-    public static String[][] readCSV(File f, String[] header) {
-        if (f == null) {
-            throw new IllegalArgumentException("File is null");
-        }
+    public static List<String[]> readCSV(File file, String[] header) {
+        Objects.requireNonNull(file, "File is null");
 
-        String[][] items = new String[0][];
+        List<String[]> items = new LinkedList<>();
         try {
-            FileReader filereader = new FileReader(f);
+            FileReader filereader = new FileReader(file);
             CSVReader csvReader = new CSVReader(filereader);
             String[] initialLine = csvReader.readNext();   //skip the first line which is the header
             if (!Arrays.equals(initialLine, header)) {
                 throw new IllegalArgumentException("The given file is invalid for header: \n" + Arrays.toString(header));
             }
 
-            items = csvReader.readAll().toArray(items);
+            items = csvReader.readAll();
         } catch (IOException e) {
-            Handler.logUnexpectedError(e, "An error occurred while reading the file at " + f.getAbsolutePath());
+            Handler.logUnexpectedError(e, "An error occurred while reading the file at " + file.getAbsolutePath());
         }
 
         return items;
@@ -62,7 +62,7 @@ public class CSVUtils {
             writer.writeNext(header);      //first is validation line
             writer.writeAll(data);
         } catch (IOException e) {
-            e.printStackTrace();
+            Handler.logUnexpectedError(e, "Failed while writing in " + file.getAbsolutePath());
         }
     }
 

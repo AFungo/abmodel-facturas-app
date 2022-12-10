@@ -9,6 +9,8 @@ import logger.Handler;
 import views.View;
 import database.DBManager;
 import database.DBManager.TypeDB;
+import views.utils.ViewMediator;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 /**
@@ -23,17 +25,11 @@ public class FacturasApp {
     public static void main(String[] args) {
         DBManager.createConnection(TypeDB.PRODUCTION);
         DBManager.initializeDB();
-        View view = new View(new Controller());
-        Handler globalExceptionHandler = new Handler(view);
-        Thread.setDefaultUncaughtExceptionHandler(globalExceptionHandler);
-        view.setVisible(true);
-        
-        view.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent windowEvent) {
-                DBManager.closeConnection();
-            }
-        });
+        ViewMediator viewMediator = new ViewMediator(new Controller());/*TODO: i dont know if i understand but i think a
+                                                                                view mediator its a good class to call
+                                                                                the main view an do all of shit here :)*/
+        viewMediator.setMainViewVisible(true);
+
     }
     
 }

@@ -23,10 +23,10 @@ public class ModelToCSV {
         String[] csvLine = new String[attributes.size()];
 
 
-        csvLine[0] = ticket.getID().get("id").toString();//add the id of the withholding 
-        attributes.remove("withholding");//remove withholding of the set of attributes
-        int i = 1;
-        for (String att : attributes) {
+        int i = 0;
+        for (String att : attributes) { 
+            //add the id of the withholding 
+            if(att.equals("withholding")) csvLine[i] = ticket.getID().get("id").toString();
             csvLine[i] = values.get(att).toString(); 
             i++;     
         }
@@ -44,18 +44,13 @@ public class ModelToCSV {
 
         String[] csvLine = new String[attributes.size()];
 
-        Provider provider = (Provider)values.get("provider");
-        Sector sector = (Sector)values.get("sector");
-
-        csvLine[0] = provider.getID().get("id").toString();//add provider to csvLine
-        attributes.remove("provider");//remove provider from attributes
-
-        csvLine[1] = sector.getID().get("id").toString();//add sector to csvLine
-        attributes.remove("sector");// remove sector from attributes
-
-        int i = 2;
+        int i = 0;
         for (String att : attributes) {
-            csvLine[i] = values.get(att).toString(); 
+            if(att.equals("provider")) csvLine[i] = ((Provider)values.get("provider"))
+                                                                .getID().get("id").toString();
+            else if(att.equals("sector")) csvLine[i] = ((Sector)values.get("sector"))
+                                                                .getID().get("id").toString();
+            else csvLine[i] = values.get(att).toString(); 
             i++;     
         }
         return csvLine;    
@@ -71,16 +66,13 @@ public class ModelToCSV {
         List<String> attributes = Provider.getAttributes();
 
         String[] csvLine = new String[attributes.size()];
-
-        Sector sector = (Sector)values.get("provSector");
-
-        csvLine[0] = sector.getID().get("id").toString();//add sector to csvLine
-        attributes.remove("provSector");// remove sector from attributes
-
-        int i = 1;
+ 
+        int i = 0;
         for (String att : attributes) {
-            csvLine[i] = values.get(att).toString(); 
-            i++;     
+            if(att.equals("provSector")) csvLine[i] = ((Sector)values.get("provSector"))
+                                                                    .getID().get("id").toString();
+            else csvLine[i] = values.get(att).toString();
+            i++;
         }
         return csvLine;
     }

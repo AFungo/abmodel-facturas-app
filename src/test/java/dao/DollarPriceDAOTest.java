@@ -1,8 +1,8 @@
 package dao;
 
 import database.DBManager;
-import databaserefactor.DAO;
-import databaserefactor.DollarPriceDAO;
+import database.DAO;
+import database.DollarPriceDAO;
 import models.DollarPrice;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.parallel.Isolated;

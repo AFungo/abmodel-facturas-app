@@ -1,0 +1,215 @@
+JFDML JFormDesigner: "7.0.7.0.1134" Java: "11.0.13" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {seq {par l {seq {par l {seq {space :p:475:p, par l {comp showTickets:::p:216:p, seq l {space :p:42:p, comp showProviders:::p::p}}, space :p:204:p, par t {comp viewMoreCalculusButton:::p::p, comp calculateButton:::p::p}, space s:::p}, seq t {space :::p, comp resetDBButton:::p::p, space :p:371:p}}, par l {seq l {comp profitTaxLabel:::p::p, space u:::p, comp profitTax:::p:128:p}, seq l {comp totalLabel:::p:63:p, space :::p, comp total:::p:128:p}, comp inDollars::l:p::p, seq l {comp ivaTaxLabel:::p:63:p, space :::p, comp ivaTaxTextField:::p:128:p}}, space :0:0:x}, seq l {space :::p, comp ticketsTableScroll:::::x}}, space :::p}}"
+			"$verticalGroup": "par l {seq l {space :::p, comp ticketsTableScroll:::::x, par l {seq {par b {comp ivaTaxTextField::b:p::p, comp ivaTaxLabel::b:p::p, comp calculateButton::b:p::p}, space :p:2:p, par b {comp profitTax::b:p::p, comp profitTaxLabel::b:p::p, comp viewMoreCalculusButton::b:p::p}, space :::p, par b {comp totalLabel::b:p::p, comp total::b:p:21:p}}, seq l {space u:::p, comp showTickets:::p::p, space s:::p, comp showProviders:::p::p}}, space :p:2:p, par l {comp inDollars:::p::p, seq l {space :p:16:p, comp resetDBButton:::p::p}}, space :p:27:p}}"
+		} ) {
+			name: "this"
+			"defaultCloseOperation": 3
+			"title": "ADMINISTRADOR CONTABLE ABMODEL"
+			"size": new java.awt.Dimension( 0, 0 )
+			"$locationPolicy": 1
+			auxiliary() {
+				"JavaCodeGenerator.preInitCode": "${field}.setIconImage(new ImageIcon(getClass().getResource(\"/IMG/icono-facturas-app-opcion-dos.png\")).getImage()\r\n);"
+			}
+			addEvent( new FormEvent( "java.awt.event.WindowListener", "windowClosing", "formWindowClosing", true ) )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "ticketsTableScroll"
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "ticketsTable"
+					auxiliary() {
+						"JavaCodeGenerator.preInitCode": "${field}.setModel(new javax.swing.table.DefaultTableModel(\n    new Object [][] {\n\n    },\n    new String [] {\n        \"id\", \"Fecha\", \"Tipo\", \"Nro factura\", \"Numero hasta\", \"Cód. Autorización\", \"Nro. Doc. Emisor\", \"Denominación Emisor\", \"Tipo Cambio\", \"Imp. Neto Gravado\", \"Imp. Neto No Gravado\", \"Imp. Op. Exentas\", \"IVA\", \"Imp. Total\", \"Rubro\", \"COMPRA/VENTA\", \"Env. Contador\"\n    }\n) {\n    Class[] types = new Class [] {\n        Integer.class, Object.class, String.class, Integer.class, Integer.class, String.class, String.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class, String.class\n    };\n    boolean[] canEdit = new boolean [] {\n        false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false\n    };\n\n    public Class getColumnClass(int columnIndex) {\n        return types [columnIndex];\n    }\n\n    public boolean isCellEditable(int rowIndex, int columnIndex) {\n        return canEdit [columnIndex];\n    }\n});"
+						"JavaCodeGenerator.customCreateCode": "new javax.swing.JTable();"
+					}
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "ticketsTableMousePressed", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseReleased", "ticketsTableMouseReleased", true ) )
+				} )
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "total"
+				"editable": false
+				"font": new java.awt.Font( "Arial", 1, 12 )
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+				auxiliary() {
+					"JavaCodeGenerator.customCreateCode": "new javax.swing.JTextField();"
+				}
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "ivaTaxTextField"
+				"editable": false
+				"font": new java.awt.Font( "Arial", 1, 12 )
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "calculateButton"
+				"text": "Calcular"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "calculateButtonActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "showProviders"
+				"text": "Mostrar proveedores"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "showProvidersActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "showTickets"
+				"text": "Mostrar comprobantes"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "showTicketsActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "profitTax"
+				"editable": false
+				"font": new java.awt.Font( "Arial", 1, 12 )
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "ivaTaxLabel"
+				"editable": false
+				"font": new java.awt.Font( "Arial", 1, 12 )
+				"text": "Total IVA:"
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "profitTaxLabel"
+				"editable": false
+				"font": new java.awt.Font( "Arial", 1, 12 )
+				"text": "Total ganancias:"
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "totalLabel"
+				"editable": false
+				"font": new java.awt.Font( "Arial", 1, 12 )
+				"text": "Total:"
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "inDollars"
+				"text": "Precio en dolares"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "resetDBButton"
+				"text": "Reset DB"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "resetDBButtonActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "viewMoreCalculusButton"
+				"text": "Ver mas"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "viewMoreCalculusButtonActionPerformed", true ) )
+			} )
+			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
+				name: "menuBar"
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "files"
+					"text": "Cargar"
+					add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+						name: "multipleLoad"
+						"text": "Cargar (.csv)..."
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "loadTickets"
+							"text": "Cargar Comprobante"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadTicketsActionPerformed", true ) )
+						} )
+						add( new FormComponent( "javax.swing.JMenuItem" ) {
+							name: "loadDollarValue"
+							"text": "Cargar valor dolar"
+							addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadDollarValueActionPerformed", true ) )
+						} )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "loadTicketManually"
+						"text": "Cargar comprobante"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadTicketManuallyActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "loadWithholdingManually"
+						"text": "Cargar retencion"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadWithholdingManuallyActionPerformed", true ) )
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "edit"
+					"text": "Editar"
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "sectorsViewItem"
+						"text": "Agregar/Borrar rubro"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "sectorsViewItemActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "addProviderMenuItem"
+						"text": "Añadir proveedor"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "addProviderMenuItemActionPerformed", true ) )
+					} )
+				} )
+				add( new FormContainer( "javax.swing.JMenu", new FormLayoutManager( class javax.swing.JMenu ) ) {
+					name: "tools"
+					"text": "Herramientas"
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "filters"
+						"text": "Filtros"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "filtersActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "columnSelector"
+						"text": "Seleccionar columnas"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "columnSelectorActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "createBackup"
+						"text": "Crear backup"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "createBackupActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "loadBackup"
+						"text": "Cargar backup"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "loadBackupActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JMenuItem" ) {
+						name: "createPDFMenuItem"
+						"text": "Crear PDF"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "createPDFMenuItemActionPerformed", true ) )
+					} )
+				} )
+			}
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+		add( new FormContainer( "javax.swing.JPopupMenu", new FormLayoutManager( class javax.swing.JPopupMenu ) ) {
+			name: "popupMenu"
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "sectorMenuItem"
+				"text": "Modificar rubro"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "sectorMenuItemActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "deliveredMenuItem"
+				"text": "jMenuItem1"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "deliveredMenuItemActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "exchangeTypeMenuItem"
+				"text": "Modificar tipo de cambio"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "exchangeTypeMenuItemActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "deleteSectorMenuItem"
+				"text": "Eliminar rubro"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "deleteSectorMenuItemActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JMenuItem" ) {
+				name: "deleteMenuItem"
+				"text": "Eliminar"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "deleteMenuItemActionPerformed", true ) )
+			} )
+		} )
+		add( new FormComponent( "javax.swing.JComboBox" ) {
+			name: "sectorComboBox"
+			auxiliary() {
+				"JavaCodeGenerator.preInitCode": "sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));"
+				"JavaCodeGenerator.typeParameters": "String"
+			}
+		} )
+	}
+}

@@ -1,44 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package views;
 
-import concurrency.Lock;
-import controller.Controller;
-import models.Withholding;
-import database.SQLFilter;
-import database.SectorDAO;
-import models.Provider;
-import models.Ticket;
-import utils.ConfigManager;
-import utils.FilterUtils;
-import utils.FixedData;
-import utils.FormatUtils;
-import utils.Pair;
-import utils.PdfCreator;
-import utils.PricesList;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.sql.Date;
 import java.text.DecimalFormat;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import java.util.Map;
-import java.util.Objects;
-import javax.swing.ImageIcon;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import org.apache.commons.io.FilenameUtils;
+import backup.BackUpBuilder;
+import calculations.DollarPriceManager;
+import controller.Controller;
+import database.SectorDAO;
+import filters.Comparison;
+import filters.Filter;
+import formatters.ModelToForm;
+import models.Withholding;
+import models.Ticket;
+import utils.ConfigManager;
+import utils.Pair;
+import utils.PdfCreator;
+import calculations.PricesList;
+import views.utils.ViewMediator;
+import views.utils.ViewUtils;
 
 /**
  *
@@ -51,19 +48,13 @@ public class View extends JFrame {
      *
      * @param controller
      */
-    public View(Controller controller) {
+    public View(Controller controller, ViewMediator viewMediator, JTable ticketsTable) {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.controller = controller;
+        this.ticketsTable = ticketsTable;
         initComponents();
-        providersView = new ProvidersView(controller, this);
-        filtersView = new FiltersView(controller, ticketsTable);
-        columnSelectorView = new ColumnSelector(ticketsTable, providersView.getTable());
-        ticketLoaderView = new TicketLoaderView(controller, this);
-        withholdingLoaderView = new WithholdingLoaderView(controller, this);
-        sectorsView = new SectorsView(this);
-        providerLoader = new ProviderLoaderView(controller, this);
+        this.viewMediator = viewMediator;
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,390 +63,342 @@ public class View extends JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
-        popupMenu = new javax.swing.JPopupMenu();
-        sectorMenuItem = new javax.swing.JMenuItem();
-        deliveredMenuItem = new javax.swing.JMenuItem();
-        exchangeTypeMenuItem = new javax.swing.JMenuItem();
-        deleteSectorMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        sectorComboBox = new javax.swing.JComboBox<>();
+        menuBar = new JMenuBar();
+        files = new JMenu();
+        multipleLoad = new JMenu();
+        loadTickets = new JMenuItem();
+        loadDollarValue = new JMenuItem();
+        loadTicketManually = new JMenuItem();
+        loadWithholdingManually = new JMenuItem();
+        edit = new JMenu();
+        sectorsViewItem = new JMenuItem();
+        addProviderMenuItem = new JMenuItem();
+        tools = new JMenu();
+        filters = new JMenuItem();
+        columnSelector = new JMenuItem();
+        createBackup = new JMenuItem();
+        loadBackup = new JMenuItem();
+        createPDFMenuItem = new JMenuItem();
         ticketsTableScroll = new JScrollPane();
-        ticketsTable = new JTable();
         total = new javax.swing.JTextField();
-        ivaTaxTextField = new javax.swing.JTextField();
-        calculateButton = new javax.swing.JButton();
-        showProviders = new javax.swing.JButton();
-        showTickets = new javax.swing.JButton();
-        profitTax = new javax.swing.JTextField();
-        ivaTaxLabel = new javax.swing.JTextField();
-        profitTaxLabel = new javax.swing.JTextField();
-        totalLabel = new javax.swing.JTextField();
-        inDollars = new javax.swing.JCheckBox();
-        resetDBButton = new javax.swing.JButton();
-        viewMoreCalculusButton = new javax.swing.JButton();
-        menuBar = new javax.swing.JMenuBar();
-        files = new javax.swing.JMenu();
-        multipleLoad = new javax.swing.JMenu();
-        loadTickets = new javax.swing.JMenuItem();
-        loadDollarValue = new javax.swing.JMenuItem();
-        loadTicketManually = new javax.swing.JMenuItem();
-        loadWithholdingManually = new javax.swing.JMenuItem();
-        edit = new javax.swing.JMenu();
-        sectorsViewItem = new javax.swing.JMenuItem();
-        addProviderMenuItem = new javax.swing.JMenuItem();
-        tools = new javax.swing.JMenu();
-        filters = new javax.swing.JMenuItem();
-        columnSelector = new javax.swing.JMenuItem();
-        createBackup = new javax.swing.JMenuItem();
-        loadBackup = new javax.swing.JMenuItem();
-        createPDFMenuItem = new javax.swing.JMenuItem();
+        ivaTaxTextField = new JTextField();
+        calculateButton = new JButton();
+        showProviders = new JButton();
+        showTickets = new JButton();
+        profitTax = new JTextField();
+        ivaTaxLabel = new JTextField();
+        profitTaxLabel = new JTextField();
+        totalLabel = new JTextField();
+        inDollars = new JCheckBox();
+        resetDBButton = new JButton();
+        viewMoreCalculusButton = new JButton();
+        popupMenu = new JPopupMenu();
+        sectorMenuItem = new JMenuItem();
+        deliveredMenuItem = new JMenuItem();
+        exchangeTypeMenuItem = new JMenuItem();
+        deleteSectorMenuItem = new JMenuItem();
+        deleteMenuItem = new JMenuItem();
+        sectorComboBox = new JComboBox<>();
 
-        sectorMenuItem.setText("Modificar rubro");
-        sectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sectorMenuItemActionPerformed(evt);
-            }
-        });
-        popupMenu.add(sectorMenuItem);
-
-        deliveredMenuItem.setText("jMenuItem1");
-        deliveredMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deliveredMenuItemActionPerformed(evt);
-            }
-        });
-        popupMenu.add(deliveredMenuItem);
-
-        exchangeTypeMenuItem.setText("Modificar tipo de cambio");
-        exchangeTypeMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exchangeTypeMenuItemActionPerformed(evt);
-            }
-        });
-        popupMenu.add(exchangeTypeMenuItem);
-
-        deleteSectorMenuItem.setText("Eliminar rubro");
-        deleteSectorMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteSectorMenuItemActionPerformed(evt);
-            }
-        });
-        popupMenu.add(deleteSectorMenuItem);
-
-        deleteMenuItem.setText("Eliminar");
-        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteMenuItemActionPerformed(evt);
-            }
-        });
-        popupMenu.add(deleteMenuItem);
-
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //======== this ========
+//        this.setIconImage(new ImageIcon(getClass().getResource("/resources/images/icono-facturas-app-opcion-dos.png")).getImage()
+//    );
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("ADMINISTRADOR CONTABLE ABMODEL");
-        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("images/icono-facturas-app-opcion-dos.png"))).getImage());
-        setSize(new java.awt.Dimension(0, 0));
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
+        setSize(new Dimension(0, 0));
+        Container contentPane = getContentPane();
 
-        ticketsTable.setModel(new DefaultTableModel(
-            new Object [][] {
+        //======== menuBar ========
+        {
 
-            },
-            new String [] {
-                "id", "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro", "COMPRA/VENTA", "Env. Contador"
-            }
-        ) {
-            Class[] types = new Class [] {
-                Integer.class, Object.class, String.class, Integer.class, Integer.class, String.class, String.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class, String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
-            };
+            //======== files ========
+            {
+                files.setText("Cargar");
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
+                //======== multipleLoad ========
+                {
+                    multipleLoad.setText("Cargar (.csv)...");
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        ticketsTable.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        ticketsTable.getTableHeader().setReorderingAllowed(false);
-        ticketsTable.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(MouseEvent evt) {
-                ticketsTableMousePressed(evt);
-            }
-            public void mouseReleased(MouseEvent evt) {
-                ticketsTableMouseReleased(evt);
-            }
-        });
-        ticketsTableScroll.setViewportView(ticketsTable);
-        ticketsTable.setAutoCreateRowSorter(true);
-        loadTicketsInTable();
+                    //---- loadTickets ----
+                    loadTickets.setText("Cargar Comprobante");
+                    loadTickets.addActionListener(e -> loadTicketsActionPerformed(e));
+                    multipleLoad.add(loadTickets);
 
-        ticketsTable.setCellSelectionEnabled(true);
-        ticketsTable.setVisible(true);
+                    //---- loadDollarValue ----
+                    loadDollarValue.setText("Cargar valor dolar");
+                    loadDollarValue.addActionListener(e -> loadDollarValueActionPerformed(e));
+                    multipleLoad.add(loadDollarValue);
+                }
+                files.add(multipleLoad);
 
+                //---- loadTicketManually ----
+                loadTicketManually.setText("Cargar comprobante");
+                loadTicketManually.addActionListener(e -> loadTicketManuallyActionPerformed(e));
+                files.add(loadTicketManually);
+
+                //---- loadWithholdingManually ----
+                loadWithholdingManually.setText("Cargar retencion");
+                loadWithholdingManually.addActionListener(e -> loadWithholdingManuallyActionPerformed(e));
+                files.add(loadWithholdingManually);
+            }
+            menuBar.add(files);
+
+            //======== edit ========
+            {
+                edit.setText("Editar");
+
+                //---- sectorsViewItem ----
+                sectorsViewItem.setText("Agregar/Borrar rubro");
+                sectorsViewItem.addActionListener(e -> sectorsViewItemActionPerformed(e));
+                edit.add(sectorsViewItem);
+
+                //---- addProviderMenuItem ----
+                addProviderMenuItem.setText("A\u00f1adir proveedor");
+                addProviderMenuItem.addActionListener(e -> addProviderMenuItemActionPerformed(e));
+                edit.add(addProviderMenuItem);
+            }
+            menuBar.add(edit);
+
+            //======== tools ========
+            {
+                tools.setText("Herramientas");
+
+                //---- filters ----
+                filters.setText("Filtros");
+                filters.addActionListener(e -> filtersActionPerformed(e));
+                tools.add(filters);
+
+                //---- columnSelector ----
+                columnSelector.setText("Seleccionar columnas");
+                columnSelector.addActionListener(e -> columnSelectorActionPerformed(e));
+                tools.add(columnSelector);
+
+                //---- createBackup ----
+                createBackup.setText("Crear backup");
+                createBackup.addActionListener(e -> createBackupActionPerformed(e));
+                tools.add(createBackup);
+
+                //---- loadBackup ----
+                loadBackup.setText("Cargar backup");
+                loadBackup.addActionListener(e -> loadBackupActionPerformed(e));
+                tools.add(loadBackup);
+
+                //---- createPDFMenuItem ----
+                createPDFMenuItem.setText("Crear PDF");
+                createPDFMenuItem.addActionListener(e -> createPDFMenuItemActionPerformed(e));
+                tools.add(createPDFMenuItem);
+            }
+            menuBar.add(tools);
+        }
+        setJMenuBar(menuBar);
+
+        //======== ticketsTableScroll ========
+        {
+
+            //---- ticketsTable ----
+            ticketsTable.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+
+                },
+                new String [] {
+                    "id", "Fecha", "Tipo", "Nro factura", "Numero hasta", "Cód. Autorización", "Nro. Doc. Emisor", "Denominación Emisor", "Tipo Cambio", "Imp. Neto Gravado", "Imp. Neto No Gravado", "Imp. Op. Exentas", "IVA", "Imp. Total", "Rubro", "COMPRA/VENTA", "Env. Contador"
+                }
+            ) {
+                Class[] types = new Class [] {
+                    Integer.class, Object.class, String.class, Integer.class, Integer.class, String.class, String.class, String.class, Float.class, Float.class, Float.class, Float.class, Float.class, Float.class, String.class, String.class, String.class
+                };
+                boolean[] canEdit = new boolean [] {
+                    false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
+                };
+
+                public Class getColumnClass(int columnIndex) {
+                    return types [columnIndex];
+                }
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit [columnIndex];
+                }
+            });
+            ticketsTable.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    ticketsTableMousePressed(e);
+                }
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    ticketsTableMouseReleased(e);
+                }
+            });
+            ticketsTableScroll.setViewportView(ticketsTable);
+        }
+
+        //---- total ----
         total.setEditable(false);
-        total.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        total.setFont(new Font("Arial", Font.BOLD, 12));
         total.setBorder(null);
 
+        //---- ivaTaxTextField ----
         ivaTaxTextField.setEditable(false);
-        ivaTaxTextField.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        ivaTaxTextField.setFont(new Font("Arial", Font.BOLD, 12));
         ivaTaxTextField.setBorder(null);
 
+        //---- calculateButton ----
         calculateButton.setText("Calcular");
-        calculateButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                calculateButtonActionPerformed(evt);
-            }
-        });
+        calculateButton.addActionListener(e -> calculateButtonActionPerformed(e));
 
+        //---- showProviders ----
         showProviders.setText("Mostrar proveedores");
-        showProviders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showProvidersActionPerformed(evt);
-            }
-        });
+        showProviders.addActionListener(e -> showProvidersActionPerformed(e));
 
+        //---- showTickets ----
         showTickets.setText("Mostrar comprobantes");
-        showTickets.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showTicketsActionPerformed(evt);
-            }
-        });
+        showTickets.addActionListener(e -> showTicketsActionPerformed(e));
 
+        //---- profitTax ----
         profitTax.setEditable(false);
-        profitTax.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        profitTax.setFont(new Font("Arial", Font.BOLD, 12));
         profitTax.setBorder(null);
 
+        //---- ivaTaxLabel ----
         ivaTaxLabel.setEditable(false);
-        ivaTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        ivaTaxLabel.setFont(new Font("Arial", Font.BOLD, 12));
         ivaTaxLabel.setText("Total IVA:");
         ivaTaxLabel.setBorder(null);
 
+        //---- profitTaxLabel ----
         profitTaxLabel.setEditable(false);
-        profitTaxLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        profitTaxLabel.setFont(new Font("Arial", Font.BOLD, 12));
         profitTaxLabel.setText("Total ganancias:");
         profitTaxLabel.setBorder(null);
 
+        //---- totalLabel ----
         totalLabel.setEditable(false);
-        totalLabel.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        totalLabel.setFont(new Font("Arial", Font.BOLD, 12));
         totalLabel.setText("Total:");
         totalLabel.setBorder(null);
 
+        //---- inDollars ----
         inDollars.setText("Precio en dolares");
 
+        //---- resetDBButton ----
         resetDBButton.setText("Reset DB");
-        resetDBButton.setVisible(true);
-        resetDBButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetDBButtonActionPerformed(evt);
-            }
-        });
+        resetDBButton.addActionListener(e -> resetDBButtonActionPerformed(e));
 
+        //---- viewMoreCalculusButton ----
         viewMoreCalculusButton.setText("Ver mas");
-        viewMoreCalculusButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewMoreCalculusButtonActionPerformed(evt);
-            }
-        });
+        viewMoreCalculusButton.addActionListener(e -> viewMoreCalculusButtonActionPerformed(e));
 
-        files.setText("Cargar");
-
-        multipleLoad.setText("Cargar (.csv)...");
-
-        loadTickets.setText("Cargar Comprobante");
-        loadTickets.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadTicketsActionPerformed(evt);
-            }
-        });
-        multipleLoad.add(loadTickets);
-
-        loadDollarValue.setText("Cargar valor dolar");
-        loadDollarValue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadDollarValueActionPerformed(evt);
-            }
-        });
-        multipleLoad.add(loadDollarValue);
-
-        files.add(multipleLoad);
-
-        loadTicketManually.setText("Cargar comprobante");
-        loadTicketManually.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadTicketManuallyActionPerformed(evt);
-            }
-        });
-        files.add(loadTicketManually);
-
-        loadWithholdingManually.setText("Cargar retencion");
-        loadWithholdingManually.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadWithholdingManuallyActionPerformed(evt);
-            }
-        });
-        files.add(loadWithholdingManually);
-
-        menuBar.add(files);
-
-        edit.setText("Editar");
-
-        sectorsViewItem.setText("Agregar/Borrar rubro");
-        sectorsViewItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sectorsViewItemActionPerformed(evt);
-            }
-        });
-        edit.add(sectorsViewItem);
-
-        addProviderMenuItem.setText("Añadir proveedor");
-        addProviderMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addProviderMenuItemActionPerformed(evt);
-            }
-        });
-        edit.add(addProviderMenuItem);
-
-        menuBar.add(edit);
-
-        tools.setText("Herramientas");
-
-        filters.setText("Filtros");
-        filters.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filtersActionPerformed(evt);
-            }
-        });
-        tools.add(filters);
-
-        columnSelector.setText("Seleccionar columnas");
-        columnSelector.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                columnSelectorActionPerformed(evt);
-            }
-        });
-        tools.add(columnSelector);
-
-        createBackup.setText("Crear backup");
-        createBackup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createBackupActionPerformed(evt);
-            }
-        });
-        tools.add(createBackup);
-
-        loadBackup.setText("Cargar backup");
-        loadBackup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadBackupActionPerformed(evt);
-            }
-        });
-        tools.add(loadBackup);
-
-        createPDFMenuItem.setText("Crear PDF");
-        createPDFMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createPDFMenuItemActionPerformed(evt);
-            }
-        });
-        tools.add(createPDFMenuItem);
-
-        menuBar.add(tools);
-
-        setJMenuBar(menuBar);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(475, 475, 475)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(showTickets, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(42, 42, 42)
-                                        .addComponent(showProviders)))
-                                .addGap(204, 204, 204)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(viewMoreCalculusButton)
-                                    .addComponent(calculateButton))
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(resetDBButton)
-                                .addGap(371, 371, 371)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(inDollars)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(ticketsTableScroll)))
-                .addContainerGap())
+        GroupLayout contentPaneLayout = new GroupLayout(contentPane);
+        contentPane.setLayout(contentPaneLayout);
+        contentPaneLayout.setHorizontalGroup(
+            contentPaneLayout.createParallelGroup()
+                .addGroup(contentPaneLayout.createSequentialGroup()
+                    .addGroup(contentPaneLayout.createParallelGroup()
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGroup(contentPaneLayout.createParallelGroup()
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addGap(475, 475, 475)
+                                    .addGroup(contentPaneLayout.createParallelGroup()
+                                        .addComponent(showTickets, GroupLayout.PREFERRED_SIZE, 216, GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(contentPaneLayout.createSequentialGroup()
+                                            .addGap(42, 42, 42)
+                                            .addComponent(showProviders)))
+                                    .addGap(204, 204, 204)
+                                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addComponent(viewMoreCalculusButton)
+                                        .addComponent(calculateButton))
+                                    .addGap(18, 18, 18))
+                                .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(resetDBButton)
+                                    .addGap(371, 371, 371)))
+                            .addGroup(contentPaneLayout.createParallelGroup()
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addComponent(profitTaxLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(profitTax, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addComponent(totalLabel, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(total, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+                                .addComponent(inDollars)
+                                .addGroup(contentPaneLayout.createSequentialGroup()
+                                    .addComponent(ivaTaxLabel, GroupLayout.PREFERRED_SIZE, 63, GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ivaTaxTextField, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)))
+                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(ticketsTableScroll)))
+                    .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ticketsTableScroll)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ivaTaxTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ivaTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(calculateButton))
-                        .addGap(2, 2, 2)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(profitTax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(profitTaxLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(viewMoreCalculusButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(totalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(showTickets)
-                        .addGap(18, 18, 18)
-                        .addComponent(showProviders)
-                        .addGap(2, 2, 2)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(inDollars))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(resetDBButton)))
-                .addGap(27, 27, 27))
+        contentPaneLayout.setVerticalGroup(
+            contentPaneLayout.createParallelGroup()
+                .addGroup(contentPaneLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(ticketsTableScroll)
+                    .addGroup(contentPaneLayout.createParallelGroup()
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(ivaTaxTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ivaTaxLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(calculateButton))
+                            .addGap(2, 2, 2)
+                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(profitTax, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(profitTaxLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(viewMoreCalculusButton))
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(totalLabel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(total, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(showTickets)
+                            .addGap(18, 18, 18)
+                            .addComponent(showProviders)))
+                    .addGap(2, 2, 2)
+                    .addGroup(contentPaneLayout.createParallelGroup()
+                        .addComponent(inDollars)
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGap(16, 16, 16)
+                            .addComponent(resetDBButton)))
+                    .addGap(27, 27, 27))
         );
-
         pack();
         setLocationRelativeTo(null);
+
+        //======== popupMenu ========
+        {
+
+            //---- sectorMenuItem ----
+            sectorMenuItem.setText("Modificar rubro");
+            sectorMenuItem.addActionListener(e -> sectorMenuItemActionPerformed(e));
+            popupMenu.add(sectorMenuItem);
+
+            //---- deliveredMenuItem ----
+            deliveredMenuItem.setText("jMenuItem1");
+            deliveredMenuItem.addActionListener(e -> deliveredMenuItemActionPerformed(e));
+            popupMenu.add(deliveredMenuItem);
+
+            //---- exchangeTypeMenuItem ----
+            exchangeTypeMenuItem.setText("Modificar tipo de cambio");
+            exchangeTypeMenuItem.addActionListener(e -> exchangeTypeMenuItemActionPerformed(e));
+            popupMenu.add(exchangeTypeMenuItem);
+
+            //---- deleteSectorMenuItem ----
+            deleteSectorMenuItem.setText("Eliminar rubro");
+            deleteSectorMenuItem.addActionListener(e -> deleteSectorMenuItemActionPerformed(e));
+            popupMenu.add(deleteSectorMenuItem);
+
+            //---- deleteMenuItem ----
+            deleteMenuItem.setText("Eliminar");
+            deleteMenuItem.addActionListener(e -> deleteMenuItemActionPerformed(e));
+            popupMenu.add(deleteMenuItem);
+        }
+
+        //---- sectorComboBox ----
+        sectorComboBox.setModel(new DefaultComboBoxModel(new Vector<>(SectorDAO.getInstance().getAll())));
     }// </editor-fold>//GEN-END:initComponents
     
     //calculates profit of tickets
@@ -464,10 +407,11 @@ public class View extends JFrame {
         boolean dollar = inDollars.isSelected();
         DecimalFormat numberFormat = new DecimalFormat("###,###.00");
         PricesList pricesList;
+        Filter[] filters = viewMediator.getFilters();
         try {
-            SQLFilter ticketFilter = filtersView.getFilters();
-            SQLFilter withholdingFilter = FilterUtils.separateWithholdingSpecialFilter(ticketFilter);
-            pricesList = controller.getProfit(ticketFilter, withholdingFilter, dollar);
+            pricesList = new PricesList(dollar);
+            pricesList.calculateSummary(controller.getTickets(filters),
+                    controller.getWithholdings(filters));
         } catch (IllegalStateException e) {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, "No hay valores del dolar cargados, por favor cargue y vuelva a intentar", 
@@ -478,8 +422,8 @@ public class View extends JFrame {
         Map<String,Float> values = pricesList.getValues();
         List<Pair<Date,String>> missingPrices = pricesList.getMissingPrices();
         if (!missingPrices.isEmpty()) {
-            JTable pricesTable = controller.createMissingPricesTable(missingPrices);
-            int daysLimit = controller.getDaysLimit();
+            JTable pricesTable = ViewUtils.createMissingPricesTable(missingPrices);
+            int daysLimit = DollarPriceManager.getDaysRoundLimit();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             JOptionPane.showMessageDialog(this, new JScrollPane(pricesTable), 
                 "Las siguientes fechas exceden el limite de " + daysLimit +
@@ -496,9 +440,8 @@ public class View extends JFrame {
 
     //show providers if any
     private void showProvidersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showProvidersActionPerformed
-        providersView.updateProviders(evt);
-        providersView.updateSuggestions();
-        providersView.setVisible(true);
+        viewMediator.setViewVisible(true, "providerLoader");
+        viewMediator.updateProviderSuggestions();
         
     }//GEN-LAST:event_showProvidersActionPerformed
 
@@ -513,8 +456,7 @@ public class View extends JFrame {
     }                                            
  
     private void filtersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filtersActionPerformed
-        filtersView.updateSuggestions();
-        filtersView.setVisible(true);
+        viewMediator.setViewVisible(true, "filtersView");
     }//GEN-LAST:event_filtersActionPerformed
 
     private void loadTicketsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketsActionPerformed
@@ -524,44 +466,19 @@ public class View extends JFrame {
         chooser.showOpenDialog(this);
         
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        Lock backupLock = new Lock();
-        try {
-            backupLock.lock();
-            new Thread(new Runnable() { //new thread to run the file load
-                @Override
-                public void run() {
-                        controller.loadTickets(chooser.getSelectedFile(), backupLock);
-                }
-            }).start();
-            
-            backupLock.lock(); //once data is checked to be valid, backup is made
-            File folder = new File("./");   //folder at local 
-            String filename = FixedData.getBackupFolderName("backup-carga-tickets");
-            controller.createBackup(folder, filename);
-            backupLock.unlock();    //backup done, now load csv data
-            backupLock.lock();      //to ensure the load process has finished
-        } catch (Exception e) {
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-            throw new IllegalStateException(e.getMessage(), e);
-        } finally {
-            backupLock.finalUnlock();
-        }
-        
-        // FIXME: Maybe we can update the suggestions only 
-        // when we know that a providers was added
-        providersView.updateSuggestions();
-        List<String> names = new LinkedList<>();
-        for (Provider p : controller.getProviders()) {
-            names.add((String) p.getValues().get("name"));
-        }
-        updateProviders(names);
+        controller.loadTicketsFromAFIPFile(chooser.getSelectedFile());
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+        // FIXME: Maybe we can update the suggestions only
+        //  when we know that a providers was added.
+        //TODO: I think the same, if we add a provider update suggestions and never be outdated
+        viewMediator.updateProviderSuggestions();
         loadTicketsInTable();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadTicketsActionPerformed
 
     private void loadTicketManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadTicketManuallyActionPerformed
-        ticketLoaderView.setVisible(true);
-        ticketLoaderView.updateSuggestions();
+        viewMediator.setViewVisible(true, "ticketLoader");
     }//GEN-LAST:event_loadTicketManuallyActionPerformed
 
     private void loadDollarValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadDollarValueActionPerformed
@@ -571,12 +488,12 @@ public class View extends JFrame {
         chooser.setFileFilter(fileTypes);
         chooser.showOpenDialog(this);
 
-        controller.loadDollarPrices(chooser.getSelectedFile());
+        controller.loadDollarPricesFromFile(chooser.getSelectedFile());
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }//GEN-LAST:event_loadDollarValueActionPerformed
 
     private void columnSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectorActionPerformed
-        columnSelectorView.setVisible(true);
+        viewMediator.setViewVisible(true, "columnSelector");
     }//GEN-LAST:event_columnSelectorActionPerformed
 
     private void resetDBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetDBButtonActionPerformed
@@ -587,8 +504,8 @@ public class View extends JFrame {
     }//GEN-LAST:event_resetDBButtonActionPerformed
 
     private void sectorsViewItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sectorsViewItemActionPerformed
-        sectorsView.setVisible(true);
-        sectorsView.updateSuggestions();
+        viewMediator.setViewVisible(true, "sectorsView");
+        viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_sectorsViewItemActionPerformed
 
     private void ticketsTableMouseReleased(MouseEvent evt) {//GEN-FIRST:event_ticketsTableMouseReleased
@@ -599,9 +516,9 @@ public class View extends JFrame {
             int row = ticketsTable.getSelectedRow();
             if (evt.isPopupTrigger() && ticketsTable.getSelectedRowCount() != 0) {
                 String deliveredValue = (String)ticketsTable.getValueAt(row, 16); //16 is the delivered column
-                deliveredMenuItem.setText(deliveredValue == "NO" ? "Marcar como enviado" : "Marcar como no enviado");
+                deliveredMenuItem.setText(Objects.equals(deliveredValue, "NO") ? "Marcar como enviado" : "Marcar como no enviado");
                 String sector = (String)ticketsTable.getValueAt(row, 14); //14 is the delivered column
-                deleteSectorMenuItem.setEnabled(sector == null || sector.isEmpty() ? false : true);
+                deleteSectorMenuItem.setEnabled(sector != null && !sector.isEmpty());
                 popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
@@ -611,37 +528,35 @@ public class View extends JFrame {
         int selection = JOptionPane.showConfirmDialog(this, sectorComboBox, "Seleccione un rubro", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
-            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
-            
+            String id = (String) ticketsTable.getValueAt(row, 0);
+            Filter filter = new Filter("id", id, Comparison.EQUALS);
+
             String sector = (String)sectorComboBox.getSelectedItem();
-            controller.changeWithholdingAttribute(filter, "sector", sector, true);
+            controller.updateWithholdings(filter, "sector", sector);
         
             ticketsTable.setValueAt(sector, row, 14);   //column 14 is for sector
         }
     }//GEN-LAST:event_sectorMenuItemActionPerformed
 
-    private void formWindowClosing(WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        columnSelectorView.dispatchEvent(new WindowEvent(columnSelectorView, WindowEvent.WINDOW_CLOSING));
-    }//GEN-LAST:event_formWindowClosing
-
     private void deliveredMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deliveredMenuItemActionPerformed
         int row = ticketsTable.getSelectedRow();
-        SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
-        
+        String id = (String) ticketsTable.getValueAt(row, 0);
+        Filter filter = new Filter("id", id, Comparison.EQUALS);
+
         String deliveredValue = (String)ticketsTable.getValueAt(row, 16) == "NO" ? "SI" : "NO";
-            controller.changeWithholdingAttribute(filter, "delivered", deliveredValue == "NO" ? "false" : "true", true);
+            controller.updateWithholdings(filter, "delivered", deliveredValue == "NO" ? "false" : "true");
         
         ticketsTable.setValueAt(deliveredValue, row, 16);   //column 16 is for delivered
     }//GEN-LAST:event_deliveredMenuItemActionPerformed
 
     private void loadWithholdingManuallyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadWithholdingManuallyActionPerformed
-        withholdingLoaderView.setVisible(true);
-        withholdingLoaderView.updateSuggestions();
+        viewMediator.setViewVisible(true, "withholdingLoader");
+        viewMediator.updateProviderSuggestions();
+        viewMediator.updateSectorSuggestions();
     }//GEN-LAST:event_loadWithholdingManuallyActionPerformed
 
     private void viewMoreCalculusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewMoreCalculusButtonActionPerformed
-        CalculusView calculusView = new CalculusView(filtersView);
-        calculusView.setVisible(true);
+        viewMediator.setViewVisible(true, "calculusView");
     }//GEN-LAST:event_viewMoreCalculusButtonActionPerformed
 
     private void ticketsTableMousePressed(MouseEvent evt) {//GEN-FIRST:event_ticketsTableMousePressed
@@ -654,13 +569,15 @@ public class View extends JFrame {
         JTable toDelete = createToDeleteTable(row);
         int selection = JOptionPane.showConfirmDialog(this, new JScrollPane(toDelete), "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
-            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
+            String id = (String) ticketsTable.getValueAt(row, 0);
+            Filter filter = new Filter("id", id, Comparison.EQUALS);
             String type = (String)ticketsTable.getValueAt(row, 2);
-           
+
+            // for some reason here we differentiate the withholding by if contains 'Retencion'
             if (type.contains("Retencion"))
-                controller.removeItem(filter, false);
+                controller.deleteWithholdings(filter);
             else
-                controller.removeItem(filter, true);
+                controller.deleteWithholdings(filter);
             
             row = ticketsTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
             ((DefaultTableModel)ticketsTable.getModel()).removeRow(row); //remove row from view
@@ -668,30 +585,29 @@ public class View extends JFrame {
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private JTable createToDeleteTable(int rowIndex) {
-            Object[] rowToDelete = new Object[6];
-            int i = 0;
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 0);    //id
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 1);    //date
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 2);    //type
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 3);    //noTicket
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 7);    //provider name
-            rowToDelete[i++] = ticketsTable.getValueAt(rowIndex, 13);  //total import
-            
-            JTable toDelete = controller.createTableToDelete(rowToDelete);
-            return toDelete;
+        Object[] rowToDelete = new Object[6];
+        rowToDelete[0] = ticketsTable.getValueAt(rowIndex, 0);    //id
+        rowToDelete[1] = ticketsTable.getValueAt(rowIndex, 1);    //date
+        rowToDelete[2] = ticketsTable.getValueAt(rowIndex, 2);    //type
+        rowToDelete[3] = ticketsTable.getValueAt(rowIndex, 3);    //noTicket
+        rowToDelete[4] = ticketsTable.getValueAt(rowIndex, 7);    //provider name
+        rowToDelete[5] = ticketsTable.getValueAt(rowIndex, 13);  //total import
+
+        return ViewUtils.createTableToDelete(rowToDelete);
     }
     
     private void addProviderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProviderMenuItemActionPerformed
-        providerLoader.setVisible(true);
+        viewMediator.setViewVisible(true, "providerLoader");
     }//GEN-LAST:event_addProviderMenuItemActionPerformed
 
     private void deleteSectorMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteSectorMenuItemActionPerformed
         int selection = JOptionPane.showConfirmDialog(this, "se le removera el rubro al ticket", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = ticketsTable.getSelectedRow();
-            SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
-            
-            controller.deleteWithholdingAttribute(filter, "sector");
+            String id = (String) ticketsTable.getValueAt(row, 0);
+            Filter filter = new Filter("id", id, Comparison.EQUALS);
+
+            controller.updateWithholdings(filter, "sector", null);
             ticketsTable.setValueAt(null, row, 14);   //column 14 is for sector
         }
     }//GEN-LAST:event_deleteSectorMenuItemActionPerformed
@@ -715,7 +631,7 @@ public class View extends JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            controller.createBackup(file, null);    //null filename will create default backup filename
+            BackUpBuilder.saveBackup(file, null);    //null filename will create default backup filename
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_createBackupActionPerformed
@@ -732,7 +648,7 @@ public class View extends JFrame {
 
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             try {
-                controller.loadBackup(file);
+                BackUpBuilder.loadBackup(file);
             } catch (Exception e) {
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 throw e;
@@ -765,25 +681,10 @@ public class View extends JFrame {
 
     private void updateAttribute(String attribute, String value, int column) {
         int row = ticketsTable.getSelectedRow();
-        SQLFilter filter = FilterUtils.createTicketFilter(row, ticketsTable);
-        controller.changeTicketAttribute(filter, attribute, value, false);    //update db
+        String id = (String) ticketsTable.getValueAt(row, 0);
+        Filter filter = new Filter("id", id, Comparison.EQUALS);
+        controller.updateTickets(filter, attribute, value);    //update db
         ticketsTable.setValueAt(Float.parseFloat(value), row, column);  //update view
-    }
-    
-    public void updateSectors(List<String> sectors) {
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
-        providersView.updateSectors(sectors);
-        providerLoader.updateSectors(sectors);
-        filtersView.updateSectors(sectors);
-        ticketLoaderView.updateSectors(sectors);
-        withholdingLoaderView.updateSectors(sectors);
-    }
-    
-    public void updateProviders(List<String> names) {
-        providersView.updateProviders(names);
-        filtersView.updateProviders(names);
-        ticketLoaderView.updateProviders(names);
-        withholdingLoaderView.updateProviders(names);
     }
     
     public void showError(String message) {
@@ -791,26 +692,28 @@ public class View extends JFrame {
     }
     
     private void loadTicketsInTable() {
-        SQLFilter filter = new SQLFilter();
-        List<Withholding> tickets = controller.getWithholdings(filter);
-        tickets.addAll(controller.getTickets(filter));
+        List<Withholding> withholdings = controller.getWithholdings();
+        List<Ticket> tickets = controller.getTickets();
 
         DefaultTableModel model = (DefaultTableModel)ticketsTable.getModel();
         cleanTable(model);
-        for (Withholding t : tickets) {
-            if(t instanceof Ticket){
-                if(!((Ticket)t).isIncome()){
-                    t = controller.makeNegative((Ticket) t);
-                }
-                model.addRow(FormatUtils.ticketToForm(t));
-            } else {
-                Pair<Object[],Object[]> withholdings = FormatUtils.retrieveInternalWithholdingToForm(t);
-                if (withholdings.getFst() != null) {
-                    model.addRow(withholdings.getFst());
-                }
-                if (withholdings.getSnd() != null) {
-                    model.addRow(withholdings.getSnd());
-                }
+
+        for (Ticket t : tickets) {
+            if(!t.isIncome()){
+                t = ViewUtils.makeNegative(t);
+            }
+            model.addRow(ModelToForm.toForm(t));
+        }
+
+        for (Withholding w : withholdings) {
+            Object[] profitWithholding = ModelToForm.profitWithholdingToForm(w);
+            Object[] ivaWithholding = ModelToForm.IVAWithholdingToForm(w);
+
+            if (profitWithholding.length != 0) {
+                model.addRow(profitWithholding);
+            }
+            if (ivaWithholding.length != 0) {
+                model.addRow(ivaWithholding);
             }
         }
     }
@@ -842,53 +745,47 @@ public class View extends JFrame {
         selectedColumns[16] = config.get("delivered");
         return selectedColumns;
     }
-    
+
+    private ViewMediator viewMediator;
     private Controller controller;
-    private ProvidersView providersView;
-    private FiltersView filtersView;
-    private ColumnSelector columnSelectorView;
-    private TicketLoaderView ticketLoaderView;
-    private WithholdingLoaderView withholdingLoaderView;
-    private SectorsView sectorsView;
-    private ProviderLoaderView providerLoader;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem addProviderMenuItem;
-    private javax.swing.JButton calculateButton;
-    private javax.swing.JMenuItem columnSelector;
-    private javax.swing.JMenuItem createBackup;
-    private javax.swing.JMenuItem createPDFMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
-    private javax.swing.JMenuItem deleteSectorMenuItem;
-    private javax.swing.JMenuItem deliveredMenuItem;
-    private javax.swing.JMenu edit;
-    private javax.swing.JMenuItem exchangeTypeMenuItem;
-    private javax.swing.JMenu files;
-    private javax.swing.JMenuItem filters;
-    private javax.swing.JCheckBox inDollars;
-    private javax.swing.JTextField ivaTaxLabel;
-    private javax.swing.JTextField ivaTaxTextField;
-    private javax.swing.JMenuItem loadBackup;
-    private javax.swing.JMenuItem loadDollarValue;
-    private javax.swing.JMenuItem loadTicketManually;
-    private javax.swing.JMenuItem loadTickets;
-    private javax.swing.JMenuItem loadWithholdingManually;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenu multipleLoad;
-    private javax.swing.JPopupMenu popupMenu;
-    private javax.swing.JTextField profitTax;
-    private javax.swing.JTextField profitTaxLabel;
-    private javax.swing.JButton resetDBButton;
-    private javax.swing.JComboBox<String> sectorComboBox;
-    private javax.swing.JMenuItem sectorMenuItem;
-    private javax.swing.JMenuItem sectorsViewItem;
-    private javax.swing.JButton showProviders;
-    private javax.swing.JButton showTickets;
-    private JTable ticketsTable;
+    private JMenuBar menuBar;
+    private JMenu files;
+    private JMenu multipleLoad;
+    private JMenuItem loadTickets;
+    private JMenuItem loadDollarValue;
+    private JMenuItem loadTicketManually;
+    private JMenuItem loadWithholdingManually;
+    private JMenu edit;
+    private JMenuItem sectorsViewItem;
+    private JMenuItem addProviderMenuItem;
+    private JMenu tools;
+    private JMenuItem filters;
+    private JMenuItem columnSelector;
+    private JMenuItem createBackup;
+    private JMenuItem loadBackup;
+    private JMenuItem createPDFMenuItem;
     private JScrollPane ticketsTableScroll;
-    private javax.swing.JMenu tools;
-    private javax.swing.JTextField total;
-    private javax.swing.JTextField totalLabel;
-    private javax.swing.JButton viewMoreCalculusButton;
+    private JTable ticketsTable;
+    private JTextField total;
+    private JTextField ivaTaxTextField;
+    private JButton calculateButton;
+    private JButton showProviders;
+    private JButton showTickets;
+    private JTextField profitTax;
+    private JTextField ivaTaxLabel;
+    private JTextField profitTaxLabel;
+    private JTextField totalLabel;
+    private JCheckBox inDollars;
+    private JButton resetDBButton;
+    private JButton viewMoreCalculusButton;
+    private JPopupMenu popupMenu;
+    private JMenuItem sectorMenuItem;
+    private JMenuItem deliveredMenuItem;
+    private JMenuItem exchangeTypeMenuItem;
+    private JMenuItem deleteSectorMenuItem;
+    private JMenuItem deleteMenuItem;
+    private JComboBox<String> sectorComboBox;
     // End of variables declaration//GEN-END:variables
 
 }

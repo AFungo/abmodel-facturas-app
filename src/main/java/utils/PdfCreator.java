@@ -3,15 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package utils;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.itextpdf.text.Document;
@@ -30,12 +24,9 @@ import com.itextpdf.text.pdf.PdfWriter;
  */
 public class PdfCreator {
 
-    private JFrame frame;
     private JTable table;
-    private JButton button;
     private Document document;
     private PdfWriter writer;
-    private JScrollPane scrollPane;
     private String pathToFile;
     private boolean[] selectedColumns;
 

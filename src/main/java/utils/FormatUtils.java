@@ -5,7 +5,7 @@
  */
 package utils;
 
-import databaserefactor.ProviderDAO;
+import database.ProviderDAO;
 import models.DollarPrice;
 import models.Provider;
 import models.Sector;
@@ -222,7 +222,7 @@ public class FormatUtils {
         }
         Boolean delivered = (Boolean) (dict.get("delivered"));
         
-        Pair<Object[],Object[]> values = new Pair();
+        Pair<Object[],Object[]> values = new Pair<>();
         Object iva = dict.get("iva");
         if (iva != null && (Float) iva != 0.0f) {
             Object[] ivaWithholding = {dict.get("id"), dict.get("date"), "Retencion Iva", dict.get("number"), null, null, 
@@ -323,9 +323,9 @@ public class FormatUtils {
      * @param s String with CSV format containing dollar price data
      * @return a map from String to String of the dollar price data
      */
-    public static Map<String, String> dollarPriceCsvBackupToDict(String s) {
+    public static Map<String, Object> dollarPriceCsvBackupToDict(String s) {
         String[] data = s.split(";");
-        Map<String, String> dict = new HashMap<>();
+        Map<String, Object> dict = new HashMap<>();
         
         dict.put("date", data[0]);
         dict.put("buy", data[1]);
@@ -496,20 +496,6 @@ public class FormatUtils {
     }
 
     /**
-     * Transforms a list into a vector
-     * 
-     * @param list list of generic type
-     * @return a vector of generic type containig all the elements of {@code list}
-     */
-    public static <E> Vector<E> listToVector(List<E> list) {
-        Vector<E> vector = new Vector<>();
-        for (E e : list) {
-            vector.addElement(e);
-        }
-        return vector;
-    }
-    
-    /**
      * Transfroms a string with date format into a Date
      * 
      * @param dateStr string with format date
@@ -552,7 +538,7 @@ public class FormatUtils {
      * @return a map of string to string
      */
     public static Map<String, Object> objectToStringMap(Map<String, Object> values){
-        Map<String, Object> v = new HashMap();
+        Map<String, Object> v = new HashMap<>();
         Provider provider = (Provider) values.get("provider");
         v.putAll(provider.getValues());
         v.put("id", values.get("id").toString());

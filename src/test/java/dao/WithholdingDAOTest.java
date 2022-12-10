@@ -1,9 +1,9 @@
 package dao;
 
 import database.DBManager;
-import databaserefactor.DAO;
-import databaserefactor.ProviderDAO;
-import databaserefactor.WithholdingDAO;
+import database.DAO;
+import database.ProviderDAO;
+import database.WithholdingDAO;
 import models.Provider;
 import models.Withholding;
 import org.junit.jupiter.api.*;

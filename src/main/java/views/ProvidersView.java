@@ -7,8 +7,9 @@ package views;
 
 import controller.Controller;
 import database.ProviderDAO;
-import database.SQLFilter;
 import database.SectorDAO;
+import filters.Comparison;
+import filters.Filter;
 import models.Provider;
 import utils.AutoSuggestor;
 import utils.ConfigManager;
@@ -18,15 +19,11 @@ import utils.PdfCreator;
 import utils.Validate;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import java.util.*;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.apache.commons.io.FilenameUtils;
+import views.utils.ViewMediator;
 
 /**
  *
@@ -38,29 +35,16 @@ public class ProvidersView extends JFrame {
      * Creates new form ProvidersView
      * @param controller
      */
-    public ProvidersView(Controller controller, View mainView) {
-        this.mainView = mainView;
+    public ProvidersView(Controller controller, ViewMediator viewMediator, JTable providersTable) {
+        this.viewMediator = viewMediator;
         this.controller = controller;
+        this.providersTable = providersTable;
         initComponents();
-        providersAutoSuggestor = new AutoSuggestor(comboBox, getProvidersName());
+        providersAutoSuggestor = new AutoSuggestor(providersComboBox, viewMediator.getProvidersName());
         providersAutoSuggestor.autoSuggest();
+        viewMediator.getAutoSuggestorManager().registerProviderAutoSuggestor(providersAutoSuggestor);
     }
     
-    public void updateSuggestions() {
-        providersAutoSuggestor.setSuggestions(getProvidersName());
-    }
-    
-    public javax.swing.JTable getTable() {
-        return providersTable;
-    }
-    
-    private List<String> getProvidersName() {
-        List<String> names = new LinkedList<>();
-        for (Provider p : controller.getProviders()) {
-            names.add((String) p.getValues().get("name"));
-        }
-        return names;
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,9 +66,8 @@ public class ProvidersView extends JFrame {
         deleteProvider = new javax.swing.JMenuItem();
         sectorComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        providersTable = new javax.swing.JTable();
         searchProvider = new javax.swing.JButton();
-        comboBox = new javax.swing.JComboBox<>();
+        providersComboBox = new javax.swing.JComboBox<>();
         showAllProviders = new javax.swing.JButton();
         createPdf = new javax.swing.JButton();
 
@@ -152,7 +135,7 @@ public class ProvidersView extends JFrame {
         });
         popupMenu.add(deleteProvider);
 
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(SectorDAO.get())));
+        sectorComboBox.setModel(new DefaultComboBoxModel(new Vector<>(SectorDAO.getInstance().getAll())));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PROVEDORES");
@@ -237,7 +220,7 @@ public class ProvidersView extends JFrame {
                 .addContainerGap(85, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(63, 63, 63))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(createPdf)
@@ -255,7 +238,7 @@ public class ProvidersView extends JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchProvider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(providersComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(showAllProviders)
@@ -271,9 +254,9 @@ public class ProvidersView extends JFrame {
         DefaultTableModel model = (DefaultTableModel)providersTable.getModel();
         cleanTable(model);
         
-        SQLFilter filter = new SQLFilter();
-        filter.add("name", "=", providersAutoSuggestor.getText(), String.class);
-        List<Provider> providers = controller.getProviders(filter);
+        List<Filter> filter = new ArrayList<>();
+        filter.add(new Filter("name", providersAutoSuggestor.getText(), Comparison.EQUALS));
+        List<Provider> providers = controller.getProviders(filter.toArray(new Filter[0]));
         for (Provider p : providers) {
             model.addRow(FormatUtils.providerToForm(p));
         }
@@ -357,9 +340,8 @@ public class ProvidersView extends JFrame {
         int selection = JOptionPane.showConfirmDialog(this, "Se le removera el rubro al proveedor", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = providersTable.getSelectedRow();
-            SQLFilter filter = new SQLFilter();
-            filter.add("docNo", "=", selectedDoc, String.class);
-            controller.deleteProviderAttribute(filter, "sector");
+            Filter filter = new Filter("docNo", selectedDoc, Comparison.EQUALS);
+            controller.updateProvider(filter, "sector", null);
             providersTable.setValueAt(null, row, 5);   //column 5 is for sector
         }
     }//GEN-LAST:event_deleteSectorActionPerformed
@@ -405,13 +387,12 @@ public class ProvidersView extends JFrame {
         int selection = JOptionPane.showConfirmDialog(this, "El proveedor " + name + " sera eliminado", "Estas seguro?", JOptionPane.OK_CANCEL_OPTION);
         if (selection == JOptionPane.OK_OPTION) {
             int row = providersTable.getSelectedRow();
-            SQLFilter filter = new SQLFilter();
-            filter.add("docNo", "=", selectedDoc, String.class);
-            ProviderDAO.delete(filter);
+            ProviderDAO.getInstance().delete(ProviderDAO.getInstance().getAll().stream()
+            .filter(p -> p.getValues().get("docNo").equals(selectedDoc)).findFirst().get());//i think this line is a method in the controller
             row = providersTable.convertRowIndexToModel(row); //translate cell coordinates to DefaultTableModel
             ((DefaultTableModel)providersTable.getModel()).removeRow(row); //remove row from view
         }
-        mainView.updateProviders(getProvidersName());
+        viewMediator.updateProviderSuggestions();
     }//GEN-LAST:event_deleteProviderActionPerformed
 
     private String getAttribute(int column) {
@@ -420,26 +401,12 @@ public class ProvidersView extends JFrame {
     }
     
     private void updateAttribute(String attribute, String value, int column) {
-        SQLFilter filter = new SQLFilter();
-        filter.add("docNo", "=", selectedDoc, String.class);
-        controller.changeProviderAttribute(filter, attribute, value);    //update db
+        Filter filter = new Filter("docNo", selectedDoc, Comparison.EQUALS);
+        controller.updateProvider(filter, attribute, value);    //update db
         int row = providersTable.getSelectedRow();
         providersTable.setValueAt(value, row, column);  //update view
     }
-    
-    public void updateSectors(List<String> sectors) {
-        sectorComboBox.setModel(new DefaultComboBoxModel(FormatUtils.listToVector(sectors)));
-    }
-    
-    public void updateProviders(List<String> names) {
-        providersAutoSuggestor.setSuggestions(names);
-    }
-    
-    
-    public void updateProviders(java.awt.event.ActionEvent evt) {
-        showAllProvidersActionPerformed(evt);
-    }
-    
+
     private void cleanTable(DefaultTableModel model) {
         for (int i = model.getRowCount() - 1; 0 <= i; i--)
             model.removeRow(i);
@@ -460,9 +427,9 @@ public class ProvidersView extends JFrame {
     private Controller controller;
     private AutoSuggestor providersAutoSuggestor;
     private String selectedDoc;
-    private View mainView;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> comboBox;
+    private ViewMediator viewMediator;
+    
+    private javax.swing.JComboBox<String> providersComboBox;
     private javax.swing.JButton createPdf;
     private javax.swing.JMenuItem deleteProvider;
     private javax.swing.JMenuItem deleteSector;

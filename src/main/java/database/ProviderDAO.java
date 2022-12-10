@@ -1,168 +1,126 @@
 package database;
 
 import models.Provider;
-import utils.FormatUtils;
+import models.set.ModelSet;
 import utils.Pair;
+import logger.Handler;
+import database.sql.SQLUtils;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
 
 /**
- * Data Access Object used for the Provider's table of the database
+ *
+ * this class implements DAO interface for Provider model
+ * 
  */
-public class ProviderDAO extends DAO {
+public class ProviderDAO implements DAO<Provider>{
     
-    /**
-     * Add a new provider to the database
-     *
-     * @param provider provider to be added
-     */
-    public static void add(Provider provider) {
-        Pair<String, String> sqlValues = FormatUtils.providerToSQL(provider);
+    private static ProviderDAO instance;
+
+    private final ModelSet<Provider> cache;
+    private boolean cacheLoaded;
+
+    public static ProviderDAO getInstance() {
+        if (instance == null) {
+            instance = new ProviderDAO();
+        }
+        return instance;
+    }
+
+    private ProviderDAO() {
+        cache = new ModelSet<>();
+        cacheLoaded = false;
+    }
+
+    @Override
+    public ModelSet<Provider> getAll() {
+        prepareCache();
+        return new ModelSet<>(cache);
+    }
+
+    public boolean save(Provider provider) {
+        prepareCache();
+
+        Pair<String, String> sqlValues = SQLUtils.modelToSQL(provider);
         String query = "INSERT INTO Provider (" + sqlValues.getFst() + ") "
             + "VALUES (" + sqlValues.getSnd() + ")";
-        executeQuery(query, true, true);
-    }
-    
-    /**
-     * Given a filter, checks if the executed query returns an empty set 
-     * or not
-     * 
-     * @param filter filter that will be used in the query
-     * @return true iff the result if not empty
-     */
-    public static boolean exist(SQLFilter filter) {
-        String query = "SELECT * FROM Provider " + filter.get();
-        ResultSet result = executeQuery(query, false, true);
-        try {
-            return result.next();
-        } catch (SQLException e) {
-            throw new IllegalStateException(e.toString());
+
+        int generatedId = DatabaseUtils.executeCreate(query);
+        if (generatedId == 0) {
+            return false;
         }
+
+        provider.setValues(Collections.singletonMap("id", generatedId));
+        cache.add(provider);
+        //add item to cache if executeQuery was successful
+        return true;
     }
-    
-    /**
-     * Providers getter
-     *
-     * @return a list of all providers
-     */
-    public static List<Provider> get() {
-        String query = "SELECT * FROM Provider";
-        ResultSet result = executeQuery(query, false, true);
-        List<Provider> providers = new LinkedList<>();
+
+    @Override
+    public boolean update(Provider provider, Map<String, Object> params) {
+        prepareCache();
+      
+        String query = "UPDATE Provider SET " + SQLUtils.mapToSQLValues(params) + " WHERE docNo = "
+                + "'" + provider.getValues().get("docNo") + "'";
+
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
         
+        //update cache if executeQuery was successful
+        cache.remove(provider);
+        provider.setValues(params); //remove and add for rehashing
+        cache.add(provider);
+        return true;
+    }
+
+    @Override
+    public boolean delete(Provider provider) {
+        prepareCache();
+        
+        String query = "DELETE FROM Provider WHERE docNo = '" + provider.getValues().get("docNo") + "'";
+        
+        int affectedRows = DatabaseUtils.executeUpdate(query);
+        if (affectedRows == 0) {
+            return false;
+        }
+        
+        cache.remove(provider);
+        return true;
+    }
+
+    /**
+     * This method must load the cache with the data from the database
+     */
+    private void loadCache() {
+        String query = "SELECT * FROM Provider";
+        ResultSet result = DatabaseUtils.executeQuery(query);
         try {
             while(result.next()) {
-                providers.add(createProvider(result));
+                cache.add(new Provider(new HashMap<String, Object>() {{
+                    put("id", result.getString(1));
+                    put("docNo", result.getString(2));
+                    put("name", result.getString(3));
+                    put("docType", result.getString(4));
+                    put("address", result.getString(5));
+                    put("provSector", result.getString(6));
+                    put("alias", result.getString(7));
+                }}));
             }
-            return providers;
         } catch (SQLException ex) {
-            Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new IllegalStateException(ex.toString());
+            cache.clear();  //in case of failing the cache is emptied, everything is loaded or nothing is loaded
+            Handler.logUnexpectedError(ex);
         }
-    }
-    
-    /**
-     * Providers getter using a filter
-     *
-     * @param filter filter used in the query
-     * @return a list of all provider's obtained using the filter
-     */
-    public static List<Provider> get(SQLFilter filter) {
-        if (filter == null) {
-            throw new IllegalArgumentException("The parameter filters can not be null");
+    }    
+
+    private void prepareCache() {
+        if (!cacheLoaded) {
+            loadCache();
+            cacheLoaded = true;
         }
-        
-        String query = "SELECT * FROM Provider" + filter.get();
-        ResultSet result = executeQuery(query, false, true);
-        List<Provider> providers = new LinkedList<>();
-        try {
-            while (result.next()) {
-                providers.add(createProvider(result));
-            }
-            return providers;
-        } catch (SQLException ex) {
-            Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new IllegalStateException(ex.toString());
-        }
-    }
-     
-    /**
-     * Provider getter using the document number
-     *
-     * @param docNo document number used in the query
-     * @return a provider with that document requested if this exists
-     */
-    public static Provider get(String docNo) {
-        String query = "SELECT * FROM Provider WHERE docNo='" + docNo + "'";
-        ResultSet result = executeQuery(query, false, true);
-        try {
-            if (result.next()) {
-                return createProvider(result);
-            }
-            return null;
-        } catch (SQLException ex) {
-            Logger.getLogger(ProviderDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new IllegalStateException(ex.toString());
-        }
-    }
-    
-    /**
-     * Given a filter to search providers and an attribute, updates the
-     * attribute of selected providers with the given value
-     *
-     * @param filter filter used for search providers
-     * @param attribute attribute of the providers that will be updated
-     * @param value value used for the update
-     */
-    public static void update(SQLFilter filter, String attribute, String value) {
-        if (exist(filter)) {
-            String query = "UPDATE Provider SET " + attribute + " = '" + value  + "' " + filter.get();
-            executeQuery(query, true, false);
-        } else {
-            System.out.println("A provider with filters (" + filter.get() + ") was not found");
-        }
-    }
-    
-    /**
-     * Given a filter and an attribute set the attribute of the searched
-     * providers with null
-     * 
-     * @param filter filter used for search providers
-     * @param attribute attribute that will be set as null
-     */
-    public static void setNull(SQLFilter filter, String attribute) {
-        String query = "UPDATE Provider SET " + attribute + " =  null " + filter.get();
-        executeQuery(query, true, false);
-    }
-    
-    /**
-     * Given a non-empty filter deletes the providers that matches filter
-     * 
-     * @param filter filter used for delete providers
-     */
-    public static void delete(SQLFilter filter) {
-        if (filter.isEmpty()) {
-            throw new IllegalArgumentException("cannot delete provider without filter");
-        }
-        String query = "DELETE FROM Provider" + filter.get();
-        executeQuery(query, true, false);
-    }
-    
-    private static Provider createProvider(ResultSet result) throws SQLException {
-        Map<String, Object> values = new HashMap<>();
-        values.put("docNo", result.getString(1));
-        values.put("name", result.getString(2));
-        values.put("docType", result.getString(3));
-        values.put("direction", result.getString(4));
-        values.put("provSector", result.getString(5));
-        values.put("alias", result.getString(6));
-        Provider prov = new Provider(values);
-        return prov;
-    }
+    }   
+
 }
