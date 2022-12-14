@@ -1,5 +1,5 @@
-package database;
+package models;
 
-public enum DAOEnum {
+public enum ModelEnum {
     TICKET, WITHHOLDING, PROVIDER, SECTOR, DOLLARPRICE
 }
