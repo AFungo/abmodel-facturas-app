@@ -1,9 +1,12 @@
 package database;
 
+import models.ModelEnum;
+
 public class DAOFactory {
 
-    public static DAO get(DAOEnum dao) {
-        switch (dao) {
+    //FIXME: this should be create because its a factory, but this really gets the instance of DAO
+    public static DAO get(ModelEnum model) {
+        switch (model) {
             case TICKET:
                 return TicketDAO.getInstance();
             case WITHHOLDING:
@@ -15,7 +18,7 @@ public class DAOFactory {
             case DOLLARPRICE:
                 return DollarPriceDAO.getInstance();
             default:
-                throw new IllegalArgumentException("DAOFactory received an invalid argument " + dao);
+                throw new IllegalArgumentException("DAOFactory received an invalid argument " + model);
         }
     }
 }
