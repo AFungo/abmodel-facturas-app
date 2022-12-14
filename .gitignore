@@ -178,3 +178,7 @@ gradle-app.setting
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,gradle,java,intellij+all
+
+dist/
+nbproject/
+bin/main/facturas/
