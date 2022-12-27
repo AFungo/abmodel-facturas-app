@@ -4,12 +4,16 @@
  */
 package views;
 
+import builder.Builder;
+import builder.BuilderFactory;
+import loader.SectorLoader;
+import models.ModelEnum;
+import models.Sector;
 import utils.AutoSuggestor;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import builder.ModelBuilder;
 import database.SectorDAO;
 import views.utils.ViewMediator;
 
@@ -106,7 +110,10 @@ public class SectorsView extends javax.swing.JFrame {
     private void addSectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSectorActionPerformed
         String newSector = sectorsAutoSuggestor.getText();
         if (!newSector.trim().isEmpty() && !SectorDAO.getInstance().getAll().stream().anyMatch(s -> s.getValues().get("name").equals(newSector))) {
-            ModelBuilder.buildSector(newSector);
+            Builder sectorBuilder = BuilderFactory.create(ModelEnum.SECTOR);
+            Sector sector = (Sector) sectorBuilder.build(newSector);
+            SectorLoader loader = new SectorLoader();
+            loader.load(sector);
             viewMediator.updateSectorSuggestions();
             sectorsAutoSuggestor.setText("");
         } else {

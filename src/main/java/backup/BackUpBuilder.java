@@ -1,6 +1,6 @@
 package backup;
 
-import builder.ModelBuilder;
+import builder.*;
 import database.*;
 import formatters.ModelToCSV;
 import utils.csv.CSVUtils;
@@ -67,26 +67,27 @@ public class BackUpBuilder {
      * @param folder the path to the folder containing the backups
      */
     public static void loadBackup(File folder) {
-        if (folder == null) {
-            throw new IllegalArgumentException("File is null");
-        } else if (!folder.getName().contains("backup-")) {
-            throw new IllegalArgumentException("Folder " + folder.getPath() + " is not a valid backup folder");
-        }
-
-        //read backup files, if any is invalid an exception is thrown breaking the method before loading anything
-        List<String[]> dollarPriceData = getBackupData(folder, "prices.csv", backupDollarPriceHeader);
-        List<String[]> sectorData = getBackupData(folder, "sectors.csv", backupSectorHeader);
-        List<String[]> providerData = getBackupData(folder, "providers.csv", backupProviderHeader);
-        List<String[]> ticketData = getBackupData(folder, "tickets.csv", backupTicketHeader);
-        List<String[]> withholdingData = getBackupData(folder, "withholdings.csv", backupWithholdingHeader);
-
-        //load backups in db in the following order to avoid foreign key conflicts:
-        //dollarPrice -> sector -> provider -> ticket -> withholding
-        loadBackupData(dollarPriceData, DollarPriceDAO.getInstance(), ModelBuilder::buildDollarPrice);
-        loadBackupData(sectorData, SectorDAO.getInstance(), ModelBuilder::buildSector);
-        loadBackupData(providerData, ProviderDAO.getInstance(), ModelBuilder::buildProvider);
-        loadBackupData(ticketData, TicketDAO.getInstance(), ModelBuilder::buildTicket);
-        loadBackupData(withholdingData, WithholdingDAO.getInstance(), ModelBuilder::buildWithholding);
+//        if (folder == null) {
+//            throw new IllegalArgumentException("File is null");
+//        } else if (!folder.getName().contains("backup-")) {
+//            throw new IllegalArgumentException("Folder " + folder.getPath() + " is not a valid backup folder");
+//        }
+//
+//        //read backup files, if any is invalid an exception is thrown breaking the method before loading anything
+//        List<String[]> dollarPriceData = getBackupData(folder, "prices.csv", backupDollarPriceHeader);
+//        List<String[]> sectorData = getBackupData(folder, "sectors.csv", backupSectorHeader);
+//        List<String[]> providerData = getBackupData(folder, "providers.csv", backupProviderHeader);
+//        List<String[]> ticketData = getBackupData(folder, "tickets.csv", backupTicketHeader);
+//        List<String[]> withholdingData = getBackupData(folder, "withholdings.csv", backupWithholdingHeader);
+//
+//        //load backups in db in the following order to avoid foreign key conflicts:
+//        //dollarPrice -> sector -> provider -> ticket -> withholding
+//        loadBackupData(dollarPriceData, DollarPriceDAO.getInstance(), DollarPriceBuilder::build);
+//        loadBackupData(sectorData, SectorDAO.getInstance(), ModelBuilder::buildSector);
+//        loadBackupData(providerData, ProviderDAO.getInstance(), ModelBuilder::buildProvider);
+//        loadBackupData(ticketData, TicketDAO.getInstance(), ModelBuilder::buildTicket);
+//        loadBackupData(withholdingData, WithholdingDAO.getInstance(), ModelBuilder::buildWithholding);
+    //TODO: Rehacer culiau
     }
 
     /**
