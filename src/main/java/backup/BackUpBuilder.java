@@ -1,63 +1,40 @@
 package backup;
 
-import builder.ModelBuilder;
-import database.*;
-import formatters.ModelToCSV;
-import utils.csv.CSVUtils;
-
 import java.io.*;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
+import java.util.ListIterator;
 
 /**
- * Reads and writes backups based on the data on db
- */
+ * Reads loads and writes backups based on the database information
+ */         //FIXME: i think there is a better name for this
 public class BackUpBuilder {
 
-    //backup file headers
-    private final static String[] backupTicketHeader = {"id","date","number","providerDoc","iva","profits","delivered","sector","type","numberTo","authCode","exchangeType","exchangeMoney","netAmountWI","netAmountWOI","amountImpEx","ivaTax","totalAmount","issuedByMe"};
-    private final static String[] backupWithholdingHeader = {"id","date","number","providerDoc","iva","profits","sector","delivered"};
-    private final static String[] backupProviderHeader = {"id","docNo","name","direction","sector","alias","documentType"};
-    private final static String[] backupSectorHeader = {"id","name"};
-    private final static String[] backupDollarPriceHeader = {"id","Fecha cotizacion","Compra","Venta"};
+    private List<ModelBackUp> modelsToBackup;
+
+    public BackUpBuilder() {
+        modelsToBackup = new LinkedList<>();
+        modelsToBackup.add(new TicketBackUp());
+        modelsToBackup.add(new WithholdingBackUp());
+        modelsToBackup.add(new ProviderBackUp());
+        modelsToBackup.add(new SectorBackUp());
+        modelsToBackup.add(new DollarPriceBackUp());
+    }
 
     /**
-     * Takes a folder and a name for it and creates a backup of the current database in it
-     * only the db tables with data will be backed up
+     * Takes a folder, a name for it and creates a backup of the current database tables
+     * empty tables will not be backed up
      * @param folder the path to the folder
-     * @param filename the name with which the folder will be created
-     *                 this method adds "backup-" to the beginning of filename
+     * @param folderName the name with which the folder will be created
+     * this method adds "backup-" to the beginning of folderName
      */
-    public static void saveBackup(File folder, String filename) {
-        if (folder == null) {
-            throw new IllegalArgumentException("File is null");
-        }
+    public void createBackup(File folder, String folderName) {
+        File backupFolder = prepareFolder(folder, folderName);
 
-        if (filename == null || filename.equals("")) {  //if no filename was given we set a default name
-            LocalTime currentTime = LocalTime.now();
-            filename = "\\backup--" + currentTime + "--" + currentTime.getHour() + "-" + currentTime.getMinute() + "\\";
-        } else {    //else add backup to the name
-            filename = "backup-" + filename;
+        for (ModelBackUp backup : modelsToBackup) {
+            backup.createBackup(backupFolder);
         }
-        //create backup folder
-        File backupFolder = new File(folder, filename);
-        if (!backupFolder.mkdir()) {
-            throw new IllegalStateException("The backup could not be created in path " + backupFolder.getAbsolutePath());
-        }
-
-        //tickets backup
-        backupData(backupFolder, TicketDAO.getInstance(), ModelToCSV::toCSV, backupTicketHeader, "tickets.csv");
-        //withholdings backup
-        backupData(backupFolder, WithholdingDAO.getInstance(), ModelToCSV::toCSV, backupWithholdingHeader, "withholdings.csv");
-        //providers backup
-        backupData(backupFolder, ProviderDAO.getInstance(), ModelToCSV::toCSV, backupProviderHeader, "providers.csv");
-        //sectors backup
-        backupData(backupFolder, SectorDAO.getInstance(), ModelToCSV::toCSV, backupSectorHeader, "sectors.csv");
-        //dollar prices backup
-        backupData(backupFolder, DollarPriceDAO.getInstance(), ModelToCSV::toCSV, backupDollarPriceHeader, "prices.csv");
     }
 
     /**
@@ -66,86 +43,54 @@ public class BackUpBuilder {
      * and no data is loaded in db
      * @param folder the path to the folder containing the backups
      */
-    public static void loadBackup(File folder) {
+    public void loadBackup(File folder) {
         if (folder == null) {
             throw new IllegalArgumentException("File is null");
         } else if (!folder.getName().contains("backup-")) {
             throw new IllegalArgumentException("Folder " + folder.getPath() + " is not a valid backup folder");
         }
 
-        //read backup files, if any is invalid an exception is thrown breaking the method before loading anything
-        List<String[]> dollarPriceData = getBackupData(folder, "prices.csv", backupDollarPriceHeader);
-        List<String[]> sectorData = getBackupData(folder, "sectors.csv", backupSectorHeader);
-        List<String[]> providerData = getBackupData(folder, "providers.csv", backupProviderHeader);
-        List<String[]> ticketData = getBackupData(folder, "tickets.csv", backupTicketHeader);
-        List<String[]> withholdingData = getBackupData(folder, "withholdings.csv", backupWithholdingHeader);
-
-        //load backups in db in the following order to avoid foreign key conflicts:
-        //dollarPrice -> sector -> provider -> ticket -> withholding
-        loadBackupData(dollarPriceData, DollarPriceDAO.getInstance(), ModelBuilder::buildDollarPrice);
-        loadBackupData(sectorData, SectorDAO.getInstance(), ModelBuilder::buildSector);
-        loadBackupData(providerData, ProviderDAO.getInstance(), ModelBuilder::buildProvider);
-        loadBackupData(ticketData, TicketDAO.getInstance(), ModelBuilder::buildTicket);
-        loadBackupData(withholdingData, WithholdingDAO.getInstance(), ModelBuilder::buildWithholding);
-    }
-
-    /**
-     * Given a folder, filename and header, builds the path to the file, reads and returns the data as
-     * a list of String[]
-     * in case the file doesn't exist returns an empty list
-     * in case the header is invalid an exception is thrown
-     * @param parentFolder the folder where the backups are
-     * @param filename the name of the backup file
-     * @param header the header of the backup file
-     * @return a List of String[] containing the data of the backup file
-     */
-    private static List<String[]> getBackupData(File parentFolder, String filename, String[] header) {
-        File fileCsv = new File(parentFolder, filename);
-        if (!fileCsv.exists()) { //if no file exists we return an empty list
-            return new LinkedList<>();
+        for (ModelBackUp backup : modelsToBackup) {
+            backup.readBackup(folder);
         }
-        //readCSV and return
-        return CSVUtils.readCSV(fileCsv, header);
-    }
-
-    /**
-     * Given a file data, a dao object and a builder creates a model with the data file and tries to save it in
-     * the database
-     * @param data the data of a backup file
-     * @param dao the dao instance that will be used to load the models
-     * @param builder a builder function to transform data into a model
-     * @param <E> is the model that will be built and saved
-     */
-    private static <E> void loadBackupData(List<String[]> data, DAO<E> dao, Function<String[],E> builder) {
-        for (String[] item : data) {
-            E model = builder.apply(item);    //build model
-            dao.save(model);
+        ListIterator<ModelBackUp> reverseIterator = modelsToBackup.listIterator(modelsToBackup.size());
+        while (reverseIterator.hasPrevious()) {
+            reverseIterator.previous().loadBackup();
         }
     }
 
     /**
-     * Given a folder for backup, a dao object, a function to turn into csv format, a header and a filename
-     * creates a file and loads all the data of a table on it
-     * @param backupFolder the folder where the backups are written
-     * @param dao the dao instance that will be used to read
-     * @param toCSV the function to turn models into csv format
-     * @param header the header that will be written at the beginning of the file
-     * @param filename the name of the backup file
-     * @param <E> the model that will be read and saved
+     * Takes a path, a folder name and checks if it's valid for creating a backup
+     * in case is not an exception is thrown, otherwise the folder is created
+     * @param folder path to the folder where backups will be created
+     * @param folderName name of the folder
      */
-    private static <E> void backupData(File backupFolder, DAO<E> dao, Function<E,String[]> toCSV, String[] header,
-                                       String filename) {
-        Set<E> items = dao.getAll();
-        if (items.isEmpty()) {   //if there is nothing to save we just return
-            return;
+    private File prepareFolder(File folder, String folderName) {
+        if (folder == null) {
+            throw new IllegalArgumentException("Folder is null");
         }
-        //turn all data into a csv format
-        List<String[]> data = new LinkedList<>();
-        for (E item : items) {
-            data.add(toCSV.apply(item));
+
+        if (folderName == null || folderName.equals("")) {
+            folderName = defaultFolderName();
+        } else {
+            folderName = customFolderName(folderName);
         }
-        //write data
-        CSVUtils.writeCSV(backupFolder.getPath() + filename, data, header);
+
+        File backupFolder = new File(folder, folderName);
+        if (!backupFolder.mkdir()) {
+            throw new IllegalStateException("The backup could not be created in path " + backupFolder.getAbsolutePath());
+        }
+
+        return backupFolder;
+    }
+
+    private String defaultFolderName() {
+        LocalTime currentTime = LocalTime.now();
+        return "\\backup--" + currentTime + "--" + currentTime.getHour() + "-" + currentTime.getMinute() + "\\";
+    }
+
+    private String customFolderName(String folderName) {
+        return "backup-" + folderName;
     }
 
 }

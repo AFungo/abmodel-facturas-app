@@ -41,7 +41,8 @@ public class Controller {
             LocalTime currentTime = LocalTime.now();
             String filename = FixedData.getBackupFolderName("carga-tickets--" + currentTime + "--"
                     + currentTime.getHour() + "-" + currentTime.getMinute() + "\\");
-            BackUpBuilder.saveBackup(folder, filename);
+            BackUpBuilder backUpBuilder = new BackUpBuilder();
+            backUpBuilder.createBackup(folder, filename);
             ModelBuilder.buildFromAFIPData(data, issuedByMe);
         }
     }

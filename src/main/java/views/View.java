@@ -631,7 +631,8 @@ public class View extends JFrame {
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            BackUpBuilder.saveBackup(file, null);    //null filename will create default backup filename
+            BackUpBuilder backUpBuilder = new BackUpBuilder();
+            backUpBuilder.createBackup(file, null);    //null filename will create default backup filename
             this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }//GEN-LAST:event_createBackupActionPerformed
@@ -648,7 +649,8 @@ public class View extends JFrame {
 
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             try {
-                BackUpBuilder.loadBackup(file);
+                BackUpBuilder backUpBuilder = new BackUpBuilder();
+                backUpBuilder.loadBackup(file);
             } catch (Exception e) {
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 throw e;
