@@ -1,9 +1,14 @@
 package controller;
 
 import backup.BackUpBuilder;
-import builder.ModelBuilder;
+import builder.Builder;
+import builder.BuilderFactory;
 import database.*;
 import filters.*;
+import loader.AFIPLoader;
+import loader.ProviderLoader;
+import loader.TicketLoader;
+import loader.WithholdingLoader;
 import models.*;
 import models.set.ModelSet;
 import utils.FixedData;
@@ -30,10 +35,10 @@ public class Controller {
         List<String[]> data;
 
         boolean issuedByMe = true;
-        data = CSVUtils.readCSV(f, ModelBuilder.AFIPReceiverHeader);
+        data = CSVUtils.readCSV(f, AFIPLoader.AFIPReceiverHeader);
         if (data == null) {
             issuedByMe = false;
-            data = CSVUtils.readCSV(f, ModelBuilder.AFIPTransmitterHeader);
+            data = CSVUtils.readCSV(f, AFIPLoader.AFIPTransmitterHeader);
         }
 
         if (data != null) {
@@ -43,26 +48,35 @@ public class Controller {
                     + currentTime.getHour() + "-" + currentTime.getMinute() + "\\");
             BackUpBuilder backUpBuilder = new BackUpBuilder();
             backUpBuilder.createBackup(folder, filename);
-            ModelBuilder.buildFromAFIPData(data, issuedByMe);
+            AFIPLoader.loadFromAFIPFile(f);
         }
     }
 
     public void loadDollarPricesFromFile(File f) {
-        List<String[]> data = CSVUtils.readCSV(f, ModelBuilder.DollarPriceHeader);
-        Objects.requireNonNull(data, "null dollar price");
-        ModelBuilder.buildDollarPricesFromData(data);
+//        List<String[]> data = CSVUtils.readCSV(f, ModelBuilder.DollarPriceHeader);
+//        Objects.requireNonNull(data, "null dollar price");
+//        ModelBuilder.buildDollarPricesFromData(data);
     }
 
     public Ticket loadTicket(Object[] values) {
-        return ModelBuilder.buildTicket(values);
+        Builder ticketBuilder = BuilderFactory.create(ModelEnum.TICKET);
+        Ticket ticket = (Ticket) ticketBuilder.build(values);
+        TicketLoader ticketLoader = new TicketLoader();
+        return ticketLoader.load(ticket);
     }
 
     public Withholding loadWithholding(Object[] values) {
-        return ModelBuilder.buildWithholding(values);
+        Builder withholdingBuilder = BuilderFactory.create(ModelEnum.WITHHOLDING);
+        Withholding withholding = (Withholding) withholdingBuilder.build(values);
+        WithholdingLoader withholdingLoader = new WithholdingLoader();
+        return withholdingLoader.load(withholding);
     }
 
-    public void loadProvider(Object[] values) {
-        ModelBuilder.buildProvider(values);
+    public Provider loadProvider(Object[] values) {
+        Builder providerBuilder = BuilderFactory.create(ModelEnum.PROVIDER);
+        Provider provider = (Provider) providerBuilder.build(values);
+        ProviderLoader providerLoader = new ProviderLoader();
+        return providerLoader.load(provider);
     }
 
     /**

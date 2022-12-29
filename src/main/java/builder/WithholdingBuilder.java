@@ -1,6 +1,6 @@
 package builder;
 
-import databaserefactor.ProviderDAO;
+import database.ProviderDAO;
 import models.Provider;
 import models.Sector;
 import models.Withholding;
@@ -13,16 +13,16 @@ public class WithholdingBuilder implements Builder{
 
     @Override
     public Object build(Object... data) {
-//        Sector sector = (Sector) ProviderDAO.getInstance().getAll().stream()
-//                .filter(p -> p.getID().equals(((Provider)data[0]).getID()))
-//                .findFirst().get().getValues().get("sector");//TODO: Refactorizar
+        Sector sector = (Sector) ProviderDAO.getInstance().getAll().stream()
+                .filter(p -> p.getID().equals(((Provider)data[0]).getID()))
+                .findFirst().get().getValues().get("sector");
 
         Map<String, Object> withholdingValues = new HashMap<String, Object>(){{
             put("provider", data[0]);
             put("date", Date.valueOf((String)data[1]));
             put("number", data[2]);
 
-//            put("sector", sector);
+            put("sector", sector);
             if(data.length >= 7){
                 put("iva",Float.valueOf((String)data[3]));
                 put("profits", Float.valueOf((String) data[4]));

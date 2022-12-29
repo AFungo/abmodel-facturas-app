@@ -40,7 +40,7 @@ public class DatabaseUtils {
             int affectedRows = stm.executeUpdate();
         
             if (affectedRows == 0) {
-                return 0;
+                return -1;
             }
             ResultSet generatedKeys = stm.getGeneratedKeys();
             generatedKeys.next();

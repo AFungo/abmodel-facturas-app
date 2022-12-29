@@ -53,7 +53,7 @@ public class WithholdingDAO implements DAO<Withholding> {
             + "VALUES (" + sqlValues.getSnd() + ")";
 
         int generatedId = DatabaseUtils.executeCreate(query);
-        if (generatedId == 0) {
+        if (generatedId == -1) {
             return false;
         }
 
