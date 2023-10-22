@@ -126,10 +126,20 @@ public class FixedData {
         String docType = documentTypesMap.get(code);
         return docType == null ? code : docType;
     }
-    
+
+
+    private static Map<String, String> exchangeTypes = new HashMap<>();
+    private static void initializeExchangeTypesMap(){
+        exchangeTypes.put("PES", "$");
+        exchangeTypes.put("DOL", "USD");
+
+    }
     public static String getOldExchangeType(String exchange) {
-        throw new UnsupportedOperationException("TODO: create a hashmap with the new names of exchange types as keys and as value the old"
-                + "values that we still use in the program");
+        if (exchangeTypes.isEmpty()) {
+            initializeExchangeTypesMap();
+        }
+        String excType = exchangeTypes.get(exchange);
+        return excType == null ? exchange : excType;
     }
     
     /**
