@@ -497,15 +497,12 @@ public class FormatUtils {
      * @return a Date based on {@code dateStr} data
      */
     public static Date dateGen(String dateStr) {    //the entire method is not necesary, the date is already formated
-        String[] fields = dateStr.split("-"); //y-m-d
-        if (fields.length != 3) {   //should not be necesary, now backup and afip csvs have the same date format
-            dateStr = fields[0];
-            fields = dateStr.split("-");
-            String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
+        if(dateStr.contains("/")){
+            String[] fields = dateStr.split("/"); //y-m-d
+            String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
             return Date.valueOf(formatedDate);
         }
-        String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
-        return Date.valueOf(formatedDate);
+        return Date.valueOf(dateStr);
     }
     
     /**
