@@ -32,23 +32,22 @@ public class Ticket extends Withholding{
    public Ticket(Map<String, String> data) { 
         super(data);
         try {
-            NumberFormat nf = NumberFormat.getInstance();
             numberTo = data.get("numberTo") != null ? Integer.parseInt(data.get("numberTo")) : null ;
             authCode =  data.get("authCode") != null ? data.get("authCode") : null;
-            exchangeType = nf.parse(data.get("exchangeType")).floatValue();
-            totalAmount = nf.parse(data.get("totalAmount")).floatValue();
+            exchangeType = Float.parseFloat(data.get("exchangeType"));
+            totalAmount = Float.parseFloat(data.get("totalAmount"));
             exchangeMoney = data.get("exchangeMoney");
             type = data.get("type");
             String netAmountWI = data.get("netAmountWI");
-            this.netAmountWI = netAmountWI != null && !netAmountWI.isEmpty() ? nf.parse(netAmountWI).floatValue() : null ;
+            this.netAmountWI = netAmountWI != null && !netAmountWI.isEmpty() ? Float.parseFloat(netAmountWI) : null ;
             String netAmountWOI = data.get("netAmountWOI");
-            this.netAmountWOI = netAmountWOI != null && !netAmountWOI.isEmpty() ? nf.parse(netAmountWOI).floatValue() : null ;
+            this.netAmountWOI = netAmountWOI != null && !netAmountWOI.isEmpty() ? Float.parseFloat(netAmountWOI) : null ;
             String amountImpEx = data.get("amountImpEx");
-            this.amountImpEx = amountImpEx != null && !amountImpEx.isEmpty() ? nf.parse(amountImpEx).floatValue() : null ;
+            this.amountImpEx = amountImpEx != null && !amountImpEx.isEmpty() ? Float.parseFloat(amountImpEx) : null ;
             String iva = data.get("ivaTax");
-            this.ivaTax = iva != null && !iva.isEmpty() ? nf.parse(iva).floatValue() : null ;
+            this.ivaTax = iva != null && !iva.isEmpty() ? Float.parseFloat(iva) : null ;
             issuedByMe =  data.get("issuedByMe").equals("true");
-        } catch (ParseException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
         }
   }
