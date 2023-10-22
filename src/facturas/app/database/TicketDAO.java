@@ -118,7 +118,7 @@ public class TicketDAO extends DAO {
                 //9 is ticket id
                 ticketAttributes.put("type", result.getString(10));
                 if (result.getString(11) != null) {
-                    ticketAttributes.put("numberTo", result.getString(10));
+                    ticketAttributes.put("numberTo", result.getString(11));
                 }
                 ticketAttributes.put("authCode", result.getString(12));
                 ticketAttributes.put("exchangeType", result.getString(13));

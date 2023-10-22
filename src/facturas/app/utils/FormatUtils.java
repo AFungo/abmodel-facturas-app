@@ -86,8 +86,8 @@ public class FormatUtils {
         dict.put("docType", FixedData.getDocumentTypeByCode(data[6]));
         dict.put("docNo", data[7]);
         dict.put("name", data[8]);
-        dict.put("exchangeType", FixedData.getOldExchangeType(data[9]));
-        dict.put("exchangeMoney", data[10]);
+        dict.put("exchangeType", data[9]);
+        dict.put("exchangeMoney", FixedData.getOldExchangeType(data[10]));
         String netAmountWIVar = data[11];
         if (!netAmountWIVar.isEmpty()) dict.put("netAmountWI", netAmountWIVar);
         String netAmountWIOVar = data[12];
