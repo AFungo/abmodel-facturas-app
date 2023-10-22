@@ -5,7 +5,11 @@
  */
 package facturas.app.models;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,23 +29,28 @@ public class Ticket extends Withholding{
     private boolean issuedByMe;
     private String sector = null;
 
-   public Ticket(Map<String, String> data){
+   public Ticket(Map<String, String> data) { 
         super(data);
-        numberTo = data.get("numberTo") != null ? Integer.parseInt(data.get("numberTo")) : null ;
-        authCode =  data.get("authCode") != null ? data.get("authCode") : null;
-        exchangeType = Float.parseFloat(data.get("exchangeType"));
-        totalAmount = Float.parseFloat(data.get("totalAmount"));
-        exchangeMoney = data.get("exchangeMoney");
-        type = data.get("type");
-        String netAmountWI = data.get("netAmountWI");
-        this.netAmountWI = netAmountWI != null && !netAmountWI.isEmpty() ? Float.parseFloat(netAmountWI) : null ;
-        String netAmountWOI = data.get("netAmountWOI");
-        this.netAmountWOI = netAmountWOI != null && !netAmountWOI.isEmpty() ? Float.parseFloat(netAmountWOI) : null ;
-        String amountImpEx = data.get("amountImpEx");
-        this.amountImpEx = amountImpEx != null && !amountImpEx.isEmpty() ? Float.parseFloat(amountImpEx) : null ;
-        String iva = data.get("ivaTax");
-        this.ivaTax = iva != null && !iva.isEmpty() ? Float.parseFloat(iva) : null ;
-        issuedByMe =  data.get("issuedByMe").equals("true");
+        try {
+            NumberFormat nf = NumberFormat.getInstance();
+            numberTo = data.get("numberTo") != null ? Integer.parseInt(data.get("numberTo")) : null ;
+            authCode =  data.get("authCode") != null ? data.get("authCode") : null;
+            exchangeType = nf.parse(data.get("exchangeType")).floatValue();
+            totalAmount = nf.parse(data.get("totalAmount")).floatValue();
+            exchangeMoney = data.get("exchangeMoney");
+            type = data.get("type");
+            String netAmountWI = data.get("netAmountWI");
+            this.netAmountWI = netAmountWI != null && !netAmountWI.isEmpty() ? nf.parse(netAmountWI).floatValue() : null ;
+            String netAmountWOI = data.get("netAmountWOI");
+            this.netAmountWOI = netAmountWOI != null && !netAmountWOI.isEmpty() ? nf.parse(netAmountWOI).floatValue() : null ;
+            String amountImpEx = data.get("amountImpEx");
+            this.amountImpEx = amountImpEx != null && !amountImpEx.isEmpty() ? nf.parse(amountImpEx).floatValue() : null ;
+            String iva = data.get("ivaTax");
+            this.ivaTax = iva != null && !iva.isEmpty() ? nf.parse(iva).floatValue() : null ;
+            issuedByMe =  data.get("issuedByMe").equals("true");
+        } catch (ParseException ex) {
+            Logger.getLogger(Ticket.class.getName()).log(Level.SEVERE, null, ex);
+        }
   }
 
     @Override

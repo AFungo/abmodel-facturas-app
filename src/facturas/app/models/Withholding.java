@@ -10,6 +10,10 @@ import facturas.app.utils.FormatUtils;
 import java.util.Map;
 import java.util.HashMap;
 import java.sql.Date;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,18 +31,23 @@ public class Withholding {
     protected DollarPrice dollarPrice = null;
 
     public Withholding(Map<String, String> data) {
-        date = FormatUtils.dateGen(data.get("date"));
-        number = data.get("number");
-        //data can contain name (csv with new tickets) or not (loading backup, provider data is in DB)
-        if (data.containsKey("name") && data.containsKey("docType")) provider = new Provider(data); 
-        else provider = ProviderDAO.get(data.get("docNo"));
-        sector = data.get("sector");
-        String iva = data.get("iva");
-        if (iva != null && !iva.isEmpty()) this.iva = Float.parseFloat(iva);
-        String profits = data.get("profits");
-        if (profits != null && !profits.isEmpty()) this.profits = Float.parseFloat(profits);
-        if (data.get("id") != null) id = Integer.parseInt(data.get("id"));
-        if (data.get("delivered") != null) delivered = Boolean.valueOf(data.get("delivered"));
+        try {
+            NumberFormat nf = NumberFormat.getInstance();
+            date = FormatUtils.dateGen(data.get("date"));
+            number = data.get("number");
+            //data can contain name (csv with new tickets) or not (loading backup, provider data is in DB)
+            if (data.containsKey("name") && data.containsKey("docType")) provider = new Provider(data);
+            else provider = ProviderDAO.get(data.get("docNo"));
+            sector = data.get("sector");
+            String iva = data.get("iva");
+            if (iva != null && !iva.isEmpty()) this.iva = nf.parse(iva).floatValue();
+            String profits = data.get("profits");
+            if (profits != null && !profits.isEmpty()) this.profits = nf.parse(profits).floatValue();
+            if (data.get("id") != null) id = Integer.parseInt(data.get("id"));
+            if (data.get("delivered") != null) delivered = Boolean.valueOf(data.get("delivered"));
+        } catch (ParseException ex) {
+            Logger.getLogger(Withholding.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void addDollarPrice(DollarPrice price) {

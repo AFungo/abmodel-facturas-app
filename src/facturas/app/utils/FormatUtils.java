@@ -74,20 +74,19 @@ public class FormatUtils {
      * @return a map from String to String of the ticket data
      */
     public static Map<String, String> ticketCsvToDict(String strTicket, boolean issuedByMe) {
-        strTicket = strTicket.substring(1, strTicket.length() - 1); //remove first and last " symbol
-        String[] data = strTicket.split("\",\"");       //split by "," so we don't get in trouble with names containing ,
+        String[] data = strTicket.split(";");       //split by ;
         Map<String, String> dict = new HashMap<>();
         
         dict.put("date", data[0]);
-        dict.put("type", data[1]);
+        dict.put("type", FixedData.getTicketTypeByCode(data[1]));
         dict.put("number", data[2]+data[3]);
         String numberToVar = data[4];
         if (!numberToVar.isEmpty()) dict.put("numberTo", numberToVar);
         dict.put("authCode", data[5]);
-        dict.put("docType", data[6]);
+        dict.put("docType", FixedData.getDocumentTypeByCode(data[6]));
         dict.put("docNo", data[7]);
         dict.put("name", data[8]);
-        dict.put("exchangeType", data[9]);
+        dict.put("exchangeType", FixedData.getOldExchangeType(data[9]));
         dict.put("exchangeMoney", data[10]);
         String netAmountWIVar = data[11];
         if (!netAmountWIVar.isEmpty()) dict.put("netAmountWI", netAmountWIVar);
@@ -95,9 +94,10 @@ public class FormatUtils {
         if (!netAmountWIOVar.isEmpty()) dict.put("netAmountWOI", netAmountWIOVar);
         String amountImpExVar = data[13];
         if (!amountImpExVar.isEmpty()) dict.put("amountImpEx", amountImpExVar);
-        String ivaVar = data[14];
+        //data[14] are "other tributes" and is being skipped for now
+        String ivaVar = data[15];
         if (!ivaVar.isEmpty()) dict.put("ivaTax", ivaVar);
-        dict.put("totalAmount", data[15]);
+        dict.put("totalAmount", data[16]);
         dict.put("issuedByMe", issuedByMe ? "true" : "false");
         
         return dict;
@@ -496,15 +496,15 @@ public class FormatUtils {
      * @param dateStr string with format date
      * @return a Date based on {@code dateStr} data
      */
-    public static Date dateGen(String dateStr) {
-        String[] fields = dateStr.split("/"); //d-m-y
-        if (fields.length != 3) {
+    public static Date dateGen(String dateStr) {    //the entire method is not necesary, the date is already formated
+        String[] fields = dateStr.split("-"); //y-m-d
+        if (fields.length != 3) {   //should not be necesary, now backup and afip csvs have the same date format
             dateStr = fields[0];
             fields = dateStr.split("-");
             String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
             return Date.valueOf(formatedDate);
         }
-        String formatedDate = fields[2] + "-" + fields[1] + "-" + fields[0]; //y-m-d
+        String formatedDate = fields[0] + "-" + fields[1] + "-" + fields[2]; //y-m-d
         return Date.valueOf(formatedDate);
     }
     
