@@ -86,20 +86,20 @@ public class FormatUtils {
         dict.put("docType", FixedData.getDocumentTypeByCode(data[6]));
         dict.put("docNo", data[7]);
         dict.put("name", data[8]);
-        dict.put("exchangeType", data[9]);
+        dict.put("exchangeType", data[9].replace(",", "."));
         dict.put("exchangeMoney", FixedData.getOldExchangeType(data[10]));
         String netAmountWIVar = data[11];
-        if (!netAmountWIVar.isEmpty()) dict.put("netAmountWI", netAmountWIVar);
+        if (!netAmountWIVar.isEmpty()) dict.put("netAmountWI", netAmountWIVar.replace(",", "."));
         String netAmountWIOVar = data[12];
-        if (!netAmountWIOVar.isEmpty()) dict.put("netAmountWOI", netAmountWIOVar);
+        if (!netAmountWIOVar.isEmpty()) dict.put("netAmountWOI", netAmountWIOVar.replace(",", "."));
         String amountImpExVar = data[13];
-        if (!amountImpExVar.isEmpty()) dict.put("amountImpEx", amountImpExVar);
+        if (!amountImpExVar.isEmpty()) dict.put("amountImpEx", amountImpExVar.replace(",", "."));
         //data[14] are "other tributes" and is being skipped for now
         String ivaVar = data[15];
-        if (!ivaVar.isEmpty()) dict.put("ivaTax", ivaVar);
-        dict.put("totalAmount", data[16]);
+        if (!ivaVar.isEmpty()) dict.put("ivaTax", ivaVar.replace(",", "."));
+        dict.put("totalAmount", data[16].replace(",", "."));
         dict.put("issuedByMe", issuedByMe ? "true" : "false");
-        
+
         return dict;
     }
     
