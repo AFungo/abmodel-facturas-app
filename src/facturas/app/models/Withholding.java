@@ -31,23 +31,18 @@ public class Withholding {
     protected DollarPrice dollarPrice = null;
 
     public Withholding(Map<String, String> data) {
-        try {
-            NumberFormat nf = NumberFormat.getInstance();
-            date = FormatUtils.dateGen(data.get("date"));
-            number = data.get("number");
-            //data can contain name (csv with new tickets) or not (loading backup, provider data is in DB)
-            if (data.containsKey("name") && data.containsKey("docType")) provider = new Provider(data);
-            else provider = ProviderDAO.get(data.get("docNo"));
-            sector = data.get("sector");
-            String iva = data.get("iva");
-            if (iva != null && !iva.isEmpty()) this.iva = nf.parse(iva).floatValue();
-            String profits = data.get("profits");
-            if (profits != null && !profits.isEmpty()) this.profits = nf.parse(profits).floatValue();
-            if (data.get("id") != null) id = Integer.parseInt(data.get("id"));
-            if (data.get("delivered") != null) delivered = Boolean.valueOf(data.get("delivered"));
-        } catch (ParseException ex) {
-            Logger.getLogger(Withholding.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        date = FormatUtils.dateGen(data.get("date"));
+        number = data.get("number");
+        //data can contain name (csv with new tickets) or not (loading backup, provider data is in DB)
+        if (data.containsKey("name") && data.containsKey("docType")) provider = new Provider(data);
+        else provider = ProviderDAO.get(data.get("docNo"));
+        sector = data.get("sector");
+        String iva = data.get("iva");
+        if (iva != null && !iva.isEmpty()) this.iva = Float.parseFloat(iva);
+        String profits = data.get("profits");
+        if (profits != null && !profits.isEmpty()) this.profits = Float.parseFloat(profits);
+        if (data.get("id") != null) id = Integer.parseInt(data.get("id"));
+        if (data.get("delivered") != null) delivered = Boolean.valueOf(data.get("delivered"));
     }
 
     public void addDollarPrice(DollarPrice price) {
@@ -74,8 +69,10 @@ public class Withholding {
         dict.put("number", number);
         dict.put("sector", sector);
         if (id != null) dict.put("id", id);
-        if (iva != null) dict.put("iva", iva);
-        if (profits != null) dict.put("profits", profits);
+        if (iva != null)
+            dict.put("iva", iva);
+        if (profits != null)
+            dict.put("profits", profits);
         if (delivered != null) dict.put("delivered", delivered);
         return dict;
     }                  
