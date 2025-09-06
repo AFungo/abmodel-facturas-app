@@ -76,7 +76,15 @@ public class FormatUtils {
     public static Map<String, String> ticketCsvToDict(String strTicket, boolean issuedByMe) {
         String[] data = strTicket.split(";");       //split by ;
         Map<String, String> dict = new HashMap<>();
-        
+        //hay que hacer la mugre esta pq los del afip hiceron csv cpon distinto largo para Recibir facturas y emitir facturas
+        if (issuedByMe) {
+            String[] newData = new String[data.length + 2];
+            System.arraycopy(data, 0, newData, 0, 9);
+            newData[9] = "";
+            newData[10] = "";
+            System.arraycopy(data, 9, newData, 11, data.length - 9);
+            data = newData;
+        }
         dict.put("date", data[0]);
         dict.put("type", FixedData.getTicketTypeByCode(data[1]));
         dict.put("number", data[2]+data[3]);
@@ -86,18 +94,18 @@ public class FormatUtils {
         dict.put("docType", FixedData.getDocumentTypeByCode(data[6]));
         dict.put("docNo", data[7]);
         dict.put("name", data[8]);
-        dict.put("exchangeType", data[9].replace(",", "."));
-        dict.put("exchangeMoney", FixedData.getOldExchangeType(data[10]));
-        String netAmountWIVar = data[11];
+        dict.put("exchangeType", data[11].replace(",", "."));
+        dict.put("exchangeMoney", FixedData.getOldExchangeType(data[12]));
+        String netAmountWIVar = data[24];
         if (!netAmountWIVar.isEmpty()) dict.put("netAmountWI", netAmountWIVar.replace(",", "."));
-        String netAmountWIOVar = data[12];
+        String netAmountWIOVar = data[25];
         if (!netAmountWIOVar.isEmpty()) dict.put("netAmountWOI", netAmountWIOVar.replace(",", "."));
-        String amountImpExVar = data[13];
+        String amountImpExVar = data[26];
         if (!amountImpExVar.isEmpty()) dict.put("amountImpEx", amountImpExVar.replace(",", "."));
         //data[14] are "other tributes" and is being skipped for now
-        String ivaVar = data[15];
+        String ivaVar = data[28];
         if (!ivaVar.isEmpty()) dict.put("ivaTax", ivaVar.replace(",", "."));
-        dict.put("totalAmount", data[16].replace(",", "."));
+        dict.put("totalAmount", data[29].replace(",", "."));
         dict.put("issuedByMe", issuedByMe ? "true" : "false");
 
         return dict;

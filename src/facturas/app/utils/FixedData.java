@@ -146,16 +146,82 @@ public class FixedData {
      * @return ticket emitter file format 
      */
     public static String getTicketEmitterFileFormat() {
-        return "\"Fecha de Emisión\";\"Tipo de Comprobante\";\"Punto de Venta\";\"Número Desde\";\"Número Hasta\";\"Cód. Autorización\";\"Tipo Doc. Emisor\";\"Nro. Doc. Emisor\";\"Denominación Emisor\";\"Tipo Cambio\";\"Moneda\";\"Imp. Neto Gravado\";\"Imp. Neto No Gravado\";\"Imp. Op. Exentas\";\"Otros Tributos\";\"IVA\";\"Imp. Total\"";
+        return "\"Fecha de Emisión\";" +
+                "\"Tipo de Comprobante\";" +
+                "\"Punto de Venta\";" +
+                "\"Número Desde\";" +
+                "\"Número Hasta\";" +
+                "\"Cód. Autorización\";" +
+                "\"Tipo Doc. Emisor\";" +
+                "\"Nro. Doc. Emisor\";" +
+                "\"Denominación Emisor\";" +
+                "\"Tipo Doc. Receptor\";" +
+                "\"Nro. Doc. Receptor\";" +
+                "\"Tipo Cambio\";" +
+                "\"Moneda\";" +
+                "\"Imp. Neto Gravado IVA 0%\";" +
+                "\"IVA 2,5%\";" +
+                "\"Imp. Neto Gravado IVA 2,5%\";" +
+                "\"IVA 5%\";" +
+                "\"Imp. Neto Gravado IVA 5%\";" +
+                "\"IVA 10,5%\";" +
+                "\"Imp. Neto Gravado IVA 10,5%\";" +
+                "\"IVA 21%\";" +
+                "\"Imp. Neto Gravado IVA 21%\";" +
+                "\"IVA 27%\";" +
+                "\"Imp. Neto Gravado IVA 27%\";" +
+                "\"Imp. Neto Gravado Total\";" +
+                "\"Imp. Neto No Gravado\";" +
+                "\"Imp. Op. Exentas\";" +
+                "\"Otros Tributos\";" +
+                "\"Total IVA\";" +
+                "\"Imp. Total\"";
     }
+    /*
+    "\"Fecha de Emisión\";\"Tipo de Comprobante\";\"Punto de Venta\";" +
+                "\"Número Desde\";\"Número Hasta\";\"Cód. Autorización\";" +
+                "\"Tipo Doc. Emisor\";\"Nro. Doc. Emisor\";\"Denominación Emisor\";" +
+                "\"Tipo Cambio\";\"Moneda\";" +
+                "\"Imp. Neto Gravado\";\"Imp. Neto No Gravado\";" +
+                "\"Imp. Op. Exentas\";\"Otros Tributos\";" +
+                "\"IVA\";\"Imp. Total\"";
+     */
     
     /**
      * @return ticket receptor file format
      */ 
     public static String getTicketReceptorFileFormat() {
-        return "\"Fecha de Emisión\";\"Tipo de Comprobante\";\"Punto de Venta\";\"Número Desde\";\"Número Hasta\";\"Cód. Autorización\";\"Tipo Doc. Receptor\";\"Nro. Doc. Receptor\";\"Denominación Receptor\";\"Tipo Cambio\";\"Moneda\";\"Imp. Neto Gravado\";\"Imp. Neto No Gravado\";\"Imp. Op. Exentas\";\"Otros Tributos\";\"IVA\";\"Imp. Total\"";
+        return "\"Fecha de Emisión\";" +
+                "\"Tipo de Comprobante\";" +
+                "\"Punto de Venta\";" +
+                "\"Número Desde\";" +
+                "\"Número Hasta\";" +
+                "\"Cód. Autorización\";" +
+                "\"Tipo Doc. Receptor\";" +
+                "\"Nro. Doc. Receptor\";" +
+                "\"Denominación Receptor\";"+
+                "\"Tipo Cambio\";" +
+                "\"Moneda\";" +
+                "\"Imp. Neto Gravado IVA 0%\";" +
+                "\"IVA 2,5%\";" +
+                "\"Imp. Neto Gravado IVA 2,5%\";" +
+                "\"IVA 5%\";" +
+                "\"Imp. Neto Gravado IVA 5%\";" +
+                "\"IVA 10,5%\";" +
+                "\"Imp. Neto Gravado IVA 10,5%\";" +
+                "\"IVA 21%\";" +
+                "\"Imp. Neto Gravado IVA 21%\";" +
+                "\"IVA 27%\";" +
+                "\"Imp. Neto Gravado IVA 27%\";" +
+                "\"Imp. Neto Gravado Total\";" +
+                "\"Imp. Neto No Gravado\";" +
+                "\"Imp. Op. Exentas\";" +
+                "\"Otros Tributos\";" +
+                "\"Total IVA\";" +
+                "\"Imp. Total\"";
     }
-    
+
+
     /**
      * @return dollar price file format
      */
