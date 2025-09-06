@@ -38,17 +38,18 @@ public class ProfitCalculator {
      */
     public void addTicket(Ticket t) {
         Map<String, Object> values = t.getValues();
-        
+        String ticketType = values.get("type").toString();
+        int notaDeCredito = ticketType.toLowerCase().contains("credito") ? -1 : 1;
+
         Float exchangeType = 1.0f;
         String exchangeMoney = (String)t.getValues().get("exchangeMoney");
-       if (exchangeMoney == "USD") {
+       if (exchangeMoney.equals("USD")) {
             exchangeType = (Float) t.getValues().get("exchangeType");
         }
        
-        Float totalAmount = (Float) values.get("totalAmount") * exchangeType;   //Total * exchange type
-        Float ivaTax = (values.get("ivaTax") != null ? (Float) values.get("ivaTax") : 0.0f) * exchangeType;
-        Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType;
-
+        Float totalAmount = (Float) values.get("totalAmount") * exchangeType * notaDeCredito;   //Total * exchange type
+        Float ivaTax = (values.get("ivaTax") != null ? (Float) values.get("ivaTax") : 0.0f) * exchangeType * notaDeCredito;
+        Float netAmountWI = (values.get("netAmountWI") != null ? (Float) values.get("netAmountWI") : totalAmount) * exchangeType * notaDeCredito;
         addTransaction(t.isIncome(), (boolean)values.get("issuedByMe"), totalAmount, ivaTax, netAmountWI);
     }
   
